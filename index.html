@@ -3901,7 +3901,24 @@ function updateAccountingTable() {
         
         // Создаем все ячейки строки
         const departmentCell = createCell(item.department || '', '150px');
-        const docNumberCell = createCell(item.docNumber || '', '109px');
+        const docNumberCell = document.createElement('td');
+docNumberCell.style.width = '109px'; // можно оставить или удалить – ширина управляется CSS
+
+const docText = item.docNumber || '';
+const openParenIndex = docText.indexOf('(');
+
+if (openParenIndex !== -1) {
+    // Часть до '(' (включая возможный пробел)
+    const before = docText.substring(0, openParenIndex);
+    // Часть от '(' и до конца
+    const after = docText.substring(openParenIndex);
+    // Экранируем спецсимволы для безопасной вставки через innerHTML
+    const escape = (str) => str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+    docNumberCell.innerHTML = `<span style="font-weight: bold; color: #66c0f4;">${escape(before)}</span>${escape(after)}`;
+} else {
+    // Если скобки нет – просто текст
+    docNumberCell.textContent = docText;
+}
         const statusCell = createCell(item.status || '', '90px');
         
         const planFactCell = createCell(item.planFact || '', '128px');
