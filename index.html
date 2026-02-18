@@ -2653,6 +2653,7 @@ button:hover{background:#222733!important}
             <th style="width: 80.4px;">Дата</th>
             <th style="width: 120.6px;">Контрагент</th>
             <th style="width: 80.4px;">Телефон</th>
+            <th style="width: 100px;">Документ</th>
             <th style="width: 134px;">Товар</th>
             <th style="width: 167.5px;">Адрес</th>
             <th style="width: 100.5px;">Водитель</th>
@@ -2660,7 +2661,7 @@ button:hover{background:#222733!important}
         </tr>
     </thead>
                 <tbody id="proxyTableBody"><tr>
-            <td colspan="7" style="text-align: center; color: rgb(143, 152, 160); padding: 20px; width: 80.4px;">
+            <td colspan="8" style="text-align: center; color: rgb(143, 152, 160); padding: 20px; width: 80.4px;">
                 Нет данных о доверенностях. Добавьте первую доверенность.
             </td>
         </tr></tbody>
@@ -3072,6 +3073,10 @@ button:hover{background:#222733!important}
                     <label>Телефон:</label>
                     <input type="text" id="editProxyPhone" style="width: 100%;">
                 </div>
+                <div style="margin-bottom: 10.05px;">
+    <label>Документ:</label>
+    <input type="text" id="editProxyDocument" list="contractsList" style="width: 100%;">
+</div>
                 <div style="margin-bottom: 10.05px;">
                     <label>Товар:</label>
                     <input type="text" id="editProxyProduct" style="width: 100%;">
@@ -3766,7 +3771,7 @@ function applyFixedTableLayouts() {
         {id: 'paymentsTable', cols: 7},
         {id: 'settlementTable', cols: 6},
         {id: 'mailTable', cols: 7},
-        {id: 'proxyTable', cols: 8}
+        {id: 'proxyTable', cols: 8}   // исправлено с 7 на 8
     ];
     
     tables.forEach(tableConfig => {
@@ -6460,7 +6465,7 @@ if (isAdmin) {
     if (proxyData.length === 0) {
         const emptyRow = document.createElement('tr');
         emptyRow.innerHTML = `
-            <td colspan="7" style="text-align: center; color: #8f98a0; padding: 20px;">
+            <td colspan="8" style="text-align: center; color: #8f98a0; padding: 20px;">
                 Нет данных о доверенностях. Добавьте первую доверенность.
             </td>
         `;
@@ -6494,6 +6499,7 @@ if (isAdmin) {
             <td>${item.date || ''}</td>
             <td>${item.supplier || ''}</td>
             <td>${item.phone || ''}</td>
+            <td>${item.contract || ''}</td>
             <td>${item.product || ''}</td>
             <td>${item.address || ''}</td>
             <td>${item.driver || ''}</td>
@@ -6547,25 +6553,21 @@ if (isAdmin) {
     let visibleCount = 0;
     
     rows.forEach(row => {
-        // Пропускаем строку с сообщением "нет данных"
+        // Пропускаем строку с сообщением "нет данных" (colspan теперь 8)
         if (row.cells.length === 1 && row.cells[0].colSpan > 1) {
             row.style.display = (searchText || statusFilter) ? 'none' : '';
-            if (!searchText && !statusFilter) {
-                visibleCount++;
-            }
+            if (!searchText && !statusFilter) visibleCount++;
             return;
         }
         
         let rowText = '';
         const cells = row.querySelectorAll('td');
-        
-        // Собираем текст из всех ячеек
         cells.forEach(cell => {
             rowText += cell.textContent.toLowerCase() + ' ';
         });
         
-        // Получаем статус из последней ячейки (7-я ячейка)
-        const statusCell = cells[6] ? cells[6].textContent.trim() : '';
+        // Статус теперь в 8-й ячейке (индекс 7)
+        const statusCell = cells[7] ? cells[7].textContent.trim() : '';
         const statusMatch = !statusFilter || statusCell === statusFilter;
         const searchMatch = !searchText || rowText.includes(searchText);
         
@@ -6577,16 +6579,14 @@ if (isAdmin) {
         }
     });
     
-    // Показываем сообщение, если нет видимых строк
     if (visibleCount === 0 && (searchText || statusFilter)) {
         const tableBody = document.querySelector('#proxyTable tbody');
         let noDataRow = tableBody.querySelector('tr[data-no-results]');
-        
         if (!noDataRow) {
             noDataRow = document.createElement('tr');
             noDataRow.setAttribute('data-no-results', 'true');
             noDataRow.innerHTML = `
-                <td colspan="7" style="text-align: center; color: #8f98a0; padding: 20px;">
+                <td colspan="8" style="text-align: center; color: #8f98a0; padding: 20px;">
                     По вашему запросу ничего не найдено
                 </td>
             `;
@@ -6594,9 +6594,7 @@ if (isAdmin) {
         }
     } else {
         const noDataRow = document.querySelector('#proxyTable tr[data-no-results]');
-        if (noDataRow) {
-            noDataRow.remove();
-        }
+        if (noDataRow) noDataRow.remove();
     }
 }
 
@@ -6640,6 +6638,7 @@ if (isAdmin) {
     document.getElementById('editProxyDate').value = formatDateForInput(item.date);
     document.getElementById('editProxySupplier').value = item.supplier || '';
     document.getElementById('editProxyPhone').value = item.phone || '';
+    document.getElementById('editProxyDocument').value = item.contract || '';
     document.getElementById('editProxyProduct').value = item.product || '';
     document.getElementById('editProxyAddress').value = item.address || '';
     document.getElementById('editProxyDriver').value = item.driver || '';
@@ -6665,6 +6664,7 @@ if (isAdmin) {
         date: formatDateForDisplay(document.getElementById('editProxyDate').value),
         supplier: document.getElementById('editProxySupplier').value,
         phone: document.getElementById('editProxyPhone').value,
+        contract: document.getElementById('editProxyDocument').value,
         product: document.getElementById('editProxyProduct').value,
         address: document.getElementById('editProxyAddress').value,
         driver: document.getElementById('editProxyDriver').value,
@@ -7375,6 +7375,7 @@ function deleteProxyRecord() {
         // Обновляем таблицу после удаления
         saveAllData();
         updateProxyTable();
+        updateContractsList(); 
         closeProxyModal();
         markChangesMade();
         refreshStatusStatsIfOpen();
@@ -8083,6 +8084,7 @@ function deleteProxyRecord() {
                             if (!item.recordId) {
                                 item.recordId = generateUniqueId();
                             }
+                            if (item.contract === undefined) item.contract = '';
                         });
                     }
                 }
