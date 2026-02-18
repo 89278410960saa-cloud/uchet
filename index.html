@@ -1366,21 +1366,21 @@
 #paymentsTable th:nth-child(1),
 #paymentsTable td:nth-child(1) { width: 40px !important; } /* Дата платежа */
 #paymentsTable th:nth-child(2),
-#paymentsTable td:nth-child(2) { width: 200px !important; } /* Контрагент */
+#paymentsTable td:nth-child(2) { width: 100px !important; } /* Контрагент */
 #paymentsTable th:nth-child(3),
 #paymentsTable td:nth-child(3) { width: 60px !important; } /* Сумма */
 #paymentsTable th:nth-child(4),
 #paymentsTable td:nth-child(4) { width: 100px !important; } /* Договор */
 #paymentsTable th:nth-child(5),
-#paymentsTable td:nth-child(5) { width: 300px !important; } /* Ссылка */
+#paymentsTable td:nth-child(5) { width: 150px !important; } /* Ссылка */
 #paymentsTable th:nth-child(6),
-#paymentsTable td:nth-child(6) { width: 30px !important; } /* Статус */
+#paymentsTable td:nth-child(6) { width: 40px !important; } /* Статус */
 
 /* Задаём фиксированную ширину для столбца "Ссылка" (5-й столбец) */
 #paymentsTable th:nth-child(5),
 #paymentsTable td:nth-child(5) {
-    max-width: 400px !important;
-    width: 400px !important;
+    max-width: 150px !important;
+    width: 150px !important;
     overflow: hidden !important;
     text-overflow: ellipsis !important;
     white-space: nowrap !important;
@@ -3868,7 +3868,35 @@ function applyFixedTableLayouts() {
         function markChangesMade() {
             changesMade = true;
         }
+// Копирование текста в буфер обмена
+function copyToClipboard(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => {
+            showAutosaveNotification('Ссылка скопирована в буфер обмена');
+        }).catch(err => {
+            console.error('Ошибка копирования: ', err);
+            fallbackCopy(text);
+        });
+    } else {
+        fallbackCopy(text);
+    }
+}
 
+// Запасной метод для старых браузеров
+function fallbackCopy(text) {
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    document.body.appendChild(textarea);
+    textarea.select();
+    try {
+        document.execCommand('copy');
+        showAutosaveNotification('Ссылка скопирована в буфер обмена');
+    } catch (err) {
+        console.error('Ошибка копирования (fallback): ', err);
+        alert('Не удалось скопировать ссылку. Скопируйте вручную.');
+    }
+    document.body.removeChild(textarea);
+}
         // ========== ФУНКЦИИ ДЛЯ СТРАНИЦЫ УЧЕТА ==========
 function updateAccountingTable() {
     const tableBody = document.querySelector('#accountingTable tbody');
@@ -5832,21 +5860,23 @@ function updateSuppliersFilterList() {
         
         // Ссылка
         const linkCell = document.createElement('td');
-        linkCell.style.width = '174px';
-        const link = item.link || '';
-        if (link) {
-            const a = document.createElement('a');
-            a.href = link;
-            a.target = '_blank';
-            a.textContent = link;
-            a.style.color = '#66c0f4';
-            a.style.textDecoration = 'underline';
-            a.style.cursor = 'pointer';
-            linkCell.appendChild(a);
-        } else {
-            linkCell.textContent = '';
-        }
-        row.appendChild(linkCell);
+linkCell.style.width = '174px';
+const link = item.link || '';
+if (link) {
+    const linkSpan = document.createElement('span');
+    linkSpan.textContent = link;
+    linkSpan.style.color = '#66c0f4';
+    linkSpan.style.textDecoration = 'underline';
+    linkSpan.style.cursor = 'pointer';
+    linkSpan.addEventListener('click', function(e) {
+        e.preventDefault(); // на случай, если вдруг это ссылка
+        copyToClipboard(link);
+    });
+    linkCell.appendChild(linkSpan);
+} else {
+    linkCell.textContent = '';
+}
+row.appendChild(linkCell);
         
         // Статус
         const statusCell = createCell(item.status || '', '174px');
