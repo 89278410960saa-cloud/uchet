@@ -406,7 +406,6 @@
 
 /* Автоматическое распределение для всех таблиц */
 #counterpartiesTable,
-#paymentsTable,
 #settlementTable,
 #mailTable,
 #proxyTable {
@@ -417,7 +416,6 @@
 /* Убираем все фиксированные ширины */
 #counterpartiesTable td,
 #counterpartiesTable th,
-#paymentsTable td,
 #paymentsTable th,
 #settlementTable td,
 #settlementTable th,
@@ -489,7 +487,6 @@
 
 /* Убираем фиксированные ширины и делаем адаптивными */
 #counterpartiesTable th,
-#paymentsTable th,
 #settlementTable th,
 #mailTable th,
 #proxyTable th {
@@ -521,7 +518,6 @@
 
 /* Автоматическое распределение для таблиц */
 #counterpartiesTable,
-#paymentsTable,
 #settlementTable,
 #mailTable,
 #proxyTable {
@@ -1352,7 +1348,51 @@
         .move-down-btn:hover {
             background: linear-gradient(135deg, #75c9ff 0%, #5a9bdb 100%);
         }
+#paymentsTable a {
+    color: #66c0f4;
+    text-decoration: underline;
+    cursor: pointer;
+}
+#paymentsTable a:hover {
+    color: #75c9ff;
+}
+/* Фиксируем макет таблицы платежей */
+#paymentsTable {
+    table-layout: fixed !important;
+    width: 100% !important;
+}
 
+/* Задаём ширину для каждого столбца (подберите значения под свои данные) */
+#paymentsTable th:nth-child(1),
+#paymentsTable td:nth-child(1) { width: 40px !important; } /* Дата платежа */
+#paymentsTable th:nth-child(2),
+#paymentsTable td:nth-child(2) { width: 200px !important; } /* Контрагент */
+#paymentsTable th:nth-child(3),
+#paymentsTable td:nth-child(3) { width: 60px !important; } /* Сумма */
+#paymentsTable th:nth-child(4),
+#paymentsTable td:nth-child(4) { width: 100px !important; } /* Договор */
+#paymentsTable th:nth-child(5),
+#paymentsTable td:nth-child(5) { width: 300px !important; } /* Ссылка */
+#paymentsTable th:nth-child(6),
+#paymentsTable td:nth-child(6) { width: 30px !important; } /* Статус */
+
+/* Задаём фиксированную ширину для столбца "Ссылка" (5-й столбец) */
+#paymentsTable th:nth-child(5),
+#paymentsTable td:nth-child(5) {
+    max-width: 400px !important;
+    width: 400px !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+}
+
+/* Саму ссылку внутри ячейки тоже обрезаем */
+#paymentsTable td:nth-child(5) a {
+    display: block !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+}
         /* Стили таблицы */
         table {
             width: 100%;
@@ -2525,6 +2565,7 @@ button:hover{background:#222733!important}
             <th style="width: 174px;">Контрагент</th>
             <th style="width: 174px;">Сумма</th>
             <th style="width: 174px;">Договор</th>
+            <th style="width: 174px;">Ссылка</th>
             <th style="width: 174px;">Статус</th>
         </tr>
     </thead>
@@ -2795,7 +2836,10 @@ button:hover{background:#222733!important}
     <label>Договор:</label>
     <input type="text" id="editPaymentContract" style="width: 100%;" list="contractsList">
 </div>
-            
+            <div style="margin-bottom: 10.05px;">
+    <label>Ссылка:</label>
+    <input type="url" id="editPaymentLink" style="width: 100%;" placeholder="https://...">
+</div>
             <div style="margin-bottom: 10.05px;">
                 <label>Статус:</label>
                 <select id="editPaymentStatus" required="" style="width: 100%; padding: 5.36px;">
@@ -3768,7 +3812,6 @@ function safeParseJSON(jsonString) {
 function applyFixedTableLayouts() {
     const tables = [
         {id: 'counterpartiesTable', cols: 7},
-        {id: 'paymentsTable', cols: 7},
         {id: 'settlementTable', cols: 6},
         {id: 'mailTable', cols: 7},
         {id: 'proxyTable', cols: 8}   // исправлено с 7 на 8
@@ -5745,7 +5788,7 @@ function updateSuppliersFilterList() {
     if (paymentsData.length === 0) {
         const emptyRow = document.createElement('tr');
         emptyRow.innerHTML = `
-            <td colspan="5" style="text-align: center; color: #8f98a0; padding: 20px;">
+            <td colspan="6" style="text-align: center; color: #8f98a0; padding: 20px;">
                 Нет данных о платежах. Добавьте первую запись.
             </td>
         `;
@@ -5753,65 +5796,83 @@ function updateSuppliersFilterList() {
         return;
     }
     
-    // СОРТИРОВКА ПО ДАТЕ (УБЫВАНИЕ - СНАЧАЛА НОВЫЕ)
     const sortedPayments = [...paymentsData].sort((a, b) => {
-        // Извлекаем timestamp из recordId
         const timeA = getTimeFromRecordId(a.recordId) || 0;
         const timeB = getTimeFromRecordId(b.recordId) || 0;
-        
-        // Сортировка по убыванию (новые сначала)
         return timeB - timeA;
     });
     
     sortedPayments.forEach((item) => {
         const row = document.createElement('tr');
-        
-        // Добавляем уникальный ID записи в data-атрибут
         row.dataset.recordId = item.recordId || '';
         
         if (item.status === 'Оплачено') {
             row.classList.add('status-completed');
         }
-        
-        row.innerHTML = `
-            <td>${item.date || ''}</td>
-            <td>${item.supplier || ''}</td>
-            <td>${item.amount ? formatCurrency(item.amount) : ''}</td>
-            <td>${item.contract || ''}</td>
-            <td>${item.status || ''}</td>
-        `;
-        
-// ВСЕГДА добавляем класс для подсветки
-row.classList.add('clickable-row');
-if (!isAdmin) {
-    row.classList.add('guest-mode');
-}
-
-// Только для администратора добавляем обработчик редактирования
-if (isAdmin) {
-    row.addEventListener('dblclick', function(e) {
-        if (!e.target.closest('button') && !e.target.closest('input')) {
-            const recordId = e.currentTarget.dataset.recordId;
-            
-            // Ищем запись по recordId
-            const recordIndex = paymentsData.findIndex(record => record.recordId === recordId);
-            if (recordIndex !== -1) {
-                editPaymentRow(recordIndex);
-            } else {
-                // Если не нашли по recordId, пробуем найти по другим параметрам
-                const supplier = e.currentTarget.querySelector('td:nth-child(2)').textContent;
-                const amount = e.currentTarget.querySelector('td:nth-child(3)').textContent;
-                const fallbackIndex = paymentsData.findIndex(record => 
-                    record.supplier === supplier && 
-                    formatCurrency(record.amount) === amount
-                );
-                if (fallbackIndex !== -1) {
-                    editPaymentRow(fallbackIndex);
-                }
-            }
+        row.classList.add('clickable-row');
+        if (!isAdmin) {
+            row.classList.add('guest-mode');
         }
-    });
-}
+        
+        // Дата
+        const dateCell = createCell(item.date || '', '174px');
+        row.appendChild(dateCell);
+        
+        // Контрагент
+        const supplierCell = createCell(item.supplier || '', '174px');
+        row.appendChild(supplierCell);
+        
+        // Сумма
+        const amountCell = createCell(item.amount ? formatCurrency(item.amount) : '', '174px');
+        row.appendChild(amountCell);
+        
+        // Договор
+        const contractCell = createCell(item.contract || '', '174px');
+        row.appendChild(contractCell);
+        
+        // Ссылка
+        const linkCell = document.createElement('td');
+        linkCell.style.width = '174px';
+        const link = item.link || '';
+        if (link) {
+            const a = document.createElement('a');
+            a.href = link;
+            a.target = '_blank';
+            a.textContent = link;
+            a.style.color = '#66c0f4';
+            a.style.textDecoration = 'underline';
+            a.style.cursor = 'pointer';
+            linkCell.appendChild(a);
+        } else {
+            linkCell.textContent = '';
+        }
+        row.appendChild(linkCell);
+        
+        // Статус
+        const statusCell = createCell(item.status || '', '174px');
+        row.appendChild(statusCell);
+        
+        if (isAdmin) {
+            row.addEventListener('dblclick', function(e) {
+                if (!e.target.closest('button') && !e.target.closest('input')) {
+                    const recordId = e.currentTarget.dataset.recordId;
+                    const recordIndex = paymentsData.findIndex(record => record.recordId === recordId);
+                    if (recordIndex !== -1) {
+                        editPaymentRow(recordIndex);
+                    } else {
+                        const supplier = e.currentTarget.querySelector('td:nth-child(2)').textContent;
+                        const amount = e.currentTarget.querySelector('td:nth-child(3)').textContent;
+                        const fallbackIndex = paymentsData.findIndex(record => 
+                            record.supplier === supplier && 
+                            formatCurrency(record.amount) === amount
+                        );
+                        if (fallbackIndex !== -1) {
+                            editPaymentRow(fallbackIndex);
+                        }
+                    }
+                }
+            });
+        }
         
         tableBody.appendChild(row);
     });
@@ -5826,7 +5887,6 @@ if (isAdmin) {
     let visibleCount = 0;
     
     rows.forEach(row => {
-        // Пропускаем строку с сообщением "нет данных"
         if (row.cells.length === 1 && row.cells[0].colSpan > 1) {
             row.style.display = (searchText || statusFilter) ? 'none' : '';
             if (!searchText && !statusFilter) {
@@ -5840,8 +5900,8 @@ if (isAdmin) {
             rowText += cell.textContent.toLowerCase() + ' ';
         });
         
-        // Статус теперь в 5-й ячейке (индекс 4, если считать с 0)
-        const statusCell = row.querySelector('td:nth-child(5)').textContent;
+        // Статус теперь в 6-й ячейке (индекс 5)
+        const statusCell = row.querySelector('td:nth-child(6)').textContent;
         const statusMatch = !statusFilter || statusCell === statusFilter;
         const searchMatch = !searchText || rowText.includes(searchText);
         
@@ -5853,28 +5913,27 @@ if (isAdmin) {
         }
     });
             
-            // Показываем сообщение, если нет видимых строк
-            if (visibleCount === 0 && (searchText || statusFilter)) {
-                const tableBody = document.querySelector('#paymentsTable tbody');
-                let noDataRow = tableBody.querySelector('tr[data-no-results]');
-                
-                if (!noDataRow) {
-                    noDataRow = document.createElement('tr');
-                    noDataRow.setAttribute('data-no-results', 'true');
-                    noDataRow.innerHTML = `
-                        <td colspan="8" style="text-align: center; color: #8f98a0; padding: 20px;">
-                            По вашему запросу ничего не найдено
-                        </td>
-                    `;
-                    tableBody.appendChild(noDataRow);
-                }
-            } else {
-                const noDataRow = document.querySelector('#paymentsTable tr[data-no-results]');
-                if (noDataRow) {
-                    noDataRow.remove();
-                }
-            }
+    if (visibleCount === 0 && (searchText || statusFilter)) {
+        const tableBody = document.querySelector('#paymentsTable tbody');
+        let noDataRow = tableBody.querySelector('tr[data-no-results]');
+        
+        if (!noDataRow) {
+            noDataRow = document.createElement('tr');
+            noDataRow.setAttribute('data-no-results', 'true');
+            noDataRow.innerHTML = `
+                <td colspan="6" style="text-align: center; color: #8f98a0; padding: 20px;">
+                    По вашему запросу ничего не найдено
+                </td>
+            `;
+            tableBody.appendChild(noDataRow);
         }
+    } else {
+        const noDataRow = document.querySelector('#paymentsTable tr[data-no-results]');
+        if (noDataRow) {
+            noDataRow.remove();
+        }
+    }
+}
 
         function clearPaymentsFilters() {
             document.getElementById('searchPaymentsInput').value = '';
@@ -5910,6 +5969,7 @@ function editPaymentRow(index) {
     document.getElementById('editPaymentSupplier').value = item.supplier || '';
     document.getElementById('editPaymentAmount').value = item.amount || '';
     document.getElementById('editPaymentContract').value = item.contract || '';
+    document.getElementById('editPaymentLink').value = item.link || '';
     document.getElementById('editPaymentStatus').value = item.status || 'План';
     
     const deleteBtn = document.querySelector('#editPaymentModal .delete-btn');
@@ -5934,6 +5994,7 @@ function editPaymentRow(index) {
         amount: document.getElementById('editPaymentAmount').value,
         supplier: document.getElementById('editPaymentSupplier').value,
         contract: document.getElementById('editPaymentContract').value,
+        link: document.getElementById('editPaymentLink').value,
     };
     
     if (index === '') {
@@ -7922,7 +7983,8 @@ function deleteProxyRecord() {
             date: item.date || '',
             amount: item.amount || '',
             supplier: item.supplier || '',
-            contract: item.contract || ''
+            contract: item.contract || '',
+            link: item.link || ''
         })),
         settlementData: settlementData.map(item => ({
             recordId: item.recordId || generateUniqueId(),
