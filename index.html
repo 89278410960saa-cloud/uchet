@@ -1363,22 +1363,16 @@
 }
 
 /* Задаём ширину для каждого столбца (подберите значения под свои данные) */
-#paymentsTable th:nth-child(1),
-#paymentsTable td:nth-child(1) { width: 40px !important; } /* Дата платежа */
-#paymentsTable th:nth-child(2),
-#paymentsTable td:nth-child(2) { width: 100px !important; } /* Контрагент */
-#paymentsTable th:nth-child(3),
-#paymentsTable td:nth-child(3) { width: 60px !important; } /* Сумма */
-#paymentsTable th:nth-child(4),
-#paymentsTable td:nth-child(4) { width: 100px !important; } /* Договор */
-#paymentsTable th:nth-child(5),
-#paymentsTable td:nth-child(5) { width: 150px !important; } /* Ссылка */
-#paymentsTable th:nth-child(6),
-#paymentsTable td:nth-child(6) { width: 40px !important; } /* Статус */
+#paymentsTable th:nth-child(1), #paymentsTable td:nth-child(1) { width: 40px !important; }   /* Дата платежа */
+#paymentsTable th:nth-child(2), #paymentsTable td:nth-child(2) { width: 40px !important; }   /* Статус – можно оставить 40px */
+#paymentsTable th:nth-child(3), #paymentsTable td:nth-child(3) { width: 100px !important; }  /* Контрагент */
+#paymentsTable th:nth-child(4), #paymentsTable td:nth-child(4) { width: 60px !important; }   /* Сумма */
+#paymentsTable th:nth-child(5), #paymentsTable td:nth-child(5) { width: 100px !important; }  /* Договор */
+#paymentsTable th:nth-child(6), #paymentsTable td:nth-child(6) { width: 150px !important; }  /* Ссылка */
 
 /* Задаём фиксированную ширину для столбца "Ссылка" (5-й столбец) */
-#paymentsTable th:nth-child(5),
-#paymentsTable td:nth-child(5) {
+#paymentsTable th:nth-child(6),
+#paymentsTable td:nth-child(6) {
     max-width: 150px !important;
     width: 150px !important;
     overflow: hidden !important;
@@ -2560,15 +2554,15 @@ button:hover{background:#222733!important}
         <div class="table-scroll-container" style="height: auto; margin-top: 10.05px;">
             <table id="paymentsTable" style="table-layout: fixed;">
                 <thead>
-        <tr>
-            <th style="width: 174px;">Дата платежа</th>
-            <th style="width: 174px;">Контрагент</th>
-            <th style="width: 174px;">Сумма</th>
-            <th style="width: 174px;">Договор</th>
-            <th style="width: 174px;">Ссылка</th>
-            <th style="width: 174px;">Статус</th>
-        </tr>
-    </thead>
+    <tr>
+        <th style="width: 174px;">Дата платежа</th>
+        <th style="width: 174px;">Статус</th>
+        <th style="width: 174px;">Контрагент</th>
+        <th style="width: 174px;">Сумма</th>
+        <th style="width: 174px;">Договор</th>
+        <th style="width: 174px;">Ссылка</th>
+    </tr>
+</thead>
                 <tbody id="paymentsTableBody"><tr>
             <td colspan="5" style="text-align: center; color: rgb(143, 152, 160); padding: 20px; width: 174px;">
                 Нет данных о платежах. Добавьте первую запись.
@@ -5851,6 +5845,10 @@ function updateSuppliersFilterList() {
         const dateCell = createCell(item.date || '', '174px');
         row.appendChild(dateCell);
         
+        // Статус
+        const statusCell = createCell(item.status || '', '174px');
+        row.appendChild(statusCell);
+        
         // Контрагент
         const supplierCell = createCell(item.supplier || '', '174px');
         row.appendChild(supplierCell);
@@ -5883,9 +5881,6 @@ if (link) {
 }
 row.appendChild(linkCell);
         
-        // Статус
-        const statusCell = createCell(item.status || '', '174px');
-        row.appendChild(statusCell);
         
         if (isAdmin) {
             row.addEventListener('dblclick', function(e) {
@@ -5895,8 +5890,8 @@ row.appendChild(linkCell);
                     if (recordIndex !== -1) {
                         editPaymentRow(recordIndex);
                     } else {
-                        const supplier = e.currentTarget.querySelector('td:nth-child(2)').textContent;
-                        const amount = e.currentTarget.querySelector('td:nth-child(3)').textContent;
+                        const supplier = e.currentTarget.querySelector('td:nth-child(3)').textContent;
+                        const amount = e.currentTarget.querySelector('td:nth-child(4)').textContent;
                         const fallbackIndex = paymentsData.findIndex(record => 
                             record.supplier === supplier && 
                             formatCurrency(record.amount) === amount
@@ -5936,7 +5931,7 @@ row.appendChild(linkCell);
         });
         
         // Статус теперь в 6-й ячейке (индекс 5)
-        const statusCell = row.querySelector('td:nth-child(6)').textContent;
+        const statusCell = row.querySelector('td:nth-child(2)').textContent;
         const statusMatch = !statusFilter || statusCell === statusFilter;
         const searchMatch = !searchText || rowText.includes(searchText);
         
@@ -8030,6 +8025,7 @@ function deleteProxyRecord() {
             note: item.note || '',
             status: item.status || '',
             supplier: item.supplier || '',
+            contract: item.contract || '',
             remark: item.remark || '',
             outgoing: item.outgoing || '',
             incoming: item.incoming || ''
