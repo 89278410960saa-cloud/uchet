@@ -2608,13 +2608,14 @@ button:hover{background:#222733!important}
             <th style="width: 134px;">Примечание</th>
             <th style="width: 67px;">Статус</th>
             <th style="width: 120.6px;">Контрагент</th>
+            <th style="width: 100px;">Договор</th>
             <th style="width: 167.5px;">Замечание</th>
             <th style="width: 80.4px;">№ Исходящее</th>
             <th style="width: 80.4px;">№ Входящее</th>
         </tr>
     </thead>
                 <tbody id="settlementTableBody"><tr>
-                    <td colspan="6" style="text-align: center; color: rgb(143, 152, 160); padding: 20px; width: 134px;">
+                    <td colspan="7" style="text-align: center; color: rgb(143, 152, 160); padding: 20px; width: 134px;">
                         Нет данных об урегулировании. Добавьте первую запись.
                     </td>
                 </tr></tbody>
@@ -3040,6 +3041,10 @@ button:hover{background:#222733!important}
                 <div style="margin-bottom: 10.05px;">
                     <label>Контрагент:</label>
                     <input list="suppliersList" id="editSettlementSupplier" class="datalist-input" style="width: 100%;">
+                </div>
+                <div style="margin-bottom: 10.05px;">
+                 <label>Договор:</label>
+                <input type="text" id="editSettlementContract" list="contractsList" style="width: 100%;" placeholder="Номер договора" class="datalist-input">
                 </div>
                 <div style="margin-bottom: 10.05px;">
                     <label>Замечание:</label>
@@ -6260,6 +6265,7 @@ function editDepartment(index) {
                     <td>${item.note || ''}</td>
                     <td>${item.status || ''}</td>
                     <td>${item.supplier || ''}</td>
+                    <td>${item.contract || ''}</td>
                     <td>${item.remark || ''}</td>
                     <td>${item.outgoing || ''}</td>
                     <td>${item.incoming || ''}</td>
@@ -6312,6 +6318,7 @@ function editDepartment(index) {
             document.getElementById('modalSettlementTitle').textContent = 'Добавить запись урегулирования';
             document.getElementById('editSettlementIndex').value = '';
             document.getElementById('editSettlementForm').reset();
+            document.getElementById('editSettlementContract').value = '';
             const deleteBtn = document.querySelector('#editSettlementModal .delete-btn');
             if (deleteBtn) deleteBtn.style.display = 'none';
             document.getElementById('editSettlementModal').style.display = 'block';
@@ -6326,6 +6333,7 @@ function editDepartment(index) {
             document.getElementById('editSettlementNote').value = item.note || '';
             document.getElementById('editSettlementStatus').value = item.status || 'В работе';
             document.getElementById('editSettlementSupplier').value = item.supplier || '';
+            document.getElementById('editSettlementContract').value = item.contract || '';
             document.getElementById('editSettlementRemark').value = item.remark || '';
             document.getElementById('editSettlementOutgoing').value = item.outgoing || '';
             document.getElementById('editSettlementIncoming').value = item.incoming || '';
@@ -6342,6 +6350,7 @@ function editDepartment(index) {
                 note: document.getElementById('editSettlementNote').value,
                 status: document.getElementById('editSettlementStatus').value,
                 supplier: document.getElementById('editSettlementSupplier').value,
+                contract: document.getElementById('editSettlementContract').value,
                 remark: document.getElementById('editSettlementRemark').value,
                 outgoing: document.getElementById('editSettlementOutgoing').value,
                 incoming: document.getElementById('editSettlementIncoming').value
