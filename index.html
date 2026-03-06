@@ -3280,6 +3280,21 @@ button:hover{background:#222733!important}
                 </div>
             </div>
         </div>
+        <!-- Статистика использования localStorage -->
+<div style="margin-bottom: 16.75px;">
+    <h3 style="color: #66c0f4; margin-bottom: 10.05px; font-size: 12.06px;">
+        💾 Использование локального хранилища
+    </h3>
+    <div style="background: rgba(42, 71, 94, 0.5); border-radius: 5.36px; padding: 10.05px;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 5.36px;">
+            <span>Заполнено: <span id="localStorageUsed">0</span> МБ из 5 МБ</span>
+            <span id="localStoragePercent">0%</span>
+        </div>
+        <div style="width: 100%; height: 20px; background: #2a475e; border-radius: 10px; overflow: hidden;">
+            <div id="localStorageBar" style="height: 100%; width: 0%; background: linear-gradient(90deg, #5c7e10, #8bc34a); transition: width 0.3s;"></div>
+        </div>
+    </div>
+</div>
     </div>
 </div>        
         <!-- Таблица со статистикой по статусам закупок -->
@@ -4909,6 +4924,7 @@ function showStatusStatsModal() {
     
     // Рассчитываем статистику
     calculateStatusStats();
+    updateLocalStorageStats();
     
     // Показываем модальное окно
     document.getElementById('statusStatsModal').style.display = 'block';
@@ -5215,6 +5231,32 @@ function extractYearFromDateString(dateString) {
     }
     
     return null;
+}
+// Функция для вычисления общего размера данных в localStorage (в байтах)
+function calculateLocalStorageSize() {
+    let totalBytes = 0;
+    for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        const value = localStorage.getItem(key);
+        // Размер ключа + размер значения в байтах
+        totalBytes += new Blob([key]).size + new Blob([value]).size;
+    }
+    return totalBytes;
+}
+
+// Функция для обновления блока статистики localStorage
+function updateLocalStorageStats() {
+    const usedBytes = calculateLocalStorageSize();
+    const usedMB = (usedBytes / (1024 * 1024)).toFixed(2);
+    const percent = Math.min((usedBytes / (5 * 1024 * 1024)) * 100, 100).toFixed(1);
+    
+    const usedEl = document.getElementById('localStorageUsed');
+    const percentEl = document.getElementById('localStoragePercent');
+    const barEl = document.getElementById('localStorageBar');
+    
+    if (usedEl) usedEl.textContent = usedMB;
+    if (percentEl) percentEl.textContent = percent + '%';
+    if (barEl) barEl.style.width = percent + '%';
 }
 // ========== ФУНКЦИИ ДЛЯ ФИЛЬТРА ПО ГОДАМ ==========
 
@@ -7454,6 +7496,7 @@ function refreshStatusStatsIfOpen() {
     if (modal && modal.style.display === 'block') {
         initializeStatsYearFilter();
         calculateStatusStats();
+        updateLocalStorageStats();
     }
 }       
 function deleteProxyRecord() {
