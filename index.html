@@ -2392,10 +2392,7 @@ button:hover{background:#222733!important}
         <span class="sidebar-icon">📤</span>
         <div class="sidebar-tooltip">Экспорт данных</div>
     </div>
-    <div class="sidebar-cell menu-item admin-only" onclick="showDepartmentsModal()" title="Управление подразделениями" style="display: none;">
-    <span class="sidebar-icon">📁</span>
-    <div class="sidebar-tooltip">Подразделения</div>
-</div>
+    
     <!-- Кнопка удаления с классом danger -->
     <div class="sidebar-cell menu-item danger admin-only clear-btn" onclick="confirmClearAllData()" title="Очистить все данные" style="display: none;">
         <span class="sidebar-icon">✘</span>
@@ -2765,31 +2762,7 @@ button:hover{background:#222733!important}
             </form>
         </div>
     </div>
-    <!-- Модальное окно для управления подразделениями -->
-<div id="departmentsModal" class="modal" style="display: none;">
-    <div class="modal-content" style="max-width: 335.0px;">
-        <span class="close" onclick="closeDepartmentsModal()">×</span>
-        <h2 style="text-align: center; margin-bottom: 13.4px; color: #66c0f4;">
-            Управление подразделениями
-        </h2>
-        
-        <div style="margin-bottom: 13.4px;">
-            <div style="display: flex; gap: 6.7px; margin-bottom: 10.05px;">
-                <input type="text" id="newDepartmentInput" placeholder="Введите новое подразделение" style="flex: 1; padding: 5.36px; background: #2a475e; border: 0.67px solid #3d4450; color: #c7d5e0; border-radius: 2.68px;">
-                <button onclick="addNewDepartment()" style="padding: 5.36px 10.05px; background: linear-gradient(135deg, #5c7e10 0%, #4c6b22 100%); color: white; border: none; border-radius: 2.68px; cursor: pointer;">
-                    Добавить
-                </button>
-            </div>
-            <div style="font-size: 8.04px; color: #8f98a0; margin-bottom: 6.7px;">
-                💡 Подразделения используются для фильтрации и в форме добавления записей
-            </div>
-        </div>
-        
-        <div id="departmentsListContainer" style="max-height: 201.0px; overflow-y: auto; margin-bottom: 13.4px;">
-            <!-- Список подразделений будет здесь -->
-        </div>
-    </div>
-</div>
+    
 <!-- Модальное окно для информации о контрагенте -->
 <div id="counterpartyInfoModal" class="modal" style="display: none;">
     <div class="modal-content" style="max-width: 335.0px;">
@@ -3259,7 +3232,22 @@ button:hover{background:#222733!important}
                 </div>
             </div>
         </div>
-        
+        <!-- Статистика по контрагентам -->
+<div style="margin-bottom: 16.75px;">
+    <h3 style="color: #66c0f4; margin-bottom: 10.05px; font-size: 12.06px;">
+        👥 Статистика по контрагентам
+    </h3>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(134.0px, 1fr)); gap: 6.7px; margin-bottom: 10.05px;">
+        <div style="background: linear-gradient(135deg, rgba(102, 192, 244, 0.1) 0%, rgba(58, 139, 200, 0.1) 100%); border: 0.67px solid #66c0f4; border-radius: 5.36px; padding: 8.04px; text-align: center;">
+            <div style="font-size: 12.06px; font-weight: bold; color: #66c0f4;" id="totalCounterpartiesCount">0</div>
+            <div style="font-size: 8.04px; color: #8f98a0;">Всего контрагентов</div>
+        </div>
+        <div style="background: linear-gradient(135deg, rgba(190, 70, 60, 0.1) 0%, rgba(140, 44, 36, 0.1) 100%); border: 0.67px solid #be463c; border-radius: 5.36px; padding: 8.04px; text-align: center;">
+            <div style="font-size: 12.06px; font-weight: bold; color: #be463c;" id="blacklistedCounterpartiesCount">0</div>
+            <div style="font-size: 8.04px; color: #8f98a0;">В черном списке</div>
+        </div>
+    </div>
+</div>
         <!-- Статистика по платежам -->
         <div style="margin-bottom: 16.75px;">
             <h3 style="color: #66c0f4; margin-bottom: 10.05px; font-size: 12.06px;">
@@ -5043,6 +5031,12 @@ if (yearFilter) {
 
 const totalMailCount = filteredMailData.length;
 document.getElementById('totalMailCount').textContent = totalMailCount;
+// Статистика по контрагентам
+const totalCounterpartiesCount = counterpartiesData.length;
+const blacklistedCounterpartiesCount = counterpartiesData.filter(c => c.blacklisted).length;
+
+document.getElementById('totalCounterpartiesCount').textContent = totalCounterpartiesCount;
+document.getElementById('blacklistedCounterpartiesCount').textContent = blacklistedCounterpartiesCount;
 
     // Обновляем статистику платежей (только "План" и "Оплачено")
     document.getElementById('plannedPaymentsCount').textContent = plannedPaymentsCount;
