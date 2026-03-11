@@ -595,7 +595,10 @@
     max-height: 0;
     overflow: hidden;
 }
-
+#mailDateFilter {
+    width: 80px !important;
+    flex: none; 
+}
 #settingsMenu.show {
     display: flex !important;
     max-height: 201.0px;
@@ -2594,6 +2597,7 @@ button:hover{background:#222733!important}
         <div class="controls-container" style="margin-bottom: 13.4px;padding-bottom: 0.0px;padding-top: 0px;height: 21px;">
             <div class="controls">
                 <input type="text" id="searchSettlementInput" placeholder="Поиск по всем столбцам..." oninput="filterSettlementTable()">
+                <input list="suppliersListFilter" id="settlementSupplierFilter" class="supplier-filter" placeholder="Фильтр по контрагентам..." oninput="filterSettlementTable()">
                 <select id="settlementStatusFilter" class="status-filter" onchange="filterSettlementTable()">
                     <option value="">Все статусы</option>
                     <option value="В работе">В работе</option>
@@ -2639,6 +2643,7 @@ button:hover{background:#222733!important}
         <div class="controls-container" style="padding-top: 0px;padding-bottom: 0.0px;margin-bottom: 20.1px;height: 21px;">
             <div class="controls">
                 <input type="text" id="searchMailInput" placeholder="Поиск по всем столбцам..." oninput="filterMailTable()">
+                <input list="suppliersListFilter" id="mailSupplierFilter" class="supplier-filter" placeholder="Фильтр по контрагентам..." oninput="filterMailTable()">
                 <input type="date" id="mailDateFilter" onchange="filterMailTable()">
                 <button onclick="printMailTable()">Печать</button>
                 <button onclick="showAddMailForm()" id="addMailBtn">Добавить запись</button>
@@ -6332,29 +6337,43 @@ function editDepartment(index) {
         }
 
         function filterSettlementTable() {
-            const searchText = document.getElementById('searchSettlementInput').value.toLowerCase();
-            const statusFilter = document.getElementById('settlementStatusFilter').value;
-            
-            const rows = document.querySelectorAll('#settlementTable tbody tr');
-            
-            rows.forEach(row => {
-                let rowText = '';
-                row.querySelectorAll('td').forEach(cell => {
-                    rowText += cell.textContent.toLowerCase() + ' ';
-                });
-                
-                const statusMatch = !statusFilter || row.querySelector('td:nth-child(2)').textContent === statusFilter;
-                const searchMatch = !searchText || rowText.includes(searchText);
-                
-                row.style.display = (statusMatch && searchMatch) ? '' : 'none';
-            });
+    const searchText = document.getElementById('searchSettlementInput').value.toLowerCase();
+    const statusFilter = document.getElementById('settlementStatusFilter').value;
+    const supplierFilter = document.getElementById('settlementSupplierFilter').value.toLowerCase().trim();
+    
+    const rows = document.querySelectorAll('#settlementTable tbody tr');
+    
+    rows.forEach(row => {
+        // Пропускаем строку с сообщением "нет данных"
+        if (row.cells.length === 1 && row.cells[0].colSpan > 1) {
+            row.style.display = (searchText || statusFilter || supplierFilter) ? 'none' : '';
+            return;
         }
+        
+        // Общий текст строки для поиска
+        let rowText = '';
+        row.querySelectorAll('td').forEach(cell => {
+            rowText += cell.textContent.toLowerCase() + ' ';
+        });
+        
+        const statusCell = row.querySelector('td:nth-child(2)')?.textContent.trim() || '';
+        const supplierCell = row.querySelector('td:nth-child(3)')?.textContent.toLowerCase().trim() || '';
+        
+        const statusMatch = !statusFilter || statusCell === statusFilter;
+        const searchMatch = !searchText || rowText.includes(searchText);
+        const supplierMatch = !supplierFilter || supplierCell.includes(supplierFilter);
+        
+        row.style.display = (statusMatch && searchMatch && supplierMatch) ? '' : 'none';
+    });
+}
 
         function clearSettlementFilters() {
-            document.getElementById('searchSettlementInput').value = '';
-            document.getElementById('settlementStatusFilter').value = '';
-            filterSettlementTable();
-        }
+    document.getElementById('searchSettlementInput').value = '';
+    document.getElementById('settlementStatusFilter').value = '';
+    const supplierFilter = document.getElementById('settlementSupplierFilter');
+    if (supplierFilter) supplierFilter.value = '';
+    filterSettlementTable();
+}
 
         function showAddSettlementForm() {
             if (!isAdmin) {
@@ -6501,31 +6520,78 @@ if (isAdmin) {
 }
 
         function filterMailTable() {
-            const searchText = document.getElementById('searchMailInput').value.toLowerCase();
-            const dateFilter = document.getElementById('mailDateFilter').value;
-            
-            const rows = document.querySelectorAll('#mailTable tbody tr');
-            
-            rows.forEach(row => {
-                let rowText = '';
-                row.querySelectorAll('td').forEach(cell => {
-                    rowText += cell.textContent.toLowerCase() + ' ';
-                });
-                
-                const dateCell = row.querySelector('td:first-child').textContent;
-                const formattedDateCell = formatDateForInput(dateCell);
-                const dateMatch = !dateFilter || formattedDateCell === dateFilter;
-                const searchMatch = !searchText || rowText.includes(searchText);
-                
-                row.style.display = (dateMatch && searchMatch) ? '' : 'none';
-            });
+    const searchText = document.getElementById('searchMailInput').value.toLowerCase();
+    const dateFilter = document.getElementById('mailDateFilter').value;
+    const supplierFilter = document.getElementById('mailSupplierFilter').value.toLowerCase().trim(); // новое
+
+    const rows = document.querySelectorAll('#mailTable tbody tr');
+    let visibleCount = 0;
+
+    rows.forEach(row => {
+        // Пропускаем строку с сообщением "нет данных"
+        if (row.cells.length === 1 && row.cells[0].colSpan > 1) {
+            row.style.display = (searchText || dateFilter || supplierFilter) ? 'none' : '';
+            return;
         }
 
-        function clearMailFilters() {
-            document.getElementById('searchMailInput').value = '';
-            document.getElementById('mailDateFilter').value = '';
-            filterMailTable();
+        // Собираем текст всей строки для общего поиска
+        let rowText = '';
+        row.querySelectorAll('td').forEach(cell => {
+            rowText += cell.textContent.toLowerCase() + ' ';
+        });
+
+        // Получаем значения отдельных колонок
+        const dateCell = row.querySelector('td:nth-child(1)')?.textContent.trim(); // дата в формате DD.MM.YYYY
+        const supplierCell = row.querySelector('td:nth-child(2)')?.textContent.toLowerCase().trim() || ''; // контрагент
+
+        // Преобразуем дату из фильтра (YYYY-MM-DD) в формат DD.MM.YYYY для сравнения
+        let dateMatch = true;
+        if (dateFilter) {
+            const [year, month, day] = dateFilter.split('-');
+            const formattedDateFilter = `${day}.${month}.${year}`;
+            dateMatch = (dateCell === formattedDateFilter);
         }
+
+        // Фильтр по контрагенту
+        const supplierMatch = !supplierFilter || supplierCell.includes(supplierFilter);
+
+        // Общий поиск
+        const searchMatch = !searchText || rowText.includes(searchText);
+
+        if (searchMatch && dateMatch && supplierMatch) {
+            row.style.display = '';
+            visibleCount++;
+        } else {
+            row.style.display = 'none';
+        }
+    });
+
+    // Показываем сообщение, если ничего не найдено
+    const tableBody = document.querySelector('#mailTable tbody');
+    let noDataRow = tableBody.querySelector('tr[data-no-results]');
+
+    if (visibleCount === 0 && (searchText || dateFilter || supplierFilter)) {
+        if (!noDataRow) {
+            noDataRow = document.createElement('tr');
+            noDataRow.setAttribute('data-no-results', 'true');
+            noDataRow.innerHTML = `
+                <td colspan="7" style="text-align: center; color: #8f98a0; padding: 20px;">
+                    По вашему запросу ничего не найдено
+                </td>
+            `;
+            tableBody.appendChild(noDataRow);
+        }
+    } else {
+        if (noDataRow) noDataRow.remove();
+    }
+}
+
+        function clearMailFilters() {
+    document.getElementById('searchMailInput').value = '';
+    document.getElementById('mailDateFilter').value = '';
+    document.getElementById('mailSupplierFilter').value = ''; // новое
+    filterMailTable();
+}
 
         function printMailTable() {
             window.print();
