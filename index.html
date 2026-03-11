@@ -2532,16 +2532,18 @@ button:hover{background:#222733!important}
     <div class="container" style="padding-top: 3.35px;border-top-width: 0.0px;border-bottom-width: 0.0px;border-right-width: 0.0px;border-left-width: 0.0px;padding-left: 3.35px;padding-right: 3.35px;padding-bottom: 3.35px;">
         <div class="controls-container" style="margin-top: -13.4px;padding-bottom: 0px;padding-top: 0px;">
             <div class="controls" style="margin-bottom: 0.0px;">
-                <input type="text" id="searchPaymentsInput" placeholder="Поиск по всем столбцам..." oninput="filterPaymentsTable()">
-                <select id="paymentsStatusFilter" class="status-filter" onchange="filterPaymentsTable()">
-                    <option value="">Все статусы</option>
-                    <option value="План">План</option>
-                    <option value="Оплачено">Оплачено</option>
-                </select>
-                <button onclick="showAddPaymentForm()" id="addPaymentBtn">Добавить платеж</button>
-                <button onclick="clearPaymentsFilters()">Сбросить фильтры</button>
-                <button onclick="exportToExcel('payments')">Экспорт в Excel</button>
-            </div>
+    <input type="text" id="searchPaymentsInput" placeholder="Поиск по всем столбцам..." oninput="filterPaymentsTable()">
+    <input list="applicationsListFilter" id="paymentsApplicationFilter" class="application-filter" placeholder="Фильтр по заявкам..." oninput="filterPaymentsTable()">
+    <input list="suppliersListFilter" id="paymentsSupplierFilter" class="supplier-filter" placeholder="Фильтр по контрагентам..." oninput="filterPaymentsTable()">
+    <select id="paymentsStatusFilter" class="status-filter" onchange="filterPaymentsTable()">
+        <option value="">Все статусы</option>
+        <option value="План">План</option>
+        <option value="Оплачено">Оплачено</option>
+    </select>
+    <button onclick="showAddPaymentForm()" id="addPaymentBtn">Добавить платеж</button>
+    <button onclick="clearPaymentsFilters()">Сбросить фильтры</button>
+    <button onclick="exportToExcel('payments')">Экспорт в Excel</button>
+</div>
             
             <!-- ДОБАВЛЕНО: Контейнер для заголовков таблицы платежей -->
             <div class="table-headers-container" id="paymentsHeaders" style="width: 100%; overflow-x: hidden; margin-top: 6.7px; display: none;">
@@ -5919,65 +5921,71 @@ function updateSuppliersFilterList() {
         function filterPaymentsTable() {
     const searchText = document.getElementById('searchPaymentsInput').value.toLowerCase();
     const statusFilter = document.getElementById('paymentsStatusFilter').value;
-    
+    const applicationFilter = document.getElementById('paymentsApplicationFilter').value.toLowerCase().trim();
+    const supplierFilter = document.getElementById('paymentsSupplierFilter').value.toLowerCase().trim();
+
     const rows = document.querySelectorAll('#paymentsTable tbody tr');
-    
     let visibleCount = 0;
-    
+
     rows.forEach(row => {
+        // Пропускаем строку с сообщением "нет данных"
         if (row.cells.length === 1 && row.cells[0].colSpan > 1) {
-            row.style.display = (searchText || statusFilter) ? 'none' : '';
-            if (!searchText && !statusFilter) {
-                visibleCount++;
-            }
+            row.style.display = (searchText || statusFilter || applicationFilter || supplierFilter) ? 'none' : '';
             return;
         }
-        
+
+        // Собираем текст всей строки для общего поиска
         let rowText = '';
         row.querySelectorAll('td').forEach(cell => {
             rowText += cell.textContent.toLowerCase() + ' ';
         });
-        
-        // Статус теперь в 6-й ячейке (индекс 5)
-        const statusCell = row.querySelector('td:nth-child(2)').textContent;
+
+        // Получаем значения отдельных колонок
+        const applicationCell = row.querySelector('td:nth-child(3)')?.textContent.toLowerCase().trim() || '';
+        const supplierCell = row.querySelector('td:nth-child(4)')?.textContent.toLowerCase().trim() || '';
+        const statusCell = row.querySelector('td:nth-child(2)')?.textContent.trim() || '';
+
+        // Проверяем все фильтры
         const statusMatch = !statusFilter || statusCell === statusFilter;
         const searchMatch = !searchText || rowText.includes(searchText);
-        
-        if (statusMatch && searchMatch) {
+        const applicationMatch = !applicationFilter || applicationCell.includes(applicationFilter);
+        const supplierMatch = !supplierFilter || supplierCell.includes(supplierFilter);
+
+        if (statusMatch && searchMatch && applicationMatch && supplierMatch) {
             row.style.display = '';
             visibleCount++;
         } else {
             row.style.display = 'none';
         }
     });
-            
-    if (visibleCount === 0 && (searchText || statusFilter)) {
-        const tableBody = document.querySelector('#paymentsTable tbody');
-        let noDataRow = tableBody.querySelector('tr[data-no-results]');
-        
+
+    // Показываем сообщение, если ничего не найдено
+    const tableBody = document.querySelector('#paymentsTable tbody');
+    let noDataRow = tableBody.querySelector('tr[data-no-results]');
+
+    if (visibleCount === 0 && (searchText || statusFilter || applicationFilter || supplierFilter)) {
         if (!noDataRow) {
             noDataRow = document.createElement('tr');
             noDataRow.setAttribute('data-no-results', 'true');
             noDataRow.innerHTML = `
-                <td colspan="6" style="text-align: center; color: #8f98a0; padding: 20px;">
+                <td colspan="7" style="text-align: center; color: #8f98a0; padding: 20px;">
                     По вашему запросу ничего не найдено
                 </td>
             `;
             tableBody.appendChild(noDataRow);
         }
     } else {
-        const noDataRow = document.querySelector('#paymentsTable tr[data-no-results]');
-        if (noDataRow) {
-            noDataRow.remove();
-        }
+        if (noDataRow) noDataRow.remove();
     }
 }
 
         function clearPaymentsFilters() {
-            document.getElementById('searchPaymentsInput').value = '';
-            document.getElementById('paymentsStatusFilter').value = '';
-            filterPaymentsTable();
-        }
+    document.getElementById('searchPaymentsInput').value = '';
+    document.getElementById('paymentsApplicationFilter').value = '';
+    document.getElementById('paymentsSupplierFilter').value = '';
+    document.getElementById('paymentsStatusFilter').value = '';
+    filterPaymentsTable();
+}
 
         function showAddPaymentForm() {
     if (!isAdmin) {
