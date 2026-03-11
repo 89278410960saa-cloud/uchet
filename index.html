@@ -2688,11 +2688,11 @@ button:hover{background:#222733!important}
     <input list="suppliersListFilter" id="proxySupplierFilter" class="supplier-filter" placeholder="Фильтр по контрагентам..." oninput="filterProxyTable()">
     <input list="applicationsListFilter" id="proxyApplicationFilter" class="application-filter" placeholder="Фильтр по заявкам..." oninput="filterProxyTable()">
     <select id="proxyStatusFilter" class="status-filter" onchange="filterProxyTable()">
-        <option value="">Все статусы</option>
-        <option value="В работе">В работе</option>
-        <option value="Выполнено">Выполнено</option>
-    <input type="date" id="proxyDateFilter" onchange="filterProxyTable()" title="Фильтр по дате доверенности">
-    </select>
+    <option value="">Все статусы</option>
+    <option value="В работе">В работе</option>
+    <option value="Выполнено">Выполнено</option>
+</select>
+<input type="date" id="proxyDateFilter" onchange="filterProxyTable()" title="Фильтр по дате доверенности">
     <button onclick="showAddProxyForm()" id="addProxyBtn">Добавить доверенность</button>
     <button onclick="clearProxyFilters()">Сбросить фильтры</button>
     <button onclick="exportToExcel('proxy')">Экспорт в Excel</button>
