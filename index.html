@@ -1589,6 +1589,11 @@
         .status-filter {
             min-width: 100.5px;
         }
+        #paymentDateFilter {
+    min-width: 100.5px !important;
+    width: auto !important;
+    flex: none !important;
+}
 
         .application-filter {
             min-width: 100.5px;
@@ -2540,6 +2545,7 @@ button:hover{background:#222733!important}
         <option value="План">План</option>
         <option value="Оплачено">Оплачено</option>
     </select>
+    <input type="date" id="paymentDateFilter" onchange="filterPaymentsTable()" title="Фильтр по дате платежа">
     <button onclick="showAddPaymentForm()" id="addPaymentBtn">Добавить платеж</button>
     <button onclick="clearPaymentsFilters()">Сбросить фильтры</button>
     <button onclick="exportToExcel('payments')">Экспорт в Excel</button>
@@ -5923,6 +5929,8 @@ function updateSuppliersFilterList() {
     const statusFilter = document.getElementById('paymentsStatusFilter').value;
     const applicationFilter = document.getElementById('paymentsApplicationFilter').value.toLowerCase().trim();
     const supplierFilter = document.getElementById('paymentsSupplierFilter').value.toLowerCase().trim();
+    // НОВОЕ: получаем значение фильтра по дате
+    const dateFilter = document.getElementById('paymentDateFilter').value; // формат YYYY-MM-DD
 
     const rows = document.querySelectorAll('#paymentsTable tbody tr');
     let visibleCount = 0;
@@ -5930,7 +5938,7 @@ function updateSuppliersFilterList() {
     rows.forEach(row => {
         // Пропускаем строку с сообщением "нет данных"
         if (row.cells.length === 1 && row.cells[0].colSpan > 1) {
-            row.style.display = (searchText || statusFilter || applicationFilter || supplierFilter) ? 'none' : '';
+            row.style.display = (searchText || statusFilter || applicationFilter || supplierFilter || dateFilter) ? 'none' : '';
             return;
         }
 
@@ -5941,9 +5949,18 @@ function updateSuppliersFilterList() {
         });
 
         // Получаем значения отдельных колонок
+        const dateCell = row.querySelector('td:nth-child(1)')?.textContent.trim(); // дата в формате DD.MM.YYYY
         const applicationCell = row.querySelector('td:nth-child(3)')?.textContent.toLowerCase().trim() || '';
         const supplierCell = row.querySelector('td:nth-child(4)')?.textContent.toLowerCase().trim() || '';
         const statusCell = row.querySelector('td:nth-child(2)')?.textContent.trim() || '';
+
+        // НОВОЕ: преобразуем дату из фильтра (YYYY-MM-DD) в формат DD.MM.YYYY для сравнения
+        let dateMatch = true;
+        if (dateFilter) {
+            const [year, month, day] = dateFilter.split('-');
+            const formattedDateFilter = `${day}.${month}.${year}`; // DD.MM.YYYY
+            dateMatch = (dateCell === formattedDateFilter);
+        }
 
         // Проверяем все фильтры
         const statusMatch = !statusFilter || statusCell === statusFilter;
@@ -5951,7 +5968,7 @@ function updateSuppliersFilterList() {
         const applicationMatch = !applicationFilter || applicationCell.includes(applicationFilter);
         const supplierMatch = !supplierFilter || supplierCell.includes(supplierFilter);
 
-        if (statusMatch && searchMatch && applicationMatch && supplierMatch) {
+        if (statusMatch && searchMatch && applicationMatch && supplierMatch && dateMatch) {
             row.style.display = '';
             visibleCount++;
         } else {
@@ -5963,7 +5980,7 @@ function updateSuppliersFilterList() {
     const tableBody = document.querySelector('#paymentsTable tbody');
     let noDataRow = tableBody.querySelector('tr[data-no-results]');
 
-    if (visibleCount === 0 && (searchText || statusFilter || applicationFilter || supplierFilter)) {
+    if (visibleCount === 0 && (searchText || statusFilter || applicationFilter || supplierFilter || dateFilter)) {
         if (!noDataRow) {
             noDataRow = document.createElement('tr');
             noDataRow.setAttribute('data-no-results', 'true');
@@ -5984,6 +6001,8 @@ function updateSuppliersFilterList() {
     document.getElementById('paymentsApplicationFilter').value = '';
     document.getElementById('paymentsSupplierFilter').value = '';
     document.getElementById('paymentsStatusFilter').value = '';
+    document.getElementById('paymentsStatusFilter').value = '';
+    document.getElementById('paymentDateFilter').value = '';
     filterPaymentsTable();
 }
 
