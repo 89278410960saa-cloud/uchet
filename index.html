@@ -1363,16 +1363,17 @@
 }
 
 /* Задаём ширину для каждого столбца (подберите значения под свои данные) */
-#paymentsTable th:nth-child(1), #paymentsTable td:nth-child(1) { width: 40px !important; }   /* Дата платежа */
-#paymentsTable th:nth-child(2), #paymentsTable td:nth-child(2) { width: 40px !important; }   /* Статус – можно оставить 40px */
-#paymentsTable th:nth-child(3), #paymentsTable td:nth-child(3) { width: 100px !important; }  /* Контрагент */
-#paymentsTable th:nth-child(4), #paymentsTable td:nth-child(4) { width: 60px !important; }   /* Сумма */
-#paymentsTable th:nth-child(5), #paymentsTable td:nth-child(5) { width: 100px !important; }  /* Договор */
-#paymentsTable th:nth-child(6), #paymentsTable td:nth-child(6) { width: 150px !important; }  /* Ссылка */
+#paymentsTable th:nth-child(1), #paymentsTable td:nth-child(1) { width: 30px !important; }  /* Дата */
+#paymentsTable th:nth-child(2), #paymentsTable td:nth-child(2) { width: 30px !important; }  /* Статус */
+#paymentsTable th:nth-child(3), #paymentsTable td:nth-child(3) { width: 60px !important; } /* Заявка */
+#paymentsTable th:nth-child(4), #paymentsTable td:nth-child(4) { width: 100px !important; } /* Контрагент */
+#paymentsTable th:nth-child(5), #paymentsTable td:nth-child(5) { width: 30px !important; }  /* Сумма */
+#paymentsTable th:nth-child(6), #paymentsTable td:nth-child(6) { width: 60px !important; } /* Договор */
+#paymentsTable th:nth-child(7), #paymentsTable td:nth-child(7) { width: 180px !important; } /* Ссылка */
 
-/* Задаём фиксированную ширину для столбца "Ссылка" (5-й столбец) */
-#paymentsTable th:nth-child(6),
-#paymentsTable td:nth-child(6) {
+/* Задаём фиксированную ширину для столбца "Ссылка" */
+#paymentsTable th:nth-child(7),
+#paymentsTable td:nth-child(7) {
     max-width: 150px !important;
     width: 150px !important;
     overflow: hidden !important;
@@ -1381,7 +1382,7 @@
 }
 
 /* Саму ссылку внутри ячейки тоже обрезаем */
-#paymentsTable td:nth-child(5) a {
+#paymentsTable td:nth-child(7) a {
     display: block !important;
     overflow: hidden !important;
     text-overflow: ellipsis !important;
@@ -2552,16 +2553,17 @@ button:hover{background:#222733!important}
             <table id="paymentsTable" style="table-layout: fixed;">
                 <thead>
     <tr>
-        <th style="width: 174px;">Дата платежа</th>
-        <th style="width: 174px;">Статус</th>
+        <th style="width: 120px;">Дата платежа</th>
+        <th style="width: 120px;">Статус</th>
+        <th style="width: 130px;">Заявка</th>
         <th style="width: 174px;">Контрагент</th>
-        <th style="width: 174px;">Сумма</th>
+        <th style="width: 120px;">Сумма</th>
         <th style="width: 174px;">Договор</th>
         <th style="width: 174px;">Ссылка</th>
     </tr>
 </thead>
                 <tbody id="paymentsTableBody"><tr>
-            <td colspan="5" style="text-align: center; color: rgb(143, 152, 160); padding: 20px; width: 174px;">
+            <td colspan="7" style="text-align: center; color: rgb(143, 152, 160); padding: 20px; width: 174px;">
                 Нет данных о платежах. Добавьте первую запись.
             </td>
         </tr></tbody>
@@ -2810,11 +2812,17 @@ button:hover{background:#222733!important}
 </div>
             <div style="margin-bottom: 10.05px;">
                 <label>Статус:</label>
-                <select id="editPaymentStatus" required="" style="width: 100%; padding: 5.36px;">
-                    <option value="План">План</option>
-                    <option value="Оплачено">Оплачено</option>
-                </select>
-            </div>
+  <select id="editPaymentStatus" required="" style="width: 100%; padding: 5.36px;">
+    <option value="План">План</option>
+    <option value="Оплачено">Оплачено</option>
+  </select>
+</div>
+
+<!-- Новое поле Заявка -->
+<div style="margin-bottom: 10.05px;">
+  <label>Заявка:</label>
+  <input list="applicationsList" id="editPaymentApplication" class="datalist-input" style="width: 100%;" placeholder="Номер заявки">
+</div>
             
             <button type="submit">Сохранить</button>
             <button type="button" onclick="deletePaymentRecord()" class="delete-btn" style="background: linear-gradient(135deg, rgb(190, 70, 60) 0%, rgb(140, 44, 36) 100%); display: none; margin-left: 0.0px;">Удалить запись</button>
@@ -5851,7 +5859,7 @@ function updateSuppliersFilterList() {
     if (paymentsData.length === 0) {
         const emptyRow = document.createElement('tr');
         emptyRow.innerHTML = `
-            <td colspan="6" style="text-align: center; color: #8f98a0; padding: 20px;">
+            <td colspan="7" style="text-align: center; color: #8f98a0; padding: 20px;">
                 Нет данных о платежах. Добавьте первую запись.
             </td>
         `;
@@ -5868,55 +5876,19 @@ function updateSuppliersFilterList() {
     sortedPayments.forEach((item) => {
         const row = document.createElement('tr');
         row.dataset.recordId = item.recordId || '';
-        
-        if (item.status === 'Оплачено') {
-            row.classList.add('status-completed');
-        }
+        if (item.status === 'Оплачено') row.classList.add('status-completed');
         row.classList.add('clickable-row');
-        if (!isAdmin) {
-            row.classList.add('guest-mode');
-        }
+        if (!isAdmin) row.classList.add('guest-mode');
         
-        // Дата
-        const dateCell = createCell(item.date || '', '174px');
-        row.appendChild(dateCell);
-        
-        // Статус
-        const statusCell = createCell(item.status || '', '174px');
-        row.appendChild(statusCell);
-        
-        // Контрагент
-        const supplierCell = createCell(item.supplier || '', '174px');
-        row.appendChild(supplierCell);
-        
-        // Сумма
-        const amountCell = createCell(item.amount ? formatCurrency(item.amount) : '', '174px');
-        row.appendChild(amountCell);
-        
-        // Договор
-        const contractCell = createCell(item.contract || '', '174px');
-        row.appendChild(contractCell);
-        
-        // Ссылка
-        const linkCell = document.createElement('td');
-linkCell.style.width = '174px';
-const link = item.link || '';
-if (link) {
-    const linkSpan = document.createElement('span');
-    linkSpan.textContent = link;
-    linkSpan.style.color = '#66c0f4';
-    linkSpan.style.textDecoration = 'underline';
-    linkSpan.style.cursor = 'pointer';
-    linkSpan.addEventListener('click', function(e) {
-        e.preventDefault(); // на случай, если вдруг это ссылка
-        copyToClipboard(link);
-    });
-    linkCell.appendChild(linkSpan);
-} else {
-    linkCell.textContent = '';
-}
-row.appendChild(linkCell);
-        
+        row.innerHTML = `
+            <td>${item.date || ''}</td>
+            <td>${item.status || ''}</td>
+            <td>${item.docNumber || ''}</td>
+            <td>${item.supplier || ''}</td>
+            <td>${item.amount ? formatCurrency(item.amount) : ''}</td>
+            <td>${item.contract || ''}</td>
+            <td>${item.link ? `<span style="color:#66c0f4; text-decoration:underline; cursor:pointer;" onclick="copyToClipboard('${item.link}')">${item.link}</span>` : ''}</td>
+        `;
         
         if (isAdmin) {
             row.addEventListener('dblclick', function(e) {
@@ -5926,8 +5898,8 @@ row.appendChild(linkCell);
                     if (recordIndex !== -1) {
                         editPaymentRow(recordIndex);
                     } else {
-                        const supplier = e.currentTarget.querySelector('td:nth-child(3)').textContent;
-                        const amount = e.currentTarget.querySelector('td:nth-child(4)').textContent;
+                        const supplier = e.currentTarget.querySelector('td:nth-child(4)').textContent;
+                        const amount = e.currentTarget.querySelector('td:nth-child(5)').textContent;
                         const fallbackIndex = paymentsData.findIndex(record => 
                             record.supplier === supplier && 
                             formatCurrency(record.amount) === amount
@@ -6037,6 +6009,7 @@ function editPaymentRow(index) {
     document.getElementById('editPaymentContract').value = item.contract || '';
     document.getElementById('editPaymentLink').value = item.link || '';
     document.getElementById('editPaymentStatus').value = item.status || 'План';
+    document.getElementById('editPaymentApplication').value = item.docNumber || '';
     
     const deleteBtn = document.querySelector('#editPaymentModal .delete-btn');
     if (deleteBtn) deleteBtn.style.display = 'inline-block';
@@ -6061,6 +6034,7 @@ function editPaymentRow(index) {
         supplier: document.getElementById('editPaymentSupplier').value,
         contract: document.getElementById('editPaymentContract').value,
         link: document.getElementById('editPaymentLink').value,
+        docNumber: document.getElementById('editPaymentApplication').value
     };
     
     if (index === '') {
@@ -8003,7 +7977,8 @@ function deleteProxyRecord() {
             amount: item.amount || '',
             supplier: item.supplier || '',
             contract: item.contract || '',
-            link: item.link || ''
+            link: item.link || '',
+            docNumber: item.docNumber || ''
         })),
         settlementData: settlementData.map(item => ({
             recordId: item.recordId || generateUniqueId(),
