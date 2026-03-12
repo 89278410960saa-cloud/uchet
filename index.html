@@ -363,7 +363,7 @@
             background: rgba(27, 40, 56, 0.98);
             backdrop-filter: blur(6.7px);
             padding: 10.05px 0 6.7px 0;
-            border-bottom: 0.67px solid #3d4450;
+            border-bottom: none;
             margin: -13.4px -13.4px 10.05px -13.4px;
             padding-left: 13.4px;
             padding-right: 13.4px;
@@ -2100,6 +2100,20 @@
     padding: 6px 10px;
     font-size: 12px;
 }
+.total-sum-block {
+    height: 20px;                 /* такая же высота, как у input/select/button */
+    box-sizing: border-box;           /* учитываем border и padding в высоте */
+    background: #2a475e;              /* такой же фон, как у полей ввода */
+    border: 0.67px solid #3d4450;     /* такая же рамка */
+    border-radius: 2.68px;            /* такое же скругление */
+    padding: 0 8.04px;                /* горизонтальные отступы как у input, вертикальные — 0 */
+    display: inline-flex;              /* flex для вертикального центрирования */
+    align-items: center;               /* выравнивание по центру по вертикали */
+    gap: 8px;                          /* расстояние между элементами внутри блока */
+    white-space: nowrap;               /* предотвращаем перенос */
+    color: #ffd700;                     /* цвет текста (можно изменить или удалить) */
+    font-weight: bold;                  /* жирность текста */
+}
 
 </style>
 
@@ -2551,6 +2565,10 @@ button:hover{background:#222733!important}
     <input type="text" id="searchPaymentsInput" placeholder="Поиск по всем столбцам..." oninput="filterPaymentsTable()">
     <input list="applicationsListFilter" id="paymentsApplicationFilter" class="application-filter" placeholder="Фильтр по заявкам..." oninput="filterPaymentsTable()">
     <input list="suppliersListFilter" id="paymentsSupplierFilter" class="supplier-filter" placeholder="Фильтр по контрагентам..." oninput="filterPaymentsTable()">
+    <div class="total-sum-block" style="margin-left: auto;">
+    <span style="color: #ffd700;">Общая сумма:</span>
+    <span id="paymentsTotalAmount" style="color: #66c0f4;">0 руб.</span>
+</div>
     <select id="paymentsStatusFilter" class="status-filter" onchange="filterPaymentsTable()">
         <option value="">Все статусы</option>
         <option value="План">План</option>
@@ -5941,48 +5959,73 @@ function updateSuppliersFilterList() {
         }
         
         tableBody.appendChild(row);
+        updatePaymentsTotal();
     });
 }
+// ========== ФУНКЦИИ ДЛЯ парсинга суммы ==========
+function parseCurrency(currencyText) {
+    if (!currencyText) return 0;
+    // Убираем " руб.", заменяем пробелы, запятую на точку
+    const cleaned = currencyText.replace(/\sруб\.?$/, '').replace(/\s/g, '').replace(',', '.');
+    const num = parseFloat(cleaned);
+    return isNaN(num) ? 0 : num;
+}
+function updatePaymentsTotal() {
+    const rows = document.querySelectorAll('#paymentsTable tbody tr');
+    let total = 0;
 
+    rows.forEach(row => {
+        // Пропускаем служебные строки (с сообщением об отсутствии данных)
+        if (row.style.display === 'none' || (row.cells.length === 1 && row.cells[0].colSpan > 1)) {
+            return;
+        }
+        const amountCell = row.cells[4]; // пятый столбец
+        if (amountCell) {
+            total += parseCurrency(amountCell.textContent);
+        }
+    });
+
+    const totalElement = document.getElementById('paymentsTotalAmount');
+    if (totalElement) {
+        totalElement.textContent = formatCurrency(total);
+    }
+}
         function filterPaymentsTable() {
     const searchText = document.getElementById('searchPaymentsInput').value.toLowerCase();
     const statusFilter = document.getElementById('paymentsStatusFilter').value;
     const applicationFilter = document.getElementById('paymentsApplicationFilter').value.toLowerCase().trim();
     const supplierFilter = document.getElementById('paymentsSupplierFilter').value.toLowerCase().trim();
-    // НОВОЕ: получаем значение фильтра по дате
-    const dateFilter = document.getElementById('paymentDateFilter').value; // формат YYYY-MM-DD
+    const dateFilter = document.getElementById('paymentDateFilter').value;
 
     const rows = document.querySelectorAll('#paymentsTable tbody tr');
     let visibleCount = 0;
 
     rows.forEach(row => {
-        // Пропускаем строку с сообщением "нет данных"
+        // пропуск строки-заглушки
         if (row.cells.length === 1 && row.cells[0].colSpan > 1) {
             row.style.display = (searchText || statusFilter || applicationFilter || supplierFilter || dateFilter) ? 'none' : '';
             return;
         }
 
-        // Собираем текст всей строки для общего поиска
+        // сбор текста строки для поиска
         let rowText = '';
         row.querySelectorAll('td').forEach(cell => {
             rowText += cell.textContent.toLowerCase() + ' ';
         });
 
-        // Получаем значения отдельных колонок
-        const dateCell = row.querySelector('td:nth-child(1)')?.textContent.trim(); // дата в формате DD.MM.YYYY
+        const dateCell = row.querySelector('td:nth-child(1)')?.textContent.trim();
         const applicationCell = row.querySelector('td:nth-child(3)')?.textContent.toLowerCase().trim() || '';
         const supplierCell = row.querySelector('td:nth-child(4)')?.textContent.toLowerCase().trim() || '';
         const statusCell = row.querySelector('td:nth-child(2)')?.textContent.trim() || '';
 
-        // НОВОЕ: преобразуем дату из фильтра (YYYY-MM-DD) в формат DD.MM.YYYY для сравнения
+        // фильтр по дате
         let dateMatch = true;
         if (dateFilter) {
             const [year, month, day] = dateFilter.split('-');
-            const formattedDateFilter = `${day}.${month}.${year}`; // DD.MM.YYYY
+            const formattedDateFilter = `${day}.${month}.${year}`;
             dateMatch = (dateCell === formattedDateFilter);
         }
 
-        // Проверяем все фильтры
         const statusMatch = !statusFilter || statusCell === statusFilter;
         const searchMatch = !searchText || rowText.includes(searchText);
         const applicationMatch = !applicationFilter || applicationCell.includes(applicationFilter);
@@ -5996,7 +6039,9 @@ function updateSuppliersFilterList() {
         }
     });
 
-    // Показываем сообщение, если ничего не найдено
+    // !!! ВАЖНО: пересчитываем общую сумму после фильтрации
+    updatePaymentsTotal();
+
     const tableBody = document.querySelector('#paymentsTable tbody');
     let noDataRow = tableBody.querySelector('tr[data-no-results]');
 
@@ -6099,6 +6144,7 @@ function editPaymentRow(index) {
     
     saveAllData();
     updatePaymentsTable();
+    updatePaymentsTotal();
     updateContractsList();
     closePaymentModal();
     markChangesMade();
@@ -6124,6 +6170,7 @@ function editPaymentRow(index) {
         // Обновляем таблицу после удаления
         saveAllData();
         updatePaymentsTable();
+        updatePaymentsTotal();
         closePaymentModal();
         markChangesMade();
         refreshStatusStatsIfOpen();
@@ -8289,6 +8336,9 @@ function deleteProxyRecord() {
                     departmentsList = importedData.departmentsList;
                     saveDepartmentsList();
                 }
+                if (document.getElementById('payments').classList.contains('active')) {
+                    updatePaymentsTotal();
+                }
                 
                 // Сохраняем все данные
                 saveAllData();
@@ -8712,6 +8762,9 @@ document.addEventListener('click', function(event) {
         updateWeeklyDeliveriesButton();
         updateSuppliersFilterList();
         updateYearsFilter();
+        if (document.getElementById('payments').classList.contains('active')) {
+        updatePaymentsTotal();
+        }
         
     } catch (error) {
         console.error('Ошибка очистки данных:', error);
