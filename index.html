@@ -7316,8 +7316,15 @@ function printDeliveriesAndOverdue() {
 </style>
 </head>
 <body>
-    <h1>Отчёт по поставкам (текущий месяц) и просроченным позициям</h1>
-    <div class="date">Дата формирования: ${new Date().toLocaleDateString('ru-RU')}</div>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h1 style="margin:0;">Отчёт по поставкам (текущий месяц) и просроченным позициям</h1>
+        <div style="text-align: right;">
+            <div class="date" style="margin-bottom: 5px;">Дата формирования: ${new Date().toLocaleDateString('ru-RU')}</div>
+            <div style="font-size: 12px; font-weight: normal;">
+                Всего позиций: ${allRows.length} (поставок месяца: ${uniqueDeliveries.length}, просроченных: ${overdue.length})
+            </div>
+        </div>
+    </div>
     <table>
         <thead><tr>`;
 
@@ -7369,7 +7376,6 @@ function printDeliveriesAndOverdue() {
     printContent += `
         </tbody>
     </table>
-    <div class="print-footer">Всего позиций: ${allRows.length} (поставок месяца: ${uniqueDeliveries.length}, просроченных: ${overdue.length})</div>
 </body>
 </html>`;
 
