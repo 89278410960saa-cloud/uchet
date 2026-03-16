@@ -638,7 +638,12 @@
         .blacklisted-row:hover {
             background-color: rgba(190, 70, 60, 0.3) !important;
         }
-
+/* Стили для почты контрагентов */
+.email-clickable {
+    cursor: pointer;
+    text-decoration: underline;
+    color: #66c0f4;
+}
         
         /* Стили для бейджа с количеством заявок */
         .menu-item {
@@ -5571,6 +5576,19 @@ if (isAdmin) {
 }
         
         tableBody.appendChild(row);
+        // Делаем email кликабельным для копирования
+const emailCell = row.querySelectorAll('td')[4]; // пятый столбец (0-based)
+if (emailCell) {
+    const email = item.email || '';
+    if (email) {
+        emailCell.classList.add('email-clickable');
+        emailCell.title = 'Нажмите для копирования email';
+        emailCell.addEventListener('click', function(e) {
+            e.stopPropagation(); // предотвращает возможные конфликты с другими кликами
+            copyToClipboard(email);
+        });
+    }
+}
     });
 }
 
