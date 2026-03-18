@@ -156,28 +156,30 @@
 
         .sidebar-badge {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    bottom: 2px; 
+    right: 2px;
+    top: auto;
+    left: auto;
+    transform: none;
     background: linear-gradient(135deg, #be9e3c 0%, #8c2c24 100%);
-    color: white;
-    border-radius: 50%;
-    width: 10px;
-    height: 10px;
-    font-size: 6.7px;
+    color: rgb(39, 39, 39);
+    border-radius: 3px;
+    width: 14px;
+    height: 12px;
+    font-size: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: bold;
     box-shadow: 0 1.34px 2.68px rgba(0,0,0,0.3);
     animation: pulse 2s infinite;
-    pointer-events: none; /* Чтобы не мешал кликам */
+    pointer-events: none; 
     z-index: 10;
 }
 
 .sidebar-badge.warning {
-    background: linear-gradient(135deg, #ff6200 0%, #ffa500 100%);
-    color: #1b2838;
+    background: linear-gradient(135deg, #d69b76 0%, #ffa500 100%);
+    color: black !important;
 }
 
         @keyframes pulse {
@@ -2380,18 +2382,21 @@ button:hover{background:#222733!important}
         <div class="sidebar-tooltip">Контрагенты</div>
     </div>
     <div class="sidebar-cell menu-item" data-page="payments" onclick="showPage('payments')" title="Платежи">
-        <span class="sidebar-icon">💰</span>
-        <div class="sidebar-tooltip">Платежи</div>
+    <span class="sidebar-icon">💰</span>
+    <div class="sidebar-tooltip">Платежи</div>
+    <div class="sidebar-badge" id="paymentsBadge" style="display: none;">0</div>
     </div>
     <!-- Перемещенный элемент - теперь после Платежей -->
     <div class="sidebar-cell menu-item" data-page="proxy-registry" onclick="showPage('proxy-registry')" title="Реестр доверенностей">
-        <span class="sidebar-icon">🚙</span>
-        <div class="sidebar-tooltip">Реестр доверенностей</div>
-    </div>
+    <span class="sidebar-icon">🚙</span>
+    <div class="sidebar-tooltip">Реестр доверенностей</div>
+    <div class="sidebar-badge" id="proxyBadge" style="display: none;">0</div>
+</div>
     <div class="sidebar-cell menu-item" data-page="settlement" onclick="showPage('settlement')" title="Урегулирование">
-        <span class="sidebar-icon">⚖️</span>
-        <div class="sidebar-tooltip">Урегулирование</div>
-    </div>
+    <span class="sidebar-icon">⚖️</span>
+    <div class="sidebar-tooltip">Урегулирование</div>
+    <div class="sidebar-badge" id="settlementBadge" style="display: none;">0</div>
+</div>
     <div class="sidebar-cell menu-item" data-page="mail-registry" onclick="showPage('mail-registry')" title="Почтовый реестр">
         <span class="sidebar-icon">📦</span>
         <div class="sidebar-tooltip">Почтовый реестр</div>
@@ -3805,7 +3810,7 @@ function updateCommentFieldPermissions() {
         updateApplicationsList();
         updateContractsList();
         updateQuickFilters();
-        updateAccountingBadge();
+        updateAllBadges()
         updateDepartmentsFilter();
         updateOverdueButton();
         updateWeeklyDeliveriesButton();
@@ -4136,7 +4141,7 @@ if (isAdmin) {
     });
     
     updateApplicationsList();
-    updateAccountingBadge();
+    updateAllBadges()
     updateWeeklyDeliveriesButton();
     updateOverdueButton();
     setTimeout(forceTableUpdate, 100);
@@ -4510,7 +4515,7 @@ if (editPurchaseName && editPurchaseName.tagName === 'TEXTAREA') {
     filterAccountingTable();
     closeAccountingModal();
     markChangesMade();
-    updateAccountingBadge();
+    updateAllBadges()
     updateOverdueButton();
     updateSuppliersFilterList();
     refreshStatusStatsIfOpen();
@@ -5991,6 +5996,7 @@ function updateSuppliersFilterList() {
         
         tableBody.appendChild(row);
         updatePaymentsTotal();
+        updatePaymentsBadge();
     });
 }
 // ========== ФУНКЦИИ ДЛЯ парсинга суммы ==========
@@ -6174,6 +6180,7 @@ function editPaymentRow(index) {
     });
     
     saveAllData();
+    updatePaymentsBadge();
     updatePaymentsTable();
     updatePaymentsTotal();
     updateContractsList();
@@ -6200,6 +6207,7 @@ function editPaymentRow(index) {
         
         // Обновляем таблицу после удаления
         saveAllData();
+        updatePaymentsBadge();
         updatePaymentsTable();
         updatePaymentsTotal();
         closePaymentModal();
@@ -6411,6 +6419,7 @@ function editDepartment(index) {
                 }
                 
                 tableBody.appendChild(row);
+                updateSettlementBadge();
             });
         }
 
@@ -6507,6 +6516,7 @@ function editDepartment(index) {
             }
             
             saveAllData();
+            updateSettlementBadge();
             updateSettlementTable();
             closeSettlementModal();
             markChangesMade();
@@ -6834,6 +6844,7 @@ if (isAdmin) {
     });
     
     filterProxyTable();
+    updateProxyBadge();
 }
 
        function filterProxyTable() {
@@ -7001,6 +7012,7 @@ if (isAdmin) {
     });
     
     saveAllData();
+    updateProxyBadge();
     updateProxyTable();
     closeProxyModal();
     markChangesMade();
@@ -7708,7 +7720,7 @@ function updateCommentFieldPermissions() {
             filterAccountingTable();
             closeAccountingModal();
             markChangesMade();
-            updateAccountingBadge();
+            updateAllBadges()
             updateOverdueButton();
             updateSuppliersFilterList();
             refreshStatusStatsIfOpen();
@@ -7771,6 +7783,7 @@ function updateCommentFieldPermissions() {
         
         // Обновляем таблицу после удаления
         saveAllData();
+        updateSettlementBadge();
         updateMailTable();
         closeMailModal();
         markChangesMade();
@@ -7798,6 +7811,7 @@ function deleteProxyRecord() {
         
         // Обновляем таблицу после удаления
         saveAllData();
+        updateProxyBadge();
         updateProxyTable();
         updateContractsList(); 
         closeProxyModal();
@@ -8535,6 +8549,7 @@ function deleteProxyRecord() {
                 
                 // Обновляем интерфейс
                 updateAllTables();
+                updateAllBadges();
                 
                 // Показываем статистику импорта
                 const importStats = {
@@ -8894,7 +8909,7 @@ document.addEventListener('click', function(event) {
             updateWeeklyDeliveriesButton();
                
             // Обновляем бейдж
-            updateAccountingBadge();
+            updateAllBadges()
             
             // Показываем уведомление
             showAutosaveNotification('Данные обновлены');
@@ -8947,7 +8962,7 @@ document.addEventListener('click', function(event) {
         showAutosaveNotification('Все данные успешно очищены');
         
         // Обновляем кнопки и фильтры
-        updateAccountingBadge();
+        updateAllBadges()
         updateOverdueButton();
         updateWeeklyDeliveriesButton();
         updateSuppliersFilterList();
@@ -8989,7 +9004,87 @@ document.addEventListener('click', function(event) {
                 badge.style.display = 'none';
             }
         }
+// ========== БЕЙДЖИ ДЛЯ ДРУГИХ СТРАНИЦ ==========
 
+// Подсчёт платежей со статусом "План"
+function countPaymentsInPlan() {
+    if (!paymentsData || paymentsData.length === 0) return 0;
+    return paymentsData.filter(item => item.status === 'План').length;
+}
+
+// Обновление бейджа платежей (порог предупреждения > 10)
+function updatePaymentsBadge() {
+    const badge = document.getElementById('paymentsBadge');
+    if (!badge) return;
+    const count = countPaymentsInPlan();
+    if (count > 0) {
+        badge.textContent = count > 99 ? '99+' : count.toString();
+        badge.style.display = 'flex';
+        if (count > 10) {
+            badge.classList.add('warning');
+        } else {
+            badge.classList.remove('warning');
+        }
+    } else {
+        badge.style.display = 'none';
+    }
+}
+
+// Подсчёт доверенностей со статусом "В работе"
+function countProxyInWork() {
+    if (!proxyData || proxyData.length === 0) return 0;
+    return proxyData.filter(item => item.status === 'В работе').length;
+}
+
+// Обновление бейджа доверенностей (порог > 5)
+function updateProxyBadge() {
+    const badge = document.getElementById('proxyBadge');
+    if (!badge) return;
+    const count = countProxyInWork();
+    if (count > 0) {
+        badge.textContent = count > 99 ? '99+' : count.toString();
+        badge.style.display = 'flex';
+        if (count > 5) {
+            badge.classList.add('warning');
+        } else {
+            badge.classList.remove('warning');
+        }
+    } else {
+        badge.style.display = 'none';
+    }
+}
+
+// Подсчёт записей урегулирования со статусом "В работе"
+function countSettlementInWork() {
+    if (!settlementData || settlementData.length === 0) return 0;
+    return settlementData.filter(item => item.status === 'В работе').length;
+}
+
+// Обновление бейджа урегулирования (порог > 5)
+function updateSettlementBadge() {
+    const badge = document.getElementById('settlementBadge');
+    if (!badge) return;
+    const count = countSettlementInWork();
+    if (count > 0) {
+        badge.textContent = count > 99 ? '99+' : count.toString();
+        badge.style.display = 'flex';
+        if (count > 5) {
+            badge.classList.add('warning');
+        } else {
+            badge.classList.remove('warning');
+        }
+    } else {
+        badge.style.display = 'none';
+    }
+}
+
+// Общая функция для обновления всех бейджей
+function updateAllBadges() {
+    updateAccountingBadge();
+    updatePaymentsBadge();
+    updateProxyBadge();
+    updateSettlementBadge();
+}
         // ========== ФУНКЦИИ ДЛЯ УПРАВЛЕНИЯ СТРАНИЦАМИ ==========
         let pageTransitionTimeout = null;
 
