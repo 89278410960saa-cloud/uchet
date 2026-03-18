@@ -8430,170 +8430,121 @@ function deleteProxyRecord() {
     }
 }
 
-        function importJSON() {
+       // === КОНСТАНТА С ПРЯМОЙ ССЫЛКОЙ НА JSON-ФАЙЛ ===
+const IMPORT_DATA_URL = 'https://raw.githubusercontent.com/89278410960saa-cloud/uchet/refs/heads/main/uchet_backup.json';
+
+function importJSON() {
     closeSettingsMenu();
-    
+
     if (!confirm('ВНИМАНИЕ: Импорт данных заменит все текущие записи. Продолжить?')) {
         return;
     }
-    
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.accept = '.json';
-    
-    input.onchange = function(e) {
-        const file = e.target.files[0];
-        const reader = new FileReader();
-        
-        reader.onload = function(event) {
-            try {
-                const importedData = JSON.parse(event.target.result);
-                
-                // Проверяем версию файла
-                const fileVersion = importedData.version || '1.0';
-                
-                // Восстанавливаем данные
-                if (importedData.accountingData) {
-                    accountingData = importedData.accountingData;
-                    accountingData.forEach(item => {
-    // поддержка нового формата
-    if (item.planFact && !item.plan) {
-        item.plan = item.planFact;
+
+    // Показываем блюр и спиннер
+    const blurOverlay = document.querySelector('.page-transition-blur');
+    const loadingSpinner = document.querySelector('.loading-spinner-blur');
+    if (blurOverlay && loadingSpinner) {
+        blurOverlay.classList.add('active');
+        loadingSpinner.classList.add('active');
     }
 
-    // поддержка старого формата (на будущее)
-    if (item.plan && !item.planFact) {
-        item.planFact = item.plan;
-    }
-});
-                    
-                    // Для старых версий без recordId, генерируем новые ID
-                    if (fileVersion === '1.0') {
-                        accountingData.forEach(item => {
-                            if (!item.recordId) {
-                                item.recordId = generateUniqueId();
-                            }
-                        });
-                    }
-                }
-                
-                if (importedData.counterpartiesData) {
-                    counterpartiesData = importedData.counterpartiesData;
-                    if (fileVersion === '1.0') {
-                        counterpartiesData.forEach(item => {
-                            if (!item.recordId) {
-                                item.recordId = generateUniqueId();
-                            }
-                        });
-                    }
-                }
-                
-                if (importedData.paymentsData) {
-                    paymentsData = importedData.paymentsData;
-                    if (fileVersion === '1.0') {
-                        paymentsData.forEach(item => {
-                            if (!item.recordId) {
-                                item.recordId = generateUniqueId();
-                            }
-                        });
-                    }
-                }
-                
-                if (importedData.settlementData) {
-                    settlementData = importedData.settlementData;
-                    if (fileVersion === '1.0') {
-                        settlementData.forEach(item => {
-                            if (!item.recordId) {
-                                item.recordId = generateUniqueId();
-                            }
-                        });
-                    }
-                }
-                
-                if (importedData.mailData) {
-                    mailData = importedData.mailData;
-                    if (fileVersion === '1.0') {
-                        mailData.forEach(item => {
-                            if (!item.recordId) {
-                                item.recordId = generateUniqueId();
-                            }
-                        });
-                    }
-                }
-                
-                if (importedData.proxyData) {
-                    proxyData = importedData.proxyData;
-                    if (fileVersion === '1.0') {
-                        proxyData.forEach(item => {
-                            if (!item.recordId) {
-                                item.recordId = generateUniqueId();
-                            }
-                            if (item.contract === undefined) item.contract = '';
-                        });
-                    }
-                }
-                
-                if (importedData.applicationComments) {
-                    applicationComments = importedData.applicationComments;
-                }
-                
-                if (importedData.departmentsList) {
-                    departmentsList = importedData.departmentsList;
-                    saveDepartmentsList();
-                }
-                if (document.getElementById('payments').classList.contains('active')) {
-                    updatePaymentsTotal();
-                }
-                
-                // Сохраняем все данные
-                saveAllData();
-                
-                // Обновляем интерфейс
-                updateAllTables();
-                updateAllBadges();
-                
-                // Показываем статистику импорта
-                const importStats = {
-                    accounting: importedData.accountingData ? importedData.accountingData.length : 0,
-                    counterparties: importedData.counterpartiesData ? importedData.counterpartiesData.length : 0,
-                    payments: importedData.paymentsData ? importedData.paymentsData.length : 0,
-                    settlement: importedData.settlementData ? importedData.settlementData.length : 0,
-                    mail: importedData.mailData ? importedData.mailData.length : 0,
-                    proxy: importedData.proxyData ? importedData.proxyData.length : 0
-                };
-                
-                showAutosaveNotification(
-                    `Данные импортированы: ${importStats.accounting} записей учета, ` +
-                    `${importStats.counterparties} контрагентов, ${importStats.payments} платежей`
-                );
-                
-                // Показываем подробную информацию об импорте
-                setTimeout(() => {
-                    if (confirm(
-                        `Импорт завершен успешно!\n\n` +
-                        `Статистика импорта:\n` +
-                        `• Учет: ${importStats.accounting} записей\n` +
-                        `• Контрагенты: ${importStats.counterparties}\n` +
-                        `• Платежи: ${importStats.payments}\n` +
-                        `• Урегулирование: ${importStats.settlement}\n` +
-                        `• Почтовый реестр: ${importStats.mail}\n` +
-                        `• Доверенности: ${importStats.proxy}\n\n` +
-                        `Обновить страницу для полного применения изменений?`
-                    )) {
-                        location.reload();
-                    }
-                }, 500);
-                
-            } catch (error) {
-                console.error('Ошибка импорта данных:', error);
-                alert(`Ошибка импорта данных: ${error.message}\n\nПроверьте формат файла.`);
+    fetch(IMPORT_DATA_URL)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Ошибка HTTP: ${response.status} ${response.statusText}`);
             }
-        };
-        
-        reader.readAsText(file);
-    };
-    
-    input.click();
+            return response.json();
+        })
+        .then(importedData => {
+            // --- ОБРАБОТКА ДАННЫХ (как в вашей старой функции) ---
+            const fileVersion = importedData.version || '1.0';
+
+            // Учёт (accounting)
+            if (importedData.accountingData) {
+                accountingData = importedData.accountingData.map(item => {
+                    if (fileVersion === '1.0' && !item.recordId) {
+                        item.recordId = generateUniqueId();
+                    }
+                    // Поддержка старых полей plan/planFact
+                    if (item.planFact && !item.plan) item.plan = item.planFact;
+                    if (item.plan && !item.planFact) item.planFact = item.plan;
+                    return item;
+                });
+            }
+
+            // Контрагенты
+            if (importedData.counterpartiesData) {
+                counterpartiesData = importedData.counterpartiesData.map(item => {
+                    if (fileVersion === '1.0' && !item.recordId) item.recordId = generateUniqueId();
+                    return item;
+                });
+            }
+
+            // Платежи
+            if (importedData.paymentsData) {
+                paymentsData = importedData.paymentsData.map(item => {
+                    if (fileVersion === '1.0' && !item.recordId) item.recordId = generateUniqueId();
+                    return item;
+                });
+            }
+
+            // Урегулирование
+            if (importedData.settlementData) {
+                settlementData = importedData.settlementData.map(item => {
+                    if (fileVersion === '1.0' && !item.recordId) item.recordId = generateUniqueId();
+                    return item;
+                });
+            }
+
+            // Почтовый реестр
+            if (importedData.mailData) {
+                mailData = importedData.mailData.map(item => {
+                    if (fileVersion === '1.0' && !item.recordId) item.recordId = generateUniqueId();
+                    return item;
+                });
+            }
+
+            // Доверенности
+            if (importedData.proxyData) {
+                proxyData = importedData.proxyData.map(item => {
+                    if (fileVersion === '1.0' && !item.recordId) item.recordId = generateUniqueId();
+                    if (item.contract === undefined) item.contract = '';
+                    return item;
+                });
+            }
+
+            // Комментарии к заявкам
+            if (importedData.applicationComments) {
+                applicationComments = importedData.applicationComments;
+            }
+
+            // Список подразделений
+            if (importedData.departmentsList) {
+                departmentsList = importedData.departmentsList;
+                saveDepartmentsList();
+            }
+
+            // Сохраняем всё
+            saveAllData();
+            updateAllTables();
+            updateAllBadges();
+
+            // Скрываем индикатор
+            if (blurOverlay && loadingSpinner) {
+                blurOverlay.classList.remove('active');
+                loadingSpinner.classList.remove('active');
+            }
+
+            showAutosaveNotification('Данные успешно импортированы');
+        })
+        .catch(error => {
+            console.error('Ошибка импорта:', error);
+            if (blurOverlay && loadingSpinner) {
+                blurOverlay.classList.remove('active');
+                loadingSpinner.classList.remove('active');
+            }
+            alert(`Не удалось загрузить данные.\n\n${error.message}`);
+        });
 }
 
         // ========== ФУНКЦИИ ЭКСПОРТА В EXCEL ==========
