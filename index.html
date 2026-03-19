@@ -3983,30 +3983,13 @@ function updateAccountingTable() {
         return;
     }
     
-    // СОРТИРОВКА ПО УБЫВАНИЮ: извлекаем timestamp из recordId и сортируем
     const sortedData = [...accountingData].sort((a, b) => {
-        // Извлекаем timestamp из recordId
-        const getTimeFromRecordId = (recordId) => {
-            if (!recordId) return 0;
-            try {
-                // Формат: timestamp_randomStr
-                const parts = recordId.split('_');
-                if (parts.length >= 1) {
-                    const timestamp = parseInt(parts[0], 10);
-                    return isNaN(timestamp) ? 0 : timestamp;
-                }
-            } catch (e) {
-                console.error('Ошибка извлечения времени из recordId:', e);
-            }
-            return 0;
-        };
-        
-        const timeA = getTimeFromRecordId(a.recordId);
-        const timeB = getTimeFromRecordId(b.recordId);
-        
-        // Сортировка по убыванию (новые сначала)
-        return timeB - timeA;
-    });
+    const dateA = extractDateFromDocNumber(a.docNumber);
+    const dateB = extractDateFromDocNumber(b.docNumber);
+    const timeA = dateA ? dateA.getTime() : 0;
+    const timeB = dateB ? dateB.getTime() : 0;
+    return timeB - timeA; // убывание (новые сверху)
+});
     
     sortedData.forEach((item) => {
         const row = document.createElement('tr');
@@ -5951,10 +5934,12 @@ function updateSuppliersFilterList() {
     }
     
     const sortedPayments = [...paymentsData].sort((a, b) => {
-        const timeA = getTimeFromRecordId(a.recordId) || 0;
-        const timeB = getTimeFromRecordId(b.recordId) || 0;
-        return timeB - timeA;
-    });
+    const dateA = parseDate(a.date);
+    const dateB = parseDate(b.date);
+    const timeA = dateA ? dateA.getTime() : 0;
+    const timeB = dateB ? dateB.getTime() : 0;
+    return timeB - timeA; // убывание (новые сверху)
+});
     
     sortedPayments.forEach((item) => {
         const row = document.createElement('tr');
@@ -6548,13 +6533,12 @@ function editDepartment(index) {
     
     // СОРТИРОВКА ПО ДАТЕ (УБЫВАНИЕ - СНАЧАЛА НОВЫЕ)
     const sortedMailData = [...mailData].sort((a, b) => {
-        // Извлекаем timestamp из recordId
-        const timeA = getTimeFromRecordId(a.recordId) || 0;
-        const timeB = getTimeFromRecordId(b.recordId) || 0;
-        
-        // Сортировка по убыванию (новые сначала)
-        return timeB - timeA;
-    });
+    const dateA = parseDate(a.date);
+    const dateB = parseDate(b.date);
+    const timeA = dateA ? dateA.getTime() : 0;
+    const timeB = dateB ? dateB.getTime() : 0;
+    return timeB - timeA; // убывание (новые сверху)
+});
     
     sortedMailData.forEach((item) => {
         const row = document.createElement('tr');
@@ -6777,13 +6761,12 @@ if (isAdmin) {
     
     // СОРТИРОВКА ПО ДАТЕ (УБЫВАНИЕ - СНАЧАЛА НОВЫЕ)
     const sortedProxyData = [...proxyData].sort((a, b) => {
-        // Извлекаем timestamp из recordId
-        const timeA = getTimeFromRecordId(a.recordId) || 0;
-        const timeB = getTimeFromRecordId(b.recordId) || 0;
-        
-        // Сортировка по убыванию (новые сначала)
-        return timeB - timeA;
-    });
+    const dateA = parseDate(a.date);
+    const dateB = parseDate(b.date);
+    const timeA = dateA ? dateA.getTime() : 0;
+    const timeB = dateB ? dateB.getTime() : 0;
+    return timeB - timeA; // убывание (новые сверху)
+});
     
     sortedProxyData.forEach((item) => {
         const row = document.createElement('tr');
