@@ -3983,12 +3983,19 @@ function updateAccountingTable() {
         return;
     }
     
-    const sortedData = [...accountingData].sort((a, b) => {
+   const sortedData = [...accountingData].sort((a, b) => {
     const dateA = extractDateFromDocNumber(a.docNumber);
     const dateB = extractDateFromDocNumber(b.docNumber);
     const timeA = dateA ? dateA.getTime() : 0;
     const timeB = dateB ? dateB.getTime() : 0;
-    return timeB - timeA; // убывание (новые сверху)
+
+    // 1. Сначала сравниваем даты (новые сверху)
+    if (timeB !== timeA) return timeB - timeA;
+
+    // 2. Если даты равны (или обе отсутствуют), сравниваем полные номера заявок
+    if (a.docNumber < b.docNumber) return -1;
+    if (a.docNumber > b.docNumber) return 1;
+    return 0;
 });
     
     sortedData.forEach((item) => {
