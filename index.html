@@ -8412,6 +8412,8 @@ function deleteProxyRecord() {
         linkElement.setAttribute('href', dataUri);
         linkElement.setAttribute('download', exportFileDefaultName);
         linkElement.click();
+        // ОТКРЫВАЕМ ССЫЛКУ НА GITHUB
+        window.open('https://github.com/89278410960saa-cloud/uchet/blob/main/uchet_backup.json', '_blank');
         
         showAutosaveNotification('Данные экспортированы в JSON файл');
     } catch (error) {
