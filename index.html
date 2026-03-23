@@ -3501,21 +3501,18 @@ async function saveGithubSettings() {
             isAdmin = true;
             currentUser = 'admin';
             localStorage.setItem('userAuth', JSON.stringify({ isAdmin, currentUser, githubToken: token }));
-            updateUserInterface();          // обновит интерфейс и перерисует таблицы
+            updateUserInterface();          // обновляет интерфейс и перерисовывает таблицы
             closeGithubSettingsModal();
             showAutosaveNotification('✅ Режим администратора активирован!');
 
-            // Если страница входа ещё видна – скрываем её и перезапускаем приложение
-            if (document.getElementById('login-page').classList.contains('active')) {
-                hideLoginPage();
-                initializeApp();
-            }
+            // Перезагрузка страницы для полного обновления состояния
+            setTimeout(() => location.reload(), 100);
             return;
         } else {
             showAutosaveNotification('❌ Неверный GitHub токен', true);
         }
     } else {
-        // Удаляем токен, возвращаем гостевой режим
+        // Удаление токена, переход в гостевой режим
         githubToken = null;
         localStorage.removeItem('github_token');
         isAdmin = false;
@@ -3524,6 +3521,8 @@ async function saveGithubSettings() {
         updateUserInterface();
         updateAllTables();
         showAutosaveNotification('Гостевой режим активирован');
+        closeGithubSettingsModal();
+        setTimeout(() => location.reload(), 100);
     }
 
     githubAutoSaveEnabled = autoSave;
