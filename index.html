@@ -8612,7 +8612,7 @@ function deleteProxyRecord() {
 }
 
        // === КОНСТАНТА С ПРЯМОЙ ССЫЛКОЙ НА JSON-ФАЙЛ ===
-const IMPORT_DATA_URL = 'https://raw.githubusercontent.com/89278410960saa-cloud/uchet/refs/heads/main/uchet_backup.json';
+const IMPORT_DATA_URL = 'https://raw.githubusercontent.com/89278410960saa-cloud/uchet/refs/heads/main/uchet_backup.json' + '?t=' + Date.now();
 
 function importJSON() {
     closeSettingsMenu();
