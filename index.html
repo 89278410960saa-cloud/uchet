@@ -3407,34 +3407,6 @@ button:hover{background:#222733!important}
 
 
         // ========== ФУНКЦИИ АВТОРИЗАЦИИ ==========
-        function checkAuthOnLoad() {
-    const savedAuth = localStorage.getItem('userAuth');
-    
-    if (savedAuth) {
-        try {
-            const auth = JSON.parse(savedAuth);
-            
-            if (auth && typeof auth.isAdmin !== 'undefined' && auth.currentUser) {
-                isAdmin = auth.isAdmin;
-                currentUser = auth.currentUser;
-                
-                if (currentUser) {
-                    showMainInterface();
-                    loadAllData();
-                    return true;
-                }
-            }
-        } catch (e) {
-            console.error('Ошибка при загрузке данных авторизации:', e);
-            localStorage.removeItem('userAuth');
-        }
-    }
-    
-    // Если нет сохраненных данных или произошла ошибка, 
-    // вернуть false для использования гостевого режима по умолчанию
-    return false;
-}
-
         
 
         function showMainInterface() {
@@ -3521,7 +3493,7 @@ async function enableAdminModeWithToken(token) {
 async function saveGithubSettings() {
     const token = document.getElementById('githubToken').value.trim();
     const autoSave = document.getElementById('githubAutoSave').checked;
-    
+
     if (token) {
         const isValid = await verifyGitHubToken(token);
         if (isValid) {
@@ -3530,11 +3502,11 @@ async function saveGithubSettings() {
             isAdmin = true;
             currentUser = 'admin';
             localStorage.setItem('userAuth', JSON.stringify({ isAdmin, currentUser, githubToken: token }));
-            updateUserInterface();
-            updateAllTables();
+            updateUserInterface();          // обновит интерфейс и перерисует таблицы
             closeGithubSettingsModal();
             showAutosaveNotification('✅ Режим администратора активирован!');
-            // Если страница входа была видна – скрываем её
+
+            // Если страница входа ещё видна – скрываем её и перезапускаем приложение
             if (document.getElementById('login-page').classList.contains('active')) {
                 hideLoginPage();
                 initializeApp();
@@ -3554,24 +3526,21 @@ async function saveGithubSettings() {
         updateAllTables();
         showAutosaveNotification('Гостевой режим активирован');
     }
-    
+
     githubAutoSaveEnabled = autoSave;
     localStorage.setItem('github_auto_save', autoSave);
     closeGithubSettingsModal();
 }
 async function checkAuthOnLoad() {
     const savedToken = localStorage.getItem('github_token');
-    
     if (savedToken) {
         const isValid = await verifyGitHubToken(savedToken);
         if (isValid) {
-            // Токен валиден – включаем режим администратора
             isAdmin = true;
             currentUser = 'admin';
             localStorage.setItem('userAuth', JSON.stringify({ isAdmin, currentUser, githubToken: savedToken }));
             return true;
         } else {
-            // Токен невалиден – очищаем его
             localStorage.removeItem('github_token');
             localStorage.removeItem('userAuth');
         }
@@ -3593,24 +3562,22 @@ function updateUserInterface() {
     updateCommentFieldPermissions();
     updateGuestWarningBadge();
     updateGitHubGuestBadge();
-    
+
     // Показываем или скрываем элементы для администратора
     document.querySelectorAll('.admin-only').forEach(el => {
         el.style.display = isAdmin ? 'flex' : 'none';
     });
-    
+
     // Обновляем меню настроек
     updateSettingsMenu();
-    
-    // Обновляем все таблицы
+
+    // ОБЯЗАТЕЛЬНО перерисовываем все таблицы
     updateAllTables();
-    
-    // СОХРАНИТЬ ТЕКУЩЕЕ СОСТОЯНИЕ В LOCALSTORAGE
-    localStorage.setItem('userAuth', JSON.stringify({ 
-        isAdmin, 
-        currentUser 
-    }));
+
+    // Сохраняем состояние в localStorage
+    localStorage.setItem('userAuth', JSON.stringify({ isAdmin, currentUser }));
 }
+
 function updateGitHubGuestBadge() {
     const badge = document.getElementById('githubGuestBadge');
     if (badge) {
@@ -3622,21 +3589,15 @@ function updateGitHubGuestBadge() {
 function updateSettingsMenu() {
     const importBtn = document.querySelector('.import-btn');
     const adminButtons = document.querySelectorAll('.admin-only');
-    
     if (isAdmin) {
-        // Администратор: показываем все кнопки
-        adminButtons.forEach(btn => {
-            btn.style.display = 'flex';
-        });
+        adminButtons.forEach(btn => btn.style.display = 'flex');
         if (importBtn) importBtn.style.display = 'flex';
     } else {
-        // Гость: показываем только импорт
-        adminButtons.forEach(btn => {
-            btn.style.display = 'none';
-        });
+        adminButtons.forEach(btn => btn.style.display = 'none');
         if (importBtn) importBtn.style.display = 'flex';
     }
 }
+
 // Функция для обновления интерфейса после смены режима
 function updateUserInterface() {
     updateUserButton();
@@ -3659,25 +3620,20 @@ function updateUserInterface() {
 
 // ========== ИНИЦИАЛИЗАЦИЯ ПРИЛОЖЕНИЯ ==========
 function initializeApp() {
-    // Загружаем все данные
-    loadAllData();
-    
-    // Показываем основной интерфейс
+    loadAllData();               // загружает все данные и обновляет таблицы
     document.querySelector('.sidebar').style.display = 'block';
     document.querySelector('.main-content').style.display = 'block';
-    
+
     if (!currentUser) {
         isAdmin = false;
         currentUser = 'guest';
     }
-    
-    // Обновляем интерфейс
-    updateUserInterface();
+
+    updateUserInterface();       // применяет права
     resetAllFilters();
     updateGuestWarningBadge();
     updateGitHubGuestBadge();
-    
-    // Уведомление о текущем режиме
+
     setTimeout(() => {
         if (isAdmin) {
             showAutosaveNotification('Режим администратора активен');
@@ -8966,18 +8922,19 @@ function closeCounterpartyInfoModal() {
     currentCounterpartyInfo = null;
 }
 document.addEventListener('DOMContentLoaded', async function() {
-    const hasSavedAuth = await checkAuthOnLoad();
+    // Показываем страницу входа
+    showLoginPage();
 
-    if (!hasSavedAuth) {
-        isAdmin = false;
-        currentUser = 'guest';
-        localStorage.removeItem('userAuth');
-        setTimeout(() => {
-            showAutosaveNotification('Гостевой режим активен');
-        }, 500);
-    }
+    // Загружаем данные в фоне (чтобы интерфейс был готов)
+    loadAllData();
+    initializeRecordIds();
 
-    initializeApp();
+    // Добавляем обработчик Enter на странице входа
+    document.getElementById('login-page').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter' && document.getElementById('login-page').classList.contains('active')) {
+            startApplication();
+        }
+    });
 });
 document.addEventListener('DOMContentLoaded', function() {
     // Обработчик для ссылки "Редактировать (для администратора)"
@@ -10055,22 +10012,7 @@ function resetAllFilters() {
     
     showAutosaveNotification('Все фильтры сброшены');
 }
-// Запускаем приложение при загрузке страницы
-document.addEventListener('DOMContentLoaded', function() {
-    // Всегда показываем страницу входа при новой загрузке
-    showLoginPage();
-    
-    // Инициализируем данные, но не показываем основной интерфейс
-    loadAllData();
-    initializeRecordIds();
-    
-    // Добавляем обработчик клавиши Enter на странице входа
-    document.getElementById('login-page').addEventListener('keypress', function(e) {
-        if (e.key === 'Enter' && document.getElementById('login-page').classList.contains('active')) {
-            startApplication();
-        }
-    });
-});
+
     
 
 
