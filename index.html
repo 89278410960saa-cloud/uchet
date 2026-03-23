@@ -178,6 +178,7 @@
     z-index: 10;
 }
 
+
 .sidebar-badge.warning {
     background: linear-gradient(135deg, #d69b76 0%, #ffa500 100%);
     color: black !important;
@@ -647,6 +648,23 @@
     text-decoration: underline;
     color: #66c0f4;
 }
+/* Специальная корректировка для бейджа на кнопке GitHub */
+#githubGuestBadge {
+    position: absolute;
+            top: 5.36px;
+            right: 5.36px;
+            background: linear-gradient(135deg, #be9e3c 0%, #8c2c24 100%);
+            color: white;
+            border-radius: 50%;
+            width: 13px;
+            height: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            box-shadow: 0 1.34px 2.68px rgba(0,0,0,0.3);
+            animation: pulse 2s infinite;
+        }
         
         /* Стили для бейджа с количеством заявок */
         .menu-item {
@@ -2412,11 +2430,14 @@ button:hover{background:#222733!important}
     <span class="sidebar-icon">📊</span>
     <div class="sidebar-tooltip">Аналитика</div>
 </div>
-    <div class="sidebar-cell menu-item" id="userBadge" onclick="toggleUserMode()" title="Нажмите для переключения в режим администратора" style="border-color: rgba(143, 152, 160, 0.3);">
-        <span class="sidebar-icon">👁️</span>
-        <div class="sidebar-tooltip">Гостевой режим</div>
-    </div>
-</div><div class="sidebar-section">
+<div class="sidebar-cell menu-item" onclick="showGithubSettingsModal()" title="GitHub настройки">
+    <span class="sidebar-icon">🐙</span>
+    <div class="sidebar-tooltip">GitHub настройки</div>
+    <div class="sidebar-badge warning" id="githubGuestBadge" style="display: none;">!</div>
+</div>
+    
+</div>
+<div class="sidebar-section">
         <!-- Кнопка настроек -->
         <div class="sidebar-cell menu-item" id="settingsButton" title="Настройки" onclick="toggleSettingsMenu()">
             <span class="sidebar-icon">⚙️</span>
@@ -2427,14 +2448,13 @@ button:hover{background:#222733!important}
     <!-- Скрытое меню настроек -->
 <div id="settingsMenu" class="sidebar-section" style="display: none;">
     <div class="sidebar-cell menu-item import-btn" onclick="importJSON()" title="Импорт данных" style="display: flex;">
-        <span class="sidebar-icon">📥</span>
+        <span class="sidebar-icon">♻️</span>
         <div class="sidebar-tooltip">Импорт данных</div>
     </div>
     <div class="sidebar-cell menu-item admin-only export-btn" onclick="exportJSON()" title="Экспорт данных" style="display: none;">
         <span class="sidebar-icon">📤</span>
         <div class="sidebar-tooltip">Экспорт данных</div>
     </div>
-    
     <!-- Кнопка удаления с классом danger -->
     <div class="sidebar-cell menu-item danger admin-only clear-btn" onclick="confirmClearAllData()" title="Очистить все данные" style="display: none;">
         <span class="sidebar-icon">✘</span>
@@ -3184,29 +3204,31 @@ button:hover{background:#222733!important}
             </form>
         </div>
     </div>
-    <!-- Модальное окно для ввода пароля администратора -->
-<div id="adminPasswordModal" class="modal" style="display: none;">
-    <div class="modal-content" style="max-width: 268.0px;">
-        <span class="close" onclick="closeAdminPasswordModal()">×</span>
+    
+<!-- Модальное окно для настройки GitHub -->
+<div id="githubSettingsModal" class="modal" style="display: none;">
+    <div class="modal-content" style="max-width: 402px;">
+        <span class="close" onclick="closeGithubSettingsModal()">×</span>
         <h2 style="text-align: center; margin-bottom: 13.4px; color: #66c0f4;">
-            Вход в режим администратора
+            GitHub настройки
         </h2>
-        <div style="margin-bottom: 13.4px; text-align: center; color: #c7d5e0;">
-            Введите пароль для доступа к функциям администратора
+        <div style="margin-bottom: 13.4px;">
+            <label style="display: block; margin-bottom: 5px;">Токен GitHub (classic):</label>
+            <input type="password" id="githubToken" style="width: 100%; padding: 6px;" 
+                   placeholder="ghp_...">
+            <div style="font-size: 10px; color: #8f98a0; margin-top: 3px;">
+                Токен хранится только локально и не экспортируется.
+            </div>
         </div>
         <div style="margin-bottom: 13.4px;">
-            <input type="password" id="adminPasswordInput" placeholder="Введите пароль" style="width: 100%; padding: 8.04px; background: #2a475e; border: 0.67px solid #3d4450; color: #c7d5e0; border-radius: 2.68px;" onkeypress="handleAdminPasswordKeyPress(event)">
+            <label style="display: flex; align-items: center; gap: 8px;">
+                <input type="checkbox" id="githubAutoSave"> 
+                <span>Автосохранение в GitHub (при каждом изменении)</span>
+            </label>
         </div>
-        <div id="adminPasswordError" style="color: #be463c; text-align: center; margin-bottom: 10.05px; display: none;">
-            Неверный пароль. Попробуйте снова.
-        </div>
-        <div style="display: flex; gap: 6.7px;">
-            <button onclick="checkAdminPassword()" style="flex: 1; background: linear-gradient(135deg, #5c7e10 0%, #4c6b22 100%);">
-                Войти
-            </button>
-            <button onclick="closeAdminPasswordModal()" style="flex: 1; background: linear-gradient(135deg, #8f98a0 0%, #6d7882 100%);">
-                Отмена
-            </button>
+        <div style="display: flex; gap: 10px;">
+            <button onclick="saveGithubSettings()" style="flex:1;">Сохранить</button>
+            <button onclick="closeGithubSettingsModal()" style="flex:1;">Отмена</button>
         </div>
     </div>
 </div>
@@ -3447,20 +3469,13 @@ button:hover{background:#222733!important}
         }
     }
 }
-function toggleUserMode() {
-    // Если уже в режиме администратора, переключаем в гостевой без пароля
-    if (isAdmin) {
-        isAdmin = false;
-        currentUser = 'guest';
-        updateUserInterface();
-        resetAllFilters(); 
-        showAutosaveNotification('Включен гостевой режим');
-        return;
-    }
-    
-    // Если в гостевом режиме, запрашиваем пароль для перехода в административный
-    showAdminPasswordModal();
+function updateGuestWarningBadge() {
+    const badge = document.getElementById('guestWarningBadge');
+    if (!badge) return;
+    // Показываем бейдж только в гостевом режиме (не администратор)
+    badge.style.display = (!isAdmin) ? 'flex' : 'none';
 }
+
 function showAdminPasswordModal() {
     document.getElementById('adminPasswordModal').style.display = 'block';
     document.getElementById('adminPasswordInput').value = '';
@@ -3471,23 +3486,102 @@ function showAdminPasswordModal() {
 function closeAdminPasswordModal() {
     document.getElementById('adminPasswordModal').style.display = 'none';
 }
-
-function checkAdminPassword() {
-    const passwordInput = document.getElementById('adminPasswordInput');
-    const passwordError = document.getElementById('adminPasswordError');
-    
-    if (passwordInput.value === '555666') {
-        isAdmin = true;
-        currentUser = 'admin';
-        closeAdminPasswordModal();
-        updateUserInterface();
-        resetAllFilters();
-        showAutosaveNotification('Включен режим администратора');
-    } else {
-        // ... ошибка
+async function verifyGitHubToken(token) {
+    try {
+        const response = await fetch('https://api.github.com/user', {
+            headers: { 'Authorization': `token ${token}` }
+        });
+        return response.ok;
+    } catch (error) {
+        console.error('Ошибка проверки токена:', error);
+        return false;
     }
 }
-
+async function enableAdminModeWithToken(token) {
+    const isValid = await verifyGitHubToken(token);
+    if (isValid) {
+        isAdmin = true;
+        currentUser = 'admin';
+        localStorage.setItem('userAuth', JSON.stringify({ isAdmin, currentUser, githubToken: token }));
+        updateUserInterface();
+        showAutosaveNotification('Режим администратора активирован через GitHub токен');
+        closeGithubSettingsModal();
+        return true;
+    } else {
+        showAutosaveNotification('Неверный GitHub токен', true);
+        return false;
+    }
+}
+async function saveGithubSettings() {
+    const token = document.getElementById('githubToken').value.trim();
+    const autoSave = document.getElementById('githubAutoSave').checked;
+    
+    if (token) {
+        const isValid = await verifyGitHubToken(token);
+        if (isValid) {
+            githubToken = token;
+            localStorage.setItem('github_token', token);
+            
+            // Активируем режим администратора
+            isAdmin = true;
+            currentUser = 'admin';
+            localStorage.setItem('userAuth', JSON.stringify({ isAdmin, currentUser, githubToken: token }));
+            updateUserInterface();
+            showAutosaveNotification('GitHub токен сохранён. Режим администратора активен.');
+        } else {
+            showAutosaveNotification('Неверный GitHub токен', true);
+            return;
+        }
+    } else {
+        githubToken = null;
+        localStorage.removeItem('github_token');
+        // Если токен удалён, переключаемся в гостевой режим
+        isAdmin = false;
+        currentUser = 'guest';
+        localStorage.setItem('userAuth', JSON.stringify({ isAdmin, currentUser }));
+        updateUserInterface();
+        showAutosaveNotification('GitHub токен удалён. Режим администратора отключён.');
+    }
+    
+    githubAutoSaveEnabled = autoSave;
+    localStorage.setItem('github_auto_save', autoSave);
+    
+    closeGithubSettingsModal();
+}
+async function checkAuthOnLoad() {
+    const savedAuth = localStorage.getItem('userAuth');
+    const savedToken = localStorage.getItem('github_token');
+    
+    if (savedAuth) {
+        try {
+            const auth = JSON.parse(savedAuth);
+            if (auth && auth.currentUser === 'admin' && savedToken) {
+                const isValid = await verifyGitHubToken(savedToken);
+                if (isValid) {
+                    isAdmin = true;
+                    currentUser = 'admin';
+                    showMainInterface();
+                    loadAllData();
+                    return true;
+                } else {
+                    // Токен недействителен — сбрасываем в гостевой режим
+                    localStorage.removeItem('github_token');
+                    localStorage.removeItem('userAuth');
+                }
+            }
+        } catch (e) {
+            console.error('Ошибка загрузки авторизации:', e);
+        }
+    }
+    
+    // По умолчанию — гостевой режим
+    isAdmin = false;
+    currentUser = 'guest';
+    localStorage.setItem('userAuth', JSON.stringify({ isAdmin, currentUser }));
+    showMainInterface();
+    loadAllData();
+    return false;
+}
 function handleAdminPasswordKeyPress(event) {
     if (event.key === 'Enter') {
         checkAdminPassword();
@@ -3497,6 +3591,8 @@ function handleAdminPasswordKeyPress(event) {
 function updateUserInterface() {
     updateUserButton();
     updateCommentFieldPermissions();
+    updateGuestWarningBadge();
+    updateGitHubGuestBadge();
     
     // Показываем или скрываем элементы для администратора
     document.querySelectorAll('.admin-only').forEach(el => {
@@ -3515,7 +3611,13 @@ function updateUserInterface() {
         currentUser 
     }));
 }
-
+function updateGitHubGuestBadge() {
+    const badge = document.getElementById('githubGuestBadge');
+    if (badge) {
+        // Показываем бейдж только если НЕ администратор (гостевой режим)
+        badge.style.display = (!isAdmin) ? 'flex' : 'none';
+    }
+}
 // Новая функция для обновления меню настроек
 function updateSettingsMenu() {
     const importBtn = document.querySelector('.import-btn');
@@ -3554,26 +3656,7 @@ function updateUserInterface() {
         currentUser 
     }));
 }
-// ========== ОБНОВЛЕНИЕ КНОПКИ ПОЛЬЗОВАТЕЛЯ ==========
-function updateUserButton() {
-    const userButton = document.getElementById('userBadge');
-    const tooltip = userButton.querySelector('.sidebar-tooltip');
-    const icon = userButton.querySelector('.sidebar-icon');
-    
-    if (userButton) {
-        if (isAdmin) {
-            icon.textContent = '🔑';
-            tooltip.textContent = 'Режим администратора';
-            userButton.title = 'Нажмите для переключения в гостевой режим';
-            userButton.style.borderColor = 'rgba(92, 126, 16, 0.5)';
-        } else {
-            icon.textContent = '👁️';
-            tooltip.textContent = 'Гостевой режим';
-            userButton.title = 'Нажмите для переключения в режим администратора';
-            userButton.style.borderColor = 'rgba(143, 152, 160, 0.3)';
-        }
-    }
-}
+
 // ========== ИНИЦИАЛИЗАЦИЯ ПРИЛОЖЕНИЯ ==========
 function initializeApp() {
     // Загружаем все данные
@@ -3591,6 +3674,8 @@ function initializeApp() {
     // Обновляем интерфейс
     updateUserInterface();
     resetAllFilters();
+    updateGuestWarningBadge();
+    updateGitHubGuestBadge();
     
     // Уведомление о текущем режиме
     setTimeout(() => {
@@ -3817,6 +3902,7 @@ function updateCommentFieldPermissions() {
         updateWeeklyDeliveriesButton();
         updateSuppliersFilterList();
         updateYearsFilter();
+        updateGitHubGuestBadge();
         
         // Принудительно применяем фиксированные ширины после обновления таблиц
         setTimeout(() => {
@@ -3935,7 +4021,11 @@ function applyFixedTableLayouts() {
 
         function markChangesMade() {
             changesMade = true;
-        }
+        // Если включено автосохранение в GitHub – сохраняем сразу
+    if (githubAutoSaveEnabled && githubToken) {
+        saveToGitHub();
+    }
+}
 // Копирование текста в буфер обмена
 function copyToClipboard(text) {
     if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -5818,6 +5908,143 @@ function setupLoginPage() {
             button.style.boxSizing = 'border-box';
         });
     }, 100);
+}
+// --- GitHub интеграция ---
+let githubAutoSaveEnabled = false;
+let githubToken = null;
+
+function loadGithubSettings() {
+    const savedToken = localStorage.getItem('github_token');
+    const savedAuto = localStorage.getItem('github_auto_save');
+
+    if (savedToken) githubToken = savedToken;
+
+    // По умолчанию автосохранение ВКЛЮЧЕНО (true), если явно не сохранено false
+    if (savedAuto === 'false') {
+        githubAutoSaveEnabled = false;
+    } else {
+        githubAutoSaveEnabled = true;
+    }
+}
+loadGithubSettings();
+
+function showGithubSettingsModal() {
+    document.getElementById('githubToken').value = githubToken || '';
+    document.getElementById('githubAutoSave').checked = githubAutoSaveEnabled;
+    document.getElementById('githubSettingsModal').style.display = 'block';
+}
+
+function closeGithubSettingsModal() {
+    document.getElementById('githubSettingsModal').style.display = 'none';
+}
+
+function saveGithubSettings() {
+    const token = document.getElementById('githubToken').value.trim();
+    const autoSave = document.getElementById('githubAutoSave').checked;
+    
+    if (token) {
+        githubToken = token;
+        localStorage.setItem('github_token', token);
+    } else {
+        githubToken = null;
+        localStorage.removeItem('github_token');
+    }
+    
+    githubAutoSaveEnabled = autoSave;
+    localStorage.setItem('github_auto_save', autoSave);
+    
+    closeGithubSettingsModal();
+    showAutosaveNotification('Настройки GitHub сохранены');
+    
+    // Проверяем доступность токена
+    if (token) {
+        testGitHubToken();
+    }
+}
+
+async function testGitHubToken() {
+    try {
+        const response = await fetch('https://api.github.com/user', {
+            headers: { 'Authorization': `token ${githubToken}` }
+        });
+        if (response.ok) {
+            showAutosaveNotification('Токен GitHub валиден');
+        } else {
+            showAutosaveNotification('Токен GitHub недействителен', true);
+            githubToken = null;
+            localStorage.removeItem('github_token');
+        }
+    } catch(e) {
+        console.error('Ошибка проверки токена:', e);
+    }
+}
+
+async function saveToGitHub() {
+    if (!githubToken || !githubAutoSaveEnabled) return;
+    
+    const data = {
+        accountingData,
+        counterpartiesData,
+        paymentsData,
+        settlementData,
+        mailData,
+        proxyData,
+        applicationComments,
+        departmentsList,
+        version: '1.1',
+        exportDate: new Date().toISOString()
+    };
+    
+    const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
+    
+    const owner = '89278410960saa-cloud';
+    const repo = 'uchet';
+    const path = 'uchet_backup.json';
+    
+    try {
+        // Сначала получаем sha текущего файла (если он есть)
+        let sha = null;
+        const getResponse = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`, {
+            headers: { 'Authorization': `token ${githubToken}` }
+        });
+        if (getResponse.ok) {
+            const fileInfo = await getResponse.json();
+            sha = fileInfo.sha;
+        } else if (getResponse.status !== 404) {
+            throw new Error(`GitHub API error: ${getResponse.status}`);
+        }
+        
+        // Отправляем новый файл
+        const putResponse = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`, {
+            method: 'PUT',
+            headers: {
+                'Authorization': `token ${githubToken}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                message: 'Автосохранение из приложения',
+                content: content,
+                sha: sha,
+                branch: 'main'
+            })
+        });
+        
+        if (putResponse.ok) {
+            showAutosaveNotification('Данные сохранены в GitHub');
+        } else {
+            const err = await putResponse.json();
+            throw new Error(err.message || 'Ошибка сохранения');
+        }
+    } catch (error) {
+        console.error('GitHub save error:', error);
+        showAutosaveNotification(`GitHub: ${error.message}`, true);
+        // При ошибке отключаем автосохранение, чтобы не спамить
+        if (error.message.includes('401') || error.message.includes('403')) {
+            githubAutoSaveEnabled = false;
+            localStorage.setItem('github_auto_save', 'false');
+            showAutosaveNotification('Автосохранение в GitHub отключено из-за ошибки токена', true);
+        }
+    }
 }
 // ========== ФУНКЦИЯ ДЛЯ ОБНОВЛЕНИЯ СПИСКА ДОГОВОРОВ ==========
 function updateContractsList() {
@@ -8412,8 +8639,6 @@ function deleteProxyRecord() {
         linkElement.setAttribute('href', dataUri);
         linkElement.setAttribute('download', exportFileDefaultName);
         linkElement.click();
-        // ОТКРЫВАЕМ ССЫЛКУ НА GITHUB
-        window.open('https://github.com/89278410960saa-cloud/uchet/blob/main/uchet_backup.json', '_blank');
         
         showAutosaveNotification('Данные экспортированы в JSON файл');
     } catch (error) {
@@ -9548,27 +9773,7 @@ function initializeApp() {
     resetAllFilters();
 }
 
-// Модифицируем функцию toggleUserMode для сброса сессии при выходе администратора
-function toggleUserMode() {
-    // Если уже в режиме администратора, переключаем в гостевой без пароля
-    if (isAdmin) {
-        isAdmin = false;
-        currentUser = 'guest';
-        updateUserInterface();
-        resetAllFilters();
-        showAutosaveNotification('Включен гостевой режим');
-        
-        // Обновляем сохраненную авторизацию
-        localStorage.setItem('userAuth', JSON.stringify({ 
-            isAdmin, 
-            currentUser 
-        }));
-        return;
-    }
-    
-    // Если в гостевом режиме, запрашиваем пароль для перехода в административный
-    showAdminPasswordModal();
-}
+
 // Функция для принудительного обновления таблицы учета
 function forceTableUpdate() {
     const table = document.getElementById('accountingTable');
@@ -9872,11 +10077,8 @@ document.addEventListener('DOMContentLoaded', function() {
         
        <div class="login-footer">
     <p style="font-size: 12px; margin-top: 5px;">
-        <strong>ВНИМАНИЕ:</strong> Данное приложение предназначено исключительно для демонстрации и тестирования функционала системы управления заказами.<br><br>
-        <strong>Конфиденциальность и хранение данных:</strong><br>
-        Все данные, которые вы вводите в приложении (наименования организаций, реквизиты, контракты, суммы и прочая информация), <strong>не передаются на сторонние серверы и не обрабатываются внешними сервисами</strong>. Введенная информация сохраняется исключительно <strong>локально на вашем устройстве</strong> в памяти вашего браузера. Для этого используется технология <code>LocalStorage</code>, где данные хранятся в формате <strong>JSON</strong>.<br><br>
-        <strong>Перенос данных:</strong><br>
-        Для обеспечения мобильности и возможности восстановления информации предусмотрены функции <strong>импорта и экспорта</strong> данных в виде JSON-файла. Вы можете самостоятельно сохранить резервную копию своих данных на диск или перенести их в другой браузер.
+        <strong>ВНИМАНИЕ:</strong> Данное приложение предназначено исключительно для демонстрации и тестирования функционала системы управления заказами. Любые совпадения с реальными данными, названиями организаций, именами, адресами или иными сведениями являются случайными и не имеющими фактического обоснования. Вся представленная информация является вымышленной и не подлежит использованию в реальной коммерческой деятельности.<br><br>
+        
     </p>
 </div>
 
