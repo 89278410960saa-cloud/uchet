@@ -222,7 +222,7 @@
       "name": "Шпилька М30-6gх120.88. AISI316Ti  (рос. аналог 10Х17Н13М2Т)    ГОСТ220042-76 (шт.)\n",
       "quantity": "18",
       "unit": "шт",
-      "purchaseName": "тест",
+      "purchaseName": "",
       "purchaseQuantity": "",
       "purchaseUnit": "",
       "amount": "",
@@ -12094,5 +12094,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-03-23T19:24:44.445Z"
+  "exportDate": "2026-03-23T19:26:18.593Z"
 }
