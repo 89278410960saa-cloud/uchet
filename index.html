@@ -3527,24 +3527,19 @@ async function saveGithubSettings() {
         if (isValid) {
             githubToken = token;
             localStorage.setItem('github_token', token);
-            
-            // ===== КЛЮЧЕВОЕ ИЗМЕНЕНИЕ =====
             isAdmin = true;
             currentUser = 'admin';
-            localStorage.setItem('userAuth', JSON.stringify({ 
-                isAdmin, 
-                currentUser, 
-                githubToken: token 
-            }));
-            
-            // Обновляем интерфейс и таблицы с задержкой
+            localStorage.setItem('userAuth', JSON.stringify({ isAdmin, currentUser, githubToken: token }));
             updateUserInterface();
-            setTimeout(() => {
-                updateAllTables();    // перерисовываем все таблицы с новыми правами
-                showAutosaveNotification('✅ Режим администратора активирован! Двойной клик по записям для редактирования.');
-            }, 100);
-            
+            updateAllTables();
             closeGithubSettingsModal();
+            showAutosaveNotification('✅ Режим администратора активирован!');
+            // Если страница входа была видна – скрываем её
+            if (document.getElementById('login-page').classList.contains('active')) {
+                hideLoginPage();
+                initializeApp();
+            }
+            return;
         } else {
             showAutosaveNotification('❌ Неверный GitHub токен', true);
         }
@@ -3556,46 +3551,35 @@ async function saveGithubSettings() {
         currentUser = 'guest';
         localStorage.setItem('userAuth', JSON.stringify({ isAdmin, currentUser }));
         updateUserInterface();
-        setTimeout(() => updateAllTables(), 100);
+        updateAllTables();
         showAutosaveNotification('Гостевой режим активирован');
-        closeGithubSettingsModal();
     }
     
     githubAutoSaveEnabled = autoSave;
     localStorage.setItem('github_auto_save', autoSave);
+    closeGithubSettingsModal();
 }
 async function checkAuthOnLoad() {
-    const savedAuth = localStorage.getItem('userAuth');
     const savedToken = localStorage.getItem('github_token');
     
-    if (savedAuth) {
-        try {
-            const auth = JSON.parse(savedAuth);
-            if (auth && auth.currentUser === 'admin' && savedToken) {
-                const isValid = await verifyGitHubToken(savedToken);
-                if (isValid) {
-                    isAdmin = true;
-                    currentUser = 'admin';
-                    showMainInterface();
-                    loadAllData();
-                    return true;
-                } else {
-                    // Токен недействителен — сбрасываем в гостевой режим
-                    localStorage.removeItem('github_token');
-                    localStorage.removeItem('userAuth');
-                }
-            }
-        } catch (e) {
-            console.error('Ошибка загрузки авторизации:', e);
+    if (savedToken) {
+        const isValid = await verifyGitHubToken(savedToken);
+        if (isValid) {
+            // Токен валиден – включаем режим администратора
+            isAdmin = true;
+            currentUser = 'admin';
+            localStorage.setItem('userAuth', JSON.stringify({ isAdmin, currentUser, githubToken: savedToken }));
+            return true;
+        } else {
+            // Токен невалиден – очищаем его
+            localStorage.removeItem('github_token');
+            localStorage.removeItem('userAuth');
         }
     }
-    
-    // По умолчанию — гостевой режим
+    // По умолчанию – гость
     isAdmin = false;
     currentUser = 'guest';
     localStorage.setItem('userAuth', JSON.stringify({ isAdmin, currentUser }));
-    showMainInterface();
-    loadAllData();
     return false;
 }
 function handleAdminPasswordKeyPress(event) {
