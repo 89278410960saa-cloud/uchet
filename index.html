@@ -3460,10 +3460,9 @@ function closeAdminPasswordModal() {
 }
 async function verifyGitHubToken(token) {
     try {
-        const response = await fetch('https://api.github.com/user', {
-            headers: { 'Authorization': `token ${token}`, 'Cache-Control': 'no-cache' },
-            cache: 'no-store'
-        });
+        const response = await fetch(`https://api.github.com/user?t=${Date.now()}`, {
+    headers: { 'Authorization': `token ${token}` }
+});
         console.log('GitHub API response status:', response.status);
         return response.ok;
     } catch (error) {
