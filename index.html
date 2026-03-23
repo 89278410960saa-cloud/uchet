@@ -8965,6 +8965,20 @@ function closeCounterpartyInfoModal() {
     document.getElementById('counterpartyInfoModal').style.display = 'none';
     currentCounterpartyInfo = null;
 }
+document.addEventListener('DOMContentLoaded', async function() {
+    const hasSavedAuth = await checkAuthOnLoad();
+
+    if (!hasSavedAuth) {
+        isAdmin = false;
+        currentUser = 'guest';
+        localStorage.removeItem('userAuth');
+        setTimeout(() => {
+            showAutosaveNotification('Гостевой режим активен');
+        }, 500);
+    }
+
+    initializeApp();
+});
 document.addEventListener('DOMContentLoaded', function() {
     // Обработчик для ссылки "Редактировать (для администратора)"
     const showAdminFormLink = document.getElementById('show-admin-form');
