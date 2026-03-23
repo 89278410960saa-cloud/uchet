@@ -5962,23 +5962,33 @@ function saveGithubSettings() {
     }
 }
 
+
 async function testGitHubToken() {
     try {
         const response = await fetch('https://api.github.com/user', {
             headers: { 'Authorization': `token ${githubToken}` }
         });
+
         if (response.ok) {
             showAutosaveNotification('Токен GitHub валиден');
+
+            // ✅ ВКЛЮЧАЕМ АДМИНА
+            localStorage.setItem('isAdmin', 'true');
+
         } else {
             showAutosaveNotification('Токен GitHub недействителен', true);
+
             githubToken = null;
             localStorage.removeItem('github_token');
+
+            // ❌ ОТКЛЮЧАЕМ
+            localStorage.setItem('isAdmin', 'false');
         }
+
     } catch(e) {
         console.error('Ошибка проверки токена:', e);
     }
 }
-
 async function saveToGitHub() {
     if (!githubToken || !githubAutoSaveEnabled) return;
     
