@@ -3489,8 +3489,10 @@ function closeAdminPasswordModal() {
 async function verifyGitHubToken(token) {
     try {
         const response = await fetch('https://api.github.com/user', {
-            headers: { 'Authorization': `token ${token}` }
+            headers: { 'Authorization': `token ${token}`, 'Cache-Control': 'no-cache' },
+            cache: 'no-store'
         });
+        console.log('GitHub API response status:', response.status);
         return response.ok;
     } catch (error) {
         console.error('Ошибка проверки токена:', error);
@@ -3504,7 +3506,11 @@ async function enableAdminModeWithToken(token) {
         currentUser = 'admin';
         localStorage.setItem('userAuth', JSON.stringify({ isAdmin, currentUser, githubToken: token }));
         updateUserInterface();
-        showAutosaveNotification('Режим администратора активирован через GitHub токен');
+        // Принудительная перерисовка таблиц через задержку, чтобы все обработчики обновились
+        setTimeout(() => {
+            updateAllTables();
+            showAutosaveNotification('Режим администратора активирован. Двойной клик по записям для редактирования.');
+        }, 100);
         closeGithubSettingsModal();
         return true;
     } else {
@@ -3522,31 +3528,41 @@ async function saveGithubSettings() {
             githubToken = token;
             localStorage.setItem('github_token', token);
             
-            // Активируем режим администратора
+            // ===== КЛЮЧЕВОЕ ИЗМЕНЕНИЕ =====
             isAdmin = true;
             currentUser = 'admin';
-            localStorage.setItem('userAuth', JSON.stringify({ isAdmin, currentUser, githubToken: token }));
+            localStorage.setItem('userAuth', JSON.stringify({ 
+                isAdmin, 
+                currentUser, 
+                githubToken: token 
+            }));
+            
+            // Обновляем интерфейс и таблицы с задержкой
             updateUserInterface();
-            showAutosaveNotification('GitHub токен сохранён. Режим администратора активен.');
+            setTimeout(() => {
+                updateAllTables();    // перерисовываем все таблицы с новыми правами
+                showAutosaveNotification('✅ Режим администратора активирован! Двойной клик по записям для редактирования.');
+            }, 100);
+            
+            closeGithubSettingsModal();
         } else {
-            showAutosaveNotification('Неверный GitHub токен', true);
-            return;
+            showAutosaveNotification('❌ Неверный GitHub токен', true);
         }
     } else {
+        // Удаляем токен, возвращаем гостевой режим
         githubToken = null;
         localStorage.removeItem('github_token');
-        // Если токен удалён, переключаемся в гостевой режим
         isAdmin = false;
         currentUser = 'guest';
         localStorage.setItem('userAuth', JSON.stringify({ isAdmin, currentUser }));
         updateUserInterface();
-        showAutosaveNotification('GitHub токен удалён. Режим администратора отключён.');
+        setTimeout(() => updateAllTables(), 100);
+        showAutosaveNotification('Гостевой режим активирован');
+        closeGithubSettingsModal();
     }
     
     githubAutoSaveEnabled = autoSave;
     localStorage.setItem('github_auto_save', autoSave);
-    
-    closeGithubSettingsModal();
 }
 async function checkAuthOnLoad() {
     const savedAuth = localStorage.getItem('userAuth');
