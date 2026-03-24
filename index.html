@@ -2757,20 +2757,18 @@ button:hover{background:#222733!important}
         <div class="table-scroll-container" style="height: auto; margin-top: 10.05px;">
             <table id="proxyTable" style="table-layout: fixed;">
                 <thead>
-        <tr>
-            <th style="width: 80.4px;">Дата</th>
-            <th style="width: 100.5px;">Заявка</th>
-            <th style="width: 120.6px;">Контрагент</th>
-            <th style="width: 80.4px;">Телефон</th>
-            <th style="width: 100px;">Документ</th>
-            <th style="width: 134px;">Товар</th>
-            <th style="width: 167.5px;">Адрес</th>
-            <th style="width: 100.5px;">Водитель</th>
-            <th style="width: 67px;">Статус</th>
-        </tr>
-    </thead>
+    <tr>
+        <th style="width: 80.4px;">Дата</th>
+        <th style="width: 100.5px;">Заявка</th>
+        <th style="width: 120.6px;">Контрагент</th>
+        <th style="width: 100px;">Документ</th>
+        <th style="width: 167.5px;">Адрес</th>
+        <th style="width: 100.5px;">Водитель</th>
+        <th style="width: 67px;">Статус</th>
+    </tr>
+</thead>
                 <tbody id="proxyTableBody"><tr>
-            <td colspan="9" style="text-align: center; color: rgb(143, 152, 160); padding: 20px; width: 80.4px;">
+            <td colspan="7" style="text-align: center; color: rgb(143, 152, 160); padding: 20px; width: 80.4px;">
                 Нет данных о доверенностях. Добавьте первую доверенность.
             </td>
         </tr></tbody>
@@ -3171,18 +3169,12 @@ button:hover{background:#222733!important}
                     <label>Контрагент:</label>
                     <input list="suppliersList" id="editProxySupplier" class="datalist-input" style="width: 100%;">
                 </div>
-                <div style="margin-bottom: 10.05px;">
-                    <label>Телефон:</label>
-                    <input type="text" id="editProxyPhone" style="width: 100%;">
-                </div>
+                
                 <div style="margin-bottom: 10.05px;">
     <label>Документ:</label>
     <input type="text" id="editProxyDocument" list="contractsList" style="width: 100%;">
 </div>
-                <div style="margin-bottom: 10.05px;">
-                    <label>Товар:</label>
-                    <input type="text" id="editProxyProduct" style="width: 100%;">
-                </div>
+                
                 <div style="margin-bottom: 10.05px;">
                     <label>Адрес:</label>
                     <input type="text" id="editProxyAddress" style="width: 100%;">
@@ -6979,16 +6971,14 @@ if (isAdmin) {
         
         
         row.innerHTML = `
-            <td>${item.date || ''}</td>
-            <td>${item.docNumber || ''}</td>
-            <td>${item.supplier || ''}</td>
-            <td>${item.phone || ''}</td>
-            <td>${item.contract || ''}</td>
-            <td>${item.product || ''}</td>
-            <td>${item.address || ''}</td>
-            <td>${item.driver || ''}</td>
-            <td>${item.status || 'В работе'}</td>
-        `;
+    <td>${item.date || ''}</td>
+    <td>${item.docNumber || ''}</td>
+    <td>${item.supplier || ''}</td>
+    <td>${item.contract || ''}</td>
+    <td>${item.address || ''}</td>
+    <td>${item.driver || ''}</td>
+    <td>${item.status || 'В работе'}</td>
+`;
         
 // ВСЕГДА добавляем класс для подсветки
 row.classList.add('clickable-row');
@@ -7057,7 +7047,7 @@ if (isAdmin) {
         const dateCell = row.querySelector('td:nth-child(1)')?.textContent.trim(); // дата в формате DD.MM.YYYY
         const applicationCell = row.querySelector('td:nth-child(2)')?.textContent.toLowerCase().trim() || '';
         const supplierCell = row.querySelector('td:nth-child(3)')?.textContent.toLowerCase().trim() || '';
-        const statusCell = row.querySelector('td:nth-child(9)')?.textContent.trim() || ''; // статус в 9-й колонке
+        const statusCell = row.querySelector('td:nth-child(7)')?.textContent.trim() || ''; 
 
         // Фильтр по дате (преобразуем YYYY-MM-DD → DD.MM.YYYY)
         let dateMatch = true;
@@ -7144,9 +7134,7 @@ if (isAdmin) {
     document.getElementById('editProxyIndex').value = index;
     document.getElementById('editProxyDate').value = formatDateForInput(item.date);
     document.getElementById('editProxySupplier').value = item.supplier || '';
-    document.getElementById('editProxyPhone').value = item.phone || '';
     document.getElementById('editProxyDocument').value = item.contract || '';
-    document.getElementById('editProxyProduct').value = item.product || '';
     document.getElementById('editProxyAddress').value = item.address || '';
     document.getElementById('editProxyDriver').value = item.driver || '';
     document.getElementById('editProxyStatus').value = item.status || 'В работе';
@@ -7168,17 +7156,15 @@ if (isAdmin) {
         generateUniqueId();
     
     const item = {
-        recordId: recordId,
-        date: formatDateForDisplay(document.getElementById('editProxyDate').value),
-        docNumber: document.getElementById('editProxyApplication').value,
-        supplier: document.getElementById('editProxySupplier').value,
-        phone: document.getElementById('editProxyPhone').value,
-        contract: document.getElementById('editProxyDocument').value,
-        product: document.getElementById('editProxyProduct').value,
-        address: document.getElementById('editProxyAddress').value,
-        driver: document.getElementById('editProxyDriver').value,
-        status: document.getElementById('editProxyStatus').value || 'В работе'
-    };
+    recordId: recordId,
+    date: formatDateForDisplay(document.getElementById('editProxyDate').value),
+    docNumber: document.getElementById('editProxyApplication').value,
+    supplier: document.getElementById('editProxySupplier').value,
+    contract: document.getElementById('editProxyDocument').value,
+    address: document.getElementById('editProxyAddress').value,
+    driver: document.getElementById('editProxyDriver').value,
+    status: document.getElementById('editProxyStatus').value || 'В работе'
+};
     
     if (index === '') {
         proxyData.push(item);
@@ -9006,40 +8992,27 @@ document.addEventListener('click', function(event) {
         }
 
         function autoFillProxyCounterpartyAddress() {
-            const supplierInput = document.getElementById('editProxySupplier');
-            const addressInput = document.getElementById('editProxyAddress');
-            const phoneInput = document.getElementById('editProxyPhone');
-            
-            if (!supplierInput || !addressInput) return;
-            
-            supplierInput.addEventListener('change', function() {
-                const supplierName = this.value.trim();
-                
-                if (!supplierName) {
-                    addressInput.value = '';
-                    if (phoneInput) phoneInput.value = '';
-                    return;
-                }
-                
-                // Ищем контрагента в базе данных
-                const counterparty = counterpartiesData.find(item => 
-                    item.supplier && item.supplier.trim() === supplierName
-                );
-                
-                // Если нашли контрагента - заполняем поля
-                if (counterparty) {
-                    if (counterparty.address) {
-                        addressInput.value = counterparty.address;
-                    }
-                    if (phoneInput && counterparty.phone) {
-                        phoneInput.value = counterparty.phone;
-                    }
-                } else {
-                    addressInput.value = '';
-                    if (phoneInput) phoneInput.value = '';
-                }
-            });
+    const supplierInput = document.getElementById('editProxySupplier');
+    const addressInput = document.getElementById('editProxyAddress');
+    
+    if (!supplierInput || !addressInput) return;
+    
+    supplierInput.addEventListener('change', function() {
+        const supplierName = this.value.trim();
+        if (!supplierName) {
+            addressInput.value = '';
+            return;
         }
+        const counterparty = counterpartiesData.find(item => 
+            item.supplier && item.supplier.trim() === supplierName
+        );
+        if (counterparty && counterparty.address) {
+            addressInput.value = counterparty.address;
+        } else {
+            addressInput.value = '';
+        }
+    });
+}
         // ========== ФУНКЦИИ ДЛЯ УПРАВЛЕНИЯ ДАННЫМИ ==========
         function refreshData() {
             console.log('Обновление данных...');
