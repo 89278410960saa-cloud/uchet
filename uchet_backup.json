@@ -5210,6 +5210,29 @@
       "planFact": "",
       "fact": "",
       "shipmentDoc": ""
+    },
+    {
+      "recordId": "20260324091138365_fnj66n0f3",
+      "docNumber": "2026-233 (от 20.03.2026)",
+      "status": "В работе",
+      "id": "МАТ-06885",
+      "name": "Тележка платформенная\t4-Х КОЛЕСНАЯ",
+      "quantity": "1",
+      "unit": "шт",
+      "purchaseName": "",
+      "purchaseQuantity": "",
+      "purchaseUnit": "",
+      "amount": "",
+      "supplier": "",
+      "department": "11/0141 Котельная",
+      "contract": "",
+      "paymentTerms": "",
+      "deliveryDays": "",
+      "deliveryTerms": "",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
     }
   ],
   "counterpartiesData": [
@@ -12137,5 +12160,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-03-24T06:10:16.435Z"
+  "exportDate": "2026-03-24T06:11:38.405Z"
 }
