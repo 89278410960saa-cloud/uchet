@@ -2426,6 +2426,10 @@ button:hover{background:#222733!important}
 
     <!-- Секция управления данными -->
     <div class="sidebar-section" style="margin-bottom: 0.0px;">
+        <div class="sidebar-cell menu-item import-btn" onclick="importJSON()" title="Импорт данных" style="display: flex;">
+        <span class="sidebar-icon">♻️</span>
+        <div class="sidebar-tooltip">Импорт данных</div>
+    </div>
      <div class="sidebar-cell menu-item" onclick="showStatusStatsModal()" title="Аналитика">
     <span class="sidebar-icon">📊</span>
     <div class="sidebar-tooltip">Аналитика</div>
@@ -2447,10 +2451,6 @@ button:hover{background:#222733!important}
 
     <!-- Скрытое меню настроек -->
 <div id="settingsMenu" class="sidebar-section" style="display: none;">
-    <div class="sidebar-cell menu-item import-btn" onclick="importJSON()" title="Импорт данных" style="display: flex;">
-        <span class="sidebar-icon">♻️</span>
-        <div class="sidebar-tooltip">Импорт данных</div>
-    </div>
     <div class="sidebar-cell menu-item admin-only export-btn" onclick="exportJSON()" title="Экспорт данных" style="display: none;">
         <span class="sidebar-icon">📤</span>
         <div class="sidebar-tooltip">Экспорт данных</div>
