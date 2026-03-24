@@ -7784,7 +7784,6 @@ function printDeliveriesAndOverdue() {
         applicationComments[application] = cleanComment;
         localStorage.setItem('applicationComments', JSON.stringify(applicationComments));
         showAutosaveNotification('Комментарий сохранен');
-        updateApplicationCommentsAnalytics();
         markChangesMade();
     }
 }
