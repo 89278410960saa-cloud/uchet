@@ -5218,16 +5218,16 @@
       "name": "Тележка платформенная\t4-Х КОЛЕСНАЯ",
       "quantity": "1",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
+      "purchaseName": "Тележка платформенная 800x1400 ТП 7 200\n\\RUSKLAD",
+      "purchaseQuantity": "1",
+      "purchaseUnit": "шт",
+      "amount": "19340.00",
       "supplier": "АО \"ЧИП и Дип\"",
       "department": "11/0141 Котельная",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № 16917532",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "14",
+      "deliveryTerms": "Самовывоз",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -12160,5 +12160,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-03-24T07:08:36.904Z"
+  "exportDate": "2026-03-24T07:37:59.921Z"
 }
