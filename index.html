@@ -2434,11 +2434,6 @@ button:hover{background:#222733!important}
     <span class="sidebar-icon">📊</span>
     <div class="sidebar-tooltip">Аналитика</div>
 </div>
-<div class="sidebar-cell menu-item" onclick="showGithubSettingsModal()" title="GitHub настройки">
-    <span class="sidebar-icon">🐙</span>
-    <div class="sidebar-tooltip">GitHub настройки</div>
-    <div class="sidebar-badge warning" id="githubGuestBadge" style="display: none;">!</div>
-</div>
     
 </div>
 <div class="sidebar-section">
@@ -2451,6 +2446,11 @@ button:hover{background:#222733!important}
 
     <!-- Скрытое меню настроек -->
 <div id="settingsMenu" class="sidebar-section" style="display: none;">
+    <div class="sidebar-cell menu-item" onclick="showGithubSettingsModal()" title="GitHub настройки">
+    <span class="sidebar-icon">🐙</span>
+    <div class="sidebar-tooltip">GitHub настройки</div>
+    <div class="sidebar-badge warning" id="githubGuestBadge" style="display: none;">!</div>
+</div>
     <div class="sidebar-cell menu-item admin-only export-btn" onclick="exportJSON()" title="Экспорт данных" style="display: none;">
         <span class="sidebar-icon">📤</span>
         <div class="sidebar-tooltip">Экспорт данных</div>
