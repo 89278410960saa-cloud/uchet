@@ -814,7 +814,7 @@
       "purchaseQuantity": "",
       "purchaseUnit": "",
       "amount": "",
-      "supplier": "",
+      "supplier": "АО \"ПКР\"",
       "department": "11/0110 Служба главного механика",
       "contract": "",
       "paymentTerms": "",
@@ -12226,5 +12226,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-03-27T08:26:35.501Z"
+  "exportDate": "2026-03-27T08:26:48.336Z"
 }
