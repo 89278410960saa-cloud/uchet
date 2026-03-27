@@ -833,16 +833,16 @@
       "name": "Шпилька  I-М24×280.40Х., кл. пр.10.9, оцинк. ОСТ 26-2040-96",
       "quantity": "1040",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
+      "purchaseName": "Шпилька 1-М24х280.40Х.10,9 ОСТ 26-2040-96 оц",
+      "purchaseQuantity": "1040",
+      "purchaseUnit": "шт",
+      "amount": "452400.00",
       "supplier": "АО \"ПКР\"",
       "department": "11/0110 Служба главного механика",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № 279",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "30",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -12985,5 +12985,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-03-27T09:11:05.943Z"
+  "exportDate": "2026-03-27T09:11:31.661Z"
 }
