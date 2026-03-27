@@ -787,16 +787,16 @@
       "name": "Шайба 24.Сталь20. оцинк ОСТ 26-2042-96 (шт.)",
       "quantity": "2080",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
+      "purchaseName": "Шайба 24.Сталь20. оцинк ОСТ 26-2042-96",
+      "purchaseQuantity": "2080",
+      "purchaseUnit": "шт",
+      "amount": "99840.00",
       "supplier": "ООО \"Спецкрепеж\"",
       "department": "11/0110 Служба главного механика",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № 34116",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "42",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -12985,5 +12985,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-03-27T09:11:31.661Z"
+  "exportDate": "2026-03-27T09:34:32.312Z"
 }
