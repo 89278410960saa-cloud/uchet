@@ -5442,6 +5442,29 @@
       "planFact": "",
       "fact": "",
       "shipmentDoc": ""
+    },
+    {
+      "recordId": "20260327114301695_p4lloihcw",
+      "docNumber": "2026-257 (от 24.03.2026)",
+      "status": "В работе",
+      "id": "-",
+      "name": "Резьбовой двуручный заклепочник в кейсе ЗУБР Професси-онал Р-М10 М3 - М10 31056",
+      "quantity": "1",
+      "unit": "шт",
+      "purchaseName": "",
+      "purchaseQuantity": "",
+      "purchaseUnit": "",
+      "amount": "",
+      "supplier": "",
+      "department": "11/0110 Служба главного механика",
+      "contract": "",
+      "paymentTerms": "",
+      "deliveryDays": "",
+      "deliveryTerms": "",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
     }
   ],
   "counterpartiesData": [
@@ -12433,5 +12456,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-03-27T08:42:42.366Z"
+  "exportDate": "2026-03-27T08:43:01.733Z"
 }
