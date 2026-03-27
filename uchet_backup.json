@@ -127,7 +127,7 @@
       "purchaseQuantity": "",
       "purchaseUnit": "",
       "amount": "",
-      "supplier": "",
+      "supplier": "ООО \"Балтоптторг\"",
       "department": "13/0100 Товарная служба",
       "contract": "",
       "paymentTerms": "",
@@ -12984,5 +12984,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-03-27T12:52:52.699Z"
+  "exportDate": "2026-03-27T12:52:57.524Z"
 }
