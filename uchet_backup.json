@@ -5534,6 +5534,29 @@
       "planFact": "",
       "fact": "",
       "shipmentDoc": ""
+    },
+    {
+      "recordId": "20260327114415628_eesonixz8",
+      "docNumber": "2026-257 (от 24.03.2026)",
+      "status": "В работе",
+      "id": "-",
+      "name": "Каркасная сумка для инструмен-та YATO 12 16 карманов YT-74370",
+      "quantity": "4",
+      "unit": "шт",
+      "purchaseName": "",
+      "purchaseQuantity": "",
+      "purchaseUnit": "",
+      "amount": "",
+      "supplier": "",
+      "department": "11/0110 Служба главного механика",
+      "contract": "",
+      "paymentTerms": "",
+      "deliveryDays": "",
+      "deliveryTerms": "",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
     }
   ],
   "counterpartiesData": [
@@ -12525,5 +12548,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-03-27T08:43:58.116Z"
+  "exportDate": "2026-03-27T08:44:15.679Z"
 }
