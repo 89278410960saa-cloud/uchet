@@ -5239,6 +5239,18 @@
   ],
   "counterpartiesData": [
     {
+      "recordId": "20260327112635458_405tuzuny",
+      "supplier": "АО \"ПКР\"",
+      "inn": "5036123157",
+      "phone": "7 (495) 500-09-26",
+      "contact": "Дмитрий ",
+      "email": "oap@zaopkr.ru",
+      "address": "-",
+      "material": "метизы",
+      "blacklisted": false,
+      "blacklistComment": ""
+    },
+    {
       "recordId": "20260320141719411_5tvfkz1nk",
       "supplier": "ООО\"Империя Гранд Рус\"",
       "inn": "7842128445",
@@ -12214,5 +12226,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-03-27T08:25:47.460Z"
+  "exportDate": "2026-03-27T08:26:35.501Z"
 }
