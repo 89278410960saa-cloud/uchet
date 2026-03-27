@@ -5764,6 +5764,29 @@
       "planFact": "",
       "fact": "",
       "shipmentDoc": ""
+    },
+    {
+      "recordId": "20260327114727306_5dawv2nqc",
+      "docNumber": "2026-257 (от 24.03.2026)",
+      "status": "В работе",
+      "id": "-",
+      "name": "Пилки универсальные S4860DF (300 мм; BIM) для сабельной пилы ПРАКТИКА 773-576  (пачка)",
+      "quantity": "2",
+      "unit": "шт",
+      "purchaseName": "",
+      "purchaseQuantity": "",
+      "purchaseUnit": "",
+      "amount": "",
+      "supplier": "",
+      "department": "11/0110 Служба главного механика",
+      "contract": "",
+      "paymentTerms": "",
+      "deliveryDays": "",
+      "deliveryTerms": "",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
     }
   ],
   "counterpartiesData": [
@@ -12755,5 +12778,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-03-27T08:47:07.557Z"
+  "exportDate": "2026-03-27T08:47:27.347Z"
 }
