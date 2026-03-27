@@ -5235,6 +5235,29 @@
       "fact": "11.12.2025",
       "shipmentDoc": "70019 от 09.12.25",
       "plan": "11.12.2025"
+    },
+    {
+      "recordId": "20260327113726728_nfdbogwlb",
+      "docNumber": "2026-260 (от 24.03.2026)",
+      "status": "В работе",
+      "id": "МАТ-05156",
+      "name": "Аккумуляторная батарея (эл)\tDELTA DTM 1205",
+      "quantity": "24",
+      "unit": "шт",
+      "purchaseName": "",
+      "purchaseQuantity": "",
+      "purchaseUnit": "",
+      "amount": "",
+      "supplier": "",
+      "department": "11/0130 Служба АСУ и КИП",
+      "contract": "",
+      "paymentTerms": "",
+      "deliveryDays": "",
+      "deliveryTerms": "",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
     }
   ],
   "counterpartiesData": [
@@ -12226,5 +12249,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-03-27T08:26:53.192Z"
+  "exportDate": "2026-03-27T08:37:26.810Z"
 }
