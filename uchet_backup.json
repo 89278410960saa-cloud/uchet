@@ -5373,6 +5373,29 @@
       "planFact": "",
       "fact": "",
       "shipmentDoc": ""
+    },
+    {
+      "recordId": "20260327114001979_g0pcfl2pu",
+      "docNumber": "2026-260 (от 24.03.2026)",
+      "status": "В работе",
+      "id": "МАТ-05656",
+      "name": "Аккумуляторная батарея Delta\tDTM 1209",
+      "quantity": "10",
+      "unit": "шт",
+      "purchaseName": "",
+      "purchaseQuantity": "",
+      "purchaseUnit": "",
+      "amount": "",
+      "supplier": "",
+      "department": "11/0130 Служба АСУ и КИП",
+      "contract": "",
+      "paymentTerms": "",
+      "deliveryDays": "",
+      "deliveryTerms": "",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
     }
   ],
   "counterpartiesData": [
@@ -12364,5 +12387,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-03-27T08:39:35.300Z"
+  "exportDate": "2026-03-27T08:40:02.029Z"
 }
