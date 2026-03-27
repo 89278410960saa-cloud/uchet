@@ -810,16 +810,16 @@
       "name": "Гайка М24.7Н.40Х. оцинк., кл. пр.10, ОСТ 26-2041-96  \n",
       "quantity": "2080",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
+      "purchaseName": "Гайка М24.40Х.10 ОСТ 26-2041-96 оц ",
+      "purchaseQuantity": "2080",
+      "purchaseUnit": "шт",
+      "amount": "203840.00",
       "supplier": "АО \"ПКР\"",
       "department": "11/0110 Служба главного механика",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № 279",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "30",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -12985,5 +12985,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-03-27T08:57:35.305Z"
+  "exportDate": "2026-03-27T09:11:05.943Z"
 }
