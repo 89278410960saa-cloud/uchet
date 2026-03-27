@@ -5511,6 +5511,29 @@
       "planFact": "",
       "fact": "",
       "shipmentDoc": ""
+    },
+    {
+      "recordId": "20260327114358077_5av349ydc",
+      "docNumber": "2026-257 (от 24.03.2026)",
+      "status": "В работе",
+      "id": "-",
+      "name": "Каркасная переноска для инструментов JCB 50 см, 20\" JSW007",
+      "quantity": "4",
+      "unit": "шт",
+      "purchaseName": "",
+      "purchaseQuantity": "",
+      "purchaseUnit": "",
+      "amount": "",
+      "supplier": "",
+      "department": "11/0110 Служба главного механика",
+      "contract": "",
+      "paymentTerms": "",
+      "deliveryDays": "",
+      "deliveryTerms": "",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
     }
   ],
   "counterpartiesData": [
@@ -12502,5 +12525,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-03-27T08:43:36.205Z"
+  "exportDate": "2026-03-27T08:43:58.116Z"
 }
