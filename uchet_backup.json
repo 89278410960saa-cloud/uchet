@@ -5902,6 +5902,29 @@
       "planFact": "",
       "fact": "",
       "shipmentDoc": ""
+    },
+    {
+      "recordId": "20260327115608189_nv1xys1cl",
+      "docNumber": "н/н (от 27.03.2026)",
+      "status": "В работе",
+      "id": "-",
+      "name": "пленка (плотная)  ",
+      "quantity": "20",
+      "unit": "рулон",
+      "purchaseName": "",
+      "purchaseQuantity": "",
+      "purchaseUnit": "",
+      "amount": "",
+      "supplier": "",
+      "department": "13/0100 Товарная служба",
+      "contract": "",
+      "paymentTerms": "",
+      "deliveryDays": "",
+      "deliveryTerms": "",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
     }
   ],
   "counterpartiesData": [
@@ -12893,5 +12916,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-03-27T08:55:47.692Z"
+  "exportDate": "2026-03-27T08:56:08.244Z"
 }
