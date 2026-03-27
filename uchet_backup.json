@@ -5718,6 +5718,29 @@
       "planFact": "",
       "fact": "",
       "shipmentDoc": ""
+    },
+    {
+      "recordId": "20260327114647304_anbd6waf3",
+      "docNumber": "2026-257 (от 24.03.2026)",
+      "status": "В работе",
+      "id": "-",
+      "name": "Аккумулятор Duracell разме-ра AA 2500 мАч, 4 шт. Б0014863 (пачка)",
+      "quantity": "8",
+      "unit": "шт",
+      "purchaseName": "",
+      "purchaseQuantity": "",
+      "purchaseUnit": "",
+      "amount": "",
+      "supplier": "",
+      "department": "11/0110 Служба главного механика",
+      "contract": "",
+      "paymentTerms": "",
+      "deliveryDays": "",
+      "deliveryTerms": "",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
     }
   ],
   "counterpartiesData": [
@@ -12709,5 +12732,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-03-27T08:46:32.637Z"
+  "exportDate": "2026-03-27T08:46:47.341Z"
 }
