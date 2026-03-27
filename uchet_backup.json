@@ -5971,6 +5971,29 @@
       "planFact": "",
       "fact": "",
       "shipmentDoc": ""
+    },
+    {
+      "recordId": "20260327115735244_l5skg9h2k",
+      "docNumber": "н/н (от 27.03.2026)",
+      "status": "В работе",
+      "id": "-",
+      "name": "лопата совковая",
+      "quantity": "500",
+      "unit": "шт",
+      "purchaseName": "",
+      "purchaseQuantity": "",
+      "purchaseUnit": "",
+      "amount": "",
+      "supplier": "",
+      "department": "13/0100 Товарная служба",
+      "contract": "",
+      "paymentTerms": "",
+      "deliveryDays": "",
+      "deliveryTerms": "",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
     }
   ],
   "counterpartiesData": [
@@ -12962,5 +12985,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-03-27T08:57:05.251Z"
+  "exportDate": "2026-03-27T08:57:35.305Z"
 }
