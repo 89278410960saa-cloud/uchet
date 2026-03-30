@@ -6085,6 +6085,29 @@
       "planFact": "01.04.2026",
       "fact": "",
       "shipmentDoc": ""
+    },
+    {
+      "recordId": "20260330115318503_anmydrb3f",
+      "docNumber": "н/н (от 27.03.2026)",
+      "status": "В работе",
+      "id": "-",
+      "name": "веревка шпагат",
+      "quantity": "5",
+      "unit": "шт",
+      "purchaseName": "Шпагат крученый \nджутовый 2 пряди d1,5 \nмм 1400 м МДС \nповышенной плотности",
+      "purchaseQuantity": "5",
+      "purchaseUnit": "шт",
+      "amount": "5495.00",
+      "supplier": "ООО \"СТД \"Петрович\"",
+      "department": "13/0100 Товарная служба",
+      "contract": "СЧ № СКЭ00027714",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "1",
+      "deliveryTerms": "Включена",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
     }
   ],
   "counterpartiesData": [
@@ -13107,5 +13130,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-03-30T08:52:17.803Z"
+  "exportDate": "2026-03-30T08:53:18.538Z"
 }
