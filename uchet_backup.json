@@ -6025,16 +6025,16 @@
       "name": "-",
       "quantity": "-",
       "unit": "-",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
-      "supplier": "",
+      "purchaseName": "Gigant Лопата штыковая с черенком \nG-01-06-12-0015",
+      "purchaseQuantity": "181",
+      "purchaseUnit": "шт",
+      "amount": "81450.00",
+      "supplier": "ВсеИнструменты.ру, ООО",
       "department": "13/0100 Товарная служба",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № 2603-343587-35521",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "7",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -13086,5 +13086,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-03-30T06:35:58.288Z"
+  "exportDate": "2026-03-30T06:36:28.808Z"
 }
