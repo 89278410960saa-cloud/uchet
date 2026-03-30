@@ -5993,6 +5993,29 @@
       "fact": "11.12.2025",
       "shipmentDoc": "70019 от 09.12.25",
       "plan": "11.12.2025"
+    },
+    {
+      "recordId": "20260330092959276_vsfr9zvhm",
+      "docNumber": "н/н (от 27.03.2026)",
+      "status": "В работе",
+      "id": "-",
+      "name": "-",
+      "quantity": "-",
+      "unit": "-",
+      "purchaseName": "",
+      "purchaseQuantity": "",
+      "purchaseUnit": "",
+      "amount": "",
+      "supplier": "",
+      "department": "13/0100 Товарная служба",
+      "contract": "",
+      "paymentTerms": "",
+      "deliveryDays": "",
+      "deliveryTerms": "",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
     }
   ],
   "counterpartiesData": [
@@ -12994,5 +13017,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-03-30T06:27:08.608Z"
+  "exportDate": "2026-03-30T06:29:59.321Z"
 }
