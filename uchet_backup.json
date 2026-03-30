@@ -77,16 +77,16 @@
       "name": "пленка (плотная)  ",
       "quantity": "20",
       "unit": "рулон",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
-      "supplier": "",
+      "purchaseName": "Пленка защитная Hesler \n10 мкм 4х5 м (20 кв.м) ",
+      "purchaseQuantity": "50",
+      "purchaseUnit": "шт",
+      "amount": "6800.00",
+      "supplier": "ООО \"СТД \"Петрович\"",
       "department": "13/0100 Товарная служба",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № СКЭ00027714",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "1",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -13107,5 +13107,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-03-30T08:51:39.095Z"
+  "exportDate": "2026-03-30T08:52:17.803Z"
 }
