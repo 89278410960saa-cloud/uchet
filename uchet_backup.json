@@ -111,7 +111,7 @@
       "deliveryDays": "3",
       "deliveryTerms": "Включена",
       "date": "27.03.2026",
-      "planFact": "03.04.2026",
+      "planFact": "01.04.2026",
       "fact": "",
       "shipmentDoc": ""
     },
@@ -13096,5 +13096,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-03-30T06:38:49.331Z"
+  "exportDate": "2026-03-30T06:38:57.865Z"
 }
