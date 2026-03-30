@@ -6150,6 +6150,29 @@
       "planFact": "31.03.2026",
       "fact": "",
       "shipmentDoc": ""
+    },
+    {
+      "recordId": "20260330163802339_dmxa1rznl",
+      "docNumber": "н/н (от 30.03.2026)",
+      "status": "В работе",
+      "id": "-",
+      "name": "шины на погрузчик MANITOU размер 15.5/80-24 с максимальным показателем нормы слойности",
+      "quantity": "5",
+      "unit": "шт",
+      "purchaseName": "",
+      "purchaseQuantity": "",
+      "purchaseUnit": "",
+      "amount": "",
+      "supplier": "",
+      "department": "16/0100 СТиАТ",
+      "contract": "",
+      "paymentTerms": "",
+      "deliveryDays": "",
+      "deliveryTerms": "",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
     }
   ],
   "counterpartiesData": [
@@ -13192,5 +13215,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-03-30T13:29:31.811Z"
+  "exportDate": "2026-03-30T13:38:02.381Z"
 }
