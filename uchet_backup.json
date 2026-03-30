@@ -3,7 +3,7 @@
     {
       "recordId": "20260327115735244_l5skg9h2k",
       "docNumber": "н/н (от 27.03.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "М007323",
       "name": "лопата совковая",
       "quantity": "500",
@@ -18,8 +18,8 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "7",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "27.03.2026",
+      "planFact": "01.04.2026",
       "fact": "",
       "shipmentDoc": ""
     },
@@ -13096,5 +13096,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-03-30T06:38:23.465Z"
+  "exportDate": "2026-03-30T06:38:49.331Z"
 }
