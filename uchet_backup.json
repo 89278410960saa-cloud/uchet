@@ -6020,7 +6020,7 @@
     {
       "recordId": "20260330093031472_mo3fhryck",
       "docNumber": "н/н (от 27.03.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "-",
       "name": "-",
       "quantity": "-",
@@ -6035,8 +6035,8 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "7",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "27.03.2026",
+      "planFact": "01.04.2026",
       "fact": "",
       "shipmentDoc": ""
     },
@@ -13096,5 +13096,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-03-30T06:39:17.207Z"
+  "exportDate": "2026-03-30T06:39:26.479Z"
 }
