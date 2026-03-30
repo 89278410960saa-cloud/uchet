@@ -31,16 +31,16 @@
       "name": "лопата штыковая",
       "quantity": "500",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
+      "purchaseName": "Gigant Лопата штыковая из \nрельсовой стали с чер. 1 сорт и \nребрами жесткости GBS-01\n",
+      "purchaseQuantity": "302",
+      "purchaseUnit": "шт",
+      "amount": "89694.00",
       "supplier": "ВсеИнструменты.ру, ООО",
       "department": "13/0100 Товарная служба",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № 2603-343587-35521",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "7",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -13086,5 +13086,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-03-30T06:31:29.245Z"
+  "exportDate": "2026-03-30T06:34:46.217Z"
 }
