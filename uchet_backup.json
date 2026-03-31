@@ -8,16 +8,16 @@
       "name": "шины на погрузчик MANITOU размер 15.5/80-24 с максимальным показателем нормы слойности",
       "quantity": "5",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
-      "supplier": "",
+      "purchaseName": "Автошина 15.5/80-24 (400/80-24) CEAT LOADPRO 20PR 162A8 \nTL",
+      "purchaseQuantity": "5",
+      "purchaseUnit": "шт",
+      "amount": "299000.00",
+      "supplier": "ООО \"Автограф СПБ\"",
       "department": "16/0100 СТиАТ",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № 655",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "2",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -13227,5 +13227,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-03-31T09:05:05.697Z"
+  "exportDate": "2026-03-31T09:06:57.790Z"
 }
