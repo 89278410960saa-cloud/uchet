@@ -905,16 +905,16 @@
       "name": "Аккумуляторная батарея Delta\tDTM-1207",
       "quantity": "40",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
+      "purchaseName": "Аккумуляторная батарея Delta DTM 1207",
+      "purchaseQuantity": "40",
+      "purchaseUnit": "шт",
+      "amount": "68640.00",
       "supplier": "ООО \"Спектр РС\"",
       "department": "11/0130 Служба АСУ и КИП",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № 26-4305",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "7",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -13239,5 +13239,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-03-31T09:50:14.046Z"
+  "exportDate": "2026-03-31T09:50:37.456Z"
 }
