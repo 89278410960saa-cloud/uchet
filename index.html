@@ -6025,21 +6025,21 @@ async function forceExportToGitHub() {
     const btn = document.querySelector('.github-export-btn');
     const iconSpan = btn.querySelector('.sidebar-icon');
     const spinnerSpan = btn.querySelector('.github-export-spinner');
-    
+
     // Проверяем наличие токена GitHub
     if (!githubToken) {
         showAutosaveNotification('GitHub токен не настроен. Откройте настройки GitHub и введите токен.', true);
         showGithubSettingsModal();
         return;
     }
-    
+
     // Блокируем кнопку и показываем индикатор загрузки
     btn.style.pointerEvents = 'none';
     iconSpan.style.display = 'none';
     spinnerSpan.style.display = 'inline-block';
-    
+
     try {
-        // Логика экспорта, аналогичная saveToGitHub, но без проверки githubAutoSaveEnabled
+        // Подготавливаем данные
         const data = {
             accountingData,
             counterpartiesData,
@@ -6052,24 +6052,26 @@ async function forceExportToGitHub() {
             version: '1.1',
             exportDate: new Date().toISOString()
         };
-        
+
         const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
         const owner = '89278410960saa-cloud';
         const repo = 'uchet';
         const path = 'uchet_backup.json';
-        
+
+        // Получаем sha текущего файла (если есть)
         let sha = null;
         const getResponse = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`, {
             headers: { 'Authorization': `token ${githubToken}` }
         });
-        
+
         if (getResponse.ok) {
             const fileInfo = await getResponse.json();
             sha = fileInfo.sha;
         } else if (getResponse.status !== 404) {
             throw new Error(`GitHub API error: ${getResponse.status}`);
         }
-        
+
+        // Отправляем обновлённый файл
         const putResponse = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`, {
             method: 'PUT',
             headers: {
@@ -6083,7 +6085,7 @@ async function forceExportToGitHub() {
                 branch: 'main'
             })
         });
-        
+
         if (putResponse.ok) {
             showAutosaveNotification('✅ Данные успешно сохранены в GitHub');
         } else {
@@ -6097,7 +6099,7 @@ async function forceExportToGitHub() {
             showAutosaveNotification('Проверьте токен GitHub в настройках', true);
         }
     } finally {
-        // Восстанавливаем кнопку
+        // Восстанавливаем кнопку и скрываем спиннер
         btn.style.pointerEvents = '';
         iconSpan.style.display = '';
         spinnerSpan.style.display = 'none';
