@@ -1790,16 +1790,15 @@
     display: inline-block;
     width: 14px;
     height: 14px;
-    margin-left: 5px;
+    border: 2px solid rgba(102, 192, 244, 0.3);
+    border-top-color: #66c0f4;
     border-radius: 50%;
-    background-color: #ffb347;
-    animation: pulse-dark-yellow 0.8s infinite;
+    animation: spin 0.6s linear infinite;
+    margin-left: 5px;
 }
 
-@keyframes pulse-dark-yellow {
-    0% { opacity: 0.3; transform: scale(0.8); background-color: #ffb347; }
-    50% { opacity: 1; transform: scale(1.2); background-color: #ff8c00; }
-    100% { opacity: 0.3; transform: scale(0.8); background-color: #ffb347; }
+@keyframes spin {
+    to { transform: rotate(360deg); }
 }
         /* Разделитель в сайдбаре */
         .sidebar-divider {
