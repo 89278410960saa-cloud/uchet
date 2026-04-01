@@ -6214,6 +6214,29 @@
       "planFact": "02.04.2026",
       "fact": "",
       "shipmentDoc": ""
+    },
+    {
+      "recordId": "20260401111213413_smncfuc7k",
+      "docNumber": "н/н № 2 (от 31.03.2026)",
+      "status": "В работе",
+      "id": "-",
+      "name": "Лента оградительная",
+      "quantity": "15",
+      "unit": "упак",
+      "purchaseName": "",
+      "purchaseQuantity": "17",
+      "purchaseUnit": "упак",
+      "amount": "17794.92",
+      "supplier": "ООО \"Комус\"",
+      "department": "14/3000 СЭЗиТБ",
+      "contract": "СЧ № 0ЕР/561465/20442561",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "2",
+      "deliveryTerms": "Включена",
+      "date": "31.03.2026",
+      "planFact": "02.04.2026",
+      "fact": "",
+      "shipmentDoc": ""
     }
   ],
   "counterpartiesData": [
@@ -13300,5 +13323,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-01T08:06:19.262Z"
+  "exportDate": "2026-04-01T08:12:13.457Z"
 }
