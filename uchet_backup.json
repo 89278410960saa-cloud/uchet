@@ -6191,6 +6191,29 @@
       "fact": "11.12.2025",
       "shipmentDoc": "70019 от 09.12.25",
       "plan": "11.12.2025"
+    },
+    {
+      "recordId": "20260401110524437_q6hnrfys3",
+      "docNumber": "н/н (от 31.03.2026)",
+      "status": "В работе",
+      "id": "-",
+      "name": "Лента оградительная красно-белая 50 мм x 100 м (6 штук в упаковке)",
+      "quantity": "50",
+      "unit": "упак",
+      "purchaseName": "Лента оградительная красно-белая 50 мм х 250 м, 6 шт/упак",
+      "purchaseQuantity": "30",
+      "purchaseUnit": "упак",
+      "amount": "31402.80",
+      "supplier": "ООО \"Комус\"",
+      "department": "11/0030 Отдел ПБ, ОТ, ГО и ЧС",
+      "contract": "СЧ № 0ЕР/561465/20442356",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "2",
+      "deliveryTerms": "Включена",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
     }
   ],
   "counterpartiesData": [
@@ -13277,5 +13300,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-01T08:00:38.486Z"
+  "exportDate": "2026-04-01T08:05:24.504Z"
 }
