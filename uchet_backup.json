@@ -1247,16 +1247,16 @@
       "name": "Шпилька М30-6gх120.88. AISI316Ti  (рос. аналог 10Х17Н13М2Т)    ГОСТ220042-76 (шт.)\n",
       "quantity": "18",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
-      "supplier": "",
+      "purchaseName": "Шпилька М30-6gх120.88. AISI316Ti (рос. аналог 10Х17Н13М2Т) ГОСТ22042-76",
+      "purchaseQuantity": "18",
+      "purchaseUnit": "шт",
+      "amount": "60696.00",
+      "supplier": "АО \"ПКР\"",
       "department": "17/0030 Строительства и ремонта",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № 288",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "35",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -13344,5 +13344,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-01T08:26:37.914Z"
+  "exportDate": "2026-04-01T08:28:00.484Z"
 }
