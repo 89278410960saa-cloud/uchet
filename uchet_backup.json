@@ -1362,16 +1362,16 @@
       "name": "Прямоугольная шайба М30 86х68 толщина 4мм нерж. ГОСТ 11371-78 (шт.)\n",
       "quantity": "18",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
-      "supplier": "",
+      "purchaseName": "шайба прямоуголная 86х68х4 с отв D 30мм (нерж)",
+      "purchaseQuantity": "18",
+      "purchaseUnit": "шт",
+      "amount": "10296.00",
+      "supplier": "АО \"ПКР\"",
       "department": "17/0030 Строительства и ремонта",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № 288",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "35",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -13344,5 +13344,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-01T08:28:28.563Z"
+  "exportDate": "2026-04-01T08:28:53.773Z"
 }
