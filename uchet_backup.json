@@ -6283,6 +6283,29 @@
       "planFact": "",
       "fact": "",
       "shipmentDoc": ""
+    },
+    {
+      "recordId": "20260401122317059_mkkfv1rvg",
+      "docNumber": "н/н (от 01.04.2026)",
+      "status": "В работе",
+      "id": "-",
+      "name": "Мешок для мусора ",
+      "quantity": "3338",
+      "unit": "шт",
+      "purchaseName": "Мешок для мусора 50 л \n500х900 мм \nполипропиленовый \nзеленый",
+      "purchaseQuantity": "3338",
+      "purchaseUnit": "шт",
+      "amount": "43394.00",
+      "supplier": "ООО \"СТД \"Петрович\"",
+      "department": "13/0100 Товарная служба",
+      "contract": "СЧ № СКЭ00028641",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "1",
+      "deliveryTerms": "Включена",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
     }
   ],
   "counterpartiesData": [
@@ -13420,5 +13443,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-01T09:22:17.106Z"
+  "exportDate": "2026-04-01T09:23:17.102Z"
 }
