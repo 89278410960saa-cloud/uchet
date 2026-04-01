@@ -1270,16 +1270,16 @@
       "name": "Шайба (в штуках) КРУГЛАЯ М30 DIN 125A AISI316Ti  (рос. аналог 10Х17Н13М2Т) (шт.)\n",
       "quantity": "18",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
+      "purchaseName": "Метизный двор Шайба плоская D30 \nDIN 125, 25 шт. 4690441027672",
+      "purchaseQuantity": "1",
+      "purchaseUnit": "шт",
+      "amount": "593.00",
       "supplier": "ВсеИнструменты.ру, ООО",
       "department": "17/0030 Строительства и ремонта",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № 2603-347266-94919",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "7",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -13344,5 +13344,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-01T08:25:05.909Z"
+  "exportDate": "2026-04-01T08:26:09.008Z"
 }
