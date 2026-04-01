@@ -1385,16 +1385,16 @@
       "name": "Гайка нерж DIN 934 (шт.)\tМ30 А4 НЕРЖ.",
       "quantity": "24",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
+      "purchaseName": "Метизный двор Гайка шестигранная \nM30 DIN 934, 10 шт. 4690441027634",
+      "purchaseQuantity": "2",
+      "purchaseUnit": "упак",
+      "amount": "2030.00",
       "supplier": "ВсеИнструменты.ру, ООО",
       "department": "17/0030 Строительства и ремонта",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № 2603-347266-94919",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "7",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -13344,5 +13344,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-01T08:26:09.008Z"
+  "exportDate": "2026-04-01T08:26:37.914Z"
 }
