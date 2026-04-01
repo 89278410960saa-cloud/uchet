@@ -1395,10 +1395,10 @@
 }
 
 /* Задаём ширину для каждого столбца (подберите значения под свои данные) */
-#paymentsTable th:nth-child(1), #paymentsTable td:nth-child(1) { width: 30px !important; }  /* Дата */
-#paymentsTable th:nth-child(2), #paymentsTable td:nth-child(2) { width: 30px !important; }  /* Статус */
-#paymentsTable th:nth-child(3), #paymentsTable td:nth-child(3) { width: 60px !important; } /* Заявка */
-#paymentsTable th:nth-child(4), #paymentsTable td:nth-child(4) { width: 100px !important; } /* Контрагент */
+#paymentsTable th:nth-child(1), #paymentsTable td:nth-child(1) { width: 20px !important; }  /* Дата */
+#paymentsTable th:nth-child(2), #paymentsTable td:nth-child(2) { width: 20px !important; }  /* Статус */
+#paymentsTable th:nth-child(3), #paymentsTable td:nth-child(3) { width: 40px !important; } /* Заявка */
+#paymentsTable th:nth-child(4), #paymentsTable td:nth-child(4) { width: 80px !important; } /* Контрагент */
 #paymentsTable th:nth-child(5), #paymentsTable td:nth-child(5) { width: 30px !important; }  /* Сумма */
 #paymentsTable th:nth-child(6), #paymentsTable td:nth-child(6) { width: 60px !important; } /* Договор */
 #paymentsTable th:nth-child(7), #paymentsTable td:nth-child(7) { width: 180px !important; } /* Ссылка */
@@ -1786,7 +1786,21 @@
             margin-bottom: 8.04px;
             align-items: center;
         }
+.github-export-spinner {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    margin-left: 5px;
+    border-radius: 50%;
+    background-color: #ffb347;
+    animation: pulse-dark-yellow 0.8s infinite;
+}
 
+@keyframes pulse-dark-yellow {
+    0% { opacity: 0.3; transform: scale(0.8); background-color: #ffb347; }
+    50% { opacity: 1; transform: scale(1.2); background-color: #ff8c00; }
+    100% { opacity: 0.3; transform: scale(0.8); background-color: #ffb347; }
+}
         /* Разделитель в сайдбаре */
         .sidebar-divider {
             height: 0.67px;
@@ -2426,15 +2440,19 @@ button:hover{background:#222733!important}
 
     <!-- Секция управления данными -->
     <div class="sidebar-section" style="margin-bottom: 0.0px;">
-        <div class="sidebar-cell menu-item import-btn" onclick="importJSON()" title="Импорт данных" style="display: flex;">
-        <span class="sidebar-icon">♻️</span>
+    <div class="sidebar-cell menu-item github-export-btn admin-only" onclick="forceExportToGitHub()" title="Принудительный экспорт данных">
+        <span class="sidebar-icon">💾</span>
+        <span class="github-export-spinner" style="display: none;">◌</span>
+        <div class="sidebar-tooltip">Сохранить данные в GitHub</div>
+    </div>
+    <div class="sidebar-cell menu-item import-btn" onclick="importJSON()" title="Импорт данных" style="display: flex;">
+        <span class="sidebar-icon">🌐</span>
         <div class="sidebar-tooltip">Импорт данных</div>
     </div>
-     <div class="sidebar-cell menu-item" onclick="showStatusStatsModal()" title="Аналитика">
-    <span class="sidebar-icon">📊</span>
-    <div class="sidebar-tooltip">Аналитика</div>
-</div>
-    
+    <div class="sidebar-cell menu-item" onclick="showStatusStatsModal()" title="Аналитика">
+        <span class="sidebar-icon">📊</span>
+        <div class="sidebar-tooltip">Аналитика</div>
+    </div>
 </div>
 <div class="sidebar-section">
         <!-- Кнопка настроек -->
@@ -2447,7 +2465,7 @@ button:hover{background:#222733!important}
     <!-- Скрытое меню настроек -->
 <div id="settingsMenu" class="sidebar-section" style="display: none;">
     <div class="sidebar-cell menu-item" onclick="showGithubSettingsModal()" title="GitHub настройки">
-    <span class="sidebar-icon">🐙</span>
+    <span class="sidebar-icon">🔒</span>
     <div class="sidebar-tooltip">GitHub настройки</div>
     <div class="sidebar-badge warning" id="githubGuestBadge" style="display: none;">!</div>
 </div>
@@ -2622,7 +2640,7 @@ button:hover{background:#222733!important}
             <table id="paymentsTable" style="table-layout: fixed;">
                 <thead>
     <tr>
-        <th style="width: 120px;">Дата платежа</th>
+        <th style="width: 120px;">Дата</th>
         <th style="width: 120px;">Статус</th>
         <th style="width: 130px;">Заявка</th>
         <th style="width: 174px;">Контрагент</th>
@@ -2759,12 +2777,12 @@ button:hover{background:#222733!important}
                 <thead>
     <tr>
         <th style="width: 80.4px;">Дата</th>
+        <th style="width: 67px;">Статус</th>
         <th style="width: 100.5px;">Заявка</th>
         <th style="width: 120.6px;">Контрагент</th>
         <th style="width: 100px;">Документ</th>
         <th style="width: 167.5px;">Адрес</th>
         <th style="width: 100.5px;">Водитель</th>
-        <th style="width: 67px;">Статус</th>
     </tr>
 </thead>
                 <tbody id="proxyTableBody"><tr>
@@ -6002,6 +6020,92 @@ async function saveToGitHub() {
         }
     }
 }
+// ========== ФУНКЦИЯ ДЛЯ принудительного экспорта данных ==========
+async function forceExportToGitHub() {
+    const btn = document.querySelector('.github-export-btn');
+    const iconSpan = btn.querySelector('.sidebar-icon');
+    const textSpan = btn.querySelector('.github-export-text');
+    const spinnerSpan = btn.querySelector('.github-export-spinner');
+    
+    // Проверяем наличие токена GitHub
+    if (!githubToken) {
+        showAutosaveNotification('GitHub токен не настроен. Откройте настройки GitHub и введите токен.', true);
+        showGithubSettingsModal();
+        return;
+    }
+    
+    // Блокируем кнопку и показываем индикатор загрузки
+    btn.style.pointerEvents = 'none';
+    iconSpan.style.display = 'none';
+    textSpan.style.display = 'none';
+    spinnerSpan.style.display = 'inline-block';
+    
+    try {
+        // Логика экспорта, аналогичная saveToGitHub, но без проверки githubAutoSaveEnabled
+        const data = {
+            accountingData,
+            counterpartiesData,
+            paymentsData,
+            settlementData,
+            mailData,
+            proxyData,
+            applicationComments,
+            departmentsList,
+            version: '1.1',
+            exportDate: new Date().toISOString()
+        };
+        
+        const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
+        const owner = '89278410960saa-cloud';
+        const repo = 'uchet';
+        const path = 'uchet_backup.json';
+        
+        let sha = null;
+        const getResponse = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`, {
+            headers: { 'Authorization': `token ${githubToken}` }
+        });
+        
+        if (getResponse.ok) {
+            const fileInfo = await getResponse.json();
+            sha = fileInfo.sha;
+        } else if (getResponse.status !== 404) {
+            throw new Error(`GitHub API error: ${getResponse.status}`);
+        }
+        
+        const putResponse = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`, {
+            method: 'PUT',
+            headers: {
+                'Authorization': `token ${githubToken}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                message: 'Принудительный экспорт из приложения',
+                content: content,
+                sha: sha,
+                branch: 'main'
+            })
+        });
+        
+        if (putResponse.ok) {
+            showAutosaveNotification('✅ Данные успешно сохранены в GitHub');
+        } else {
+            const err = await putResponse.json();
+            throw new Error(err.message || 'Ошибка сохранения');
+        }
+    } catch (error) {
+        console.error('GitHub export error:', error);
+        showAutosaveNotification(`❌ GitHub: ${error.message}`, true);
+        if (error.message.includes('401') || error.message.includes('403')) {
+            showAutosaveNotification('Проверьте токен GitHub в настройках', true);
+        }
+    } finally {
+        // Восстанавливаем кнопку
+        btn.style.pointerEvents = '';
+        iconSpan.style.display = '';
+        textSpan.style.display = '';
+        spinnerSpan.style.display = 'none';
+    }
+}
 // ========== ФУНКЦИЯ ДЛЯ ОБНОВЛЕНИЯ СПИСКА ДОГОВОРОВ ==========
 function updateContractsList() {
     const contractsList = document.getElementById('contractsList');
@@ -6971,13 +7075,13 @@ if (isAdmin) {
         
         
         row.innerHTML = `
-    <td>${item.date || ''}</td>
-    <td>${item.docNumber || ''}</td>
-    <td>${item.supplier || ''}</td>
-    <td>${item.contract || ''}</td>
-    <td>${item.address || ''}</td>
-    <td>${item.driver || ''}</td>
-    <td>${item.status || 'В работе'}</td>
+     <td>${item.date || ''}</td>
+     <td>${item.status || 'В работе'}</td>
+     <td>${item.docNumber || ''}</td>
+     <td>${item.supplier || ''}</td>
+     <td>${item.contract || ''}</td>
+     <td>${item.address || ''}</td>
+     <td>${item.driver || ''}</td>
 `;
         
 // ВСЕГДА добавляем класс для подсветки
@@ -7044,10 +7148,10 @@ if (isAdmin) {
         });
 
         // Получаем значения из конкретных ячеек
-        const dateCell = row.querySelector('td:nth-child(1)')?.textContent.trim(); // дата в формате DD.MM.YYYY
-        const applicationCell = row.querySelector('td:nth-child(2)')?.textContent.toLowerCase().trim() || '';
-        const supplierCell = row.querySelector('td:nth-child(3)')?.textContent.toLowerCase().trim() || '';
-        const statusCell = row.querySelector('td:nth-child(7)')?.textContent.trim() || ''; 
+        const dateCell = row.querySelector('td:nth-child(1)')?.textContent.trim(); // дата
+const statusCell = row.querySelector('td:nth-child(2)')?.textContent.trim() || ''; // статус
+const applicationCell = row.querySelector('td:nth-child(3)')?.textContent.toLowerCase().trim() || ''; // заявка
+const supplierCell = row.querySelector('td:nth-child(4)')?.textContent.toLowerCase().trim() || ''; // контрагент
 
         // Фильтр по дате (преобразуем YYYY-MM-DD → DD.MM.YYYY)
         let dateMatch = true;
