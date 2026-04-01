@@ -2443,7 +2443,7 @@ button:hover{background:#222733!important}
     <div class="sidebar-cell menu-item github-export-btn admin-only" onclick="forceExportToGitHub()" title="Принудительный экспорт данных">
         <span class="sidebar-icon">💾</span>
         <span class="github-export-spinner" style="display: none;">◌</span>
-        <div class="sidebar-tooltip">Сохранить данные в GitHub</div>
+        <div class="sidebar-tooltip">Принудительный экспорт</div>
     </div>
     <div class="sidebar-cell menu-item import-btn" onclick="importJSON()" title="Импорт данных" style="display: flex;">
         <span class="sidebar-icon">🌐</span>
@@ -6024,7 +6024,6 @@ async function saveToGitHub() {
 async function forceExportToGitHub() {
     const btn = document.querySelector('.github-export-btn');
     const iconSpan = btn.querySelector('.sidebar-icon');
-    const textSpan = btn.querySelector('.github-export-text');
     const spinnerSpan = btn.querySelector('.github-export-spinner');
     
     // Проверяем наличие токена GitHub
@@ -6037,7 +6036,6 @@ async function forceExportToGitHub() {
     // Блокируем кнопку и показываем индикатор загрузки
     btn.style.pointerEvents = 'none';
     iconSpan.style.display = 'none';
-    textSpan.style.display = 'none';
     spinnerSpan.style.display = 'inline-block';
     
     try {
@@ -6102,7 +6100,6 @@ async function forceExportToGitHub() {
         // Восстанавливаем кнопку
         btn.style.pointerEvents = '';
         iconSpan.style.display = '';
-        textSpan.style.display = '';
         spinnerSpan.style.display = 'none';
     }
 }
