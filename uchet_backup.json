@@ -1339,16 +1339,16 @@
       "name": "прямоугольная шайба М30 100х100 толщина 4 мм нерж. ГОСТ 11371-78 (шт.)\n",
       "quantity": "6",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
-      "supplier": "",
+      "purchaseName": "Шайба 100х100х40 с отв D 30мм",
+      "purchaseQuantity": "6",
+      "purchaseUnit": "шт",
+      "amount": "3432.00",
+      "supplier": "АО \"ПКР\"",
       "department": "17/0030 Строительства и ремонта",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № 288",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "35",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -13344,5 +13344,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-01T08:28:00.484Z"
+  "exportDate": "2026-04-01T08:28:28.563Z"
 }
