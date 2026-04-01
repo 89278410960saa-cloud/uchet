@@ -1293,16 +1293,16 @@
       "name": "Гайка  М30 ГОСТ 5916 КЛ.ПР. 8.8 AISI316Ti  (рос. аналог 10Х17Н13М2Т) (шт.)\n",
       "quantity": "18",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
+      "purchaseName": "Гайка низкая М 30 DIN 439 нерж.А4",
+      "purchaseQuantity": "25",
+      "purchaseUnit": "шт",
+      "amount": "9750.00",
       "supplier": "ООО \"Стройметиз\"",
       "department": "17/0030 Строительства и ремонта",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № УТУЗ0016974",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "14",
+      "deliveryTerms": "Самовывоз",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -13344,5 +13344,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-01T08:23:04.553Z"
+  "exportDate": "2026-04-01T08:24:08.819Z"
 }
