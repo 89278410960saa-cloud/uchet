@@ -1274,7 +1274,7 @@
       "purchaseQuantity": "",
       "purchaseUnit": "",
       "amount": "",
-      "supplier": "",
+      "supplier": "ВсеИнструменты.ру, ООО",
       "department": "17/0030 Строительства и ремонта",
       "contract": "",
       "paymentTerms": "",
@@ -13344,5 +13344,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-01T08:24:34.445Z"
+  "exportDate": "2026-04-01T08:24:55.674Z"
 }
