@@ -6306,6 +6306,29 @@
       "planFact": "",
       "fact": "",
       "shipmentDoc": ""
+    },
+    {
+      "recordId": "20260401122422317_yn308u94g",
+      "docNumber": "н/н (от 01.04.2026)",
+      "status": "В работе",
+      "id": "-",
+      "name": "лопата совковая с деревянным черенком",
+      "quantity": "20",
+      "unit": "шт",
+      "purchaseName": "Лопата совковая ЛСП2 \nрельсовая сталь с \nдеревянным черенком \n800 мм (97252)\n",
+      "purchaseQuantity": "20",
+      "purchaseUnit": "шт",
+      "amount": "8720.00",
+      "supplier": "ООО \"СТД \"Петрович\"",
+      "department": "13/0100 Товарная служба",
+      "contract": "СЧ № СКЭ00028641",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "1",
+      "deliveryTerms": "Включена",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
     }
   ],
   "counterpartiesData": [
@@ -13443,5 +13466,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-01T09:23:17.102Z"
+  "exportDate": "2026-04-01T09:24:22.381Z"
 }
