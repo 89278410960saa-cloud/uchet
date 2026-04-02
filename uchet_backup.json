@@ -6599,6 +6599,29 @@
       "planFact": "",
       "fact": "",
       "shipmentDoc": ""
+    },
+    {
+      "recordId": "20260402131141964_z41vn3w94",
+      "docNumber": "н/н (от 02.04.2026)",
+      "status": "В работе",
+      "id": "-",
+      "name": "Вилка PSR01-016-3  16А P+E",
+      "quantity": "40",
+      "unit": "шт",
+      "purchaseName": "",
+      "purchaseQuantity": "",
+      "purchaseUnit": "",
+      "amount": "",
+      "supplier": "",
+      "department": "11/0120 Служба главного энергетика",
+      "contract": "",
+      "paymentTerms": "",
+      "deliveryDays": "",
+      "deliveryTerms": "",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
     }
   ],
   "counterpartiesData": [
@@ -13764,5 +13787,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-02T10:11:22.544Z"
+  "exportDate": "2026-04-02T10:11:42.033Z"
 }
