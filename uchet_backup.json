@@ -6645,6 +6645,29 @@
       "planFact": "",
       "fact": "",
       "shipmentDoc": ""
+    },
+    {
+      "recordId": "20260402131216286_iq2gd4m4n",
+      "docNumber": "н/н (от 02.04.2026)",
+      "status": "В работе",
+      "id": "-",
+      "name": "Электрический удлинитель STARWIND Удлинитель силовой ST-PSR4.50/G-16 3x2.5кв.мм 4розет. 50м ПВС 16A катушка оранжевый",
+      "quantity": "3",
+      "unit": "шт",
+      "purchaseName": "",
+      "purchaseQuantity": "",
+      "purchaseUnit": "",
+      "amount": "",
+      "supplier": "",
+      "department": "11/0120 Служба главного энергетика",
+      "contract": "",
+      "paymentTerms": "",
+      "deliveryDays": "",
+      "deliveryTerms": "",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
     }
   ],
   "counterpartiesData": [
@@ -13810,5 +13833,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-02T10:11:59.234Z"
+  "exportDate": "2026-04-02T10:12:16.349Z"
 }
