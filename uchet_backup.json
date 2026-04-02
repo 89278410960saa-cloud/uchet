@@ -6392,6 +6392,29 @@
       "planFact": "",
       "fact": "",
       "shipmentDoc": ""
+    },
+    {
+      "recordId": "20260402130841532_103n80o3s",
+      "docNumber": "н/н (от 02.04.2026)",
+      "status": "В работе",
+      "id": "-",
+      "name": "Гильза луженая ГМЛ 185мм2",
+      "quantity": "36",
+      "unit": "шт",
+      "purchaseName": "",
+      "purchaseQuantity": "",
+      "purchaseUnit": "",
+      "amount": "",
+      "supplier": "",
+      "department": "11/0120 Служба главного энергетика",
+      "contract": "",
+      "paymentTerms": "",
+      "deliveryDays": "",
+      "deliveryTerms": "",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
     }
   ],
   "counterpartiesData": [
@@ -13557,5 +13580,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-02T10:08:15.358Z"
+  "exportDate": "2026-04-02T10:08:41.594Z"
 }
