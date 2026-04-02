@@ -21,8 +21,7 @@
       "date": "01.04.2026",
       "planFact": "01.04.2026",
       "fact": "01.04.2026",
-      "shipmentDoc": "",
-      "plan": "01.04.2026"
+      "shipmentDoc": ""
     },
     {
       "recordId": "20260401122317059_mkkfv1rvg",
@@ -45,8 +44,7 @@
       "date": "01.04.2026",
       "planFact": "01.04.2026",
       "fact": "01.04.2026",
-      "shipmentDoc": "",
-      "plan": "01.04.2026"
+      "shipmentDoc": ""
     },
     {
       "recordId": "20260401122217063_f4askeltt",
@@ -69,8 +67,7 @@
       "date": "01.04.2026",
       "planFact": "01.04.2026",
       "fact": "01.04.2026",
-      "shipmentDoc": "",
-      "plan": "01.04.2026"
+      "shipmentDoc": ""
     },
     {
       "recordId": "20260401122126748_9wad0adr1",
@@ -93,8 +90,7 @@
       "date": "01.04.2026",
       "planFact": "01.04.2026",
       "fact": "01.04.2026",
-      "shipmentDoc": "",
-      "plan": "01.04.2026"
+      "shipmentDoc": ""
     },
     {
       "recordId": "20260401111213413_smncfuc7k",
@@ -117,8 +113,7 @@
       "date": "31.03.2026",
       "planFact": "02.04.2026",
       "fact": "01.04.2026",
-      "shipmentDoc": "",
-      "plan": "02.04.2026"
+      "shipmentDoc": ""
     },
     {
       "recordId": "20260401110524437_q6hnrfys3",
@@ -141,8 +136,7 @@
       "date": "31.03.2026",
       "planFact": "02.04.2026",
       "fact": "01.04.2026",
-      "shipmentDoc": "",
-      "plan": "02.04.2026"
+      "shipmentDoc": ""
     },
     {
       "recordId": "20260330163802339_dmxa1rznl",
@@ -165,8 +159,7 @@
       "date": "01.04.2026",
       "planFact": "03.04.2026",
       "fact": "01.04.2026",
-      "shipmentDoc": "482 от 01.04.2026",
-      "plan": "03.04.2026"
+      "shipmentDoc": "482 от 01.04.2026"
     },
     {
       "recordId": "20260330115742788_benx4xfzj",
@@ -1590,8 +1583,7 @@
       "date": "18.03.2026",
       "planFact": "06.04.2026",
       "fact": "",
-      "shipmentDoc": "",
-      "plan": "06.04.2026"
+      "shipmentDoc": ""
     },
     {
       "recordId": "20260316095642104_qkkvrs7ze",
@@ -1614,8 +1606,7 @@
       "date": "18.03.2026",
       "planFact": "06.04.2026",
       "fact": "",
-      "shipmentDoc": "",
-      "plan": "06.04.2026"
+      "shipmentDoc": ""
     },
     {
       "recordId": "20260316095621846_yhee1dlj0",
@@ -1638,8 +1629,7 @@
       "date": "18.03.2026",
       "planFact": "06.04.2026",
       "fact": "",
-      "shipmentDoc": "",
-      "plan": "06.04.2026"
+      "shipmentDoc": ""
     },
     {
       "recordId": "20260316095602794_s20wwefym",
@@ -1662,8 +1652,7 @@
       "date": "18.03.2026",
       "planFact": "06.04.2026",
       "fact": "",
-      "shipmentDoc": "",
-      "plan": "06.04.2026"
+      "shipmentDoc": ""
     },
     {
       "recordId": "20260316095541874_2qsmcce1v",
@@ -1686,8 +1675,7 @@
       "date": "18.03.2026",
       "planFact": "06.04.2026",
       "fact": "",
-      "shipmentDoc": "",
-      "plan": "06.04.2026"
+      "shipmentDoc": ""
     },
     {
       "recordId": "20260316095450888_ecstpkik9",
@@ -1830,8 +1818,7 @@
       "date": "23.03.2026",
       "planFact": "30.03.2026",
       "fact": "31.03.2026",
-      "shipmentDoc": "ДРВ02090/25 от 31.03.2026",
-      "plan": "30.03.2026"
+      "shipmentDoc": "ДРВ02090/25 от 31.03.2026"
     },
     {
       "recordId": "20260316095040648_yc93b7uzj",
@@ -2043,8 +2030,7 @@
       "date": "10.03.2026",
       "planFact": "27.03.2026",
       "fact": "01.04.2026",
-      "shipmentDoc": "",
-      "plan": "27.03.2026"
+      "shipmentDoc": ""
     },
     {
       "recordId": "20260302112911140_p4om8bl1i",
@@ -6359,7 +6345,7 @@
       "phone": "7 (931) 220-46-15",
       "contact": "Светлана",
       "email": "avtograf-3@mail.ru",
-      "address": "-",
+      "address": "192284, Санкт-Петербург, Загребский б-р, 19/1-24",
       "material": "автошины",
       "blacklisted": false,
       "blacklistComment": ""
@@ -13484,5 +13470,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-01T20:09:57.922Z"
+  "exportDate": "2026-04-02T06:17:27.919Z"
 }
