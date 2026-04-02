@@ -2445,7 +2445,7 @@ button:hover{background:#222733!important}
         <div class="sidebar-tooltip">Принудительный экспорт</div>
     </div>
     <div class="sidebar-cell menu-item import-btn" onclick="importJSON()" title="Импорт данных" style="display: flex;">
-        <span class="sidebar-icon">🌐</span>
+        <span class="sidebar-icon">🌍</span>
         <div class="sidebar-tooltip">Импорт данных</div>
     </div>
     <div class="sidebar-cell menu-item" onclick="showStatusStatsModal()" title="Аналитика">
@@ -2473,7 +2473,7 @@ button:hover{background:#222733!important}
         <div class="sidebar-tooltip">Экспорт данных</div>
     </div>
     <!-- Кнопка удаления с классом danger -->
-    <div class="sidebar-cell menu-item danger admin-only clear-btn" onclick="confirmClearAllData()" title="Очистить все данные" style="display: none;">
+    <div class="sidebar-cell menu-item danger clear-btn" onclick="confirmClearAllData()" title="Очистить все данные">
         <span class="sidebar-icon">✘</span>
         <div class="sidebar-tooltip">Очистить все данные</div>
     </div>
@@ -9141,10 +9141,6 @@ document.addEventListener('click', function(event) {
         }
 
         function confirmClearAllData() {
-            if (!isAdmin) {
-                alert('Только администратор может удалять все данные');
-                return;
-            }
             
             if (confirm('ВНИМАНИЕ! Вы собираетесь удалить ВСЕ данные из системы. Это действие невозможно отменить.\n\nВы уверены, что хотите продолжить?')) {
                 if (confirm('Это окончательное подтверждение. Все данные будут безвозвратно удалены.\n\nНажмите ОК для удаления всех данных.')) {
