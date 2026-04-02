@@ -6668,6 +6668,29 @@
       "planFact": "",
       "fact": "",
       "shipmentDoc": ""
+    },
+    {
+      "recordId": "20260402131243957_ug11iaid4",
+      "docNumber": "н/н (от 02.04.2026)",
+      "status": "В работе",
+      "id": "-",
+      "name": "Щупы типа \"крокодил\" UNI-T UT-C02A красный CAT III 1000V/CAT IV 600V, 10А 00-00005629",
+      "quantity": "2",
+      "unit": "шт",
+      "purchaseName": "",
+      "purchaseQuantity": "",
+      "purchaseUnit": "",
+      "amount": "",
+      "supplier": "",
+      "department": "11/0120 Служба главного энергетика",
+      "contract": "",
+      "paymentTerms": "",
+      "deliveryDays": "",
+      "deliveryTerms": "",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
     }
   ],
   "counterpartiesData": [
@@ -13833,5 +13856,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-02T10:12:16.349Z"
+  "exportDate": "2026-04-02T10:12:44.023Z"
 }
