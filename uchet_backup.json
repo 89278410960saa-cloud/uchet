@@ -6622,6 +6622,29 @@
       "planFact": "",
       "fact": "",
       "shipmentDoc": ""
+    },
+    {
+      "recordId": "20260402131159170_p9ta1n1ri",
+      "docNumber": "н/н (от 02.04.2026)",
+      "status": "В работе",
+      "id": "-",
+      "name": "Силовой удлинитель ЗУБР на стальной катушке Кг 325 кг 3x2.5 50м 55079-50 55079-50_z01",
+      "quantity": "3",
+      "unit": "шт",
+      "purchaseName": "",
+      "purchaseQuantity": "",
+      "purchaseUnit": "",
+      "amount": "",
+      "supplier": "",
+      "department": "11/0120 Служба главного энергетика",
+      "contract": "",
+      "paymentTerms": "",
+      "deliveryDays": "",
+      "deliveryTerms": "",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
     }
   ],
   "counterpartiesData": [
@@ -13787,5 +13810,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-02T10:11:42.033Z"
+  "exportDate": "2026-04-02T10:11:59.234Z"
 }
