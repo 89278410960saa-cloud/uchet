@@ -6778,6 +6778,18 @@
   ],
   "counterpartiesData": [
     {
+      "recordId": "20260403131035416_ue5l716wa",
+      "supplier": "ООО \"НЭС\" ",
+      "inn": "7811159010",
+      "phone": "7(905)275-10-10",
+      "contact": "Вячеслав Олегович Кондратьев",
+      "email": "747kvo@mail.ru",
+      "address": "-",
+      "material": "электрика",
+      "blacklisted": false,
+      "blacklistComment": ""
+    },
+    {
       "recordId": "20260403122315267_qc4kjveop",
       "supplier": "ООО \"ТДК-Электро\"",
       "inn": "4703173903",
@@ -13961,5 +13973,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-03T10:08:43.745Z"
+  "exportDate": "2026-04-03T10:10:35.456Z"
 }
