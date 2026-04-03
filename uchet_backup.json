@@ -6392,16 +6392,16 @@
       "name": "Гильза луженая ГМЛ 150мм2",
       "quantity": "30",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
-      "supplier": "",
+      "purchaseName": "Гильза кабельная ГМЛ 150-19",
+      "purchaseQuantity": "30",
+      "purchaseUnit": "шт",
+      "amount": "13946.43",
+      "supplier": "АО \"ТД \"Электротехмонтаж\"",
       "department": "11/0120 Служба главного энергетика",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № 104/5502798",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "7",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -13949,5 +13949,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-03T09:06:13.504Z"
+  "exportDate": "2026-04-03T09:06:49.392Z"
 }
