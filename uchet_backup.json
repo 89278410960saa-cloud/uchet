@@ -6760,16 +6760,16 @@
       "name": "Биметаллическая коронка ф22 RUKO  со сверлом",
       "quantity": "2",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
-      "supplier": "",
+      "purchaseName": "Коронка биметаллическая 22мм, быстрорежущая сталь",
+      "purchaseQuantity": "2",
+      "purchaseUnit": "шт",
+      "amount": "839.65",
+      "supplier": "АО \"ТД \"Электротехмонтаж\"",
       "department": "11/0120 Служба главного энергетика",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № 104/5502798",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "7",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -13949,5 +13949,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-03T09:13:10.884Z"
+  "exportDate": "2026-04-03T09:14:02.654Z"
 }
