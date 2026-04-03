@@ -6507,16 +6507,16 @@
       "name": "Щит строительный, 160А\nАртикул:ЩПРС160-2563-4532-6316\n",
       "quantity": "1",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
-      "supplier": "",
+      "purchaseName": "Щит строительный переносной 160А, розетки 2х63А 380В, 4х32А 380В, 6х16А 220В. IP44\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n",
+      "purchaseQuantity": "1",
+      "purchaseUnit": "шт",
+      "amount": "138750.00",
+      "supplier": "ООО \"ТДК-Электро\"",
       "department": "11/0120 Служба главного энергетика",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № 72",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "10",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -13961,5 +13961,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-03T09:23:15.309Z"
+  "exportDate": "2026-04-03T09:24:03.335Z"
 }
