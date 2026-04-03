@@ -12357,6 +12357,16 @@
   ],
   "paymentsData": [
     {
+      "recordId": "20260403140758504_jr8mf3fgo",
+      "status": "План",
+      "date": "03.04.2026",
+      "amount": "215000.00",
+      "supplier": "ООО \"МСК Энерго\"",
+      "contract": "СЧ № МЭ992",
+      "link": "file://share/Director/%D0%9E%D0%9E%D0%9F%D0%B8%D0%9A/%D0%97%D0%90%D0%AF%D0%92%D0%9A%D0%98-%20%D0%9E%D0%9E%D0%9F%D0%B8%D0%9A/%D0%B7.2026-%20%D0%9E%D0%9E%D0%9F%D0%B8%D0%9A/4-%D0%B0%D0%BF%D1%80%D0%B5%D0%BB%D1%8C/%D0%BD.%D0%BD%20(%D0%A1%D0%93%D0%AD)%20%D0%BE%D1%82%2002.04.2026/%D0%BF%D1%80%D0%B5%D0%B4%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D1%8F/%D0%9C%D0%A1%D0%9A%20%D0%AD%D0%9D%D0%95%D0%A0%D0%93%D0%9E.pdf",
+      "docNumber": "н/н (от 02.04.2026)"
+    },
+    {
       "recordId": "20260403140724296_k148ph8f6",
       "status": "План",
       "date": "03.04.2026",
@@ -13990,5 +14000,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-03T11:07:24.323Z"
+  "exportDate": "2026-04-03T11:07:58.529Z"
 }
