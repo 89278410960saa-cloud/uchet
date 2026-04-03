@@ -6778,6 +6778,18 @@
   ],
   "counterpartiesData": [
     {
+      "recordId": "20260403122315267_qc4kjveop",
+      "supplier": "ООО \"ТДК-Электро\"",
+      "inn": "4703173903",
+      "phone": "7 (981) 711-90-73",
+      "contact": "Сергей Веселов",
+      "email": "tdk@td-komplekt.ru",
+      "address": "-",
+      "material": "электрические щиты",
+      "blacklisted": false,
+      "blacklistComment": ""
+    },
+    {
       "recordId": "20260331123956319_0x9q4b821",
       "supplier": "ООО \"Спектр РС\"",
       "inn": "7814439103",
@@ -13949,5 +13961,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-03T09:17:17.956Z"
+  "exportDate": "2026-04-03T09:23:15.309Z"
 }
