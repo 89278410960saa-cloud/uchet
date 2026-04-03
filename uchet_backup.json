@@ -6369,16 +6369,16 @@
       "name": "Гильза луженая ГМЛ 120мм2",
       "quantity": "50",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
-      "supplier": "",
+      "purchaseName": "Гильза кабельная ГМЛ 120-17",
+      "purchaseQuantity": "50",
+      "purchaseUnit": "шт",
+      "amount": "17616.19",
+      "supplier": "АО \"ТД \"Электротехмонтаж\"",
       "department": "11/0120 Служба главного энергетика",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № 104/5502798",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "7",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -13949,5 +13949,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-03T09:05:37.414Z"
+  "exportDate": "2026-04-03T09:06:13.504Z"
 }
