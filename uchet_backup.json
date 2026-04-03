@@ -6576,16 +6576,16 @@
       "name": "Вилка PSR02-032-5  32А 3P+N+PE",
       "quantity": "15",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
-      "supplier": "",
+      "purchaseName": "Вилка кабельная 32А 3Р+N+Е IР44 переносная 380В 025",
+      "purchaseQuantity": "15",
+      "purchaseUnit": "шт",
+      "amount": "7043.67",
+      "supplier": "АО \"ТД \"Электротехмонтаж\"",
       "department": "11/0120 Служба главного энергетика",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № 104/5502798",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "7",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -13949,5 +13949,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-03T09:10:28.081Z"
+  "exportDate": "2026-04-03T09:11:04.277Z"
 }
