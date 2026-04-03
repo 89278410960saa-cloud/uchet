@@ -6484,16 +6484,16 @@
       "name": "Смазка Gadus S5 V100 2",
       "quantity": "20",
       "unit": "кг",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
-      "supplier": "",
+      "purchaseName": "Пластичная смазка Shell Gadus S5 V100 2 туб. 18 кг\n",
+      "purchaseQuantity": "1",
+      "purchaseUnit": "шт",
+      "amount": "67600.00",
+      "supplier": "ООО \"Базмон\"",
       "department": "11/0120 Служба главного энергетика",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № ЦБ-1095",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "3",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -13949,5 +13949,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-03T09:08:07.843Z"
+  "exportDate": "2026-04-03T09:09:21.065Z"
 }
