@@ -6775,6 +6775,18 @@
   ],
   "counterpartiesData": [
     {
+      "recordId": "20260403134755220_6d5jzxve2",
+      "supplier": "ООО \"МСК Энерго\"",
+      "inn": "7734394778",
+      "phone": "7 (499) 707-21-01",
+      "contact": "Васильченко Ксения",
+      "email": "kv@raychem.org",
+      "address": "-",
+      "material": "электронные крепежи",
+      "blacklisted": false,
+      "blacklistComment": ""
+    },
+    {
       "recordId": "20260403122315267_qc4kjveop",
       "supplier": "ООО \"ТДК-Электро\"",
       "inn": "4703173903",
@@ -13958,5 +13970,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-03T10:44:37.163Z"
+  "exportDate": "2026-04-03T10:47:55.267Z"
 }
