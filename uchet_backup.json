@@ -6553,16 +6553,16 @@
       "name": "Вилка  PSR02-063-5  63А  3P+N+PE",
       "quantity": "10",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
-      "supplier": "",
+      "purchaseName": "Вилка перенос.  ССИ-035 63А-6ч 380В 3P+PE+N IP54  IEK\n",
+      "purchaseQuantity": "10",
+      "purchaseUnit": "шт",
+      "amount": "20542.60",
+      "supplier": "АО \"ТД \"Электротехмонтаж\"",
       "department": "11/0120 Служба главного энергетика",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № 104/5502798",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "7",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -13949,5 +13949,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-03T09:09:21.065Z"
+  "exportDate": "2026-04-03T09:10:28.081Z"
 }
