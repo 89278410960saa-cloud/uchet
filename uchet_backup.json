@@ -6465,7 +6465,7 @@
       "purchaseQuantity": "8",
       "purchaseUnit": "компл",
       "amount": "227408.00",
-      "supplier": "",
+      "supplier": "ООО \"НЭС\"",
       "department": "11/0120 Служба главного энергетика",
       "contract": "СЧ № 441",
       "paymentTerms": "100 % предоплата",
@@ -13973,5 +13973,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-03T10:10:35.456Z"
+  "exportDate": "2026-04-03T10:10:55.607Z"
 }
