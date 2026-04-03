@@ -6714,16 +6714,16 @@
       "name": "Щупы типа \"крокодил\" UNI-T UT-C02A черный CAT III 1000V/CAT IV 600V, 10А 00-00005629",
       "quantity": "2",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
-      "supplier": "",
+      "purchaseName": "UNI-T UT-C02A Зажимы типа \"крокодил\" \n",
+      "purchaseQuantity": "2",
+      "purchaseUnit": "шт",
+      "amount": "2643.20",
+      "supplier": "ООО \"Базмон\"",
       "department": "11/0120 Служба главного энергетика",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № ЦБ-1095",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "3",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -13949,5 +13949,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-03T09:15:05.426Z"
+  "exportDate": "2026-04-03T09:15:37.223Z"
 }
