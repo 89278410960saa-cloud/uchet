@@ -3733,7 +3733,11 @@ button:hover{background:#222733!important}
         // Переменные для фильтрации
         let showOnlyBlacklisted = false;
 
-
+// Гарантируем, что attachedFiles всегда определена глобально
+if (typeof attachedFiles === 'undefined') {
+    window.attachedFiles = [];
+    attachedFiles = window.attachedFiles;
+}
         // ========== ФУНКЦИИ АВТОРИЗАЦИИ ==========
         
 
@@ -10208,6 +10212,10 @@ function showApiMessage(msg, color) {
 
 // ---------- РАБОТА С ФАЙЛАМИ ----------
 function handleFilesSelected(files) {
+if (typeof attachedFiles === 'undefined') {
+        window.attachedFiles = [];
+        attachedFiles = window.attachedFiles;
+    }
     if (!files || files.length === 0) return;
     for (let file of files) {
         if (file.size > 1024 * 1024) {
@@ -10229,6 +10237,10 @@ function handleFilesSelected(files) {
 }
 
 function renderAttachedFilesList() {
+if (typeof attachedFiles === 'undefined') {
+        window.attachedFiles = [];
+        attachedFiles = window.attachedFiles;
+    }
     const container = document.getElementById('attachedFilesList');
     if (!container) return;
     if (attachedFiles.length === 0) {
@@ -10248,6 +10260,11 @@ function renderAttachedFilesList() {
 }
 
 function removeAttachedFile(index) {
+if (typeof attachedFiles === 'undefined') {
+        window.attachedFiles = [];
+        attachedFiles = window.attachedFiles;
+        return;
+    }
     attachedFiles.splice(index, 1);
     renderAttachedFilesList();
     addSystemMessage(`🗑 Файл удалён`);
@@ -10268,6 +10285,10 @@ function addSystemMessage(text) {
 
 // ---------- ОТПРАВКА В OPENROUTER (Qwen) ----------
 async function sendChatMessage() {
+if (typeof attachedFiles === 'undefined') {
+        window.attachedFiles = [];
+        attachedFiles = window.attachedFiles;
+    }
     if (!openRouterKey) {
         addSystemMessage('❌ Не задан API-ключ. Введите его в поле в шапке чата и нажмите "Сохранить".');
         return;
@@ -10387,6 +10408,10 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 function exportDataToChatAsFile() {
+if (typeof attachedFiles === 'undefined') {
+        window.attachedFiles = [];
+        attachedFiles = window.attachedFiles;
+    }
     // Собираем все данные приложения
     const fullData = {
         accountingData: accountingData,
