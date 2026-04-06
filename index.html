@@ -1041,21 +1041,49 @@
     flex-direction: column;
     height: 650px;
     max-width: 700px;
-    padding: 0 !important;
+    padding-right: 40px;
     background: linear-gradient(135deg, #1a1e2a 0%, #0f1119 100%) !important;
     border-radius: 16px !important;
     overflow: hidden;
+    position: relative;
 }
 
 .chat-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 12px 20px;
-    background: rgba(15, 20, 30, 0.9);
-    border-bottom: 1px solid #2a2f3a;
+    gap: 8px;
+    flex-wrap: wrap; /* для маленьких экранов */
 }
-
+.api-key-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 517px; /* минимальная ширина, чтобы не сжималось слишком сильно */
+    margin-left: 0 !important;
+    padding-left: 0 !important;
+}
+#chatApiKeyInput {
+    flex: 1; /* растягивается на всю доступную ширину */
+    background: #0a0e14;
+    border: 1px solid #2a2f3a;
+    border-radius: 4px;
+    padding: 6px 10px;
+    font-size: 12px;
+    color: #e5e7eb;
+    margin-left: 0 !important;
+    padding-left: 8px;
+}
+#saveApiKeyBtn {
+    background: #2a475e;
+    border: none;
+    border-radius: 4px;
+    padding: 6px 12px;
+    font-size: 12px;
+    cursor: pointer;
+    color: white;
+    white-space: nowrap; /* чтобы текст кнопки не переносился */
+}
 .chat-header-info {
     display: flex;
     align-items: center;
@@ -2683,7 +2711,7 @@ button:hover{background:#222733!important}
         <div class="sidebar-tooltip">Почтовый реестр</div>
     </div>
     <div class="sidebar-divider"></div>
-    <div class="sidebar-cell menu-item" id="aiChatButton" onclick="openAiChatModal()" title="AI Чат (OpenRouter)">
+    <div class="sidebar-cell menu-item admin-only" id="aiChatButton" onclick="openAiChatModal()" title="AI Чат (OpenRouter)">
     <span class="sidebar-icon">✨</span>
     <div class="sidebar-tooltip">AI Чат</div>
 </div>
@@ -3469,14 +3497,15 @@ button:hover{background:#222733!important}
   <!-- Модальное окно AI чата с Qwen и загрузкой файлов -->
 <div id="aiChatModal" class="modal" style="display: none;">
     <div class="modal-content chat-modal-content">
-        <span class="close" onclick="closeAiChatModal()">×</span>
 
         <!-- Шапка чата -->
         <div class="chat-header">
     <div class="chat-header-info">
-        <div class="chat-title">
-            
-        </div>
+        <!-- можно оставить пустым или добавить заголовок -->
+    </div>
+    <div class="api-key-container">
+        <input type="password" id="chatApiKeyInput" placeholder="API-ключ OpenRouter">
+        <button id="saveApiKeyBtn">Сохранить</button>
     </div>
 </div>
 
@@ -10113,11 +10142,28 @@ function initializeApp() {
 }
 
 // ----------ФУНКЦИЯ AI ЧАТ С OPENROUTER ----------
-const DEFAULT_API_KEY = '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';
-let openRouterKey = localStorage.getItem('openrouter_api_key') || DEFAULT_API_KEY;
+let openRouterKey = localStorage.getItem('openrouter_api_key') || '';
 // При первом запуске сохраняем ключ в localStorage, чтобы он не запрашивался каждый раз
-if (!localStorage.getItem('openrouter_api_key') && DEFAULT_API_KEY !== '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') {
-    localStorage.setItem('openrouter_api_key', DEFAULT_API_KEY);
+function initApiKeyControl() {
+    const keyInput = document.getElementById('chatApiKeyInput');
+    const saveBtn = document.getElementById('saveApiKeyBtn');
+    if (!keyInput || !saveBtn) return;
+
+    // Загружаем сохранённый ключ в поле
+    keyInput.value = openRouterKey;
+
+    saveBtn.addEventListener('click', () => {
+        const newKey = keyInput.value.trim();
+        if (newKey) {
+            openRouterKey = newKey;
+            localStorage.setItem('openrouter_api_key', newKey);
+            showApiMessage('✅ API-ключ сохранён', '#5c7e10');
+        } else {
+            openRouterKey = '';
+            localStorage.removeItem('openrouter_api_key');
+            showApiMessage('⚠️ API-ключ удалён', '#ffd700');
+        }
+    });
 }
 // Загрузка ключа при старте
 document.addEventListener('DOMContentLoaded', function() {
@@ -10127,7 +10173,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function openAiChatModal() {
     document.getElementById('aiChatModal').style.display = 'block';
-    const keyInput = document.getElementById('openrouterApiKey');
+    const keyInput = document.getElementById('chatApiKeyInput');
     if (keyInput) keyInput.value = openRouterKey;
     renderAttachedFilesList();
 }
@@ -10138,14 +10184,25 @@ function closeAiChatModal() {
 
 
 function showApiMessage(msg, color) {
-    const statusDiv = document.getElementById('apiKeyStatus');
-    if (statusDiv) {
-        statusDiv.innerHTML = msg;
-        statusDiv.style.color = color;
-        setTimeout(() => {
-            if (statusDiv.innerHTML === msg) updateApiKeyStatus();
-        }, 2000);
+    // Можно создать временное уведомление в шапке чата
+    const header = document.querySelector('#aiChatModal .chat-header');
+    if (!header) return;
+    let statusDiv = document.getElementById('apiKeyStatusTemp');
+    if (!statusDiv) {
+        statusDiv = document.createElement('div');
+        statusDiv.id = 'apiKeyStatusTemp';
+        statusDiv.style.fontSize = '11px';
+        statusDiv.style.marginLeft = '12px';
+        statusDiv.style.padding = '2px 6px';
+        statusDiv.style.borderRadius = '12px';
+        statusDiv.style.backgroundColor = '#1e2432';
+        header.appendChild(statusDiv);
     }
+    statusDiv.textContent = msg;
+    statusDiv.style.color = color;
+    setTimeout(() => {
+        if (statusDiv.textContent === msg) statusDiv.textContent = '';
+    }, 2000);
 }
 
 // ---------- РАБОТА С ФАЙЛАМИ ----------
@@ -10211,7 +10268,7 @@ function addSystemMessage(text) {
 // ---------- ОТПРАВКА В OPENROUTER (Qwen) ----------
 async function sendChatMessage() {
     if (!openRouterKey) {
-        addSystemMessage('❌ API-ключ не настроен. Обратитесь к администратору.');
+        addSystemMessage('❌ Не задан API-ключ. Введите его в поле в шапке чата и нажмите "Сохранить".');
         return;
     }
 
