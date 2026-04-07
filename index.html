@@ -1035,139 +1035,121 @@
     transform: translateY(-0.67px) !important;
     box-shadow: 0 2.68px 5.36px rgba(0,0,0,0.2) !important;
 }
-/* Стили для AI чата */
-.chat-modal-content {
+/* ========== AI CHAT – СТИЛЬ GEMINI ========== */
+
+/* 1. Контейнер модального окна – как карточка Gemini */
+.chat-modal-new {
+    background: #1e1f2c !important;
+    border-radius: 24px !important;
+    max-width: 800px;
+    width: 90%;
+    height: 650px;
+    padding: 0 !important;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
-    height: 650px;
-    max-width: 700px;
-    padding-right: 40px;
-    background: linear-gradient(135deg, #1a1e2a 0%, #0f1119 100%) !important;
-    border-radius: 16px !important;
-    overflow: hidden;
-    position: relative;
+    box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.4);
+    border: 1px solid #2d2f3e;
 }
 
-.chat-header {
+/* Шапка */
+.chat-header-new {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 8px;
-    flex-wrap: wrap; /* для маленьких экранов */
-}
-.api-key-container {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    min-width: 517px; /* минимальная ширина, чтобы не сжималось слишком сильно */
-    margin-left: 0 !important;
-    padding-left: 0 !important;
-}
-#chatApiKeyInput {
-    flex: 1; /* растягивается на всю доступную ширину */
-    background: #0a0e14;
-    border: 1px solid #2a2f3a;
-    border-radius: 4px;
-    padding: 6px 10px;
-    font-size: 12px;
-    color: #e5e7eb;
-    margin-left: 0 !important;
-    padding-left: 8px;
-}
-#saveApiKeyBtn {
-    background: #2a475e;
-    border: none;
-    border-radius: 4px;
-    padding: 6px 12px;
-    font-size: 12px;
-    cursor: pointer;
-    color: white;
-    white-space: nowrap; /* чтобы текст кнопки не переносился */
-}
-.chat-header-info {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.chat-avatar {
-    width: 40px;
-    height: 40px;
-    background: linear-gradient(135deg, #3b82f6, #6366f1);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 22px;
-    box-shadow: 0 0 12px rgba(59,130,246,0.4);
-}
-
-.chat-title h3 {
-    margin: 0;
-    font-size: 16px;
-    color: #fff;
-}
-
-.chat-title p {
-    margin: 2px 0 0;
-    font-size: 11px;
-    color: #8f98a0;
-}
-
-.chat-settings-icon {
-    cursor: pointer;
-    font-size: 20px;
-    opacity: 0.7;
-    transition: 0.2s;
-}
-
-.chat-settings-icon:hover {
-    opacity: 1;
-    transform: rotate(15deg);
-}
-
-
-
-.settings-row {
-    display: flex;
+    padding: 12px 20px;
+    background: #15161f;
+    border-bottom: 1px solid #2d2f3e;
+    flex-wrap: wrap;
     gap: 10px;
 }
 
-
-
-.api-status {
-    font-size: 11px;
-    margin-top: 6px;
-    color: #ffd700;
+.chat-title-new {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
 }
 
-.chat-messages {
+.chat-icon {
+    font-size: 20px;
+}
+
+.chat-title-new h3 {
+    margin: 0;
+    font-size: 16px;
+    color: #e4e6eb;
+}
+
+.chat-model {
+    font-size: 11px;
+    background: #2d2f3e;
+    padding: 2px 8px;
+    border-radius: 20px;
+    color: #b0b3c0;
+}
+
+.chat-api-control {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex: 2; 
+}
+
+.chat-api-control input {
+    background: #2d2f3e;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    color: #e4e6eb;
+    width: 200px;
+}
+
+.chat-api-control button {
+    background: #3a3b4a;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 20px;
+    color: white;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.chat-api-control button:hover {
+    background: #4a4b5e;
+}
+
+/* Область сообщений */
+.chat-messages-new {
     flex: 1;
     overflow-y: auto;
-    padding: 16px;
+    padding: 20px;
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    background: #0f1119;
+    gap: 16px;
+    background: #1a1b26;
 }
 
 /* Сообщения */
-.message {
+.message-new {
     display: flex;
     max-width: 85%;
-    animation: fadeIn 0.2s ease;
+    animation: fadeInMsg 0.2s ease;
 }
 
-.message.user {
+.message-new.user {
     align-self: flex-end;
     flex-direction: row-reverse;
 }
 
-.message.ai {
+.message-new.assistant {
     align-self: flex-start;
+    flex-direction: row;
 }
 
-.message-avatar {
+/* Аватар */
+.avatar-new {
     width: 32px;
     height: 32px;
     border-radius: 50%;
@@ -1176,142 +1158,150 @@
     justify-content: center;
     font-size: 16px;
     flex-shrink: 0;
+    background: #2d2f3e;
 }
 
-.user .message-avatar {
+.assistant .avatar-new {
     background: #3b82f6;
-    margin-left: 8px;
+    margin-right: 12px;
 }
 
-.ai .message-avatar {
-    background: #2a475e;
-    margin-right: 8px;
+.user .avatar-new {
+    display: none;
 }
 
-.message-bubble {
-    background: #1e2432;
-    padding: 8px 12px;
-    border-radius: 18px;
-    line-height: 1.4;
+/* Пузырь */
+.bubble-new {
+    padding: 10px 16px;
+    border-radius: 20px;
     font-size: 13px;
+    line-height: 1.45;
     word-break: break-word;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.2);
 }
 
-.user .message-bubble {
-    background: linear-gradient(135deg, #3b82f6, #2563eb);
+.user .bubble-new {
+    background: #3b82f6;
     color: white;
-    border-bottom-right-radius: 4px;
+    border-bottom-right-radius: 6px;
 }
 
-.ai .message-bubble {
-    background: #1e293b;
-    color: #e2e8f0;
-    border-bottom-left-radius: 4px;
-    border: 1px solid #334155;
+.assistant .bubble-new {
+    background: #2d2f3e;
+    color: #e4e6eb;
+    border-bottom-left-radius: 6px;
 }
 
-.message-time {
+.time-new {
     font-size: 10px;
-    color: #8f98a0;
+    color: #6c6f85;
     margin-top: 4px;
     text-align: right;
 }
 
-.attached-files {
-    max-height: 80px;
-    overflow-y: auto;
-    padding: 6px 16px;
-    background: #0a0e14;
-    border-top: 1px solid #2a2f3a;
-    font-size: 12px;
+/* Блок файлов */
+.attached-files-new {
+    background: #15161f;
+    border-top: 1px solid #2d2f3e;
+    border-bottom: 1px solid #2d2f3e;
+    padding: 8px 20px;
     display: flex;
     flex-wrap: wrap;
-    gap: 6px;
+    gap: 8px;
+    min-height: 44px;
 }
 
-.file-tag {
-    background: #2a475e;
-    padding: 4px 8px;
-    border-radius: 16px;
+.file-tag-new {
+    background: #2d2f3e;
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 11px;
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    font-size: 11px;
+    gap: 8px;
+    color: #e4e6eb;
 }
 
-.file-tag button {
+.file-tag-new button {
     background: none;
     border: none;
-    color: #ff9999;
+    color: #ff8a7a;
     cursor: pointer;
     font-size: 14px;
-    padding: 0 4px;
+    padding: 0;
 }
 
-.chat-input-panel {
+/* Панель ввода */
+.chat-input-new {
     display: flex;
-    gap: 10px;
-    padding: 12px 16px;
-    background: #0f1119;
-    border-top: 1px solid #2a2f3a;
     align-items: center;
+    gap: 10px;
+    padding: 12px 20px;
+    background: #15161f;
+    border-top: 1px solid #2d2f3e;
 }
 
-.chat-input-panel input {
-    border-radius: 4px !important;        /* вместо 24px – прямоугольное */
-    background-color: #0a0e14 !important; /* более тёмный фон */
-    border: 1px solid #2a2f3a;
-    color: #e5e7eb;
+.chat-input-new input {
+    flex: 1;
+    background: #2d2f3e;
+    border: none;
+    border-radius: 40px;
+    padding: 10px 16px;
+    color: #e4e6eb;
+    font-size: 13px;
 }
 
-.chat-input-panel input:focus {
+.chat-input-new input:focus {
     outline: none;
-    border-color: #3b82f6;
+    background: #3a3b4a;
 }
 
-.attach-btn {
-    border-radius: 4px !important;
+.attach-btn-new, .send-btn-new {
+    background: #2d2f3e;
+    border: none;
     width: 36px;
     height: 36px;
-    background: #2a475e;
+    border-radius: 50%;
+    font-size: 18px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.2s;
 }
 
-.send-btn {
-    border-radius: 4px !important;
-    width: 36px;
-    height: 36px;
-    background: linear-gradient(135deg, #3b82f6, #6366f1);
-}
-
-.send-btn {
-    background: linear-gradient(135deg, #3b82f6, #6366f1);
+.send-btn-new {
+    background: #3b82f6;
     color: white;
 }
 
-.attach-btn:hover, .send-btn:hover {
+.attach-btn-new:hover, .send-btn-new:hover {
     transform: scale(1.05);
     opacity: 0.9;
 }
 
-.chat-footer {
-    display: flex;
-    justify-content: space-between;
-    padding: 8px 16px;
-    font-size: 10px;
-    color: #6c7a8e;
-    background: #0a0e14;
-    border-top: 1px solid #2a2f3a;
+@keyframes fadeInMsg {
+    from {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(8px); }
-    to { opacity: 1; transform: translateY(0); }
+/* Скроллбар */
+.chat-messages-new::-webkit-scrollbar {
+    width: 5px;
 }
-/* Скрыть аватары во всех сообщениях чата */
-.message-avatar {
-    display: none !important;
+.chat-messages-new::-webkit-scrollbar-track {
+    background: #1a1b26;
 }
+.chat-messages-new::-webkit-scrollbar-thumb {
+    background: #3b82f6;
+    border-radius: 10px;
+}
+
         /* Стили для модального окна информации о контрагенте */
 #counterpartyInfoModal .modal-content {
     max-width: 335.0px;
@@ -3496,39 +3486,33 @@ button:hover{background:#222733!important}
     </div>
   <!-- Модальное окно AI чата с агрузкой файлов -->
 <div id="aiChatModal" class="modal" style="display: none;">
-    <div class="modal-content chat-modal-content">
-
-        <!-- Шапка чата -->
-        <div class="chat-header">
-    <div class="chat-header-info">
-        <!-- можно оставить пустым или добавить заголовок -->
-    </div>
-    <div class="api-key-container">
-        <input type="password" id="chatApiKeyInput" placeholder="API-ключ OpenRouter">
-        <button id="saveApiKeyBtn">Сохранить</button>
-    </div>
-</div>
-
-        <!-- Область сообщений -->
-        <div id="chatMessages" class="chat-messages"></div>
-
-        <!-- Блок прикреплённых файлов -->
-<div id="attachedFilesList" class="attached-files" style="max-height: 80px; overflow-y: auto; padding: 6px 16px; background: #0a0e14; border-top: 1px solid #2a2f3a; border-bottom: 1px solid #2a2f3a; display: flex; flex-wrap: wrap; gap: 6px; font-size: 12px;">
-    <!-- Сюда будут добавляться теги файлов -->
-</div>
-
-        <!-- Панель ввода -->
-        <div class="chat-input-panel">
-            <button class="attach-btn" onclick="exportDataToChatAsFile()" title="Экспорт данных JSON">🌍</button>
-            <button class="attach-btn" onclick="document.getElementById('fileInput').click()" title="Прикрепить файл">➕</button>
-            <input type="file" id="fileInput" multiple style="display: none;" accept=".txt,.md,.csv,.json" onchange="handleFilesSelected(this.files)">
-            <input type="text" id="chatUserInput" placeholder="Введите сообщение..." autocomplete="off">
-            <button id="sendChatBtn" onclick="sendChatMessage()" class="send-btn">➤</button>
+    <div class="modal-content chat-modal-new">
+        <!-- Шапка -->
+        <div class="chat-header-new">
+            <div class="chat-title-new">
+                <span class="chat-icon">✨</span>
+                <h3>AI Ассистент</h3>
+            </div>
+            <div class="chat-api-control">
+                <input type="password" id="chatApiKeyInputNew" placeholder="API-ключ OpenRouter" autocomplete="off">
+                <button id="saveApiKeyBtnNew">Сохранить</button>
+            </div>
+            <span class="close" onclick="closeAiChatModal()">×</span>
         </div>
 
-        <div class="chat-footer">
-            <span id="fileCountBadge">0 файлов</span>
-            <span class="model-info">Модель: OpenAI gpt-oss-120b (free)</span>
+        <!-- Область сообщений -->
+        <div id="chatMessagesNew" class="chat-messages-new"></div>
+
+        <!-- Блок прикреплённых файлов -->
+        <div id="attachedFilesListNew" class="attached-files-new"></div>
+
+        <!-- Панель ввода -->
+        <div class="chat-input-new">
+            <button class="attach-btn-new" onclick="exportDataToChatAsFileNew()" title="Экспорт данных JSON">🌍</button>
+            <button class="attach-btn-new" onclick="document.getElementById('fileInputNew').click()" title="Прикрепить файл">📁</button>
+            <input type="file" id="fileInputNew" multiple style="display: none;" accept=".txt,.md,.csv,.json" onchange="handleFilesSelectedNew(this.files)">
+            <input type="text" id="chatUserInputNew" placeholder="Задайте вопрос или прикрепите файлы..." autocomplete="off">
+            <button id="sendChatBtnNew" onclick="sendChatMessageNew()" class="send-btn-new">➤</button>
         </div>
     </div>
 </div>
