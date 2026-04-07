@@ -6971,6 +6971,29 @@
       "planFact": "",
       "fact": "",
       "shipmentDoc": ""
+    },
+    {
+      "recordId": "20260407141456834_iipz1cr8i",
+      "docNumber": "2026- 277 (от 07.04.2026)",
+      "status": "В работе",
+      "id": "-",
+      "name": "Формула (или аналог)\n185/65 R15 (авто Лада ларгус)",
+      "quantity": "4",
+      "unit": "шт",
+      "purchaseName": "",
+      "purchaseQuantity": "",
+      "purchaseUnit": "",
+      "amount": "",
+      "supplier": "",
+      "department": "16/0100 СТиАТ",
+      "contract": "",
+      "paymentTerms": "",
+      "deliveryDays": "",
+      "deliveryTerms": "",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
     }
   ],
   "counterpartiesData": [
@@ -14261,5 +14284,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-07T11:14:23.409Z"
+  "exportDate": "2026-04-07T11:14:56.889Z"
 }
