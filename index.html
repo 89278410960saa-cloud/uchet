@@ -10174,7 +10174,9 @@ function initApiKeyControl() {
 document.addEventListener('DOMContentLoaded', function() {
     const keyInput = document.getElementById('openrouterApiKey');
     if (keyInput) keyInput.value = openRouterKey;
+initApiKeyControl();
 });
+
 
 function openAiChatModal() {
     document.getElementById('aiChatModal').style.display = 'block';
