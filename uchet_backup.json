@@ -1,6 +1,29 @@
 {
   "accountingData": [
     {
+      "recordId": "20260407112602502_doz3mhnm1",
+      "docNumber": "2026-301 (от 07.04.2026)",
+      "status": "В работе",
+      "id": "-",
+      "name": "Хомут силовой двухболтовый 30-40/20 W1",
+      "quantity": "200",
+      "unit": "шт",
+      "purchaseName": "",
+      "purchaseQuantity": "",
+      "purchaseUnit": "",
+      "amount": "",
+      "supplier": "",
+      "department": "11/0110 Служба главного механика",
+      "contract": "",
+      "paymentTerms": "",
+      "deliveryDays": "",
+      "deliveryTerms": "",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
+    },
+    {
       "recordId": "20260406124536615_1ijvh3ipi",
       "docNumber": "н/н (от 06.04.2026)",
       "status": "Поставка",
@@ -6881,19 +6904,19 @@
       "plan": "11.12.2025"
     },
     {
-      "recordId": "20260407112602502_doz3mhnm1",
-      "docNumber": "2026-301 (от 07.04.2026)",
+      "recordId": "20260407141253529_tjmbmr8gg",
+      "docNumber": "2026- 277 (от 07.04.2026)",
       "status": "В работе",
       "id": "-",
-      "name": "Хомут силовой двухболтовый 30-40/20 W1",
-      "quantity": "200",
+      "name": "Данлоп (или аналог)\n235/55 R18 (авто Тойота Rav-4 )",
+      "quantity": "4",
       "unit": "шт",
       "purchaseName": "",
       "purchaseQuantity": "",
       "purchaseUnit": "",
       "amount": "",
       "supplier": "",
-      "department": "11/0110 Служба главного механика",
+      "department": "16/0100 СТиАТ",
       "contract": "",
       "paymentTerms": "",
       "deliveryDays": "",
@@ -14192,5 +14215,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-07T08:36:18.321Z"
+  "exportDate": "2026-04-07T11:12:53.581Z"
 }
