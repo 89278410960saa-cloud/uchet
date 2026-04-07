@@ -3494,7 +3494,7 @@ button:hover{background:#222733!important}
             </form>
         </div>
     </div>
-  <!-- Модальное окно AI чата с Qwen и загрузкой файлов -->
+  <!-- Модальное окно AI чата с агрузкой файлов -->
 <div id="aiChatModal" class="modal" style="display: none;">
     <div class="modal-content chat-modal-content">
 
@@ -3528,7 +3528,7 @@ button:hover{background:#222733!important}
 
         <div class="chat-footer">
             <span id="fileCountBadge">0 файлов</span>
-            <span class="model-info">Модель: Qwen3.6 Plus (бесплатно)</span>
+            <span class="model-info">Модель: OpenAI gpt-oss-120b (free)</span>
         </div>
     </div>
 </div>
@@ -10285,7 +10285,7 @@ function addSystemMessage(text) {
     container.scrollTop = container.scrollHeight;
 }
 
-// ---------- ОТПРАВКА В OPENROUTER (Qwen) ----------
+// ---------- ОТПРАВКА В OPENROUTER  ----------
 async function sendChatMessage() {
 if (typeof attachedFiles === 'undefined') {
         window.attachedFiles = [];
@@ -10324,9 +10324,9 @@ if (typeof attachedFiles === 'undefined') {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                model: 'qwen/qwen3.6-plus:free', // бесплатная модель Qwen
+                model: 'openai/gpt-oss-120b:free', // бесплатная модель 
                 messages: [
-                    { role: 'system', content: 'Ты помощник в системе учёта закупок. Отвечай кратко, по делу. Используй информацию из файлов.' },
+                    { role: 'system', content: 'Ты помощник в системе учёта закупок. Отвечай кратко, по делу.' },
                     { role: 'user', content: userPrompt }
                 ],
                 max_tokens: 800,
