@@ -10134,8 +10134,8 @@ function initializeApp() {
 let openRouterKey = localStorage.getItem('openrouter_api_key') || '';
 // При первом запуске сохраняем ключ в localStorage, чтобы он не запрашивался каждый раз
 function initApiKeyControl() {
-    const keyInput = document.getElementById('chatApiKeyInput');
-    const saveBtn = document.getElementById('saveApiKeyBtn');
+    const keyInput = document.getElementById('chatApiKeyInputNew');
+    const saveBtn = document.getElementById('saveApiKeyBtnNew');
     if (!keyInput || !saveBtn) return;
 
     // Загружаем сохранённый ключ в поле
@@ -10176,7 +10176,7 @@ function closeAiChatModal() {
 
 function showApiMessage(msg, color) {
     // Можно создать временное уведомление в шапке чата
-    const header = document.querySelector('#aiChatModal .chat-header');
+    const header = document.querySelector('#aiChatModal .chat-header-new');
     if (!header) return;
     let statusDiv = document.getElementById('apiKeyStatusTemp');
     if (!statusDiv) {
@@ -10197,7 +10197,7 @@ function showApiMessage(msg, color) {
 }
 
 // ---------- РАБОТА С ФАЙЛАМИ ----------
-function handleFilesSelected(files) {
+function handleFilesSelectedNew(files) {
 if (typeof attachedFiles === 'undefined') {
         window.attachedFiles = [];
         attachedFiles = window.attachedFiles;
@@ -10270,7 +10270,7 @@ function addSystemMessage(text) {
 }
 
 // ---------- ОТПРАВКА В OPENROUTER  ----------
-async function sendChatMessage() {
+async function sendChatMessageNew() {
 if (typeof attachedFiles === 'undefined') {
         window.attachedFiles = [];
         attachedFiles = window.attachedFiles;
@@ -10389,11 +10389,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const inputField = document.getElementById('chatUserInput');
     if (inputField) {
         inputField.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') sendChatMessage();
+            if (e.key === 'Enter') sendChatMessageNew();
         });
     }
 });
-function exportDataToChatAsFile() {
+function exportDataToChatAsFileNew() {
 if (typeof attachedFiles === 'undefined') {
         window.attachedFiles = [];
         attachedFiles = window.attachedFiles;
