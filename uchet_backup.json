@@ -7063,6 +7063,29 @@
       "planFact": "",
       "fact": "",
       "shipmentDoc": ""
+    },
+    {
+      "recordId": "20260407141731352_8d40agei1",
+      "docNumber": "2026- 277 (от 07.04.2026)",
+      "status": "В работе",
+      "id": "-",
+      "name": "ADVANCE NHS PREMIUIM GRIP II 5.00.8",
+      "quantity": "2",
+      "unit": "шт",
+      "purchaseName": "",
+      "purchaseQuantity": "",
+      "purchaseUnit": "",
+      "amount": "",
+      "supplier": "",
+      "department": "16/0100 СТиАТ",
+      "contract": "",
+      "paymentTerms": "",
+      "deliveryDays": "",
+      "deliveryTerms": "",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
     }
   ],
   "counterpartiesData": [
@@ -14353,5 +14376,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-07T11:16:37.864Z"
+  "exportDate": "2026-04-07T11:17:31.452Z"
 }
