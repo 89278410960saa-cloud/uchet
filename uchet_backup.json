@@ -7109,6 +7109,18 @@
   ],
   "counterpartiesData": [
     {
+      "recordId": "20260408123057221_l0yfg01g4",
+      "supplier": "ООО \"Колеса Даром.Ру\"",
+      "inn": "1651066469",
+      "phone": "78002509860",
+      "contact": "-",
+      "email": "clientcenter@kolesa-darom.ru",
+      "address": "-",
+      "material": "автошины",
+      "blacklisted": false,
+      "blacklistComment": ""
+    },
+    {
       "recordId": "20260403134755220_6d5jzxve2",
       "supplier": "ООО \"МСК Энерго\"",
       "inn": "7734394778",
@@ -14425,5 +14437,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-08T09:28:42.984Z"
+  "exportDate": "2026-04-08T09:30:57.262Z"
 }
