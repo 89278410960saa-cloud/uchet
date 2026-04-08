@@ -100,16 +100,16 @@
       "name": "Formula (или аналог)\n185/65 R15 (авто Лада ларгус)",
       "quantity": "4",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
-      "supplier": "",
+      "purchaseName": "Автошины Viatti Strada 2 (V-134) R15 185/65 92V",
+      "purchaseQuantity": "4",
+      "purchaseUnit": "шт",
+      "amount": "16268.00",
+      "supplier": "ООО \"Колеса Даром.Ру\"",
       "department": "16/0100 СТиАТ",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № Р0369864",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "14",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -14437,5 +14437,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-08T09:34:33.227Z"
+  "exportDate": "2026-04-08T09:35:22.641Z"
 }
