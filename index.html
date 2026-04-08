@@ -1039,8 +1039,8 @@
 .chat-modal-content {
     display: flex;
     flex-direction: column;
-    height: 650px;
-    max-width: 700px;
+    height: 80%;
+    width: 50%;
     padding-right: 40px;
     background: linear-gradient(135deg, #1a1e2a 0%, #0f1119 100%) !important;
     border-radius: 16px !important;
@@ -1074,7 +1074,11 @@
     margin-left: 0 !important;
     padding-left: 8px;
     margin-bottom: 5px;
-
+}
+#chatApiKeyInput.api-key-saved {
+    border: 2px solid #5c7e10;            /* зелёный цвет */
+    box-shadow: 0 0 8px rgba(92,126,16,0.5);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 #saveApiKeyBtn {
     background: #2a475e;
@@ -1259,6 +1263,9 @@
     background: #0f1119;
     border-top: 1px solid #2a2f3a;
     align-items: center;
+    height: 40px;
+    font-size: 13px;           
+    line-height: 1.4; 
 }
 
 .chat-input-panel input {
@@ -1266,6 +1273,11 @@
     background-color: #0a0e14 !important; /* более тёмный фон */
     border: 1px solid #2a2f3a;
     color: #e5e7eb;
+}
+.chat-input-panel input#chatUserInput {
+    font-size: 12px !important;      /* Размер шрифта в поле ввода */
+    height: 22px !important;         /* Высота поля ввода */
+    padding: 4px 6px !important;    /* Внутренние отступы */
 }
 
 .chat-input-panel input:focus {
@@ -3531,7 +3543,7 @@ button:hover{background:#222733!important}
 
         <div class="chat-footer">
             <span id="fileCountBadge">0 файлов</span>
-            <span class="model-info">Модель: OpenAI gpt-oss-120b (free)</span>
+            <span class="model-info">Модель: NVIDIA: Nemotron 3 Super (бесплатно)</span>
         </div>
     </div>
 </div>
@@ -10165,11 +10177,10 @@ function initApiKeyControl() {
         if (newKey) {
             openRouterKey = newKey;
             localStorage.setItem('openrouter_api_key', newKey);
-            showApiMessage('✅ API-ключ сохранён', '#5c7e10');
+            keyInput.classList.add('api-key-saved');
         } else {
             openRouterKey = '';
             localStorage.removeItem('openrouter_api_key');
-            showApiMessage('⚠️ API-ключ удалён', '#ffd700');
         }
     });
 }
@@ -10307,7 +10318,7 @@ if (typeof attachedFiles === 'undefined') {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                model: 'openai/gpt-oss-120b:free', // бесплатная модель 
+                model: 'nvidia/nemotron-3-super-120b-a12b:free', // бесплатная модель 
                 messages: [
                     { role: 'system', content: 'Ты помощник в системе учёта закупок. Отвечай кратко, по делу.' },
                     { role: 'user', content: userPrompt }
