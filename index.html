@@ -10193,27 +10193,7 @@ function closeAiChatModal() {
 }
 
 
-function showApiMessage(msg, color) {
-    // Можно создать временное уведомление в шапке чата
-    const header = document.querySelector('#aiChatModal .chat-header');
-    if (!header) return;
-    let statusDiv = document.getElementById('apiKeyStatusTemp');
-    if (!statusDiv) {
-        statusDiv = document.createElement('div');
-        statusDiv.id = 'apiKeyStatusTemp';
-        statusDiv.style.fontSize = '11px';
-        statusDiv.style.marginLeft = '12px';
-        statusDiv.style.padding = '2px 6px';
-        statusDiv.style.borderRadius = '12px';
-        statusDiv.style.backgroundColor = '#1e2432';
-        header.appendChild(statusDiv);
-    }
-    statusDiv.textContent = msg;
-    statusDiv.style.color = color;
-    setTimeout(() => {
-        if (statusDiv.textContent === msg) statusDiv.textContent = '';
-    }, 2000);
-}
+
 
 // ---------- РАБОТА С ФАЙЛАМИ ----------
 function handleFilesSelected(files) {
