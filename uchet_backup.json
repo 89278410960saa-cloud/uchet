@@ -123,16 +123,16 @@
       "name": "Continental (или аналог)\n245/45 R 20 (авто ЕХЕЕД)",
       "quantity": "4",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
-      "supplier": "",
+      "purchaseName": "Автошины Pirelli Powergy R20 245/45 103V XL",
+      "purchaseQuantity": "4",
+      "purchaseUnit": "шт",
+      "amount": "94600.00",
+      "supplier": "ООО \"Колеса Даром.Ру\"",
       "department": "16/0100 СТиАТ",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № Р0369864",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "14",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -14437,5 +14437,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-08T09:35:22.641Z"
+  "exportDate": "2026-04-08T09:36:01.121Z"
 }
