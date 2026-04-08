@@ -7082,6 +7082,29 @@
       "fact": "11.12.2025",
       "shipmentDoc": "70019 от 09.12.25",
       "plan": "11.12.2025"
+    },
+    {
+      "recordId": "20260408122251573_chrdartp8",
+      "docNumber": "н/н (от 08.04.2026)",
+      "status": "В работе",
+      "id": "-",
+      "name": "Прозрачный сотовый поликарбонат толщиной 4 мм размером 6000х2100 мм ",
+      "quantity": "15",
+      "unit": "шт",
+      "purchaseName": "Поликарбонат сотовый \nWoggel 4 мм 2,1х6 м \nпрозрачный",
+      "purchaseQuantity": "15",
+      "purchaseUnit": "шт",
+      "amount": "60975.00",
+      "supplier": "ООО \"СТД \"Петрович\"",
+      "department": "17/0001 РСУ",
+      "contract": "СЧ № СКЭ00031662",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "2",
+      "deliveryTerms": "Включена",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
     }
   ],
   "counterpartiesData": [
@@ -14382,5 +14405,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-08T09:07:15.787Z"
+  "exportDate": "2026-04-08T09:22:51.666Z"
 }
