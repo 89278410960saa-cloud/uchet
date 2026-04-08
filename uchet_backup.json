@@ -8,16 +8,16 @@
       "name": "ADVANCE NHS PREMIUIM GRIP II 5.00.8",
       "quantity": "2",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
-      "supplier": "",
+      "purchaseName": "Шинокомплект 5.00-8 10PR KENDA K610 \nJS2\n",
+      "purchaseQuantity": "2",
+      "purchaseUnit": "шт",
+      "amount": "15766.00",
+      "supplier": "ООО \"Иннорус\"",
       "department": "16/0100 СТиАТ",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № 782",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "14",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -14415,5 +14415,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-08T09:25:45.012Z"
+  "exportDate": "2026-04-08T09:26:56.965Z"
 }
