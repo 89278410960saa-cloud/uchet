@@ -164,7 +164,7 @@
     {
       "recordId": "20260407141423338_z4lpfsh6n",
       "docNumber": "2026- 277 (от 07.04.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "МАТ-06003",
       "name": "Continental (или аналог)\n245/45 R 20 (авто ЕХЕЕД)",
       "quantity": "4",
@@ -179,8 +179,8 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "14",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "09.04.2026",
+      "planFact": "23.04.2026",
       "fact": "",
       "shipmentDoc": ""
     },
@@ -14461,5 +14461,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-09T07:36:51.060Z"
+  "exportDate": "2026-04-09T07:37:00.297Z"
 }
