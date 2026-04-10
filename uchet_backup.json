@@ -1,6 +1,29 @@
 {
   "accountingData": [
     {
+      "recordId": "20260410112315129_yzi4fg5wk",
+      "docNumber": "2026-312 (от 10.04.2026)",
+      "status": "В работе",
+      "id": "-",
+      "name": "Kомплект скрепления ЖБP-65",
+      "quantity": "138",
+      "unit": "компл",
+      "purchaseName": "Скрепление ЖБР с закладным болтом и металлическим упором ",
+      "purchaseQuantity": "138",
+      "purchaseUnit": "компл",
+      "amount": "269100.00",
+      "supplier": "АО \"НТПК\"",
+      "department": "11/0111 Участок по обслуж. ж/д путей",
+      "contract": "СЧ № 2938",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "7",
+      "deliveryTerms": "Включена",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
+    },
+    {
       "recordId": "20260408123828872_kbocjifdg",
       "docNumber": "2026- 277 (от 07.04.2026)",
       "status": "Поставка",
@@ -7118,29 +7141,6 @@
       "fact": "11.12.2025",
       "shipmentDoc": "70019 от 09.12.25",
       "plan": "11.12.2025"
-    },
-    {
-      "recordId": "20260410112315129_yzi4fg5wk",
-      "docNumber": "2026-312 (от 10.04.2026)",
-      "status": "В работе",
-      "id": "-",
-      "name": "Kомплект скрепления ЖБP-65",
-      "quantity": "138",
-      "unit": "компл",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
-      "supplier": "",
-      "department": "11/0111 Участок по обслуж. ж/д путей",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
-      "date": "",
-      "planFact": "",
-      "fact": "",
-      "shipmentDoc": ""
     }
   ],
   "counterpartiesData": [
@@ -14474,5 +14474,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-10T08:59:45.327Z"
+  "exportDate": "2026-04-10T09:45:41.454Z"
 }
