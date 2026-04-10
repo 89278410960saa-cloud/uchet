@@ -7118,6 +7118,29 @@
       "fact": "11.12.2025",
       "shipmentDoc": "70019 от 09.12.25",
       "plan": "11.12.2025"
+    },
+    {
+      "recordId": "20260410112315129_yzi4fg5wk",
+      "docNumber": "2026-312 (от 10.04.2026)",
+      "status": "В работе",
+      "id": "-",
+      "name": "Kомплект скрепления ЖБP-65",
+      "quantity": "138",
+      "unit": "компл",
+      "purchaseName": "",
+      "purchaseQuantity": "",
+      "purchaseUnit": "",
+      "amount": "",
+      "supplier": "",
+      "department": "11/0111 Участок по обслуж. ж/д путей",
+      "contract": "",
+      "paymentTerms": "",
+      "deliveryDays": "",
+      "deliveryTerms": "",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
     }
   ],
   "counterpartiesData": [
@@ -14451,5 +14474,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-10T08:20:52.705Z"
+  "exportDate": "2026-04-10T08:23:15.180Z"
 }
