@@ -3,7 +3,7 @@
     {
       "recordId": "20260410112315129_yzi4fg5wk",
       "docNumber": "2026-312 (от 10.04.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "МАТ-10442",
       "name": "Kомплект скрепления ЖБP-65",
       "quantity": "138",
@@ -18,8 +18,8 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "7",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "13.04.2026",
+      "planFact": "20.04.2026",
       "fact": "",
       "shipmentDoc": ""
     },
@@ -14776,5 +14776,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-13T08:57:03.750Z"
+  "exportDate": "2026-04-13T08:57:17.566Z"
 }
