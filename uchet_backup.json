@@ -7301,6 +7301,29 @@
       "planFact": "",
       "fact": "",
       "shipmentDoc": ""
+    },
+    {
+      "recordId": "20260413115223256_1aoy1dc0v",
+      "docNumber": "н/н (от 13.04.2026)",
+      "status": "В работе",
+      "id": "-",
+      "name": "Зарядное устройство КМ АТОМ 18 В 8 А (BC-188/1) ",
+      "quantity": "2",
+      "unit": "шт",
+      "purchaseName": "",
+      "purchaseQuantity": "",
+      "purchaseUnit": "",
+      "amount": "",
+      "supplier": "",
+      "department": "17/0001 РСУ",
+      "contract": "",
+      "paymentTerms": "",
+      "deliveryDays": "",
+      "deliveryTerms": "",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
     }
   ],
   "counterpartiesData": [
@@ -14707,5 +14730,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-13T08:52:05.315Z"
+  "exportDate": "2026-04-13T08:52:23.322Z"
 }
