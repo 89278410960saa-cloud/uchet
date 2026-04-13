@@ -1517,16 +1517,16 @@
       "name": "Набор прецизионных ножей и стамесок 22",
       "quantity": "4",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
-      "supplier": "",
+      "purchaseName": "Набор прецизионных ножей и стамесок 22 шт",
+      "purchaseQuantity": "4",
+      "purchaseUnit": "шт",
+      "amount": "10945.20",
+      "supplier": "ИП Бучнев Александр Николаевич",
       "department": "11/0110 Служба главного механика",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № 1263026",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "30",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -14514,5 +14514,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-13T08:27:16.259Z"
+  "exportDate": "2026-04-13T08:28:32.450Z"
 }
