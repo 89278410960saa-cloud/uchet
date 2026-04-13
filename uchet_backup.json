@@ -7144,6 +7144,18 @@
   ],
   "counterpartiesData": [
     {
+      "recordId": "20260413113055612_08mzv97tw",
+      "supplier": "ИП Далгатов Зелимхан Хусаинович",
+      "inn": "051303020659",
+      "phone": "8928 800-34-43",
+      "contact": "Адам Хаманаев",
+      "email": "automaster05@mail.ru",
+      "address": "-",
+      "material": "автотовары (Дагестан)",
+      "blacklisted": false,
+      "blacklistComment": ""
+    },
+    {
       "recordId": "20260413112716201_nv8q5h5sn",
       "supplier": "ИП Бучнев Александр Николаевич",
       "inn": "391302602383",
@@ -14524,5 +14536,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-13T08:29:21.174Z"
+  "exportDate": "2026-04-13T08:30:55.661Z"
 }
