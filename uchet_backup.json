@@ -1310,16 +1310,16 @@
       "name": "Керн электрический для маркировки по ме-таллу NTTHDK",
       "quantity": "1",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
-      "supplier": "",
+      "purchaseName": "Керн электрический для маркировки по металлу NTTHDK",
+      "purchaseQuantity": "1",
+      "purchaseUnit": "шт",
+      "amount": "4819.97",
+      "supplier": "ИП Далгатов Зелимхан Хусаинович",
       "department": "11/0110 Служба главного механика",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № ЦБ-174",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "14",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -14536,5 +14536,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-13T08:30:55.661Z"
+  "exportDate": "2026-04-13T08:31:44.462Z"
 }
