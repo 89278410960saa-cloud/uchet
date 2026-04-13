@@ -713,6 +713,13 @@
     border-color: #66c0f4;
     box-shadow: 0 0 0 1.34px rgba(102, 192, 244, 0.3);
     outline: none;
+}
+.month-filter {
+    background: #2a475e;
+    border: 0.67px solid #3d4450;
+    border-radius: 2.68px;
+    padding: 5.36px 8.04px;
+    color: #c7d5e0;
 }   
 /* ========== Стили СТРАНИЦА ВХОДА ========== */
 #login-page {
@@ -2800,6 +2807,21 @@ button:hover{background:#222733!important}
                 <input list="departmentsListFilter" id="departmentFilter" class="department-filter" placeholder="Все подразделения" oninput="filterAccountingTable()" style="min-width: 93.8px; flex: 1;">
                 <datalist id="departmentsListFilter"><option value="">Все подразделения</option></datalist>
                 <input list="applicationsListFilter" id="applicationFilter" class="application-filter" placeholder="Фильтр по заявкам..." oninput="filterAccountingTable()" style="min-width: 93.8px; flex: 1;">
+                <select id="factMonthFilter" class="month-filter" onchange="filterAccountingTable(); hideQuickFiltersIfMonthSelected();" style="min-width: 80px;">
+    <option value="">Факт ALL</option>
+    <option value="1">Январь</option>
+    <option value="2">Февраль</option>
+    <option value="3">Март</option>
+    <option value="4">Апрель</option>
+    <option value="5">Май</option>
+    <option value="6">Июнь</option>
+    <option value="7">Июль</option>
+    <option value="8">Август</option>
+    <option value="9">Сентябрь</option>
+    <option value="10">Октябрь</option>
+    <option value="11">Ноябрь</option>
+    <option value="12">Декабрь</option>
+</select>
                 
                 <div style="display: flex; gap: 6.7px;">
                     <button onclick="clearAccountingFilters()">Сбросить фильтры</button>
@@ -4559,6 +4581,7 @@ function editAccountingRowByRecordId(recordId) {
 }
 
     function filterAccountingTable() {
+    const factMonthFilter = document.getElementById('factMonthFilter').value;
     const searchText = document.getElementById('searchAccountingInput').value.toLowerCase().trim();
     const statusFilter = document.getElementById('statusFilter').value;
     const departmentFilter = document.getElementById('departmentFilter').value;
@@ -4592,7 +4615,18 @@ function editAccountingRowByRecordId(recordId) {
                 .trim() : '';
         
         const yearFromApplication = extractYearFromDocNumber(applicationCell);
-        
+        // Проверка по месяцу факта
+let factMonthMatch = true;
+if (factMonthFilter) {
+    const factCell = cells[18] ? cells[18].textContent.trim() : ''; // 19-й столбец (индекс 18)
+    const factDate = parseDate(factCell);
+    if (factDate) {
+        const month = factDate.getMonth() + 1; // месяцы в JS 0-11
+        factMonthMatch = month === parseInt(factMonthFilter);
+    } else {
+        factMonthMatch = false; // если дата не заполнена, не показываем при выборе месяца
+    }
+}
         // Собираем весь текст строки для общего поиска
         let rowText = '';
         cells.forEach(cell => {
@@ -4610,13 +4644,12 @@ function editAccountingRowByRecordId(recordId) {
         const yearMatch = !yearFilter || yearFromApplication === yearFilter;
         
         // Показываем строку только если все фильтры совпадают
-        if (searchMatch && statusMatch && departmentMatch && 
-            applicationMatch && supplierMatch && yearMatch) {
-            row.style.display = '';
-            visibleCount++;
-        } else {
-            row.style.display = 'none';
-        }
+        if (searchMatch && statusMatch && departmentMatch && applicationMatch && supplierMatch && yearMatch && factMonthMatch) {
+    row.style.display = '';
+    visibleCount++;
+} else {
+    row.style.display = 'none';
+}
     });
     
     // Показываем сообщение если ничего не найдено
@@ -4644,10 +4677,37 @@ function editAccountingRowByRecordId(recordId) {
     }
     
     updateCommentField();
+    hideQuickFiltersIfMonthSelected();
     saveColumnWidths();
-
+// Сортировка строк по дате "Факт" (убывание), если выбран месяц
+if (factMonthFilter) {
+    const tbody = document.querySelector('#accountingTable tbody');
+    const rows = Array.from(tbody.querySelectorAll('tr:not([data-no-results])')); // все строки, кроме сообщения "нет данных"
+    
+    // Убираем строки-заглушки с colspan
+    const validRows = rows.filter(row => row.cells.length > 1 && !row.querySelector('td[colspan]'));
+    
+    validRows.sort((rowA, rowB) => {
+        // Получаем ячейки "Факт" (индекс 18)
+        const factA = rowA.cells[18] ? rowA.cells[18].textContent.trim() : '';
+        const factB = rowB.cells[18] ? rowB.cells[18].textContent.trim() : '';
+        
+        const dateA = parseDate(factA);
+        const dateB = parseDate(factB);
+        
+        // Если даты нет, считаем её минимальной (уходит вниз)
+        const timeA = dateA ? dateA.getTime() : 0;
+        const timeB = dateB ? dateB.getTime() : 0;
+        
+        // Убывание: новее сверху
+        return timeB - timeA;
+    });
+    
+    // Переставляем строки в tbody в новом порядке
+    validRows.forEach(row => tbody.appendChild(row));
+}
     // Обновляем быстрые фильтры
-    updateQuickFilters();
+    refreshQuickFiltersVisibility();
     // Обновляем видимость блока комментариев
     updateCommentBlockVisibility();
     
@@ -4698,6 +4758,11 @@ function editAccountingRowByRecordId(recordId) {
     document.getElementById('supplierFilter').value = '';
     document.getElementById('yearFilter').value = '';
     document.getElementById('applicationComment').value = '';
+    document.getElementById('factMonthFilter').value = '';
+    // Восстанавливаем исходную сортировку (по убыванию recordId)
+if (accountingData.length > 0) {
+    updateAccountingTable(); // перерисовывает таблицу с исходной сортировкой
+}
     
     // Скрываем блок комментариев
     const commentBlock = document.querySelector('.comment-control');
@@ -4706,7 +4771,7 @@ function editAccountingRowByRecordId(recordId) {
     }
     
     // Обновляем быстрые фильтры
-    updateQuickFilters();
+    refreshQuickFiltersVisibility();
     updateWeeklyDeliveriesButton();
     updateOverdueButton();
     
@@ -8044,58 +8109,41 @@ function printDeliveriesAndOverdue() {
     }, 100);
 }
         // ========== ФУНКЦИИ БЫСТРЫХ ФИЛЬТРОВ ==========
-        function updateQuickFilters() {
+    function updateQuickFilters() {
+    const quickFiltersContainer = document.getElementById('quickApplicationFilters');
+    if (!quickFiltersContainer) return;
+
+    // Получаем остальные фильтры
     const statusFilter = document.getElementById('statusFilter').value;
     const departmentFilter = document.getElementById('departmentFilter').value.toLowerCase().trim();
     const supplierFilter = document.getElementById('supplierFilter').value.toLowerCase().trim();
     const yearFilter = document.getElementById('yearFilter').value;
     const searchText = document.getElementById('searchAccountingInput').value.toLowerCase().trim();
-    const quickFiltersContainer = document.getElementById('quickApplicationFilters');
-    
-    if (!quickFiltersContainer) return;
-    
-    // Добавленная проверка: если выбрана заявка – скрываем блок
-    const applicationFilterValue = document.getElementById('applicationFilter').value.trim();
-    if (applicationFilterValue) {
-        quickFiltersContainer.style.display = 'none';
-        return;
-    }
-    // Очищаем контейнер
-    quickFiltersContainer.innerHTML = '';
-    
-    // Показываем блок только если выбран статус и он не "Выполнено" или "Приход"
+
+    // Скрываем блок, если статус не выбран или статус "Выполнено"/"Приход"
     if (!statusFilter || statusFilter === 'Выполнено' || statusFilter === 'Приход') {
         quickFiltersContainer.style.display = 'none';
+        quickFiltersContainer.innerHTML = '';
         return;
     }
-    
+
     // Если нет данных
     if (!accountingData || accountingData.length === 0) {
         quickFiltersContainer.innerHTML = '<span style="color: #8f98a0; font-style: italic;">Нет данных для фильтрации</span>';
         quickFiltersContainer.style.display = 'flex';
         return;
     }
-    
+
+    // Собираем заявки, соответствующие всем фильтрам (кроме фильтра по заявке)
     const applicationsWithStatus = new Set();
-    
-    // Собираем заявки, соответствующие текущим фильтрам (кроме фильтра по заявке)
     accountingData.forEach(item => {
-        // Проверка статуса
         if (item.status !== statusFilter) return;
-        
-        // Проверка подразделения
         if (departmentFilter && (!item.department || !item.department.toLowerCase().includes(departmentFilter))) return;
-        
-        // Проверка поставщика
         if (supplierFilter && (!item.supplier || !item.supplier.toLowerCase().includes(supplierFilter))) return;
-        
-        // Проверка года
         if (yearFilter) {
             const yearFromDoc = extractYearFromDocNumber(item.docNumber);
             if (yearFromDoc !== yearFilter) return;
         }
-        
-        // Проверка поискового текста по всем столбцам
         if (searchText) {
             const rowText = (
                 (item.docNumber || '') + ' ' +
@@ -8109,67 +8157,71 @@ function printDeliveriesAndOverdue() {
             ).toLowerCase();
             if (!rowText.includes(searchText)) return;
         }
-        
-        // Если запись прошла все фильтры, добавляем номер заявки
         if (item.docNumber) {
             applicationsWithStatus.add(item.docNumber);
         }
     });
-    
+
     if (applicationsWithStatus.size === 0) {
-        quickFiltersContainer.innerHTML = '<span style="color: #8f98a0; font-style: italic;">Нет заявок с выбранным статусом</span>';
+        quickFiltersContainer.innerHTML = '<span style="color: #8f98a0; font-style: italic;">Нет заявок с выбранными фильтрами</span>';
         quickFiltersContainer.style.display = 'flex';
         return;
     }
-    
-    // Заголовок
+
+    // Отображаем блок с кнопками заявок
+    quickFiltersContainer.innerHTML = '';
     const label = document.createElement('div');
     label.className = 'quick-filters-label';
     label.textContent = 'Заявки:';
     quickFiltersContainer.appendChild(label);
-    
-    // Контейнер для кнопок
+
     const filtersContainer = document.createElement('div');
     filtersContainer.className = 'quick-filters';
-    
-    // Сортировка заявок
+
     const sortedApplications = Array.from(applicationsWithStatus).sort((a, b) => {
         const numA = parseInt(a.replace(/\D/g, '')) || 0;
         const numB = parseInt(b.replace(/\D/g, '')) || 0;
         return numA - numB;
     });
-    
+
     const currentApplicationFilter = document.getElementById('applicationFilter').value.trim();
-    
+
     sortedApplications.forEach(app => {
         const button = document.createElement('button');
         button.type = 'button';
         button.className = `quick-filter-btn status-${getStatusClass(statusFilter)}`;
         button.textContent = app;
         button.title = `Показать заявку ${app} (статус: ${statusFilter})`;
-        
-        if (app === currentApplicationFilter) {
-            button.classList.add('active');
-        }
-        
+        if (app === currentApplicationFilter) button.classList.add('active');
+
         button.onclick = () => {
-            // Убираем активный класс со всех кнопок
             document.querySelectorAll('.quick-filter-btn').forEach(btn => btn.classList.remove('active'));
             button.classList.add('active');
-            
-            // Устанавливаем фильтр заявки и вызываем общую фильтрацию
             document.getElementById('applicationFilter').value = app;
             filterAccountingTable();
             updateCommentBlockVisibility();
         };
-        
+
         filtersContainer.appendChild(button);
     });
-    
+
     quickFiltersContainer.appendChild(filtersContainer);
     quickFiltersContainer.style.display = 'flex';
 }
-
+function hideQuickFiltersIfMonthSelected() {
+    const factMonth = document.getElementById('factMonthFilter').value;
+    const container = document.getElementById('quickApplicationFilters');
+    if (!container) return;
+    if (factMonth) {
+        container.style.display = 'none';
+        container.innerHTML = ''; // очищаем, чтобы на секунду не мелькнули кнопки
+    } else {
+        // Если месяц не выбран, но блок был скрыт — восстанавливаем его через обычный апдейт
+        if (container.style.display === 'none') {
+            updateQuickFilters();
+        }
+    }
+}
         function getStatusClass(status) {
     const statusClasses = {
         'В работе': 'working',
@@ -8193,15 +8245,30 @@ function printDeliveriesAndOverdue() {
         }
 
         function handleStatusChange() {
-    const status = document.getElementById('statusFilter').value;
+    // Сначала принудительно скрываем быстрые фильтры, если выбран месяц
+    hideQuickFiltersIfMonthSelected();
     
     // Обновляем быстрые фильтры
-    updateQuickFilters();
+    refreshQuickFiltersVisibility();
     
     // Применяем фильтрацию с учётом всех фильтров
     filterAccountingTable();
 }
+function refreshQuickFiltersVisibility() {
+    const factMonthFilter = document.getElementById('factMonthFilter').value;
+    const quickFiltersContainer = document.getElementById('quickApplicationFilters');
+    if (!quickFiltersContainer) return;
 
+    // Если выбран месяц — блок скрыт и очищен
+    if (factMonthFilter) {
+        quickFiltersContainer.style.display = 'none';
+        quickFiltersContainer.innerHTML = '';
+        return;
+    }
+
+    // Иначе обновляем содержимое блока (эта функция сама решит, показывать или нет)
+    updateQuickFilters();
+}
 
         // ========== ФУНКЦИИ КОММЕНТАРИЕВ ==========
         function saveApplicationComment() {
@@ -10644,7 +10711,9 @@ window.addEventListener('resize', function() {
 function resetAllFilters() {
     // Сброс фильтров на странице Учета
     clearAccountingFilters();
-    
+    if (document.getElementById('factMonthFilter')) {
+    document.getElementById('factMonthFilter').value = '';
+}
     // Сброс фильтров на странице Контрагентов
     if (document.getElementById('searchCounterpartiesInput')) {
         document.getElementById('searchCounterpartiesInput').value = '';
