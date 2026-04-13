@@ -7195,16 +7195,16 @@
       "name": "Дрель-шуруповерт аккумуляторная КМ АТОМ 18 В без АКБ и ЗУ (CD-183BL) ",
       "quantity": "3",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
-      "supplier": "",
+      "purchaseName": "Дрель-шуруповерт \nаккумуляторная КМ \nАТОМ 18 В без АКБ и \nЗУ (CD-183BL)",
+      "purchaseQuantity": "3",
+      "purchaseUnit": "шт",
+      "amount": "14700.00",
+      "supplier": "ООО \"СТД \"Петрович\"",
       "department": "17/0001 РСУ",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № СКЭ00033840",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "1",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -14776,5 +14776,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-13T09:33:45.657Z"
+  "exportDate": "2026-04-13T09:34:17.149Z"
 }
