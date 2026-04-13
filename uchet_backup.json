@@ -7287,16 +7287,16 @@
       "name": "Зарядное устройство КМ АТОМ 18 В 3 А (BC-18/2) ",
       "quantity": "1",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
-      "supplier": "",
+      "purchaseName": "Зарядное устройство \nКМ АТОМ 18 В 3 А \n(BC-18/2)",
+      "purchaseQuantity": "1",
+      "purchaseUnit": "шт",
+      "amount": "3180.00",
+      "supplier": "ООО \"СТД \"Петрович\"",
       "department": "17/0001 РСУ",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № СКЭ00033840",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "1",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -14776,5 +14776,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-13T09:35:39.600Z"
+  "exportDate": "2026-04-13T09:36:05.793Z"
 }
