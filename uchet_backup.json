@@ -7186,6 +7186,29 @@
       "planFact": "",
       "fact": "",
       "shipmentDoc": ""
+    },
+    {
+      "recordId": "20260413115033239_gtymcibbv",
+      "docNumber": "н/н (от 13.04.2026)",
+      "status": "В работе",
+      "id": "-",
+      "name": "Дрель-шуруповерт аккумуляторная КМ АТОМ 18 В без АКБ и ЗУ (CD-183BL) ",
+      "quantity": "3",
+      "unit": "шт",
+      "purchaseName": "",
+      "purchaseQuantity": "",
+      "purchaseUnit": "",
+      "amount": "",
+      "supplier": "",
+      "department": "17/0001 РСУ",
+      "contract": "",
+      "paymentTerms": "",
+      "deliveryDays": "",
+      "deliveryTerms": "",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
     }
   ],
   "counterpartiesData": [
@@ -14592,5 +14615,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-13T08:50:02.790Z"
+  "exportDate": "2026-04-13T08:50:33.316Z"
 }
