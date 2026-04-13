@@ -7278,6 +7278,29 @@
       "planFact": "",
       "fact": "",
       "shipmentDoc": ""
+    },
+    {
+      "recordId": "20260413115205243_ozgc41lot",
+      "docNumber": "н/н (от 13.04.2026)",
+      "status": "В работе",
+      "id": "-",
+      "name": "Зарядное устройство КМ АТОМ 18 В 3 А (BC-18/2) ",
+      "quantity": "1",
+      "unit": "шт",
+      "purchaseName": "",
+      "purchaseQuantity": "",
+      "purchaseUnit": "",
+      "amount": "",
+      "supplier": "",
+      "department": "17/0001 РСУ",
+      "contract": "",
+      "paymentTerms": "",
+      "deliveryDays": "",
+      "deliveryTerms": "",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
     }
   ],
   "counterpartiesData": [
@@ -14684,5 +14707,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-13T08:51:43.834Z"
+  "exportDate": "2026-04-13T08:52:05.315Z"
 }
