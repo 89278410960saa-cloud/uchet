@@ -7255,6 +7255,29 @@
       "planFact": "",
       "fact": "",
       "shipmentDoc": ""
+    },
+    {
+      "recordId": "20260413115143759_m5xbjkw5o",
+      "docNumber": "н/н (от 13.04.2026)",
+      "status": "В работе",
+      "id": "-",
+      "name": "Шлифмашина угловая аккумуляторная КМ АТОМ 18 В d125 мм без АКБ и ЗУ (СAG-182/125BL)",
+      "quantity": "2",
+      "unit": "шт",
+      "purchaseName": "",
+      "purchaseQuantity": "",
+      "purchaseUnit": "",
+      "amount": "",
+      "supplier": "",
+      "department": "17/0001 РСУ",
+      "contract": "",
+      "paymentTerms": "",
+      "deliveryDays": "",
+      "deliveryTerms": "",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
     }
   ],
   "counterpartiesData": [
@@ -14661,5 +14684,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-13T08:51:23.974Z"
+  "exportDate": "2026-04-13T08:51:43.834Z"
 }
