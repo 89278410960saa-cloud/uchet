@@ -7356,16 +7356,16 @@
       "name": "Аккумулятор КМ АТОМ 18 В 4Ач Li-Ion (BLI-18/4.1) ",
       "quantity": "4",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
-      "supplier": "",
+      "purchaseName": "Аккумулятор КМ АТОМ \n18 В 4Ач Li-Ion \n(BLI-18/4.1)\n",
+      "purchaseQuantity": "4",
+      "purchaseUnit": "шт",
+      "amount": "22000.00",
+      "supplier": "ООО \"СТД \"Петрович\"",
       "department": "17/0001 РСУ",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № СКЭ00033840",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "1",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -14776,5 +14776,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-13T09:37:05.559Z"
+  "exportDate": "2026-04-13T09:37:31.730Z"
 }
