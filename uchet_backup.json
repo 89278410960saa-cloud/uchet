@@ -7149,16 +7149,16 @@
       "name": "Перфоратор аккумуляторный КМ АТОМ 18 В 2,2 Дж SDS-plus без АКБ и ЗУ (СRH-181BL) ",
       "quantity": "1",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
-      "supplier": "",
+      "purchaseName": "Перфоратор \nаккумуляторный КМ \nАТОМ 18 В 2,2 Дж \nSDS-plus без АКБ и ЗУ \n(СRH-181BL)",
+      "purchaseQuantity": "1",
+      "purchaseUnit": "шт",
+      "amount": "11990.00",
+      "supplier": "ООО \"СТД \"Петрович\"",
       "department": "17/0001 РСУ",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № СКЭ00033840",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "1",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -14776,5 +14776,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-13T08:57:17.566Z"
+  "exportDate": "2026-04-13T09:33:16.695Z"
 }
