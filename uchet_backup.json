@@ -7144,6 +7144,18 @@
   ],
   "counterpartiesData": [
     {
+      "recordId": "20260413112716201_nv8q5h5sn",
+      "supplier": "ИП Бучнев Александр Николаевич",
+      "inn": "391302602383",
+      "phone": "74012720169",
+      "contact": "-",
+      "email": "mail@fastbox.su",
+      "address": "-",
+      "material": "разное",
+      "blacklisted": false,
+      "blacklistComment": ""
+    },
+    {
       "recordId": "20260408123057221_l0yfg01g4",
       "supplier": "ООО \"Колеса Даром.Ру\"",
       "inn": "1651066469",
@@ -14502,5 +14514,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-13T08:10:46.511Z"
+  "exportDate": "2026-04-13T08:27:16.259Z"
 }
