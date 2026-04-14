@@ -2188,7 +2188,7 @@
       "purchaseQuantity": "",
       "purchaseUnit": "",
       "amount": "",
-      "supplier": "ООО \"А Сталь\"",
+      "supplier": "",
       "department": "11/0141 Котельная",
       "contract": "",
       "paymentTerms": "",
@@ -14786,5 +14786,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-14T06:13:24.838Z"
+  "exportDate": "2026-04-14T06:20:50.018Z"
 }
