@@ -1655,16 +1655,16 @@
       "name": "Аккумулятор Duracell разме-ра AA 2500 мАч, 4 шт. Б0014863 (пачка)",
       "quantity": "8",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
+      "purchaseName": "Аккумуляторы NiMH (никель-металлгидридные) Kodak HR6-4BL 2600mAh (KAAHR-4) (80/640/15360)",
+      "purchaseQuantity": "40",
+      "purchaseUnit": "in",
+      "amount": "12169.74",
       "supplier": "АО \"ТД \"Электротехмонтаж\"",
       "department": "11/0110 Служба главного механика",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № 104/5502817",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "7",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -14786,5 +14786,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-14T09:58:46.402Z"
+  "exportDate": "2026-04-14T10:00:41.061Z"
 }
