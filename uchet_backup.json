@@ -2225,7 +2225,7 @@
     {
       "recordId": "20260319152722980_rzxqprr7t",
       "docNumber": "2026-267 (от 19.03.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "МАТ-09854",
       "name": "Ламинат 33 класс Ultradecor Expert Choice дуб лонгбоу 2,22 кв.м 8 мм с фаской",
       "quantity": "26,64",
@@ -2240,8 +2240,8 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "7",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "14.04.2026",
+      "planFact": "21.04.2026",
       "fact": "",
       "shipmentDoc": ""
     },
@@ -14786,5 +14786,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-14T05:55:47.391Z"
+  "exportDate": "2026-04-14T05:55:57.809Z"
 }
