@@ -2452,6 +2452,36 @@
     color: #ffd700;                     /* цвет текста (можно изменить или удалить) */
     font-weight: bold;                  /* жирность текста */
 }
+/* Выравнивание высоты строк на страницах Платежи, Доверенности, Урегулирование, Почтовый реестр */
+#paymentsTable td,
+#proxyTable td,
+#settlementTable td,
+#mailTable td {
+    padding: 5.36px !important;
+    vertical-align: top !important;
+    line-height: 1.3 !important;
+    min-height: 26.8px !important;
+    white-space: normal !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+}
+
+/* Дополнительно для заголовков, чтобы они не сжимались */
+#paymentsTable th,
+#proxyTable th,
+#settlementTable th,
+#mailTable th {
+    padding: 5.36px !important;
+    vertical-align: top !important;
+    line-height: 1.3 !important;
+    white-space: normal !important;
+}
+/* Центрирование текста во всех ячейках таблицы Учет */
+#accountingTable th,
+#accountingTable td {
+    text-align: center !important;
+    vertical-align: middle !important;
+}
 
 </style>
 
