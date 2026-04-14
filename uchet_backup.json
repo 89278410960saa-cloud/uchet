@@ -1724,16 +1724,16 @@
       "name": "Щелочные ба-тарейки Duracell, ААA/LR03 8шт блистер C0033441  (пачка)",
       "quantity": "8",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
+      "purchaseName": "Элемент питания LR03-8BL Basic (8/80/35280)",
+      "purchaseQuantity": "80",
+      "purchaseUnit": "шт",
+      "amount": "7747.49",
       "supplier": "АО \"ТД \"Электротехмонтаж\"",
       "department": "11/0110 Служба главного механика",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № 104/5502817",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "7",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -14786,5 +14786,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-14T10:03:00.274Z"
+  "exportDate": "2026-04-14T10:04:21.383Z"
 }
