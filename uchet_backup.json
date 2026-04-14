@@ -7370,29 +7370,6 @@
       "fact": "11.12.2025",
       "shipmentDoc": "70019 от 09.12.25",
       "plan": "11.12.2025"
-    },
-    {
-      "recordId": "20260414095004120_vax7i73ll",
-      "docNumber": "1 (от 14.04.2026)",
-      "status": "В работе",
-      "id": "-",
-      "name": "аа",
-      "quantity": "5",
-      "unit": "шт",
-      "purchaseName": "аа",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
-      "supplier": "",
-      "department": "17/0001 РСУ",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
-      "date": "",
-      "planFact": "",
-      "fact": "",
-      "shipmentDoc": ""
     }
   ],
   "counterpartiesData": [
@@ -14809,5 +14786,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-14T06:50:04.193Z"
+  "exportDate": "2026-04-14T06:51:59.989Z"
 }
