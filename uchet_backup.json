@@ -1678,16 +1678,16 @@
       "name": "Щелочные ба-тарейки Duracell, АА/LR6 8шт C0037387 (пачка)",
       "quantity": "8",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
+      "purchaseName": "Элемент питания LR6-8BL Basic (8/96/18/240)",
+      "purchaseQuantity": "96",
+      "purchaseUnit": "шт",
+      "amount": "9296.99",
       "supplier": "АО \"ТД \"Электротехмонтаж\"",
       "department": "11/0110 Служба главного механика",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № 104/5502817",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "7",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -14786,5 +14786,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-14T10:00:41.061Z"
+  "exportDate": "2026-04-14T10:01:55.940Z"
 }
