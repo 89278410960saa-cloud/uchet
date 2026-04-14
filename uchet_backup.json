@@ -1632,16 +1632,16 @@
       "name": "Аккумулятор Duracell разме-ра AAA 900мАч, 4 шт. Б0014861 (пачка)",
       "quantity": "8",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
+      "purchaseName": "Аккумуляторы перезаряжаемые GP ReEnergy 100AAAHC AAA, емкость 930 мАч - 2 шт. в клемшеле",
+      "purchaseQuantity": "40",
+      "purchaseUnit": "шт",
+      "amount": "12278.57",
       "supplier": "АО \"ТД \"Электротехмонтаж\"",
       "department": "11/0110 Служба главного механика",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № 104/5502817",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "7",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -14786,5 +14786,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-14T09:52:31.684Z"
+  "exportDate": "2026-04-14T09:58:36.272Z"
 }
