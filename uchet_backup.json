@@ -302,7 +302,7 @@
     {
       "recordId": "20260407141731352_8d40agei1",
       "docNumber": "2026-277 (от 07.04.2026)",
-      "status": "Поставка",
+      "status": "Приход",
       "id": "МАТ-06429",
       "name": "ADVANCE NHS PREMIUIM GRIP II 5.00.8",
       "quantity": "2",
@@ -319,7 +319,7 @@
       "deliveryTerms": "Включена",
       "date": "09.04.2026",
       "planFact": "23.04.2026",
-      "fact": "",
+      "fact": "15.04.2026",
       "shipmentDoc": ""
     },
     {
@@ -14791,5 +14791,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-15T07:20:37.847Z"
+  "exportDate": "2026-04-15T07:42:50.531Z"
 }
