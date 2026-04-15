@@ -7411,6 +7411,29 @@
       "planFact": "",
       "fact": "",
       "shipmentDoc": ""
+    },
+    {
+      "recordId": "20260415113124723_frqjvm55y",
+      "docNumber": "2026-287 (от 30.03.2026)",
+      "status": "В работе",
+      "id": "-",
+      "name": "Щетка строительная 400 мм, 5 рядов, жесткая щетина, железная тулейка, без черенка Сибртех 84621 ",
+      "quantity": "80",
+      "unit": "шт",
+      "purchaseName": "",
+      "purchaseQuantity": "",
+      "purchaseUnit": "",
+      "amount": "",
+      "supplier": "",
+      "department": "13/0100 Товарная служба",
+      "contract": "",
+      "paymentTerms": "",
+      "deliveryDays": "",
+      "deliveryTerms": "",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
     }
   ],
   "counterpartiesData": [
@@ -14837,5 +14860,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-15T08:29:51.787Z"
+  "exportDate": "2026-04-15T08:31:24.797Z"
 }
