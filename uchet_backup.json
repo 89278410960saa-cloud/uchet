@@ -7434,6 +7434,29 @@
       "planFact": "",
       "fact": "",
       "shipmentDoc": ""
+    },
+    {
+      "recordId": "20260415113154838_fh5r34yp8",
+      "docNumber": "2026-287 (от 30.03.2026)",
+      "status": "В работе",
+      "id": "-",
+      "name": "Сгон для пола NV 60-70 см с рукояткой, металлический NV04032 ",
+      "quantity": "10",
+      "unit": "шт",
+      "purchaseName": "",
+      "purchaseQuantity": "",
+      "purchaseUnit": "",
+      "amount": "",
+      "supplier": "",
+      "department": "13/0100 Товарная служба",
+      "contract": "",
+      "paymentTerms": "",
+      "deliveryDays": "",
+      "deliveryTerms": "",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
     }
   ],
   "counterpartiesData": [
@@ -14860,5 +14883,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-15T08:31:24.797Z"
+  "exportDate": "2026-04-15T08:31:54.910Z"
 }
