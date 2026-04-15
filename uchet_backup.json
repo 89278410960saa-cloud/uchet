@@ -7365,6 +7365,29 @@
       "fact": "11.12.2025",
       "shipmentDoc": "70019 от 09.12.25",
       "plan": "11.12.2025"
+    },
+    {
+      "recordId": "20260415112441149_zm1qsvsz0",
+      "docNumber": "2026-259 (от 30.03.2026)",
+      "status": "В работе",
+      "id": "МАТ-00795",
+      "name": "ведро оцинкованное 15 Л",
+      "quantity": "60",
+      "unit": "шт",
+      "purchaseName": "",
+      "purchaseQuantity": "",
+      "purchaseUnit": "",
+      "amount": "",
+      "supplier": "",
+      "department": "13/0100 Товарная служба",
+      "contract": "",
+      "paymentTerms": "",
+      "deliveryDays": "",
+      "deliveryTerms": "",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
     }
   ],
   "counterpartiesData": [
@@ -14791,5 +14814,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-15T07:46:04.562Z"
+  "exportDate": "2026-04-15T08:24:41.226Z"
 }
