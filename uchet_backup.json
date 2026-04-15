@@ -7401,7 +7401,7 @@
       "purchaseQuantity": "",
       "purchaseUnit": "",
       "amount": "",
-      "supplier": "",
+      "supplier": "ООО \"Стройторговля\"",
       "department": "13/0100 Товарная служба",
       "contract": "",
       "paymentTerms": "",
@@ -14883,5 +14883,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-15T09:40:03.606Z"
+  "exportDate": "2026-04-15T09:40:24.858Z"
 }
