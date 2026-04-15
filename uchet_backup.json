@@ -7466,18 +7466,18 @@
       "name": "брус 250х250 длиной 3 м",
       "quantity": "3",
       "unit": "м3",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
-      "supplier": "",
+      "purchaseName": "Брус 200х200х6000 мм естественной \nвлажности сорт 1-2 хвойные породы \nделовой ФГИС ЛК (распил 3х3)",
+      "purchaseQuantity": "13",
+      "purchaseUnit": "шт",
+      "amount": "90186.00",
+      "supplier": "ООО \"СТД \"Петрович\"",
       "department": "Служба главного инженера",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
-      "date": "",
-      "planFact": "",
+      "contract": "ТЧ № СКЭ00035033",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "1",
+      "deliveryTerms": "Включена",
+      "date": "15.04.2026",
+      "planFact": "16.04.2026",
       "fact": "",
       "shipmentDoc": ""
     }
@@ -14923,5 +14923,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-15T12:44:29.051Z"
+  "exportDate": "2026-04-15T13:18:58.638Z"
 }
