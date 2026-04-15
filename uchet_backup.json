@@ -7470,7 +7470,7 @@
       "purchaseQuantity": "",
       "purchaseUnit": "",
       "amount": "",
-      "supplier": "",
+      "supplier": "ООО \"СТД \"Петрович\"",
       "department": "Служба главного инженера",
       "contract": "",
       "paymentTerms": "",
@@ -14907,5 +14907,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-15T11:16:59.846Z"
+  "exportDate": "2026-04-15T11:17:20.109Z"
 }
