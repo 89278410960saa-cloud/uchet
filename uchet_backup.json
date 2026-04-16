@@ -7503,6 +7503,29 @@
       "planFact": "",
       "fact": "",
       "shipmentDoc": ""
+    },
+    {
+      "recordId": "20260416112738856_fip3anvbn",
+      "docNumber": "2026-311 (от 14.04.2026)",
+      "status": "В работе",
+      "id": "-",
+      "name": "Ремень зубчатый для BD 530, D43, D51 (аналог) HTD 475 5M 40  Для поломоечной машины Karcher B 40 C BP + D43\n",
+      "quantity": "3",
+      "unit": "шт",
+      "purchaseName": "",
+      "purchaseQuantity": "",
+      "purchaseUnit": "",
+      "amount": "",
+      "supplier": "",
+      "department": "11/0141 Котельная",
+      "contract": "",
+      "paymentTerms": "",
+      "deliveryDays": "",
+      "deliveryTerms": "",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
     }
   ],
   "counterpartiesData": [
@@ -14989,5 +15012,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-16T08:26:38.320Z"
+  "exportDate": "2026-04-16T08:27:38.928Z"
 }
