@@ -7700,7 +7700,7 @@
       "purchaseQuantity": "",
       "purchaseUnit": "",
       "amount": "",
-      "supplier": "",
+      "supplier": "АО \"ТД \"Электротехмонтаж\"",
       "department": "11/0143 Участок по ОСП",
       "contract": "",
       "paymentTerms": "",
@@ -15334,5 +15334,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-16T10:08:51.855Z"
+  "exportDate": "2026-04-16T10:29:23.698Z"
 }
