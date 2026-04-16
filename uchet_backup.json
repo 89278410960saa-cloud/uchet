@@ -7549,6 +7549,29 @@
       "planFact": "",
       "fact": "",
       "shipmentDoc": ""
+    },
+    {
+      "recordId": "20260416113022864_tfpt9y2lb",
+      "docNumber": "2026-291 (от 14.04.2026)",
+      "status": "В работе",
+      "id": "МАТ-04885",
+      "name": "Грунт-эмаль по ржавчине 3 в 1Текс КРАСНАЯ 0,9 КГ",
+      "quantity": "3",
+      "unit": "шт",
+      "purchaseName": "",
+      "purchaseQuantity": "",
+      "purchaseUnit": "",
+      "amount": "",
+      "supplier": "",
+      "department": "11/0111 Участок по обслуж. ж/д путей",
+      "contract": "",
+      "paymentTerms": "",
+      "deliveryDays": "",
+      "deliveryTerms": "",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
     }
   ],
   "counterpartiesData": [
@@ -15035,5 +15058,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-16T08:29:51.277Z"
+  "exportDate": "2026-04-16T08:30:22.940Z"
 }
