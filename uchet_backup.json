@@ -7742,16 +7742,16 @@
       "name": "Лупа налобная с аккумулятором Levenhuk Discovery Crafts DHR 10 Подсветка светодиодная",
       "quantity": "2",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
-      "supplier": "",
+      "purchaseName": "Лупа налобная с аккумулятором Levenhuk Discovery Crafts \nDHR 10",
+      "purchaseQuantity": "2",
+      "purchaseUnit": "шт",
+      "amount": "5580.00",
+      "supplier": "ООО \"Четыре Глаза МСК\"",
       "department": "11/0141 Котельная",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № 4GL-455896",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "7",
+      "deliveryTerms": "Терминал",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -15353,5 +15353,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-16T13:49:20.468Z"
+  "exportDate": "2026-04-16T13:50:39.098Z"
 }
