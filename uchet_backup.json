@@ -7681,8 +7681,8 @@
       "department": "14/3000 СЭЗиТБ",
       "contract": "",
       "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "deliveryDays": "28",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -15341,5 +15341,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-16T12:00:44.457Z"
+  "exportDate": "2026-04-16T12:00:55.303Z"
 }
