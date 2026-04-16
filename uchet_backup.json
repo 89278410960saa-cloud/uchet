@@ -38,7 +38,7 @@
       "supplier": "",
       "department": "13/0100 Товарная служба",
       "contract": "",
-      "paymentTerms": "100 % предоплата",
+      "paymentTerms": "",
       "deliveryDays": "",
       "deliveryTerms": "",
       "date": "",
@@ -15375,5 +15375,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-16T14:22:11.119Z"
+  "exportDate": "2026-04-16T14:22:25.632Z"
 }
