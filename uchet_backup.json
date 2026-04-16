@@ -7825,6 +7825,29 @@
       "planFact": "",
       "fact": "",
       "shipmentDoc": ""
+    },
+    {
+      "recordId": "20260416114302976_fsq6sgj8l",
+      "docNumber": "2026-320 (от 16.04.2026)",
+      "status": "В работе",
+      "id": "-",
+      "name": "Задвижка 30с65нж Ду 250, Ру25 под приварку (согласно ОЛ)",
+      "quantity": "1",
+      "unit": "шт",
+      "purchaseName": "",
+      "purchaseQuantity": "",
+      "purchaseUnit": "",
+      "amount": "",
+      "supplier": "",
+      "department": "11/0141 Котельная",
+      "contract": "",
+      "paymentTerms": "",
+      "deliveryDays": "",
+      "deliveryTerms": "",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
     }
   ],
   "counterpartiesData": [
@@ -15311,5 +15334,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-16T08:37:36.796Z"
+  "exportDate": "2026-04-16T08:43:03.058Z"
 }
