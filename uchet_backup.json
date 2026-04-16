@@ -7779,6 +7779,29 @@
       "planFact": "",
       "fact": "",
       "shipmentDoc": ""
+    },
+    {
+      "recordId": "20260416113713844_44zr5o34j",
+      "docNumber": "2026-239 (от 09.04.2026)",
+      "status": "В работе",
+      "id": "МАТ-07268",
+      "name": "Стул\tБЕРНГАРД ХРОМИРОВАННЫЙ",
+      "quantity": "6",
+      "unit": "шт",
+      "purchaseName": "",
+      "purchaseQuantity": "",
+      "purchaseUnit": "",
+      "amount": "",
+      "supplier": "",
+      "department": "16/0020 АХО",
+      "contract": "",
+      "paymentTerms": "",
+      "deliveryDays": "",
+      "deliveryTerms": "",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
     }
   ],
   "counterpartiesData": [
@@ -15265,5 +15288,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-16T08:36:51.122Z"
+  "exportDate": "2026-04-16T08:37:13.921Z"
 }
