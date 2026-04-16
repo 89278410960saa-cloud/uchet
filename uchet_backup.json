@@ -54,16 +54,16 @@
       "name": "Щетка строительная 400 мм, 5 рядов, жесткая щетина, железная тулейка, без черенка Сибртех 84621 ",
       "quantity": "80",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
+      "purchaseName": "Щетка швабра 500 мм дерев. с метал. крепежом под черенок 25-30 мм (уличная жесткий ворс)",
+      "purchaseQuantity": "80",
+      "purchaseUnit": "шт",
+      "amount": "28400.00",
       "supplier": "ООО \"Балтоптторг\"",
       "department": "13/0100 Товарная служба",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № Счт-025121",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "7",
+      "deliveryTerms": "Самовывоз",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -14925,5 +14925,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-16T07:21:56.297Z"
+  "exportDate": "2026-04-16T07:23:13.910Z"
 }
