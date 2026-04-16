@@ -7852,6 +7852,18 @@
   ],
   "counterpartiesData": [
     {
+      "recordId": "20260416164920406_xi03h4bnm",
+      "supplier": "ООО \"Четыре Глаза МСК\"",
+      "inn": "7726679177",
+      "phone": "7(495) 540-20-80 доб. 665",
+      "contact": "Дубровина Марина",
+      "email": "marina.dubrovina@4glaza.ru",
+      "address": "-",
+      "material": "оптические приборы",
+      "blacklisted": false,
+      "blacklistComment": ""
+    },
+    {
       "recordId": "20260413113055612_08mzv97tw",
       "supplier": "ИП Далгатов Зелимхан Хусаинович",
       "inn": "051303020659",
@@ -15341,5 +15353,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-16T13:46:40.502Z"
+  "exportDate": "2026-04-16T13:49:20.468Z"
 }
