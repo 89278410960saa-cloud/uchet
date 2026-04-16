@@ -7664,6 +7664,29 @@
       "planFact": "",
       "fact": "",
       "shipmentDoc": ""
+    },
+    {
+      "recordId": "20260416113318721_7u1zejzbi",
+      "docNumber": "2026-290 (от 09.04.2026)",
+      "status": "В работе",
+      "id": "МАТ-06186",
+      "name": "Наклейка UITRACARD CR-79/CR-80 CARDS 500 ШТ В УПАКОВКЕ",
+      "quantity": "6",
+      "unit": "шт",
+      "purchaseName": "",
+      "purchaseQuantity": "",
+      "purchaseUnit": "",
+      "amount": "",
+      "supplier": "",
+      "department": "14/3000 СЭЗиТБ",
+      "contract": "",
+      "paymentTerms": "",
+      "deliveryDays": "",
+      "deliveryTerms": "",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
     }
   ],
   "counterpartiesData": [
@@ -15150,5 +15173,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-16T08:32:20.405Z"
+  "exportDate": "2026-04-16T08:33:18.795Z"
 }
