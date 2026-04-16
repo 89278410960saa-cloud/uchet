@@ -7687,6 +7687,29 @@
       "planFact": "",
       "fact": "",
       "shipmentDoc": ""
+    },
+    {
+      "recordId": "20260416113430226_oamcydl24",
+      "docNumber": "2026-284 (от 08.04.2026)",
+      "status": "В работе",
+      "id": "МАТ-00990",
+      "name": "Провод ПВ31х10  Ж/З",
+      "quantity": "100",
+      "unit": "пм",
+      "purchaseName": "",
+      "purchaseQuantity": "",
+      "purchaseUnit": "",
+      "amount": "",
+      "supplier": "",
+      "department": "11/0143 Участок по ОСП",
+      "contract": "",
+      "paymentTerms": "",
+      "deliveryDays": "",
+      "deliveryTerms": "",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
     }
   ],
   "counterpartiesData": [
@@ -15173,5 +15196,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-16T08:33:18.795Z"
+  "exportDate": "2026-04-16T08:34:30.311Z"
 }
