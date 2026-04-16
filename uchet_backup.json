@@ -31,16 +31,16 @@
       "name": "Сгон для пола NV 60-70 см с рукояткой, металлический NV04032 ",
       "quantity": "10",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
+      "purchaseName": "NV Сгон для пола 60-70 см с рукояткой, металлический, NV04032",
+      "purchaseQuantity": "10",
+      "purchaseUnit": "шт",
+      "amount": "14570.00",
       "supplier": "ВсеИнструменты.ру, ООО",
       "department": "13/0100 Товарная служба",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № 2604-349278-78383",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "7",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -14925,5 +14925,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-16T07:23:13.910Z"
+  "exportDate": "2026-04-16T07:24:53.796Z"
 }
