@@ -7696,16 +7696,16 @@
       "name": "Провод ПВ31х10  Ж/З",
       "quantity": "100",
       "unit": "пм",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
+      "purchaseName": "Провод силовой ПуГВнг (А) - LS 1х10 зелено-желтый ТРТС",
+      "purchaseQuantity": "100",
+      "purchaseUnit": "м",
+      "amount": "14366.72",
       "supplier": "АО \"ТД \"Электротехмонтаж\"",
       "department": "11/0143 Участок по ОСП",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № 104/554016986",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "7",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -15335,5 +15335,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-16T10:31:39.303Z"
+  "exportDate": "2026-04-16T10:44:50.632Z"
 }
