@@ -7719,16 +7719,16 @@
       "name": "Наконечник ТМЛ 10.8.5",
       "quantity": "1000",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
+      "purchaseName": "Наконечник кабельный ТМЛ 10-8-5",
+      "purchaseQuantity": "1000",
+      "purchaseUnit": "шт",
+      "amount": "42151.00",
       "supplier": "АО \"ТД \"Электротехмонтаж\"",
       "department": "11/0143 Участок по ОСП",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № 104/554016986",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "7",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -15335,5 +15335,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-16T10:44:50.632Z"
+  "exportDate": "2026-04-16T10:45:30.484Z"
 }
