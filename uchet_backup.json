@@ -7802,6 +7802,29 @@
       "planFact": "",
       "fact": "",
       "shipmentDoc": ""
+    },
+    {
+      "recordId": "20260416113736719_mkslag3ah",
+      "docNumber": "2026-239 (от 09.04.2026)",
+      "status": "В работе",
+      "id": "МАТ-10256",
+      "name": "Обувница  с сиденьем в стиле ЛОФТ",
+      "quantity": "1",
+      "unit": "шт",
+      "purchaseName": "",
+      "purchaseQuantity": "",
+      "purchaseUnit": "",
+      "amount": "",
+      "supplier": "",
+      "department": "16/0020 АХО",
+      "contract": "",
+      "paymentTerms": "",
+      "deliveryDays": "",
+      "deliveryTerms": "",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
     }
   ],
   "counterpartiesData": [
@@ -15288,5 +15311,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-16T08:37:13.921Z"
+  "exportDate": "2026-04-16T08:37:36.796Z"
 }
