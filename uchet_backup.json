@@ -7641,6 +7641,29 @@
       "planFact": "",
       "fact": "",
       "shipmentDoc": ""
+    },
+    {
+      "recordId": "20260416113220314_0cj9xvjyr",
+      "docNumber": "2026-291 (от 14.04.2026)",
+      "status": "В работе",
+      "id": "-",
+      "name": "Кювета для валиков СИБРТЕХ средняя, шт\n",
+      "quantity": "3",
+      "unit": "шт",
+      "purchaseName": "",
+      "purchaseQuantity": "",
+      "purchaseUnit": "",
+      "amount": "",
+      "supplier": "",
+      "department": "11/0111 Участок по обслуж. ж/д путей",
+      "contract": "",
+      "paymentTerms": "",
+      "deliveryDays": "",
+      "deliveryTerms": "",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
     }
   ],
   "counterpartiesData": [
@@ -15127,5 +15150,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-16T08:31:50.965Z"
+  "exportDate": "2026-04-16T08:32:20.405Z"
 }
