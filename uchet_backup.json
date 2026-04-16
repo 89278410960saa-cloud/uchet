@@ -1811,7 +1811,7 @@
     {
       "recordId": "20260327114615926_cmk1t7tsf",
       "docNumber": "2026-257 (от 24.03.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "МАТ-05505",
       "name": "Щелочная батарейка Duracell Basic 6LR61-1BL/6LF22-1BL крона 9V, 1шт 00000754",
       "quantity": "6",
@@ -1826,8 +1826,8 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "7",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "16.04.2026",
+      "planFact": "23.04.2026",
       "fact": "",
       "shipmentDoc": ""
     },
@@ -14925,5 +14925,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-16T07:08:28.859Z"
+  "exportDate": "2026-04-16T07:08:49.762Z"
 }
