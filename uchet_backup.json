@@ -2087,7 +2087,7 @@
     {
       "recordId": "20260327114216976_bff8nyiwl",
       "docNumber": "2026-257 (от 24.03.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "МАТ-05363",
       "name": "Компактный налобный фо-нарь Petzl aria 1 E069AA00",
       "quantity": "8",
@@ -2102,8 +2102,8 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "14",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "16.04.2026",
+      "planFact": "30.04.2026",
       "fact": "",
       "shipmentDoc": ""
     },
@@ -14925,5 +14925,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-16T07:11:03.063Z"
+  "exportDate": "2026-04-16T07:11:10.512Z"
 }
