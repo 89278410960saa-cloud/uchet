@@ -7733,6 +7733,29 @@
       "planFact": "",
       "fact": "",
       "shipmentDoc": ""
+    },
+    {
+      "recordId": "20260416113600765_k0yfi1vpn",
+      "docNumber": "2026-269 (от 08.04.2026)",
+      "status": "В работе",
+      "id": "-",
+      "name": "Лупа налобная с аккумулятором Levenhuk Discovery Crafts DHR 10 Подсветка светодиодная",
+      "quantity": "2",
+      "unit": "шт",
+      "purchaseName": "",
+      "purchaseQuantity": "",
+      "purchaseUnit": "",
+      "amount": "",
+      "supplier": "",
+      "department": "11/0141 Котельная",
+      "contract": "",
+      "paymentTerms": "",
+      "deliveryDays": "",
+      "deliveryTerms": "",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
     }
   ],
   "counterpartiesData": [
@@ -15219,5 +15242,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-16T08:34:57.364Z"
+  "exportDate": "2026-04-16T08:36:00.846Z"
 }
