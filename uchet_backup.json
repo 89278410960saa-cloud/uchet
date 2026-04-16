@@ -7673,14 +7673,14 @@
       "name": "Наклейка UITRACARD CR-79/CR-80 CARDS 500 ШТ В УПАКОВКЕ",
       "quantity": "6",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
-      "supplier": "",
+      "purchaseName": "82266 арт Пластиковые карты белые самоклеющаяся \nUltraCard, CR-80, Белая, 10mil (0,25мм), 500 штук",
+      "purchaseQuantity": "6",
+      "purchaseUnit": "шт",
+      "amount": "150000.00",
+      "supplier": "ООО \"Компсервис\"",
       "department": "14/3000 СЭЗиТБ",
-      "contract": "",
-      "paymentTerms": "",
+      "contract": "СЧ № 008335",
+      "paymentTerms": "100 % предоплата",
       "deliveryDays": "28",
       "deliveryTerms": "Включена",
       "date": "",
@@ -15365,5 +15365,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-16T13:52:15.338Z"
+  "exportDate": "2026-04-16T13:52:57.389Z"
 }
