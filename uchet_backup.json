@@ -7354,16 +7354,16 @@
       "name": "Клапан магнитный Parker Lucifer 121G2520 115В 50Гц 120В 60Гц 20В",
       "quantity": "11",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
-      "supplier": "",
+      "purchaseName": "КЛАПАН 2/2 НЗ 1/2 C КАТУШКОЙ 115B/50 IP44 (We604528) - \n121G2520-876024-483541P8",
+      "purchaseQuantity": "11",
+      "purchaseUnit": "шт",
+      "amount": "741015.00",
+      "supplier": "ООО \"Техзона\"",
       "department": "11/0141 Котельная",
       "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "paymentTerms": "50 %; 50 % 10 к.дн.",
+      "deliveryDays": "7",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -15410,5 +15410,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-17T07:59:40.123Z"
+  "exportDate": "2026-04-17T08:00:44.823Z"
 }
