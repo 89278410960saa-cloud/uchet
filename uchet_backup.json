@@ -7907,7 +7907,7 @@
       "purchaseQuantity": "",
       "purchaseUnit": "",
       "amount": "",
-      "supplier": "",
+      "supplier": "ООО \"СТД \"Петрович\"",
       "department": "13/0100 Товарная служба",
       "contract": "",
       "paymentTerms": "",
@@ -15491,5 +15491,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-17T10:21:06.008Z"
+  "exportDate": "2026-04-17T10:50:40.527Z"
 }
