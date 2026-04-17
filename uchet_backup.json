@@ -7875,6 +7875,18 @@
   ],
   "counterpartiesData": [
     {
+      "recordId": "20260417105718087_7nqqfswe8",
+      "supplier": "ООО \"Техзона\"",
+      "inn": "7721341345",
+      "phone": "7 (917) 567-82-43",
+      "contact": "Артем Мирхайдаров",
+      "email": "info@tehzona.net",
+      "address": "-",
+      "material": "оборудование Parker",
+      "blacklisted": false,
+      "blacklistComment": ""
+    },
+    {
       "recordId": "20260416165215282_5pwhbhgbk",
       "supplier": "ООО \"Компсервис\"",
       "inn": "7703528164",
@@ -15398,5 +15410,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-17T07:55:05.247Z"
+  "exportDate": "2026-04-17T07:57:18.144Z"
 }
