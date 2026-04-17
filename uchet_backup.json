@@ -8,16 +8,16 @@
       "name": "Грунт-эмаль по ржавчине 3 в 1Текс СИНЯЯ 2 КГ",
       "quantity": "2",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
+      "purchaseName": "Грунт=эмаль 3 в 1 Синий (банка 2,5 кг, 1,92Л)",
+      "purchaseQuantity": "2",
+      "purchaseUnit": "шт",
+      "amount": "1880.00",
       "supplier": "ООО \"Балтоптторг\"",
       "department": "11/0111 Участок по обслуж. ж/д путей",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № Счт-025949",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "7",
+      "deliveryTerms": "Самовывоз",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -15491,5 +15491,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-17T10:50:46.622Z"
+  "exportDate": "2026-04-17T11:08:08.828Z"
 }
