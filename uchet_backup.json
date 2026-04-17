@@ -7875,6 +7875,18 @@
   ],
   "counterpartiesData": [
     {
+      "recordId": "20260417111135848_jmi439r37",
+      "supplier": "ООО \"Чистая Компания Северо-Запада\"",
+      "inn": "7813561284",
+      "phone": "8123468926 (доб. 1705)",
+      "contact": "Костина Вера ",
+      "email": "dbo@chisto.ru",
+      "address": "-",
+      "material": "инструменты Керхер",
+      "blacklisted": false,
+      "blacklistComment": ""
+    },
+    {
       "recordId": "20260417105718087_7nqqfswe8",
       "supplier": "ООО \"Техзона\"",
       "inn": "7721341345",
@@ -15410,5 +15422,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-17T08:01:32.028Z"
+  "exportDate": "2026-04-17T08:11:35.903Z"
 }
