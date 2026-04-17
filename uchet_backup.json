@@ -7331,16 +7331,16 @@
       "name": "Клапан магнитный Parker Lucifer 321H2522 115В 50Гц 120В 60Гц 20В",
       "quantity": "11",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
-      "supplier": "",
+      "purchaseName": "КЛАПАН 2/2 НЗ 1/2 C КАТУШКОЙ 230B/50 IP44 (36751036) - \n321H2522-876024-483541T1",
+      "purchaseQuantity": "11",
+      "purchaseUnit": "шт",
+      "amount": "1232000.00",
+      "supplier": "ООО \"Техзона\"",
       "department": "11/0141 Котельная",
       "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "paymentTerms": "50 %; 50 % 10 к.дн.",
+      "deliveryDays": "140",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -15410,5 +15410,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-17T07:57:18.144Z"
+  "exportDate": "2026-04-17T07:59:40.123Z"
 }
