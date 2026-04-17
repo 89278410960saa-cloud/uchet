@@ -7848,6 +7848,29 @@
       "fact": "11.12.2025",
       "shipmentDoc": "70019 от 09.12.25",
       "plan": "11.12.2025"
+    },
+    {
+      "recordId": "20260417091549166_po3b7tw6q",
+      "docNumber": "2026-291 (от 14.04.2026)",
+      "status": "В работе",
+      "id": "МАТ-04885",
+      "name": "Грунт-эмаль по ржавчине 3 в 1Текс СИНЯЯ 2 КГ",
+      "quantity": "2",
+      "unit": "шт",
+      "purchaseName": "",
+      "purchaseQuantity": "",
+      "purchaseUnit": "",
+      "amount": "",
+      "supplier": "",
+      "department": "11/0111 Участок по обслуж. ж/д путей",
+      "contract": "",
+      "paymentTerms": "",
+      "deliveryDays": "",
+      "deliveryTerms": "",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
     }
   ],
   "counterpartiesData": [
@@ -15375,5 +15398,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-17T06:15:07.840Z"
+  "exportDate": "2026-04-17T06:15:49.218Z"
 }
