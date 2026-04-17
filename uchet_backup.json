@@ -307,16 +307,16 @@
       "name": "Грунт-эмаль по ржавчине 3 в 1Текс СИНЯЯ 2 КГ",
       "quantity": "3",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
-      "supplier": "",
+      "purchaseName": "Грунт-эмаль по \nржавчине 3в1 Текс \nРжавоStop синяя \nглянцевая 2 кг",
+      "purchaseQuantity": "3",
+      "purchaseUnit": "шт",
+      "amount": "5697.00",
+      "supplier": "ООО \"СТД \"Петрович\"",
       "department": "11/0111 Участок по обслуж. ж/д путей",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № СКЭ00035572",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "7",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -15398,5 +15398,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-17T06:18:47.960Z"
+  "exportDate": "2026-04-17T06:19:24.184Z"
 }
