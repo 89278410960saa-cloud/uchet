@@ -54,16 +54,16 @@
       "name": "Арт. 839678 - Мешки для мусора Амиго 120 л зеленые (ПВД 70 мкм) ",
       "quantity": "1000",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
+      "purchaseName": "Мешки для мусора ПВД 120л 70мкм 10шт/уп зеленый 70х110см Амиго Bio",
+      "purchaseQuantity": "10",
+      "purchaseUnit": "упак",
+      "amount": "4322.10",
       "supplier": "ООО \"Комус\"",
       "department": "13/0100 Товарная служба",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № ",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "3",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -15501,5 +15501,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-17T12:37:32.596Z"
+  "exportDate": "2026-04-17T12:42:23.724Z"
 }
