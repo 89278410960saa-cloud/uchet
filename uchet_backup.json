@@ -7377,16 +7377,16 @@
       "name": "Клапан магнитный Parker Lucifer 322H7306 230В 50Гц 240В 60Гц 19В",
       "quantity": "11",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
-      "supplier": "",
+      "purchaseName": "322H7306-8760\n-483824T1\nКЛАПАН NO 3/8 ЖИД. ТОПЛИВО С КАТУШКОЙ 220В IP44",
+      "purchaseQuantity": "11",
+      "purchaseUnit": "шт",
+      "amount": "1221000.00",
+      "supplier": "ООО \"Техзона\"",
       "department": "11/0141 Котельная",
       "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "paymentTerms": "50 %; 50 % 10 к.дн.",
+      "deliveryDays": "140",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -15410,5 +15410,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-17T08:00:44.823Z"
+  "exportDate": "2026-04-17T08:01:32.028Z"
 }
