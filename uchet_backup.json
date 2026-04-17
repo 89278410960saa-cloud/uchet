@@ -215,16 +215,16 @@
       "name": "валик полиакрил 180 мм с рукояткой Wenzo Roma стандарт\n",
       "quantity": "4",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
-      "supplier": "",
+      "purchaseName": "Валик полиакрил 180 \nмм d48 мм ворс 18 мм \nдля водной основы с \nручкой Wenzo Roma",
+      "purchaseQuantity": "4",
+      "purchaseUnit": "шт",
+      "amount": "1296.00",
+      "supplier": "ООО \"СТД \"Петрович\"",
       "department": "11/0111 Участок по обслуж. ж/д путей",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № СКЭ00035572",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "7",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -15398,5 +15398,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-17T06:15:49.218Z"
+  "exportDate": "2026-04-17T06:16:49.010Z"
 }
