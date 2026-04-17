@@ -399,16 +399,16 @@
       "name": "Сгон для пола NV 60-70 см с рукояткой, металлический NV04032 ",
       "quantity": "10",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
-      "supplier": "",
+      "purchaseName": "Водосгон для пола с ручкой 75 см; сгон для\nводы для пола;\n",
+      "purchaseQuantity": "10",
+      "purchaseUnit": "шт",
+      "amount": "18970.00",
+      "supplier": "ООО \"Интернет Решения\"",
       "department": "13/0100 Товарная служба",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № 0237806506-0005",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "7",
+      "deliveryTerms": "Самовывоз",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -15398,5 +15398,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-17T06:20:12.421Z"
+  "exportDate": "2026-04-17T06:42:43.901Z"
 }
