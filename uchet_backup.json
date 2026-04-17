@@ -238,16 +238,16 @@
       "name": "кисть плоская50 мм натурал. щетина дер.ручка\tУПАК.10ШТ.\n",
       "quantity": "1",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
-      "supplier": "",
+      "purchaseName": "Кисть плоская \nнатуральная щетина \nдеревянная ручка \nWenzo Wood 50х14 мм \nдля эмалей и лаков на \nалкидной основе",
+      "purchaseQuantity": "10",
+      "purchaseUnit": "шт",
+      "amount": "2290.00",
+      "supplier": "ООО \"СТД \"Петрович\"",
       "department": "11/0111 Участок по обслуж. ж/д путей",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № СКЭ00035572",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "7",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -15398,5 +15398,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-17T06:19:24.184Z"
+  "exportDate": "2026-04-17T06:20:12.421Z"
 }
