@@ -192,16 +192,16 @@
       "name": "Кювета для валиков СИБРТЕХ средняя, шт\n",
       "quantity": "3",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
-      "supplier": "",
+      "purchaseName": "Ванночка для краски \nHesler 330х260 мм к \nваликам до 180 мм",
+      "purchaseQuantity": "3",
+      "purchaseUnit": "шт",
+      "amount": "432.00",
+      "supplier": "ООО \"СТД \"Петрович\"",
       "department": "11/0111 Участок по обслуж. ж/д путей",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № СКЭ00035572",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "7",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -15398,5 +15398,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-17T06:16:49.010Z"
+  "exportDate": "2026-04-17T06:17:26.475Z"
 }
