@@ -7894,6 +7894,29 @@
       "planFact": "",
       "fact": "",
       "shipmentDoc": ""
+    },
+    {
+      "recordId": "20260417130722295_cn9lso5mo",
+      "docNumber": "н/н (от 17.04.2026)",
+      "status": "В работе",
+      "id": "-",
+      "name": "Цемент",
+      "quantity": "30",
+      "unit": "мешков",
+      "purchaseName": "",
+      "purchaseQuantity": "",
+      "purchaseUnit": "",
+      "amount": "",
+      "supplier": "",
+      "department": "13/0100 Товарная служба",
+      "contract": "",
+      "paymentTerms": "",
+      "deliveryDays": "",
+      "deliveryTerms": "",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
     }
   ],
   "counterpartiesData": [
@@ -15445,5 +15468,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-17T10:06:34.394Z"
+  "exportDate": "2026-04-17T10:07:22.369Z"
 }
