@@ -7976,7 +7976,7 @@
       "purchaseQuantity": "",
       "purchaseUnit": "",
       "amount": "",
-      "supplier": "",
+      "supplier": "ООО \"СТД \"Петрович\"",
       "department": "14/3000 СЭЗиТБ",
       "contract": "",
       "paymentTerms": "",
@@ -15630,5 +15630,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-20T14:38:32.248Z"
+  "exportDate": "2026-04-20T14:38:39.219Z"
 }
