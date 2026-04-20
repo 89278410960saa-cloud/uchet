@@ -7963,6 +7963,29 @@
       "planFact": "",
       "fact": "",
       "shipmentDoc": ""
+    },
+    {
+      "recordId": "20260420173742825_gbo908kkn",
+      "docNumber": "н/н (от 20.04.2026)",
+      "status": "В работе",
+      "id": "-",
+      "name": "Кисточки для краски",
+      "quantity": "5",
+      "unit": "шт",
+      "purchaseName": "",
+      "purchaseQuantity": "",
+      "purchaseUnit": "",
+      "amount": "",
+      "supplier": "",
+      "department": "14/3000 СЭЗиТБ",
+      "contract": "",
+      "paymentTerms": "",
+      "deliveryDays": "",
+      "deliveryTerms": "",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
     }
   ],
   "counterpartiesData": [
@@ -15584,5 +15607,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-20T14:37:11.169Z"
+  "exportDate": "2026-04-20T14:37:42.902Z"
 }
