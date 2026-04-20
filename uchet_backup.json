@@ -26,7 +26,7 @@
     {
       "recordId": "20260417130722295_cn9lso5mo",
       "docNumber": "н/н (от 17.04.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "-",
       "name": "Цемент",
       "quantity": "30",
@@ -41,8 +41,8 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "1",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "20.04.2026",
+      "planFact": "20.04.2026",
       "fact": "",
       "shipmentDoc": ""
     },
@@ -15521,5 +15521,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-20T07:15:06.324Z"
+  "exportDate": "2026-04-20T07:15:18.832Z"
 }
