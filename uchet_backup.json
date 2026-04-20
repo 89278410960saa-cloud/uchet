@@ -7986,6 +7986,29 @@
       "planFact": "",
       "fact": "",
       "shipmentDoc": ""
+    },
+    {
+      "recordId": "20260420173825805_v6r2tc0ye",
+      "docNumber": "н/н (от 20.04.2026)",
+      "status": "В работе",
+      "id": "-",
+      "name": "валики для краски",
+      "quantity": "5",
+      "unit": "шт",
+      "purchaseName": "",
+      "purchaseQuantity": "",
+      "purchaseUnit": "",
+      "amount": "",
+      "supplier": "",
+      "department": "14/3000 СЭЗиТБ",
+      "contract": "",
+      "paymentTerms": "",
+      "deliveryDays": "",
+      "deliveryTerms": "",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
     }
   ],
   "counterpartiesData": [
@@ -15607,5 +15630,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-20T14:37:53.740Z"
+  "exportDate": "2026-04-20T14:38:25.886Z"
 }
