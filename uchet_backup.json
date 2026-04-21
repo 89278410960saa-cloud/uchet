@@ -8,16 +8,16 @@
       "name": "Валик для краски",
       "quantity": "5",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
+      "purchaseName": "Валик полиакрил 250 \nмм d48 мм ворс 12 мм \nдля водной основы с \nручкой Wenzo Milano",
+      "purchaseQuantity": "5",
+      "purchaseUnit": "шт",
+      "amount": "2215.00",
       "supplier": "ООО \"СТД \"Петрович\"",
       "department": "14/3000 СЭЗиТБ",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № СКЭ00037770",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "1",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -15630,5 +15630,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-21T06:16:47.859Z"
+  "exportDate": "2026-04-21T06:17:17.576Z"
 }
