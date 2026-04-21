@@ -637,7 +637,7 @@
       "department": "17/0001 Строительства и ремонта",
       "contract": "СЧ № УТ-2374",
       "paymentTerms": "100 % предоплата",
-      "deliveryDays": "14",
+      "deliveryDays": "7",
       "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
@@ -15779,5 +15779,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-21T12:01:01.721Z"
+  "exportDate": "2026-04-21T12:01:05.769Z"
 }
