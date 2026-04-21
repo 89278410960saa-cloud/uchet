@@ -12903,8 +12903,8 @@
       "supplier": "ООО \"Спецкрепеж\"",
       "contract": "СЧ № 34116",
       "docNumber": "2026-212 (от 11.03.2026)",
-      "link": "https://raw.githubusercontent.com/89278410960saa-cloud/uchet/main/invoices/invoice_1776797839238_k86zrt.pdf",
-      "pdfName": "справка о отсутствии судимости.pdf"
+      "link": null,
+      "pdfName": null
     },
     {
       "recordId": "20260330110046005_ppjee42zi",
@@ -14421,5 +14421,5 @@
     "19/0030 АХО"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-21T18:57:21.291Z"
+  "exportDate": "2026-04-21T19:00:03.330Z"
 }
