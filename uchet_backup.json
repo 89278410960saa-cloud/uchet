@@ -514,16 +514,16 @@
       "name": "ВСП 250/2,0 с рабочей площадкой 2,0×2,0 в комплекте со стабилизаторами (4 шт.)\n",
       "quantity": "1",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
-      "supplier": "",
+      "purchaseName": "ВСП-250/2,0 Базовый блок",
+      "purchaseQuantity": "1",
+      "purchaseUnit": "шт",
+      "amount": "19432.00",
+      "supplier": "ООО \"Промышленник-СПБ\"",
       "department": "17/0001 Строительства и ремонта",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № УТ-2374",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "14",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -15675,5 +15675,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-21T07:35:48.201Z"
+  "exportDate": "2026-04-21T07:36:29.584Z"
 }
