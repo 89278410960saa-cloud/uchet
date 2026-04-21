@@ -8055,6 +8055,29 @@
       "planFact": "",
       "fact": "",
       "shipmentDoc": ""
+    },
+    {
+      "recordId": "20260421114116127_alkgfpjv0",
+      "docNumber": "н/н (от 17.04.2026)",
+      "status": "В работе",
+      "id": "-",
+      "name": "Велосипед двухколесный",
+      "quantity": "3",
+      "unit": "шт",
+      "purchaseName": "Велосипед\nSTELS\nAvangard 200\nС 26 Z010\n2025\nШК товара:\n4680091566218",
+      "purchaseQuantity": "3",
+      "purchaseUnit": "шт",
+      "amount": "38010.00",
+      "supplier": "ООО \"Велосипедиссимо\"",
+      "department": "13/0100 Товарная служба",
+      "contract": "СЧ № 572432",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "14",
+      "deliveryTerms": "Самовывоз",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
     }
   ],
   "counterpartiesData": [
@@ -15710,5 +15733,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-21T08:40:00.517Z"
+  "exportDate": "2026-04-21T08:41:16.183Z"
 }
