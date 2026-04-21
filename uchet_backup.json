@@ -31,16 +31,16 @@
       "name": "Кисточки для краски",
       "quantity": "5",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
+      "purchaseName": "Кисть плоская \nсмешанная щетина \nпластиковая ручка \nWenzo Pro 50х12 мм \nдля красок на водной \nоснове\n",
+      "purchaseQuantity": "5",
+      "purchaseUnit": "шт",
+      "amount": "695.00",
       "supplier": "ООО \"СТД \"Петрович\"",
       "department": "14/3000 СЭЗиТБ",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № СКЭ00037770",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "1",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -15630,5 +15630,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-21T06:16:20.644Z"
+  "exportDate": "2026-04-21T06:16:47.859Z"
 }
