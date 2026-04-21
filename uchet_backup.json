@@ -8064,7 +8064,7 @@
       "name": "Велосипед двухколесный",
       "quantity": "3",
       "unit": "шт",
-      "purchaseName": "Велосипед\nSTELS\nAvangard 200\nС 26 Z010\n2025\nШК товара:\n4680091566218",
+      "purchaseName": "Велосипед\nSTELS\nAvangard 200\nС 26 Z010\n2025\nШК товара:\n4680091566218 (синий)",
       "purchaseQuantity": "3",
       "purchaseUnit": "шт",
       "amount": "38010.00",
@@ -15779,5 +15779,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-21T08:43:51.191Z"
+  "exportDate": "2026-04-21T08:44:00.098Z"
 }
