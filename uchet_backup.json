@@ -8059,6 +8059,18 @@
   ],
   "counterpartiesData": [
     {
+      "recordId": "20260421113721521_uimfvisgf",
+      "supplier": "ООО \"Велосипедиссимо\"",
+      "inn": "7802529426",
+      "phone": "7(812)-50-70-777 ",
+      "contact": "-",
+      "email": "shop@velodrive.ru",
+      "address": "-",
+      "material": "велосипеды СПБ",
+      "blacklisted": false,
+      "blacklistComment": ""
+    },
+    {
       "recordId": "20260421103300170_dv9jpobg3",
       "supplier": "ООО \"Промышленник-СПБ\"",
       "inn": "7802896560",
@@ -15698,5 +15710,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-21T08:23:09.493Z"
+  "exportDate": "2026-04-21T08:37:21.564Z"
 }
