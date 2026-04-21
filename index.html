@@ -5063,103 +5063,90 @@ function autoCompleteApplicationDate() {
 }
 // ========== ФУНКЦИЯ ДЛЯ ПОКАЗА ТОЛЬКО ПРОСРОЧЕННЫХ ПОСТАВОК ==========
 function showOverdueOnly() {
-    // Сбрасываем другие фильтры
+    // Сбрасываем значения остальных фильтров
     document.getElementById('searchAccountingInput').value = '';
     document.getElementById('statusFilter').value = '';
     document.getElementById('departmentFilter').value = '';
     document.getElementById('applicationFilter').value = '';
-    
-    // Очищаем быстрые фильтры
     clearQuickFilters();
-    
-    const rows = document.querySelectorAll('#accountingTable tbody tr');
+
     const thead = document.querySelector('#accountingTable thead');
+    const tbody = document.querySelector('#accountingTable tbody');
+    const rows = Array.from(tbody.querySelectorAll('tr')).filter(row => 
+        !(row.cells.length === 1 && row.cells[0].colSpan > 1)
+    );
+
+    // Находим индекс столбца "План" по тексту заголовка
+    const headerCells = thead.querySelectorAll('th');
+    let planColumnIndex = -1;
+    for (let i = 0; i < headerCells.length; i++) {
+        if (headerCells[i].textContent.trim() === 'План') {
+            planColumnIndex = i;
+            break;
+        }
+    }
+
+    if (planColumnIndex === -1) {
+        console.error('❌ Столбец "План" не найден в заголовках таблицы');
+        showAutosaveNotification('Ошибка: столбец "План" не найден', true);
+        return;
+    }
+
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    
-    let visibleCount = 0;
-    
-    // Сначала скрываем все строки
+
+    const candidates = [];
+
     rows.forEach(row => {
-        row.style.display = 'none';
-    });
-    
-    // Скрываем заголовок по умолчанию
-    if (thead) {
-        thead.style.display = 'none';
-    }
-    
-    rows.forEach(row => {
-        // Пропускаем строку с сообщением "нет данных"
-        if (row.cells.length === 1 && row.cells[0].colSpan > 1) {
-            row.style.display = 'none';
-            return;
-        }
-        
         const cells = row.querySelectorAll('td');
-        if (cells.length < 4) {
-            row.style.display = 'none';
-            return;
-        }
-        
+        if (cells.length <= planColumnIndex) return;
+
         const statusCell = cells[2] ? cells[2].textContent.trim() : '';
-        const planFactCell = cells[17] ? cells[17].textContent.trim() : '';
-        
-        // Проверяем, является ли запись просроченной
+        const planFactCell = cells[planColumnIndex] ? cells[planColumnIndex].textContent.trim() : '';
+
         const planFactDate = parseDate(planFactCell);
-        let isOverdue = false;
-        
-        if (planFactDate) {
-            const planFactDateOnly = new Date(planFactDate);
-            planFactDateOnly.setHours(0, 0, 0, 0);
-            isOverdue = planFactDateOnly < today && statusCell !== 'Выполнено' && statusCell !== 'Приход';
-        }
-        
+        const isOverdue = planFactDate &&
+            new Date(planFactDate).setHours(0, 0, 0, 0) < today &&
+            statusCell !== 'Выполнено' &&
+            statusCell !== 'Приход';
+
         if (isOverdue) {
-            row.style.display = '';
-            visibleCount++;
-        } else {
-            row.style.display = 'none';
+            candidates.push({ tr: row, planDate: planFactDate });
         }
     });
-    
-    // Управляем видимостью заголовка
-    if (visibleCount > 0) {
-        // Если есть данные - показываем заголовок
-        if (thead) {
-            thead.style.display = '';
-        }
-    } else {
-        // Если данных нет - скрываем заголовок и показываем сообщение
-        if (thead) {
-            thead.style.display = 'none';
-        }
-        
-        const tableBody = document.querySelector('#accountingTable tbody');
-        if (tableBody) {
-            // Удаляем старое сообщение, если есть
-            const oldMessage = tableBody.querySelector('tr[data-no-results]');
-            if (oldMessage) {
-                oldMessage.remove();
-            }
-            
-            // Добавляем новое сообщение
-            const noDataRow = document.createElement('tr');
-            noDataRow.setAttribute('data-no-results', 'true');
-            noDataRow.innerHTML = `
-                <td colspan="20" style="text-align: center; color: #8f98a0; padding: 20px;">
-                    Нет просроченных поставок
-                </td>
-            `;
-            tableBody.appendChild(noDataRow);
-        }
+
+    // Сортировка по возрастанию даты
+    candidates.sort((a, b) => {
+        const da = a.planDate ? a.planDate.getTime() : Infinity;
+        const db = b.planDate ? b.planDate.getTime() : Infinity;
+        return da - db;
+    });
+
+    // Управление видимостью заголовка
+    if (thead) {
+        thead.style.display = candidates.length > 0 ? '' : 'none';
     }
-    
-    // Обновляем поле комментария
+
+    // Очищаем tbody и вставляем отсортированные строки
+    tbody.innerHTML = '';
+
+    if (candidates.length === 0) {
+        const noData = document.createElement('tr');
+        noData.setAttribute('data-no-results', 'true');
+        noData.innerHTML = `
+            <td colspan="20" style="text-align: center; color: #8f98a0; padding: 20px;">
+                Нет просроченных поставок
+            </td>`;
+        tbody.appendChild(noData);
+    } else {
+        candidates.forEach(({ tr }) => {
+            tr.style.display = '';
+            tbody.appendChild(tr);
+        });
+    }
+
     updateCommentField();
-    
-    // Показываем уведомление
-    showAutosaveNotification(`Показано ${visibleCount} просроченных поставок`);
+    showAutosaveNotification(`Показано ${candidates.length} просроченных поставок (отсортировано по Плану)`);
 }
 // ========== ФУНКЦИЯ ДЛЯ ПЕРЕКЛЮЧЕНИЯ РЕЖИМА ПРОСРОЧЕННЫХ ==========
 function toggleOverdueMode() {
