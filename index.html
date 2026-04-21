@@ -5311,108 +5311,94 @@ function countWeeklyDeliveries() {
 }
 // ========== ФУНКЦИЯ ДЛЯ ПОКАЗА ТОЛЬКО ПОСТАВОК НА НЕДЕЛЮ ==========
 function showWeeklyDeliveriesOnly() {
-    // Сбрасываем другие фильтры
+    // ---- 1. Сбрасываем остальные фильтры (поиск, статус, подразделение и т.д.) ----
     document.getElementById('searchAccountingInput').value = '';
     document.getElementById('statusFilter').value = '';
     document.getElementById('departmentFilter').value = '';
     document.getElementById('applicationFilter').value = '';
-    
-    // Очищаем быстрые фильтры
+
+    // ---- 2. Очищаем быстрые фильтры ----
     clearQuickFilters();
-    
+
     const rows = document.querySelectorAll('#accountingTable tbody tr');
     const thead = document.querySelector('#accountingTable thead');
+    const tbody   = document.querySelector('#accountingTable tbody');
+
+    // ---- 3. Границы недели (сегодня … сегодня+7 дней) ----
     const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    
+    today.setHours(0,0,0,0);
     const nextWeek = new Date();
     nextWeek.setDate(today.getDate() + 7);
-    nextWeek.setHours(23, 59, 59, 999);
-    
-    let visibleCount = 0;
-    
-    // Сначала скрываем все строки
-    rows.forEach(row => {
-        row.style.display = 'none';
-    });
-    
-    // Скрываем заголовок по умолчанию
-    if (thead) {
-        thead.style.display = 'none';
-    }
-    
-    // Ищем строки поставок на неделю
-    rows.forEach(row => {
-        // Пропускаем строку с сообщением "нет данных"
-        if (row.cells.length === 1 && row.cells[0].colSpan > 1) {
-            row.style.display = 'none';
-            return;
-        }
-        
-        const cells = row.querySelectorAll('td');
-        if (cells.length < 4) {
-            row.style.display = 'none';
-            return;
-        }
-        
+    nextWeek.setHours(23,59,59,999);
+
+    // ---- 4. Собираем все подходящие строки вместе с датой План ----
+    const candidates = []; // массив {tr, planDate: Date|null}
+    rows.forEach(tr => {
+        // Пропускаем служебную строку «Нет данных…»
+        if (tr.cells.length === 1 && tr.cells[0].colSpan > 1) return;
+
+        const cells = tr.querySelectorAll('td');
+        if (cells.length < 4) return;
+
         const statusCell = cells[2] ? cells[2].textContent.trim() : '';
-        const planFactCell = cells[17] ? cells[17].textContent.trim() : '';
-        
+        const planFactCell = cells[17] ? cells[17].textContent.trim() : ''; // 18‑й столбец → индекс 17
+
         // Проверяем, является ли запись поставкой на неделю
         const planFactDate = parseDate(planFactCell);
-        let isWeeklyDelivery = false;
-        
-        if (planFactDate) {
-            const planFactDateOnly = new Date(planFactDate);
-            planFactDateOnly.setHours(0, 0, 0, 0);
-            isWeeklyDelivery = (planFactDateOnly >= today && planFactDateOnly <= nextWeek) && statusCell === 'Поставка';
-        }
-        
+        const isWeeklyDelivery =
+            planFactDate &&
+            planFactDate >= today &&
+            planFactDate <= nextWeek &&
+            statusCell === 'Поставка';
+
         if (isWeeklyDelivery) {
-            row.style.display = '';
-            visibleCount++;
+            candidates.push({ tr, planDate: planFactDate }); // сохраняем объект Date (может быть null)
         } else {
-            row.style.display = 'none';
+            tr.style.display = 'none'; // скрываем всё, что не подходит
         }
     });
-    
-    // Управляем видимостью заголовка
-    if (visibleCount > 0) {
-        // Если есть данные - показываем заголовок
-        if (thead) {
-            thead.style.display = '';
-        }
-    } else {
-        // Если данных нет - скрываем заголовок и показываем сообщение
-        if (thead) {
-            thead.style.display = 'none';
-        }
-        
-        const tableBody = document.querySelector('#accountingTable tbody');
-        if (tableBody) {
-            // Удаляем старое сообщение, если есть
-            const oldMessage = tableBody.querySelector('tr[data-no-results]');
-            if (oldMessage) {
-                oldMessage.remove();
-            }
-            
-            // Добавляем новое сообщение
-            const noDataRow = document.createElement('tr');
-            noDataRow.setAttribute('data-no-results', 'true');
-            noDataRow.innerHTML = `
-                <td colspan="20" style="text-align: center; color: #8f98a0; padding: 20px;">
-                    Нет поставок на ближайшую неделю
-                </td>
-            `;
-            tableBody.appendChild(noDataRow);
-        }
+
+    // ---- 5. Сортируем по дате План (по возрастанию) ----
+    // Строки без даты считаем «бесконечно большими» → они окажутся в конце.
+    candidates.sort((a, b) => {
+        const da = a.planDate ? a.planDate.getTime() : Infinity;
+        const db = b.planDate ? b.planDate.getTime() : Infinity;
+        return da - db;
+    });
+
+    // ---- 6. Управляем видимостью заголовка таблицы ----
+    if (thead) {
+        thead.style.display = candidates.length > 0 ? '' : 'none';
     }
-    
-    // Обновляем поле комментария
+
+    // ---- 7. Сначала очищаем tbody, затем добавляем отсортированные строки ----
+    tbody.innerHTML = ''; // удаляем все строки
+
+    if (candidates.length === 0) {
+        // ---- 8. Если ничего не найдено – выводим сообщение ----
+        const noData = document.createElement('tr');
+        noData.setAttribute('data-no-results', 'true');
+        noData.innerHTML = `
+            <td colspan="20" style="text-align: center; color: #8f98a0; padding: 20px;">
+                Нет поставок на ближайшую неделю
+            </td>`;
+        tbody.appendChild(noData);
+    } else {
+        // Добавляем отсортированные строки в правильном порядке
+        candidates.forEach(({ tr }) => {
+            // Убираем инлайн‑display, который могли установить ранее
+            tr.removeAttribute('style');
+            tbody.appendChild(tr); // перемещаем строку в нужное место
+        });
+    }
+
+    // ---- 9. Обновляем поле комментария (оно зависит от выбранной заявки) ----
     updateCommentField();
-    
-    // Показываем уведомление
-    showAutosaveNotification(`Показано ${visibleCount} поставок на неделю`);
+
+    // ---- 10. Уведомление о результате ----
+    showAutosaveNotification(
+        `Показано ${candidates.length} поставок на неделю (отсортировано по Плану)`
+    );
 }
 // ========== ФУНКЦИЯ ДЛЯ ПЕРЕКЛЮЧЕНИЯ РЕЖИМА ПОСТАВОК НА НЕДЕЛЮ ==========
 function toggleWeeklyDeliveriesMode() {
