@@ -81,7 +81,7 @@
       "purchaseQuantity": "",
       "purchaseUnit": "",
       "amount": "",
-      "supplier": "ИП Смоляр Юрий Алексеевич",
+      "supplier": "",
       "department": "13/0100 Товарная служба",
       "contract": "",
       "paymentTerms": "",
@@ -15698,5 +15698,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-21T07:37:44.751Z"
+  "exportDate": "2026-04-21T08:23:09.493Z"
 }
