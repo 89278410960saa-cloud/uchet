@@ -394,7 +394,7 @@
     {
       "recordId": "20260416113457290_j2wigi7yk",
       "docNumber": "2026-284 (от 08.04.2026)",
-      "status": "Поставка",
+      "status": "Приход",
       "id": "МАТ-02925",
       "name": "Наконечник ТМЛ 10.8.5",
       "quantity": "1000",
@@ -411,13 +411,13 @@
       "deliveryTerms": "Включена",
       "date": "20.04.2026",
       "planFact": "27.04.2026",
-      "fact": "",
+      "fact": "22.04.2026",
       "shipmentDoc": ""
     },
     {
       "recordId": "20260416113430226_oamcydl24",
       "docNumber": "2026-284 (от 08.04.2026)",
-      "status": "Поставка",
+      "status": "Приход",
       "id": "МАТ-09933",
       "name": "Провод ПВ31х10  Ж/З",
       "quantity": "100",
@@ -434,7 +434,7 @@
       "deliveryTerms": "Включена",
       "date": "20.04.2026",
       "planFact": "27.04.2026",
-      "fact": "",
+      "fact": "22.04.2026",
       "shipmentDoc": ""
     },
     {
@@ -5470,7 +5470,7 @@
     {
       "recordId": "20260216154835010_cirqz30qv",
       "docNumber": "2026-085 (от 09.02.2026)",
-      "status": "Поставка",
+      "status": "Приход",
       "id": "МАТ-10394",
       "name": "-",
       "quantity": "-",
@@ -5487,14 +5487,13 @@
       "deliveryTerms": "Включена",
       "date": "20.02.2026",
       "planFact": "24.04.2026",
-      "fact": "",
-      "shipmentDoc": "",
-      "plan": "24.04.2026"
+      "fact": "22.04.2026",
+      "shipmentDoc": ""
     },
     {
       "recordId": "20260216154751965_ndlxriauf",
       "docNumber": "2026-085 (от 09.02.2026)",
-      "status": "Поставка",
+      "status": "Приход",
       "id": "МАТ-10394",
       "name": "-",
       "quantity": "-",
@@ -5511,14 +5510,13 @@
       "deliveryTerms": "Включена",
       "date": "20.02.2026",
       "planFact": "24.04.2026",
-      "fact": "",
-      "shipmentDoc": "",
-      "plan": "24.04.2026"
+      "fact": "22.04.2026",
+      "shipmentDoc": ""
     },
     {
       "recordId": "20260216154708564_nfj1kfkjp",
       "docNumber": "2026-085 (от 09.02.2026)",
-      "status": "Поставка",
+      "status": "Приход",
       "id": "МАТ-09425",
       "name": "-",
       "quantity": "-",
@@ -5535,14 +5533,13 @@
       "deliveryTerms": "Включена",
       "date": "20.02.2026",
       "planFact": "24.04.2026",
-      "fact": "",
-      "shipmentDoc": "",
-      "plan": "24.04.2026"
+      "fact": "22.04.2026",
+      "shipmentDoc": ""
     },
     {
       "recordId": "20260216154619749_spisjc9ou",
       "docNumber": "2026-085 (от 09.02.2026)",
-      "status": "Поставка",
+      "status": "Приход",
       "id": "МАТ-09425",
       "name": "-",
       "quantity": "-",
@@ -5559,14 +5556,13 @@
       "deliveryTerms": "Включена",
       "date": "20.02.2026",
       "planFact": "24.04.2026",
-      "fact": "",
-      "shipmentDoc": "",
-      "plan": "24.04.2026"
+      "fact": "22.04.2026",
+      "shipmentDoc": ""
     },
     {
       "recordId": "20260216154532043_n1x6j6p41",
       "docNumber": "2026-085 (от 09.02.2026)",
-      "status": "Поставка",
+      "status": "Приход",
       "id": "МАТ-09425",
       "name": "-",
       "quantity": "-",
@@ -5583,9 +5579,8 @@
       "deliveryTerms": "Включена",
       "date": "20.02.2026",
       "planFact": "24.04.2026",
-      "fact": "",
-      "shipmentDoc": "",
-      "plan": "24.04.2026"
+      "fact": "22.04.2026",
+      "shipmentDoc": ""
     },
     {
       "recordId": "20260211163325363_bzgg1zoko",
@@ -5660,7 +5655,7 @@
     {
       "recordId": "20260211162317220_mj9qsdkd0",
       "docNumber": "2026-085 (от 09.02.2026)",
-      "status": "Поставка",
+      "status": "Приход",
       "id": "МАТ-10260",
       "name": "Толщиномер Булат-3",
       "quantity": "1",
@@ -5677,9 +5672,8 @@
       "deliveryTerms": "Включена",
       "date": "20.02.2026",
       "planFact": "24.04.2026",
-      "fact": "",
-      "shipmentDoc": "",
-      "plan": "24.04.2026"
+      "fact": "22.04.2026",
+      "shipmentDoc": ""
     },
     {
       "recordId": "20260206155939621_s331cor95",
@@ -6092,7 +6086,7 @@
     {
       "recordId": "20260204142501870_ddf47e3vh",
       "docNumber": "2026-081 (от 03.02.2026)",
-      "status": "Поставка",
+      "status": "Приход",
       "id": "МАТ-10266",
       "name": "Прибор Константа К6Ц",
       "quantity": "1",
@@ -6109,9 +6103,8 @@
       "deliveryTerms": "Включена",
       "date": "19.02.2026",
       "planFact": "14.05.2026",
-      "fact": "",
-      "shipmentDoc": "",
-      "plan": "14.05.2026"
+      "fact": "22.04.2026",
+      "shipmentDoc": ""
     },
     {
       "recordId": "20260204142413200_vxc0xyiis",
@@ -15859,5 +15852,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-22T09:21:38.399Z"
+  "exportDate": "2026-04-22T14:26:11.967Z"
 }
