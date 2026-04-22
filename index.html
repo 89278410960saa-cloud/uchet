@@ -4627,76 +4627,97 @@ function editAccountingRowByRecordId(recordId) {
     const applicationFilter = document.getElementById('applicationFilter').value.toLowerCase().trim();
     const supplierFilter = document.getElementById('supplierFilter').value.toLowerCase().trim();
     const yearFilter = document.getElementById('yearFilter').value;
-    
+
     const rows = document.querySelectorAll('#accountingTable tbody tr');
     let visibleCount = 0;
-    
+
     rows.forEach(row => {
         // Проверяем, является ли строка сообщением "нет данных"
         if (row.cells.length === 1 && row.cells[0].colSpan > 1) {
             row.style.display = 'none';
             return;
         }
-        
+
         const cells = row.querySelectorAll('td');
         if (cells.length < 4) {
             row.style.display = 'none';
             return;
         }
-        
+
         // Получаем значения из ячеек с нормализацией
         const statusCell = cells[2] ? cells[2].textContent.trim() : '';
         const departmentCell = cells[0] ? cells[0].textContent.trim() : '';
         const applicationCell = cells[1] ? cells[1].textContent.toLowerCase().trim() : '';
-        const supplierCell = cells[11] ? 
+        const supplierCell = cells[11] ?
             cells[11].textContent.toLowerCase()
                 .replace(/\s+/g, ' ') // Заменяем множественные пробелы на один
                 .trim() : '';
-        
+
         const yearFromApplication = extractYearFromDocNumber(applicationCell);
         // Проверка по месяцу факта
-let factMonthMatch = true;
-if (factMonthFilter) {
-    const factCell = cells[18] ? cells[18].textContent.trim() : ''; // 19-й столбец (индекс 18)
-    const factDate = parseDate(factCell);
-    if (factDate) {
-        const month = factDate.getMonth() + 1; // месяцы в JS 0-11
-        factMonthMatch = month === parseInt(factMonthFilter);
-    } else {
-        factMonthMatch = false; // если дата не заполнена, не показываем при выборе месяца
-    }
-}
+        let factMonthMatch = true;
+        if (factMonthFilter) {
+            const factCell = cells[18] ? cells[18].textContent.trim() : ''; // 19-й столбец (индекс 18)
+            const factDate = parseDate(factCell);
+            if (factDate) {
+                const month = factDate.getMonth() + 1; // месяцы в JS 0-11
+                factMonthMatch = month === parseInt(factMonthFilter);
+            } else {
+                factMonthMatch = false; // если дата не заполнена, не показываем при выборе месяца
+            }
+        }
+
         // Собираем весь текст строки для общего поиска
         let rowText = '';
         cells.forEach(cell => {
             rowText += cell.textContent.toLowerCase() + ' ';
         });
         rowText = rowText.replace(/\s+/g, ' ').trim();
-        
+
         // Применяем все фильтры
         const searchMatch = !searchText || rowText.includes(searchText);
         const statusMatch = !statusFilter || statusCell === statusFilter;
-        const departmentMatch = !departmentFilter || 
+        const departmentMatch = !departmentFilter ||
             departmentCell.toLowerCase().includes(departmentFilter.toLowerCase());
         const applicationMatch = !applicationFilter || applicationCell === applicationFilter;
         const supplierMatch = !supplierFilter || supplierCell.includes(supplierFilter);
         const yearMatch = !yearFilter || yearFromApplication === yearFilter;
-        
+
         // Показываем строку только если все фильтры совпадают
         if (searchMatch && statusMatch && departmentMatch && applicationMatch && supplierMatch && yearMatch && factMonthMatch) {
-    row.style.display = '';
-    visibleCount++;
-} else {
-    row.style.display = 'none';
-}
+            row.style.display = '';
+            visibleCount++;
+        } else {
+            row.style.display = 'none';
+        }
     });
-    
+
+    // Сортировка по возрастанию даты "План" при выбранном статусе "Поставка"
+    if (statusFilter === 'Поставка') {
+        const tbody = document.querySelector('#accountingTable tbody');
+        const visibleRows = Array.from(tbody.querySelectorAll('tr')).filter(tr =>
+            tr.style.display !== 'none' && !(tr.cells.length === 1 && tr.cells[0].colSpan > 1)
+        );
+
+        visibleRows.sort((trA, trB) => {
+            const dateA = parseDate(trA.cells[17] ? trA.cells[17].textContent.trim() : ''); // столбец "План" (индекс 17)
+            const dateB = parseDate(trB.cells[17] ? trB.cells[17].textContent.trim() : '');
+            const timeA = dateA ? dateA.getTime() : 0;
+            const timeB = dateB ? dateB.getTime() : 0;
+            return timeA - timeB; // по возрастанию
+        });
+
+        // Очищаем tbody и добавляем отсортированные строки
+        tbody.innerHTML = '';
+        visibleRows.forEach(tr => tbody.appendChild(tr));
+    }
+
     // Показываем сообщение если ничего не найдено
     const tableBody = document.querySelector('#accountingTable tbody');
     if (tableBody) {
         let noDataRow = tableBody.querySelector('tr[data-no-results]');
-        
-        if (visibleCount === 0 && (searchText || statusFilter || departmentFilter || 
+
+        if (visibleCount === 0 && (searchText || statusFilter || departmentFilter ||
             applicationFilter || supplierFilter || yearFilter)) {
             if (!noDataRow) {
                 noDataRow = document.createElement('tr');
@@ -4714,42 +4735,44 @@ if (factMonthFilter) {
             }
         }
     }
-    
+
     updateCommentField();
     hideQuickFiltersIfMonthSelected();
     saveColumnWidths();
-// Сортировка строк по дате "Факт" (убывание), если выбран месяц
-if (factMonthFilter) {
-    const tbody = document.querySelector('#accountingTable tbody');
-    const rows = Array.from(tbody.querySelectorAll('tr:not([data-no-results])')); // все строки, кроме сообщения "нет данных"
-    
-    // Убираем строки-заглушки с colspan
-    const validRows = rows.filter(row => row.cells.length > 1 && !row.querySelector('td[colspan]'));
-    
-    validRows.sort((rowA, rowB) => {
-        // Получаем ячейки "Факт" (индекс 18)
-        const factA = rowA.cells[18] ? rowA.cells[18].textContent.trim() : '';
-        const factB = rowB.cells[18] ? rowB.cells[18].textContent.trim() : '';
-        
-        const dateA = parseDate(factA);
-        const dateB = parseDate(factB);
-        
-        // Если даты нет, считаем её минимальной (уходит вниз)
-        const timeA = dateA ? dateA.getTime() : 0;
-        const timeB = dateB ? dateB.getTime() : 0;
-        
-        // Убывание: новее сверху
-        return timeB - timeA;
-    });
-    
-    // Переставляем строки в tbody в новом порядке
-    validRows.forEach(row => tbody.appendChild(row));
-}
+
+    // Сортировка строк по дате "Факт" (убывание), если выбран месяц
+    if (factMonthFilter) {
+        const tbody = document.querySelector('#accountingTable tbody');
+        const rowsArray = Array.from(tbody.querySelectorAll('tr:not([data-no-results])')); // все строки, кроме сообщения "нет данных"
+
+        // Убираем строки-заглушки с colspan
+        const validRows = rowsArray.filter(row => row.cells.length > 1 && !row.querySelector('td[colspan]'));
+
+        validRows.sort((rowA, rowB) => {
+            // Получаем ячейки "Факт" (индекс 18)
+            const factA = rowA.cells[18] ? rowA.cells[18].textContent.trim() : '';
+            const factB = rowB.cells[18] ? rowB.cells[18].textContent.trim() : '';
+
+            const dateA = parseDate(factA);
+            const dateB = parseDate(factB);
+
+            // Если даты нет, считаем её минимальной (уходит вниз)
+            const timeA = dateA ? dateA.getTime() : 0;
+            const timeB = dateB ? dateB.getTime() : 0;
+
+            // Убывание: новее сверху
+            return timeB - timeA;
+        });
+
+        // Переставляем строки в tbody в новом порядке
+        validRows.forEach(row => tbody.appendChild(row));
+    }
+
     // Обновляем быстрые фильтры
     refreshQuickFiltersVisibility();
     // Обновляем видимость блока комментариев
     updateCommentBlockVisibility();
-    
+
     setTimeout(loadColumnWidths, 100);
 }
 
