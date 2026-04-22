@@ -2416,7 +2416,7 @@
       "unit": "шт",
       "purchaseName": "Аккумуляторы NiMH (никель-металлгидридные) Kodak HR6-4BL 2600mAh (KAAHR-4) (80/640/15360)",
       "purchaseQuantity": "40",
-      "purchaseUnit": "in",
+      "purchaseUnit": "шт",
       "amount": "12169.74",
       "supplier": "АО \"ТД \"Электротехмонтаж\"",
       "department": "11/0110 Служба главного механика",
@@ -15859,5 +15859,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-22T06:11:38.888Z"
+  "exportDate": "2026-04-22T06:36:05.256Z"
 }
