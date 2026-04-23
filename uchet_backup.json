@@ -288,7 +288,7 @@
       "purchaseQuantity": "",
       "purchaseUnit": "",
       "amount": "",
-      "supplier": "",
+      "supplier": "ООО \"А Сталь\"",
       "department": "11/0141 Котельная",
       "contract": "",
       "paymentTerms": "",
@@ -16014,5 +16014,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-23T09:06:34.238Z"
+  "exportDate": "2026-04-23T09:27:02.433Z"
 }
