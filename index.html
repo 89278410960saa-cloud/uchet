@@ -4693,22 +4693,34 @@ function editAccountingRowByRecordId(recordId) {
     });
 
     // Сортировка по возрастанию даты "План" при выбранном статусе "Поставка"
-    if (statusFilter === 'Поставка') {
+     if (statusFilter === 'Поставка') {
         const tbody = document.querySelector('#accountingTable tbody');
-        const visibleRows = Array.from(tbody.querySelectorAll('tr')).filter(tr =>
-            tr.style.display !== 'none' && !(tr.cells.length === 1 && tr.cells[0].colSpan > 1)
+        const rows = Array.from(tbody.querySelectorAll('tr'));
+        
+        // Разделяем строки на видимые и скрытые
+        const visibleRows = rows.filter(row => 
+            row.style.display !== 'none' && 
+            !(row.cells.length === 1 && row.cells[0].colSpan > 1)
         );
+        const hiddenRows = rows.filter(row => !visibleRows.includes(row));
 
+        // Сортируем видимые строки по дате "План" (индекс 17)
         visibleRows.sort((trA, trB) => {
-            const dateA = parseDate(trA.cells[17] ? trA.cells[17].textContent.trim() : ''); // столбец "План" (индекс 17)
+            const dateA = parseDate(trA.cells[17] ? trA.cells[17].textContent.trim() : '');
             const dateB = parseDate(trB.cells[17] ? trB.cells[17].textContent.trim() : '');
-            const timeA = dateA ? dateA.getTime() : 0;
-            const timeB = dateB ? dateB.getTime() : 0;
-            return timeA - timeB; // по возрастанию
+            const timeA = dateA ? dateA.getTime() : Infinity;
+            const timeB = dateB ? dateB.getTime() : Infinity;
+            return timeA - timeB;
         });
 
-        // Очищаем tbody и добавляем отсортированные строки
-        tbody.innerHTML = '';
+        // Удаляем все строки из tbody без использования innerHTML
+        while (tbody.firstChild) {
+            tbody.removeChild(tbody.firstChild);
+        }
+
+        // Сначала добавляем скрытые строки (они останутся скрытыми благодаря inline-стилю)
+        hiddenRows.forEach(tr => tbody.appendChild(tr));
+        // Затем добавляем отсортированные видимые строки
         visibleRows.forEach(tr => tbody.appendChild(tr));
     }
 
