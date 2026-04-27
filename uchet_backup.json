@@ -1,6 +1,29 @@
 {
   "accountingData": [
     {
+      "recordId": "20260427161124841_fuwazwf3e",
+      "docNumber": "2026-343 (от 24.04.2026)",
+      "status": "В работе",
+      "id": "-",
+      "name": "-",
+      "quantity": "-",
+      "unit": "-",
+      "purchaseName": "Хомут кованный неповоротный (цинк) 48*48мм",
+      "purchaseQuantity": "72",
+      "purchaseUnit": "шт",
+      "amount": "14400.00",
+      "supplier": "ООО \"Дирс Строй\"",
+      "department": "17/0001 Строительства и ремонта",
+      "contract": "СЧ № УТ-3299",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "14",
+      "deliveryTerms": "Включена",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
+    },
+    {
       "recordId": "20260427132750353_bqtfdmr27",
       "docNumber": "2026-343 (от 24.04.2026)",
       "status": "В работе",
@@ -9473,29 +9496,6 @@
       "fact": "11.12.2025",
       "shipmentDoc": "70019 от 09.12.25",
       "plan": "11.12.2025"
-    },
-    {
-      "recordId": "20260427161124841_fuwazwf3e",
-      "docNumber": "2026-343 (от 24.04.2026)",
-      "status": "В работе",
-      "id": "-",
-      "name": "-",
-      "quantity": "-",
-      "unit": "-",
-      "purchaseName": "Хомут кованный неповоротный (цинк) 48*48мм",
-      "purchaseQuantity": "72",
-      "purchaseUnit": "шт",
-      "amount": "14400.00",
-      "supplier": "ООО \"Дирс Строй\"",
-      "department": "17/0001 Строительства и ремонта",
-      "contract": "СЧ № УТ-3299",
-      "paymentTerms": "100 % предоплата",
-      "deliveryDays": "14",
-      "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
-      "fact": "",
-      "shipmentDoc": ""
     }
   ],
   "counterpartiesData": [
@@ -17299,5 +17299,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-27T13:24:22.125Z"
+  "exportDate": "2026-04-27T13:35:07.179Z"
 }
