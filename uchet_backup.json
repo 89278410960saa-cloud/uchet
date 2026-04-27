@@ -12,7 +12,7 @@
       "purchaseQuantity": "",
       "purchaseUnit": "",
       "amount": "",
-      "supplier": "",
+      "supplier": "ООО \"НПО РИЗУР\"",
       "department": "11/0120 Служба главного энергетика",
       "contract": "",
       "paymentTerms": "",
@@ -126,13 +126,13 @@
       "purchaseName": "Кассовая кабина КК-70Т (1120 мм) универсальная",
       "purchaseQuantity": "1",
       "purchaseUnit": "шт",
-      "amount": "",
+      "amount": "44521.16",
       "supplier": "ООО \"Абат ТД\"",
       "department": "19/0030 АХО",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № УТ-2799",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "14",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -149,13 +149,13 @@
       "purchaseName": "Мармит 2-х блюд ЭМК-70Т-01 паровой (3 полки, \nподсветка,с гастроемкостями, 1500 мм) ",
       "purchaseQuantity": "1",
       "purchaseUnit": "шт",
-      "amount": "",
+      "amount": "146628.21",
       "supplier": "ООО \"Абат ТД\"",
       "department": "19/0030 АХО",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № УТ-2799",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "14",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -172,13 +172,13 @@
       "purchaseName": "Мармит 2-х блюд ЭМК-70Т паровой (3 полки, \nподсветка, с гастроемкостями,1120 мм)",
       "purchaseQuantity": "1",
       "purchaseUnit": "шт",
-      "amount": "",
+      "amount": "127291.79",
       "supplier": "ООО \"Абат ТД\"",
       "department": "19/0030 АХО",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № УТ-2799",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "100",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -195,13 +195,13 @@
       "purchaseName": "Мармит 1-х блюд ПМЭС-70Т (2 конфорки, 3 полки, \nподсветка, 1120 мм) ",
       "purchaseQuantity": "1",
       "purchaseUnit": "шт",
-      "amount": "",
+      "amount": "83742.18",
       "supplier": "ООО \"Абат ТД\"",
       "department": "19/0030 АХО",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № УТ-2799",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "100",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -218,13 +218,13 @@
       "purchaseName": "Прилавок для столовых приборов ПСПХ-70Т с \nхлебницей (630 мм)",
       "purchaseQuantity": "1",
       "purchaseUnit": "шт",
-      "amount": "",
+      "amount": "66517.13",
       "supplier": "ООО \"Абат ТД\"",
       "department": "19/0030 АХО",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № УТ-2799",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "100",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -238,16 +238,16 @@
       "name": "Прилавок-витрина холодильный ПВВ(Н)-70Т-С-НШ с гастроёмкостями (саладэт закрыт.,1120 мм)\n",
       "quantity": "1",
       "unit": "шт",
-      "purchaseName": "Прилавок-витрина холодильный ПВВ(Н)-70Т-С-НШ \nкашированный 1120 мм",
+      "purchaseName": "Прилавок-витрина холодильный ПВВ(Н)-70Т-С-НШ с гастроёмкостями (саладэт \nзакрыт.,1120 мм)",
       "purchaseQuantity": "1",
       "purchaseUnit": "шт",
-      "amount": "",
+      "amount": "209443.93",
       "supplier": "ООО \"Абат ТД\"",
       "department": "16/0020 АХО",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № УТ-2840",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "100",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -325,7 +325,7 @@
     {
       "recordId": "20260421103730216_zfiopcp5u",
       "docNumber": "2026-325 (от 14.04.2026)",
-      "status": "Приход",
+      "status": "Выполнено",
       "id": "МАТ-10342",
       "name": "-",
       "quantity": "-",
@@ -343,12 +343,12 @@
       "date": "23.04.2026",
       "planFact": "30.04.2026",
       "fact": "24.04.2026",
-      "shipmentDoc": ""
+      "shipmentDoc": "УТ-915 от 27.04.2026"
     },
     {
       "recordId": "20260421103548128_2sruaq3aj",
       "docNumber": "2026-325 (от 14.04.2026)",
-      "status": "Приход",
+      "status": "Выполнено",
       "id": "МАТ-10342",
       "name": "-",
       "quantity": "-",
@@ -366,11 +366,11 @@
       "date": "23.04.2026",
       "planFact": "30.04.2026",
       "fact": "24.04.2026",
-      "shipmentDoc": ""
+      "shipmentDoc": "УТ-915 от 27.04.2026"
     },
     {
       "recordId": "20260420173825805_v6r2tc0ye",
-      "docNumber": "н/н (от 20.04.2026)",
+      "docNumber": "2026-364 (от 20.04.2026)",
       "status": "Выполнено",
       "id": "МАТ-00509",
       "name": "Валик для краски",
@@ -393,7 +393,7 @@
     },
     {
       "recordId": "20260420173742825_gbo908kkn",
-      "docNumber": "н/н (от 20.04.2026)",
+      "docNumber": "2026-364 (от 20.04.2026)",
       "status": "Выполнено",
       "id": "МАТ-04628",
       "name": "Кисточки для краски",
@@ -416,7 +416,7 @@
     },
     {
       "recordId": "20260420173711087_v7t0zkhsb",
-      "docNumber": "н/н (от 20.04.2026)",
+      "docNumber": "2026-364 (от 20.04.2026)",
       "status": "Выполнено",
       "id": "МАТ-05987",
       "name": "Белая краска по бетону на улице",
@@ -509,7 +509,7 @@
     {
       "recordId": "20260417091549166_po3b7tw6q",
       "docNumber": "2026-291 (от 14.04.2026)",
-      "status": "Приход",
+      "status": "Выполнено",
       "id": "МАТ-04885",
       "name": "Грунт-эмаль по ржавчине 3 в 1Текс СИНЯЯ 2 КГ",
       "quantity": "2",
@@ -527,7 +527,7 @@
       "date": "23.04.2026",
       "planFact": "30.04.2026",
       "fact": "24.04.2026",
-      "shipmentDoc": ""
+      "shipmentDoc": "19882 от 23.04.2026"
     },
     {
       "recordId": "20260416114302976_fsq6sgj8l",
@@ -607,9 +607,9 @@
       "quantity": "9",
       "unit": "шт",
       "purchaseName": "02331422, Кухонный раздвижной стол Антила Classic Plus 153, \nЧерный",
-      "purchaseQuantity": "9",
+      "purchaseQuantity": "3",
       "purchaseUnit": "шт",
-      "amount": "411867.00",
+      "amount": "139749.00",
       "supplier": "ООО \"Март\"",
       "department": "16/0020 АХО",
       "contract": "СЧ № 394",
@@ -877,7 +877,7 @@
     {
       "recordId": "20260416112638218_jyr5vkbbf",
       "docNumber": "2026-325 (от 14.04.2026)",
-      "status": "Приход",
+      "status": "Выполнено",
       "id": "МАТ-10342",
       "name": "ВСП 250/2,0 с рабочей площадкой 2,0×2,0 в комплекте со стабилизаторами (4 шт.)\n",
       "quantity": "1",
@@ -895,7 +895,7 @@
       "date": "23.04.2026",
       "planFact": "30.04.2026",
       "fact": "24.04.2026",
-      "shipmentDoc": ""
+      "shipmentDoc": "УТ-915 от 27.04.2026"
     },
     {
       "recordId": "20260415141659777_fly3pdckh",
@@ -923,7 +923,7 @@
     {
       "recordId": "20260415113154838_fh5r34yp8",
       "docNumber": "2026-287 (от 30.03.2026)",
-      "status": "Приход",
+      "status": "Выполнено",
       "id": "МАТ-10457",
       "name": "Сгон для пола NV 60-70 см с рукояткой, металлический NV04032 ",
       "quantity": "10",
@@ -941,12 +941,12 @@
       "date": "23.04.2026",
       "planFact": "30.04.2026",
       "fact": "24.04.2026",
-      "shipmentDoc": ""
+      "shipmentDoc": "1430248/577 от 24.04.2026"
     },
     {
       "recordId": "20260415113124723_frqjvm55y",
       "docNumber": "2026-287 (от 30.03.2026)",
-      "status": "Приход",
+      "status": "Выполнено",
       "id": "МАТ-01236",
       "name": "Щетка строительная 400 мм, 5 рядов, жесткая щетина, железная тулейка, без черенка Сибртех 84621 ",
       "quantity": "80",
@@ -964,12 +964,12 @@
       "date": "20.04.2026",
       "planFact": "24.04.2026",
       "fact": "24.04.2026",
-      "shipmentDoc": ""
+      "shipmentDoc": "19881 от 23.04.2026"
     },
     {
       "recordId": "20260415112951704_ssy570jza",
       "docNumber": "2026-261 (от 30.03.2026)",
-      "status": "Приход",
+      "status": "Выполнено",
       "id": "М025164",
       "name": "Тачка садово-строительная\t1-КОЛЕСНАЯ 31.110.220",
       "quantity": "2",
@@ -987,12 +987,12 @@
       "date": "20.04.2026",
       "planFact": "24.04.2026",
       "fact": "24.04.2026",
-      "shipmentDoc": ""
+      "shipmentDoc": "19880 от 23.04.2026"
     },
     {
       "recordId": "20260415112441149_zm1qsvsz0",
       "docNumber": "2026-259 (от 30.03.2026)",
-      "status": "Приход",
+      "status": "Выполнено",
       "id": "МАТ-00795",
       "name": "ведро оцинкованное 15 Л",
       "quantity": "60",
@@ -1010,7 +1010,7 @@
       "date": "20.04.2026",
       "planFact": "24.04.2026",
       "fact": "24.04.2026",
-      "shipmentDoc": ""
+      "shipmentDoc": "19876 от 23.04.2026"
     },
     {
       "recordId": "20260413115306379_fg9p84ugh",
@@ -3007,7 +3007,7 @@
     {
       "recordId": "20260327114001979_g0pcfl2pu",
       "docNumber": "2026-260 (от 24.03.2026)",
-      "status": "Приход",
+      "status": "Выполнено",
       "id": "МАТ-05656",
       "name": "Аккумуляторная батарея Delta\tDTM 1209",
       "quantity": "10",
@@ -3025,12 +3025,12 @@
       "date": "16.04.2026",
       "planFact": "24.04.2026",
       "fact": "24.04.2026",
-      "shipmentDoc": ""
+      "shipmentDoc": "2146 от 20.04.2026"
     },
     {
       "recordId": "20260327113935247_rfoxt90cb",
       "docNumber": "2026-260 (от 24.03.2026)",
-      "status": "Приход",
+      "status": "Выполнено",
       "id": "МАТ-05656",
       "name": "Аккумуляторная батарея Delta\tDTM 1240 L",
       "quantity": "20",
@@ -3048,12 +3048,12 @@
       "date": "16.04.2026",
       "planFact": "24.04.2026",
       "fact": "24.04.2026",
-      "shipmentDoc": ""
+      "shipmentDoc": "2146 от 20.04.2026"
     },
     {
       "recordId": "20260327113907940_laqqmdjpv",
       "docNumber": "2026-260 (от 24.03.2026)",
-      "status": "Приход",
+      "status": "Выполнено",
       "id": "МАТ-05656",
       "name": "Аккумуляторная батарея Delta\tDTM-1226",
       "quantity": "10",
@@ -3071,12 +3071,12 @@
       "date": "16.04.2026",
       "planFact": "24.04.2026",
       "fact": "24.04.2026",
-      "shipmentDoc": ""
+      "shipmentDoc": "2146 от 20.04.2026"
     },
     {
       "recordId": "20260327113843727_kixcc9g81",
       "docNumber": "2026-260 (от 24.03.2026)",
-      "status": "Приход",
+      "status": "Выполнено",
       "id": "МАТ-05656",
       "name": "Аккумуляторная батарея Delta\tDTM 1217",
       "quantity": "2",
@@ -3094,12 +3094,12 @@
       "date": "16.04.2026",
       "planFact": "24.04.2026",
       "fact": "24.04.2026",
-      "shipmentDoc": ""
+      "shipmentDoc": "2146 от 20.04.2026"
     },
     {
       "recordId": "20260327113820929_qki1jzwri",
       "docNumber": "2026-260 (от 24.03.2026)",
-      "status": "Приход",
+      "status": "Выполнено",
       "id": "МАТ-05656",
       "name": "Аккумуляторная батарея Delta\tDTM-1212",
       "quantity": "12",
@@ -3117,12 +3117,12 @@
       "date": "16.04.2026",
       "planFact": "24.04.2026",
       "fact": "24.04.2026",
-      "shipmentDoc": ""
+      "shipmentDoc": "2146 от 20.04.2026"
     },
     {
       "recordId": "20260327113753230_bo6njtqvb",
       "docNumber": "2026-260 (от 24.03.2026)",
-      "status": "Приход",
+      "status": "Выполнено",
       "id": "МАТ-05656",
       "name": "Аккумуляторная батарея Delta\tDTM-1207",
       "quantity": "40",
@@ -3140,12 +3140,12 @@
       "date": "16.04.2026",
       "planFact": "24.04.2026",
       "fact": "24.04.2026",
-      "shipmentDoc": ""
+      "shipmentDoc": "2146 от 20.04.2026"
     },
     {
       "recordId": "20260327113726728_nfdbogwlb",
       "docNumber": "2026-260 (от 24.03.2026)",
-      "status": "Приход",
+      "status": "Выполнено",
       "id": "МАТ-05156",
       "name": "Аккумуляторная батарея (эл)\tDELTA DTM 1205",
       "quantity": "24",
@@ -3163,12 +3163,12 @@
       "date": "16.04.2026",
       "planFact": "24.04.2026",
       "fact": "24.04.2026",
-      "shipmentDoc": ""
+      "shipmentDoc": "2146 от 20.04.2026"
     },
     {
       "recordId": "20260324091138365_fnj66n0f3",
       "docNumber": "2026-233 (от 20.03.2026)",
-      "status": "Приход",
+      "status": "Выполнено",
       "id": "МАТ-06885",
       "name": "Тележка платформенная\t4-Х КОЛЕСНАЯ",
       "quantity": "1",
@@ -7287,12 +7287,11 @@
       "contract": "СЧ № 104/5502365",
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "90",
-      "deliveryTerms": "Самовывоз",
+      "deliveryTerms": "Включена",
       "date": "29.01.2026",
       "planFact": "29.04.2026",
       "fact": "",
-      "shipmentDoc": "",
-      "plan": "29.04.2026"
+      "shipmentDoc": ""
     },
     {
       "recordId": "20260123095525733_bqykky0sz",
@@ -7836,7 +7835,7 @@
       "amount": "1232000.00",
       "supplier": "ООО \"Техзона\"",
       "department": "11/0141 Котельная",
-      "contract": "",
+      "contract": "ДОГ 91/26",
       "paymentTerms": "50 %; 50 % 10 к.дн.",
       "deliveryDays": "140",
       "deliveryTerms": "Включена",
@@ -7859,9 +7858,9 @@
       "amount": "741015.00",
       "supplier": "ООО \"Техзона\"",
       "department": "11/0141 Котельная",
-      "contract": "",
+      "contract": "ДОГ 91/26",
       "paymentTerms": "50 %; 50 % 10 к.дн.",
-      "deliveryDays": "7",
+      "deliveryDays": "14",
       "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
@@ -7882,7 +7881,7 @@
       "amount": "1221000.00",
       "supplier": "ООО \"Техзона\"",
       "department": "11/0141 Котельная",
-      "contract": "",
+      "contract": "ДОГ 91/26",
       "paymentTerms": "50 %; 50 % 10 к.дн.",
       "deliveryDays": "140",
       "deliveryTerms": "Включена",
@@ -11329,9 +11328,9 @@
       "recordId": "1768384529469_4x6jpe346",
       "supplier": "ООО \"НПО РИЗУР\"",
       "inn": "6234114269",
-      "phone": "",
-      "contact": "",
-      "email": "",
+      "phone": "7 (4912) 20-20-80, доб. 111",
+      "contact": "Анастасия Елсакова",
+      "email": "ea@rizur.ru",
       "address": "390527, с.Дубровичи, 14-й (Автодорога Рязань-Спасск.) км, строение №4 Ж",
       "material": "КИП/электрика",
       "blacklisted": false,
@@ -16149,5 +16148,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-04-24T13:26:32.768Z"
+  "exportDate": "2026-04-27T09:01:35.782Z"
 }
