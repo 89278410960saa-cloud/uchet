@@ -1602,21 +1602,18 @@
         }
 
         .quick-filter-btn {
-            padding: 5.36px 10.72px;
-            font-size: 8.71px;
-            border: 1.34px solid;
-            border-radius: 13.4px;
-            cursor: pointer;
-            background-color: rgba(27, 40, 56, 0.8);
-            transition: all 0.3s ease;
-            white-space: nowrap;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 24.12px;
-            line-height: 1;
-        }
+    font-size: 11px !important;           /* увеличиваем шрифт */
+    padding: 3px 10px !important;        /* увеличиваем отступы внутри */
+    min-width: 40px !important;          /* минимальная ширина (опционально) */
+    min-height: 10px !important;         /* минимальная высота — для комфортного нажатия */
+    border-radius: 15px !important;      /* чуть более скруглённые углы */
+}
+
+/* Если нужно также увеличить контейнер и общий блок */
+.quick-filters {
+    gap: 5px !important;                 /* увеличиваем расстояние между кнопками */
+    padding: 8px !important;
+}
 
         .quick-filter-btn:hover {
             transform: translateY(-1.34px);
@@ -1661,8 +1658,8 @@
             }
             
             .quick-filter-btn {
-                padding: 4.02px 8.04px;
-                font-size: 8.04px;
+                padding: 8px 16px;
+                font-size: 12px;
             }
         }
 
