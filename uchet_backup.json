@@ -1,6 +1,29 @@
 {
   "accountingData": [
     {
+      "recordId": "20260507145359794_5kc28mf8h",
+      "docNumber": "н/н (от 07.05.2026)",
+      "status": "В работе",
+      "id": "-",
+      "name": "Биг-Бэг 4-х стропный 95 х 95 х 130 см, до 1 тонны, верх открытый, низ глухой",
+      "quantity": "1000",
+      "unit": "шт",
+      "purchaseName": "",
+      "purchaseQuantity": "",
+      "purchaseUnit": "",
+      "amount": "",
+      "supplier": "",
+      "department": "17/0030 Строительства и ремонта",
+      "contract": "",
+      "paymentTerms": "",
+      "deliveryDays": "",
+      "deliveryTerms": "",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
+    },
+    {
       "recordId": "20260506173308011_mjnv6i1qk",
       "docNumber": "н/н (от 07.05.2026)",
       "status": "В работе",
@@ -25,7 +48,7 @@
     },
     {
       "recordId": "20260506173246355_h9pbxc9fm",
-      "docNumber": "н/н (от 07.05.2026)",
+      "docNumber": "2026-424 (от 07.05.2026)",
       "status": "В работе",
       "id": "-",
       "name": "Труба бесшовная горячедеформированная 325х8 ГОСТ 32528-2013, Сталь 09Г2С",
@@ -722,7 +745,8 @@
       "date": "07.05.2026",
       "planFact": "12.05.2026",
       "fact": "07.05.2026",
-      "shipmentDoc": ""
+      "shipmentDoc": "",
+      "plan": "12.05.2026"
     },
     {
       "recordId": "20260504160741907_13u1v78b3",
@@ -745,7 +769,8 @@
       "date": "07.05.2026",
       "planFact": "12.05.2026",
       "fact": "07.05.2026",
-      "shipmentDoc": ""
+      "shipmentDoc": "",
+      "plan": "12.05.2026"
     },
     {
       "recordId": "20260504155822826_38e9oiajy",
@@ -10921,29 +10946,6 @@
       "fact": "11.12.2025",
       "shipmentDoc": "70019 от 09.12.25",
       "plan": "11.12.2025"
-    },
-    {
-      "recordId": "20260507145359794_5kc28mf8h",
-      "docNumber": "н/н (от 07.05.2026)",
-      "status": "В работе",
-      "id": "-",
-      "name": "Биг-Бэг 4-х стропный 95 х 95 х 130 см, до 1 тонны, верх открытый, низ глухой",
-      "quantity": "1000",
-      "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
-      "supplier": "",
-      "department": "17/0030 Строительства и ремонта",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
-      "date": "",
-      "planFact": "",
-      "fact": "",
-      "shipmentDoc": ""
     }
   ],
   "counterpartiesData": [
@@ -19096,5 +19098,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-05-07T11:55:16.031Z"
+  "exportDate": "2026-05-07T12:58:28.218Z"
 }
