@@ -638,7 +638,7 @@
       "status": "В работе",
       "id": "МАТ-01605",
       "name": "Велосипед трехколесный STELS ENERGY I 26 V020",
-      "quantity": "1",
+      "quantity": "2",
       "unit": "шт",
       "purchaseName": "",
       "purchaseQuantity": "",
@@ -19237,5 +19237,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-05-07T13:56:19.858Z"
+  "exportDate": "2026-05-07T13:59:41.908Z"
 }
