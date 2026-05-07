@@ -11011,6 +11011,29 @@
       "planFact": "",
       "fact": "",
       "shipmentDoc": ""
+    },
+    {
+      "recordId": "20260507165619783_0zd3pkxr1",
+      "docNumber": "2026-391 (от 29.04.2026)",
+      "status": "В работе",
+      "id": "-",
+      "name": "Велосипед трехколесный STELS ENERGY III 26 - 3 СК.",
+      "quantity": "2",
+      "unit": "шт",
+      "purchaseName": "Велосипед STELS Energy-VI VB\n26 V010 2025 (хром)",
+      "purchaseQuantity": "2",
+      "purchaseUnit": "шт",
+      "amount": "93992.00",
+      "supplier": "ООО \"Велосипедиссимо\"",
+      "department": "16/0020 АХО",
+      "contract": "СЧ № 573410",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "14",
+      "deliveryTerms": "Самовывоз",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
     }
   ],
   "counterpartiesData": [
@@ -19214,5 +19237,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-05-07T13:54:19.998Z"
+  "exportDate": "2026-05-07T13:56:19.858Z"
 }
