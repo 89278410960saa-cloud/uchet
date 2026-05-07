@@ -10942,6 +10942,29 @@
       "fact": "11.12.2025",
       "shipmentDoc": "70019 от 09.12.25",
       "plan": "11.12.2025"
+    },
+    {
+      "recordId": "20260507160902955_lcy54umpq",
+      "docNumber": "2026-391 (от 29.04.2026)",
+      "status": "В работе",
+      "id": "МАТ-01606",
+      "name": "Велосипед двухколесный STELS NAVIGATOR 300 GENT",
+      "quantity": "3",
+      "unit": "шт",
+      "purchaseName": "",
+      "purchaseQuantity": "",
+      "purchaseUnit": "",
+      "amount": "",
+      "supplier": "",
+      "department": "16/0020 АХО",
+      "contract": "",
+      "paymentTerms": "",
+      "deliveryDays": "",
+      "deliveryTerms": "",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
     }
   ],
   "counterpartiesData": [
@@ -19095,5 +19118,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-05-07T13:07:57.107Z"
+  "exportDate": "2026-05-07T13:09:03.028Z"
 }
