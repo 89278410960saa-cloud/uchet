@@ -10921,6 +10921,29 @@
       "fact": "11.12.2025",
       "shipmentDoc": "70019 от 09.12.25",
       "plan": "11.12.2025"
+    },
+    {
+      "recordId": "20260507145359794_5kc28mf8h",
+      "docNumber": "н/н (от 07.05.2026)",
+      "status": "В работе",
+      "id": "-",
+      "name": "Биг-Бэг 4-х стропный 95 х 95 х 130 см, до 1 тонны, верх открытый, низ глухой",
+      "quantity": "1000",
+      "unit": "шт",
+      "purchaseName": "",
+      "purchaseQuantity": "",
+      "purchaseUnit": "",
+      "amount": "",
+      "supplier": "",
+      "department": "17/0030 Строительства и ремонта",
+      "contract": "",
+      "paymentTerms": "",
+      "deliveryDays": "",
+      "deliveryTerms": "",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
     }
   ],
   "counterpartiesData": [
@@ -19073,5 +19096,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-05-07T11:50:58.303Z"
+  "exportDate": "2026-05-07T11:53:59.924Z"
 }
