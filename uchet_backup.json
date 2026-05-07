@@ -10988,6 +10988,29 @@
       "planFact": "",
       "fact": "",
       "shipmentDoc": ""
+    },
+    {
+      "recordId": "20260507164954543_sonj2q3pc",
+      "docNumber": "2026-391 (от 29.04.2026)",
+      "status": "В работе",
+      "id": "-",
+      "name": "Велосипед трехколесный STELS ENERGY III 26 - 3 СК.",
+      "quantity": "4",
+      "unit": "шт",
+      "purchaseName": "Велосипед AIST Cargo 1.1 24 2025 (бордовый)",
+      "purchaseQuantity": "4",
+      "purchaseUnit": "шт",
+      "amount": "133860.00",
+      "supplier": "ООО \"Велосипедиссимо\"",
+      "department": "16/0020 АХО",
+      "contract": "СЧ № 573410",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "14",
+      "deliveryTerms": "Самовывоз",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
     }
   ],
   "counterpartiesData": [
@@ -19191,5 +19214,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-05-07T13:48:42.145Z"
+  "exportDate": "2026-05-07T13:49:54.618Z"
 }
