@@ -10965,6 +10965,29 @@
       "planFact": "",
       "fact": "",
       "shipmentDoc": ""
+    },
+    {
+      "recordId": "20260507161359105_rmk4y8t4l",
+      "docNumber": "2026-424 (от 07.05.2026)",
+      "status": "В работе",
+      "id": "-",
+      "name": "-",
+      "quantity": "222",
+      "unit": "шт",
+      "purchaseName": "Мешок для мусора \nБиг-бэг 1100 л \n950х950х1300 мм \nполипропиленовый 4 \nстропы (10012716)",
+      "purchaseQuantity": "222",
+      "purchaseUnit": "шт",
+      "amount": "313686.00",
+      "supplier": "ООО \"СТД \"Петрович\"",
+      "department": "17/0030 Строительства и ремонта",
+      "contract": "СЧ № ТВЭ00313427",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "7",
+      "deliveryTerms": "Включена",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
     }
   ],
   "counterpartiesData": [
@@ -19118,5 +19141,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-05-07T13:12:53.056Z"
+  "exportDate": "2026-05-07T13:13:59.178Z"
 }
