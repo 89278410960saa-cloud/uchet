@@ -686,10 +686,10 @@
       "name": "Велосипед двухколесный STELS NAVIGATOR 300 GENT",
       "quantity": "2",
       "unit": "шт",
-      "purchaseName": "Велосипед STELS Energy-VI VB\n26 V010 2025 (хром)",
+      "purchaseName": "Велосипед STELS Avangard 300 С 28 Z010 2025 (черный)",
       "purchaseQuantity": "2",
       "purchaseUnit": "шт",
-      "amount": "93992.00",
+      "amount": "26190.00",
       "supplier": "ООО \"Велосипедиссимо\"",
       "department": "16/0020 АХО",
       "contract": "СЧ № 573410",
@@ -19214,5 +19214,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-05-07T13:51:48.510Z"
+  "exportDate": "2026-05-07T13:54:19.998Z"
 }
