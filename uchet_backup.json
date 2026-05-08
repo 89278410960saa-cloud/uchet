@@ -11103,6 +11103,29 @@
       "planFact": "",
       "fact": "",
       "shipmentDoc": ""
+    },
+    {
+      "recordId": "20260508111224952_7kkaqzm7u",
+      "docNumber": "н/н (от 08.05.2026)",
+      "status": "В работе",
+      "id": "-",
+      "name": "SikaEmaco A 640 (MasterEmaco A 640) (мешок 25 кг). Специальный\nбезусадочный быстротвердеющий пластифицированный цемент",
+      "quantity": "50",
+      "unit": "кг",
+      "purchaseName": "SikaEmaco A 640 (MasterEmaco A 640) (мешок 25 кг). Специальный\nбезусадочный быстротвердеющий пластифицированный цемент",
+      "purchaseQuantity": "50",
+      "purchaseUnit": "кг",
+      "amount": "5540.50",
+      "supplier": "",
+      "department": "11/0020 ПТО",
+      "contract": "СЧ № УТ-1172",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "7",
+      "deliveryTerms": "Включена",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
     }
   ],
   "counterpartiesData": [
@@ -19330,5 +19353,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-05-08T08:11:45.317Z"
+  "exportDate": "2026-05-08T08:12:25.059Z"
 }
