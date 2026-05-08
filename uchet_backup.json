@@ -284,16 +284,16 @@
       "name": "Труба бесшовная горячедеформированная 325х8 ГОСТ 32528-2013, Сталь 09Г2С",
       "quantity": "10",
       "unit": "ПМ",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
+      "purchaseName": "Труба бесшовная горячедеформированная 325х8 ГОСТ 32528-2013, Сталь 09Г2С",
+      "purchaseQuantity": "12",
+      "purchaseUnit": "м",
+      "amount": "220680.00",
       "supplier": "ООО \"Альфаводострой\"",
       "department": "11/0110 Служба главного механика",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № УТ-4318",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "4",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -19422,5 +19422,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-05-08T10:26:21.451Z"
+  "exportDate": "2026-05-08T10:27:21.091Z"
 }
