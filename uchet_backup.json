@@ -11139,7 +11139,7 @@
       "purchaseQuantity": "40",
       "purchaseUnit": "кг",
       "amount": "51757.60",
-      "supplier": "",
+      "supplier": "ООО \"ИСС\"",
       "department": "11/0020 ПТО",
       "contract": "СЧ № УТ-1172",
       "paymentTerms": "100 % предоплата",
@@ -19411,5 +19411,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-05-08T08:17:55.468Z"
+  "exportDate": "2026-05-08T08:17:59.728Z"
 }
