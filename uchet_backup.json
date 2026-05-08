@@ -173,7 +173,7 @@
       "purchaseQuantity": "",
       "purchaseUnit": "",
       "amount": "",
-      "supplier": "",
+      "supplier": "ООО \"Абт-Групп\"",
       "department": "11/0110 Служба главного механика",
       "contract": "",
       "paymentTerms": "",
@@ -19282,5 +19282,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-05-08T06:18:53.422Z"
+  "exportDate": "2026-05-08T06:18:58.222Z"
 }
