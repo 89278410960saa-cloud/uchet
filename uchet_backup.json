@@ -288,7 +288,7 @@
       "purchaseQuantity": "",
       "purchaseUnit": "",
       "amount": "",
-      "supplier": "",
+      "supplier": "ООО \"Альфаводострой\"",
       "department": "11/0110 Служба главного механика",
       "contract": "",
       "paymentTerms": "",
@@ -19422,5 +19422,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-05-08T10:24:21.671Z"
+  "exportDate": "2026-05-08T10:24:27.050Z"
 }
