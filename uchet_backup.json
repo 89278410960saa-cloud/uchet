@@ -11176,6 +11176,18 @@
   ],
   "counterpartiesData": [
     {
+      "recordId": "20260508111724812_o0x7uep32",
+      "supplier": "ООО \"ИСС\" ",
+      "inn": "7805702206",
+      "phone": "-",
+      "contact": "-",
+      "email": "bms@bmsspb.com",
+      "address": "-",
+      "material": "стройматериалы",
+      "blacklisted": false,
+      "blacklistComment": ""
+    },
+    {
       "recordId": "20260508091841887_gqpushjlr",
       "supplier": "ООО \"Абт-Групп\"",
       "inn": "7839075360",
@@ -19399,5 +19411,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-05-08T08:13:41.260Z"
+  "exportDate": "2026-05-08T08:17:24.920Z"
 }
