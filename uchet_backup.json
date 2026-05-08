@@ -11149,6 +11149,29 @@
       "planFact": "",
       "fact": "",
       "shipmentDoc": ""
+    },
+    {
+      "recordId": "20260508111341155_dzsfsj0vi",
+      "docNumber": "н/н (от 08.05.2026)",
+      "status": "В работе",
+      "id": "-",
+      "name": "SikaTop-550 Seal компонент B (мешок 26 кг). Двухкомпонентный\nполимерцементный состав",
+      "quantity": "104",
+      "unit": "кг",
+      "purchaseName": "SikaTop-550 Seal компонент B (мешок 26 кг). Двухкомпонентный\nполимерцементный состав",
+      "purchaseQuantity": "104",
+      "purchaseUnit": "кг",
+      "amount": "7677.28",
+      "supplier": "",
+      "department": "11/0020 ПТО",
+      "contract": "СЧ № УТ-1172",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "7",
+      "deliveryTerms": "Включена",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
     }
   ],
   "counterpartiesData": [
@@ -19376,5 +19399,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-05-08T08:13:02.582Z"
+  "exportDate": "2026-05-08T08:13:41.260Z"
 }
