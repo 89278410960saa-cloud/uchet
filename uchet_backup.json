@@ -292,7 +292,7 @@
       "department": "11/0110 Служба главного механика",
       "contract": "СЧ № УТ-4318",
       "paymentTerms": "100 % предоплата",
-      "deliveryDays": "4",
+      "deliveryDays": "7",
       "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
@@ -19422,5 +19422,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-05-08T11:10:25.597Z"
+  "exportDate": "2026-05-08T11:10:29.517Z"
 }
