@@ -11061,6 +11061,18 @@
   ],
   "counterpartiesData": [
     {
+      "recordId": "20260508091841887_gqpushjlr",
+      "supplier": "ООО \"Абт-Групп\"",
+      "inn": "7839075360",
+      "phone": "8(952)239-88-40",
+      "contact": "Багнюк Евгений ",
+      "email": "bea@abt-group.su",
+      "address": "-",
+      "material": "трубы, металлопрокат",
+      "blacklisted": false,
+      "blacklistComment": ""
+    },
+    {
       "recordId": "20260507093424578_3jzz58cet",
       "supplier": "ООО \"ЕСТ\"",
       "inn": "9701157567",
@@ -19270,5 +19282,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-05-08T06:08:51.656Z"
+  "exportDate": "2026-05-08T06:18:41.956Z"
 }
