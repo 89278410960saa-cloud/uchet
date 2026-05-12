@@ -57,12 +57,12 @@
       "purchaseName": "SikaEmaco A 640 (MasterEmaco A 640) (мешок 25 кг). Специальный\nбезусадочный быстротвердеющий пластифицированный цемент",
       "purchaseQuantity": "50",
       "purchaseUnit": "кг",
-      "amount": "5540.50",
+      "amount": "5263.50",
       "supplier": "ООО \"ИСС\"",
       "department": "11/0020 ПТО",
       "contract": "СЧ № УТ-1172",
       "paymentTerms": "100 % предоплата",
-      "deliveryDays": "7",
+      "deliveryDays": "3",
       "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
@@ -19471,5 +19471,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-05-12T11:26:25.756Z"
+  "exportDate": "2026-05-12T11:26:43.126Z"
 }
