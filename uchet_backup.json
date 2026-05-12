@@ -103,12 +103,12 @@
       "purchaseName": "SikaEmaco S 488 PG (MasterEmaco S 488 PG) (мешок 25 кг).\nКонструкционная ремонтная смесь наливного типа.",
       "purchaseQuantity": "11200",
       "purchaseUnit": "кг",
-      "amount": "904680.00",
+      "amount": "572992.00",
       "supplier": "ООО \"ИСС\"",
       "department": "11/0020 ПТО",
       "contract": "СЧ № УТ-1172",
       "paymentTerms": "100 % предоплата",
-      "deliveryDays": "7",
+      "deliveryDays": "3",
       "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
@@ -19471,5 +19471,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-05-12T11:25:28.428Z"
+  "exportDate": "2026-05-12T11:26:04.471Z"
 }
