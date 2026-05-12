@@ -307,16 +307,16 @@
       "name": "Соединительная коробка КЗП 1.2-16/6-12х1(В)-12х1(D)-В1, IP65, 2ExeIIT5",
       "quantity": "12",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
+      "purchaseName": "Коробка зажимов\nКЗП1.2-24/6-12х1(В)-12х1(D)-1Ex eb\nIIC T6 Gb-В1,5",
+      "purchaseQuantity": "12",
+      "purchaseUnit": "шт",
+      "amount": "56071.20",
       "supplier": "АО \"Вэлан\"",
       "department": "11/0130 Служба АСУ и КИП",
       "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "42",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -19448,5 +19448,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-05-12T10:21:40.469Z"
+  "exportDate": "2026-05-12T10:22:21.282Z"
 }
