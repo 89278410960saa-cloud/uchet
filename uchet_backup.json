@@ -11164,6 +11164,29 @@
       "fact": "11.12.2025",
       "shipmentDoc": "70019 от 09.12.25",
       "plan": "11.12.2025"
+    },
+    {
+      "recordId": "20260512142515787_0cdppepwo",
+      "docNumber": "н/н (от 08.05.2026)",
+      "status": "В работе",
+      "id": "-",
+      "name": "SikaEmaco S 488 PG (MasterEmaco S 488 PG) (мешок 25 кг). Конструкционная ремонтная смесь наливного типа.",
+      "quantity": "5600",
+      "unit": "кг",
+      "purchaseName": "",
+      "purchaseQuantity": "",
+      "purchaseUnit": "",
+      "amount": "",
+      "supplier": "",
+      "department": "11/0020 ПТО",
+      "contract": "",
+      "paymentTerms": "",
+      "deliveryDays": "",
+      "deliveryTerms": "",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
     }
   ],
   "counterpartiesData": [
@@ -19448,5 +19471,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-05-12T11:24:11.930Z"
+  "exportDate": "2026-05-12T11:25:15.865Z"
 }
