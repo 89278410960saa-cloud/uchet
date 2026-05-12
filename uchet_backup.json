@@ -34,12 +34,12 @@
       "purchaseName": "SikaTop-550 Seal компонент А (канистра 10 кг). Двухкомпонентный\nполимерцементный состав. ",
       "purchaseQuantity": "40",
       "purchaseUnit": "кг",
-      "amount": "51757.60",
+      "amount": "48652.00",
       "supplier": "ООО \"ИСС\"",
       "department": "11/0020 ПТО",
       "contract": "СЧ № УТ-1172",
       "paymentTerms": "100 % предоплата",
-      "deliveryDays": "7",
+      "deliveryDays": "3",
       "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
@@ -19471,5 +19471,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-05-12T11:26:43.126Z"
+  "exportDate": "2026-05-12T11:26:56.729Z"
 }
