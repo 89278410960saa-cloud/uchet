@@ -330,16 +330,16 @@
       "name": "Соединительная коробка КЗП 3.1-16/24-25х1(А)-25х1(В)-25х1(D)-В1, IP65, 2ExeIIT5",
       "quantity": "12",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
+      "purchaseName": "Коробка зажимов\nКЗП3.1-24/24-25х1(А)-25х1(В)-25х1(\nD)-1Ex eb IIC T6 Gb-В1,5 ",
+      "purchaseQuantity": "12",
+      "purchaseUnit": "шт",
+      "amount": "134395.20",
       "supplier": "АО \"Вэлан\"",
       "department": "11/0130 Служба АСУ и КИП",
       "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "42",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -19448,5 +19448,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-05-12T10:19:16.967Z"
+  "exportDate": "2026-05-12T10:21:40.469Z"
 }
