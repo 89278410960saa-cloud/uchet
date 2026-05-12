@@ -80,12 +80,12 @@
       "purchaseName": "SikaEmaco P 5000 AP (MasterEmaco P 5000 AP) (ведро 15 кг). Состав для\nзащиты стальной арматуры от коррозии и создания адгезионного слоя.",
       "purchaseQuantity": "30",
       "purchaseUnit": "кг",
-      "amount": "11091.00",
+      "amount": "10536.60",
       "supplier": "ООО \"ИСС\"",
       "department": "11/0020 ПТО",
       "contract": "СЧ № УТ-1172",
       "paymentTerms": "100 % предоплата",
-      "deliveryDays": "7",
+      "deliveryDays": "3",
       "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
@@ -19471,5 +19471,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-05-12T11:26:04.471Z"
+  "exportDate": "2026-05-12T11:26:25.756Z"
 }
