@@ -583,16 +583,16 @@
       "name": "Грунтовка HEMPADUR ZINC 17360",
       "quantity": "179,2",
       "unit": "л",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
-      "supplier": "",
+      "purchaseName": "Hempadur Zinc 17360 28кг.",
+      "purchaseQuantity": "7",
+      "purchaseUnit": "шт",
+      "amount": "345925.30",
+      "supplier": "ООО \"ТНМК\"",
       "department": "11/0020 ПТО",
       "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "14",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -19493,5 +19493,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-05-12T12:45:46.332Z"
+  "exportDate": "2026-05-12T12:46:40.574Z"
 }
