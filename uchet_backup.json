@@ -445,16 +445,16 @@
       "name": "Кабельный ввод BK25-G3\\4''-B1_ExeIIU",
       "quantity": "60",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
+      "purchaseName": "Ввод кабельный\nBK25-G3/4-B1,5-1Ex eb IIC T6\nGb-М42х2",
+      "purchaseQuantity": "60",
+      "purchaseUnit": "шт",
+      "amount": "52704.00",
       "supplier": "АО \"Вэлан\"",
       "department": "11/0130 Служба АСУ и КИП",
       "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "42",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -19448,5 +19448,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-05-12T10:14:01.123Z"
+  "exportDate": "2026-05-12T10:15:12.678Z"
 }
