@@ -11191,6 +11191,18 @@
   ],
   "counterpartiesData": [
     {
+      "recordId": "20260512154546267_02lg4egdb",
+      "supplier": "ООО \"ТНМК\"",
+      "inn": "6686085239",
+      "phone": "+7922-123-91-46",
+      "contact": "Илья Рулин",
+      "email": "info@tnmk.ru",
+      "address": "-",
+      "material": "металлопрокат, лакокрасочные покрытия",
+      "blacklisted": false,
+      "blacklistComment": ""
+    },
+    {
       "recordId": "20260512125404941_2b6xjockn",
       "supplier": "АО \"Вэлан\"",
       "inn": "2619000120",
@@ -19481,5 +19493,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-05-12T12:24:39.512Z"
+  "exportDate": "2026-05-12T12:45:46.332Z"
 }
