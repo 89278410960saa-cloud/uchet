@@ -11168,6 +11168,18 @@
   ],
   "counterpartiesData": [
     {
+      "recordId": "20260512125404941_2b6xjockn",
+      "supplier": "АО \"Вэлан\"",
+      "inn": "2619000120",
+      "phone": "8 (863) 320 31 38 доб. 110 ",
+      "contact": "Чернявский  Михаил ",
+      "email": "chernyavsky.m@velan.ru",
+      "address": "-",
+      "material": "электрика, шкафы управления ВЗ",
+      "blacklisted": false,
+      "blacklistComment": ""
+    },
+    {
       "recordId": "20260508132414228_nmutpb5a9",
       "supplier": "ООО \"Альфаводострой\"",
       "inn": "7816657139",
@@ -19436,5 +19448,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-05-12T09:17:39.803Z"
+  "exportDate": "2026-05-12T09:54:04.991Z"
 }
