@@ -403,7 +403,7 @@
       "purchaseQuantity": "",
       "purchaseUnit": "",
       "amount": "",
-      "supplier": "",
+      "supplier": "АО \"Вэлан\"",
       "department": "11/0130 Служба АСУ и КИП",
       "contract": "",
       "paymentTerms": "",
@@ -19448,5 +19448,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-05-12T09:54:37.207Z"
+  "exportDate": "2026-05-12T09:54:46.027Z"
 }
