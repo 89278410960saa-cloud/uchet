@@ -11183,6 +11183,29 @@
       "fact": "11.12.2025",
       "shipmentDoc": "70019 от 09.12.25",
       "plan": "11.12.2025"
+    },
+    {
+      "recordId": "20260513163751846_x7fv5nksk",
+      "docNumber": "н/н (от 13.05.2026)",
+      "status": "В работе",
+      "id": "-",
+      "name": "Фанера ламинированная толщ. 18 мм ",
+      "quantity": "50",
+      "unit": "м2",
+      "purchaseName": "",
+      "purchaseQuantity": "",
+      "purchaseUnit": "",
+      "amount": "",
+      "supplier": "",
+      "department": "11/0020 ПТО",
+      "contract": "",
+      "paymentTerms": "",
+      "deliveryDays": "",
+      "deliveryTerms": "",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
     }
   ],
   "counterpartiesData": [
@@ -19501,5 +19524,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-05-13T13:00:58.473Z"
+  "exportDate": "2026-05-13T13:37:51.970Z"
 }
