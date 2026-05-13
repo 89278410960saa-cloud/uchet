@@ -11298,6 +11298,29 @@
       "planFact": "",
       "fact": "",
       "shipmentDoc": ""
+    },
+    {
+      "recordId": "20260513164015666_zht8zglr4",
+      "docNumber": "н/н (от 13.05.2026)",
+      "status": "В работе",
+      "id": "-",
+      "name": "Арматура стальная 16 мм (2,9 м рифленая А500С) ",
+      "quantity": "16",
+      "unit": "шт",
+      "purchaseName": "",
+      "purchaseQuantity": "",
+      "purchaseUnit": "",
+      "amount": "",
+      "supplier": "",
+      "department": "11/0020 ПТО",
+      "contract": "",
+      "paymentTerms": "",
+      "deliveryDays": "",
+      "deliveryTerms": "",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
     }
   ],
   "counterpartiesData": [
@@ -19616,5 +19639,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-05-13T13:39:50.875Z"
+  "exportDate": "2026-05-13T13:40:15.779Z"
 }
