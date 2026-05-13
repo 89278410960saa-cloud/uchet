@@ -1,6 +1,29 @@
 {
   "accountingData": [
     {
+      "recordId": "20260512142515787_0cdppepwo",
+      "docNumber": "н/н (от 08.05.2026)",
+      "status": "В работе",
+      "id": "МАТ-10508",
+      "name": "SikaEmaco S 488 PG (MasterEmaco S 488 PG) (мешок 25 кг). Конструкционная ремонтная смесь наливного типа.",
+      "quantity": "5600",
+      "unit": "кг",
+      "purchaseName": "",
+      "purchaseQuantity": "",
+      "purchaseUnit": "",
+      "amount": "",
+      "supplier": "",
+      "department": "11/0020 ПТО",
+      "contract": "",
+      "paymentTerms": "",
+      "deliveryDays": "",
+      "deliveryTerms": "",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
+    },
+    {
       "recordId": "20260508111341155_dzsfsj0vi",
       "docNumber": "н/н (от 08.05.2026)",
       "status": "Поставка",
@@ -11164,29 +11187,6 @@
       "fact": "11.12.2025",
       "shipmentDoc": "70019 от 09.12.25",
       "plan": "11.12.2025"
-    },
-    {
-      "recordId": "20260512142515787_0cdppepwo",
-      "docNumber": "н/н (от 08.05.2026)",
-      "status": "В работе",
-      "id": "МАТ-10508",
-      "name": "SikaEmaco S 488 PG (MasterEmaco S 488 PG) (мешок 25 кг). Конструкционная ремонтная смесь наливного типа.",
-      "quantity": "5600",
-      "unit": "кг",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
-      "supplier": "",
-      "department": "11/0020 ПТО",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
-      "date": "",
-      "planFact": "",
-      "fact": "",
-      "shipmentDoc": ""
     }
   ],
   "counterpartiesData": [
@@ -19440,7 +19440,7 @@
     "2026-222 (от 11.03.2026)": "",
     "2026-246 (от 16.03.2026)": "",
     "2026-203 (от 16.03.2026)": "",
-    "2026-214 (от 20.03.2026)": "А Сталь ?/",
+    "2026-214 (от 20.03.2026)": "",
     "2026-268 (от 19.03.2026)": "",
     "2026-260 (от 24.03.2026)": "",
     "2026-257 (от 24.03.2026)": "",
@@ -19493,5 +19493,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-05-12T13:46:06.456Z"
+  "exportDate": "2026-05-13T06:11:56.107Z"
 }
