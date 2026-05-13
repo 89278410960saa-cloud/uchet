@@ -11275,6 +11275,29 @@
       "planFact": "",
       "fact": "",
       "shipmentDoc": ""
+    },
+    {
+      "recordId": "20260513163950764_3kzx5vw8n",
+      "docNumber": "н/н (от 13.05.2026)",
+      "status": "В работе",
+      "id": "-",
+      "name": "Мастика битумная гидроизоляционная Bitumast ",
+      "quantity": "36",
+      "unit": "кг",
+      "purchaseName": "",
+      "purchaseQuantity": "",
+      "purchaseUnit": "",
+      "amount": "",
+      "supplier": "",
+      "department": "11/0020 ПТО",
+      "contract": "",
+      "paymentTerms": "",
+      "deliveryDays": "",
+      "deliveryTerms": "",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
     }
   ],
   "counterpartiesData": [
@@ -19593,5 +19616,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-05-13T13:39:31.514Z"
+  "exportDate": "2026-05-13T13:39:50.875Z"
 }
