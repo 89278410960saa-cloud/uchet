@@ -445,16 +445,16 @@
       "name": "Кабельный ввод BK12-G1\\2''-B1-ExeIIU-M18x1,5",
       "quantity": "60",
       "unit": "шт",
-      "purchaseName": "Ввод кабельный\nBK12-G1/2-B1,5-1Ex eb IIC T6\nGb-М18х1,5",
-      "purchaseQuantity": "60",
-      "purchaseUnit": "шт",
-      "amount": "43920.00",
-      "supplier": "АО \"Вэлан\"",
+      "purchaseName": "",
+      "purchaseQuantity": "",
+      "purchaseUnit": "",
+      "amount": "",
+      "supplier": "",
       "department": "11/0130 Служба АСУ и КИП",
       "contract": "",
-      "paymentTerms": "100 % предоплата",
-      "deliveryDays": "42",
-      "deliveryTerms": "Включена",
+      "paymentTerms": "",
+      "deliveryDays": "",
+      "deliveryTerms": "",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -19639,5 +19639,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-05-13T13:52:58.716Z"
+  "exportDate": "2026-05-13T13:53:13.503Z"
 }
