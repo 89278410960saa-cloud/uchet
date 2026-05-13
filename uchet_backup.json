@@ -11229,6 +11229,29 @@
       "planFact": "",
       "fact": "",
       "shipmentDoc": ""
+    },
+    {
+      "recordId": "20260513163906224_esyu6omav",
+      "docNumber": "н/н (от 13.05.2026)",
+      "status": "В работе",
+      "id": "-",
+      "name": "Арматура d-10мм (рез по 6 пог. м.)",
+      "quantity": "100",
+      "unit": "шт",
+      "purchaseName": "",
+      "purchaseQuantity": "",
+      "purchaseUnit": "",
+      "amount": "",
+      "supplier": "",
+      "department": "11/0020 ПТО",
+      "contract": "",
+      "paymentTerms": "",
+      "deliveryDays": "",
+      "deliveryTerms": "",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
     }
   ],
   "counterpartiesData": [
@@ -19547,5 +19570,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-05-13T13:38:30.854Z"
+  "exportDate": "2026-05-13T13:39:06.331Z"
 }
