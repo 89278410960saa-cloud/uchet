@@ -11252,6 +11252,29 @@
       "planFact": "",
       "fact": "",
       "shipmentDoc": ""
+    },
+    {
+      "recordId": "20260513163931403_gl99n5sbg",
+      "docNumber": "н/н (от 13.05.2026)",
+      "status": "В работе",
+      "id": "-",
+      "name": "Праймер битумный Bitumast ",
+      "quantity": "36",
+      "unit": "кг",
+      "purchaseName": "",
+      "purchaseQuantity": "",
+      "purchaseUnit": "",
+      "amount": "",
+      "supplier": "",
+      "department": "11/0020 ПТО",
+      "contract": "",
+      "paymentTerms": "",
+      "deliveryDays": "",
+      "deliveryTerms": "",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
     }
   ],
   "counterpartiesData": [
@@ -19570,5 +19593,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-05-13T13:39:06.331Z"
+  "exportDate": "2026-05-13T13:39:31.514Z"
 }
