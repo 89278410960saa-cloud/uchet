@@ -11187,6 +11187,18 @@
   ],
   "counterpartiesData": [
     {
+      "recordId": "20260513153904330_0v3k0o3ir",
+      "supplier": "АО \"ГК \"Химик\"",
+      "inn": "7805059994",
+      "phone": "7 812 336 57 57 (доб. 164)",
+      "contact": "Оспишников Евгений",
+      "email": "ospishnikov@himik.ru",
+      "address": "-",
+      "material": "лакокрасочные и антикоррзащита",
+      "blacklisted": false,
+      "blacklistComment": ""
+    },
+    {
       "recordId": "20260512154546267_02lg4egdb",
       "supplier": "ООО \"ТНМК\"",
       "inn": "6686085239",
@@ -19489,5 +19501,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-05-13T12:18:58.308Z"
+  "exportDate": "2026-05-13T12:39:04.375Z"
 }
