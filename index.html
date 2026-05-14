@@ -1699,19 +1699,23 @@
 #paymentsTable th:nth-child(1), #paymentsTable td:nth-child(1) { width: 20px !important; }  /* Дата */
 #paymentsTable th:nth-child(2), #paymentsTable td:nth-child(2) { width: 20px !important; }  /* Статус */
 #paymentsTable th:nth-child(3), #paymentsTable td:nth-child(3) { width: 40px !important; } /* Заявка */
-#paymentsTable th:nth-child(4), #paymentsTable td:nth-child(4) { width: 80px !important; } /* Контрагент */
+#paymentsTable th:nth-child(4), #paymentsTable td:nth-child(4) { width: 40px !important; } /* Контрагент */
 #paymentsTable th:nth-child(5), #paymentsTable td:nth-child(5) { width: 30px !important; }  /* Сумма */
-#paymentsTable th:nth-child(6), #paymentsTable td:nth-child(6) { width: 60px !important; } /* Договор */
-#paymentsTable th:nth-child(7), #paymentsTable td:nth-child(7) { width: 180px !important; } /* Ссылка */
+#paymentsTable th:nth-child(6), #paymentsTable td:nth-child(6) { width: 40px !important; } /* Договор */
+#paymentsTable th:nth-child(7), #paymentsTable td:nth-child(7) { width: 10px !important; } /* Ссылка */
 
 /* Задаём фиксированную ширину для столбца "Ссылка" */
 #paymentsTable th:nth-child(7),
 #paymentsTable td:nth-child(7) {
-    max-width: 150px !important;
-    width: 150px !important;
+    max-width: 10px !important;
+    width: 10px !important;
     overflow: hidden !important;
     text-overflow: ellipsis !important;
     white-space: nowrap !important;
+}
+#paymentsTable td:nth-child(7) {
+    padding: 4px 2px !important;
+    text-align: center !important;
 }
 
 /* Саму ссылку внутри ячейки тоже обрезаем */
@@ -2467,7 +2471,19 @@
     word-wrap: break-word !important;
     overflow-wrap: break-word !important;
 }
-
+/* Иконка ссылки в таблице Платежи */
+.link-icon {
+    font-size: 12px;
+    cursor: pointer;
+    color: #66c0f4;
+    display: inline-block;
+    line-height: 1;
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+.link-icon:hover {
+    transform: scale(1.05);
+    color: #75c9ff;
+}
 /* Дополнительно для заголовков, чтобы они не сжимались */
 #paymentsTable th,
 #proxyTable th,
@@ -2477,6 +2493,12 @@
     vertical-align: top !important;
     line-height: 1.3 !important;
     white-space: normal !important;
+}
+#paymentsTable td {
+    padding: 5.36px !important;
+    vertical-align: top !important;
+    line-height: 1.3 !important;
+    min-height: 26.8px !important;
 }
 /* Центрирование текста во всех ячейках таблицы Учет */
 #accountingTable th,
@@ -2996,10 +3018,10 @@ button:hover{background:#222733!important}
         <th style="width: 120px;">Дата</th>
         <th style="width: 120px;">Статус</th>
         <th style="width: 130px;">Заявка</th>
-        <th style="width: 174px;">Контрагент</th>
+        <th style="width: 60px;">Контрагент</th>
         <th style="width: 120px;">Сумма</th>
-        <th style="width: 174px;">Договор</th>
-        <th style="width: 174px;">Ссылка</th>
+        <th style="width: 60px;">Договор</th>
+        <th style="width: 10px;">Ссылка</th>
     </tr>
 </thead>
                 <tbody id="paymentsTableBody"><tr>
@@ -6687,15 +6709,28 @@ function updateSuppliersFilterList() {
         row.classList.add('clickable-row');
         if (!isAdmin) row.classList.add('guest-mode');
         
-        row.innerHTML = `
-            <td>${item.date || ''}</td>
-            <td>${item.status || ''}</td>
-            <td>${item.docNumber || ''}</td>
-            <td>${item.supplier || ''}</td>
-            <td>${item.amount ? formatCurrency(item.amount) : ''}</td>
-            <td>${item.contract || ''}</td>
-            <td>${item.link ? `<span style="color:#66c0f4; text-decoration:underline; cursor:pointer;" onclick="copyToClipboard('${item.link}')">${item.link}</span>` : ''}</td>
-        `;
+        const linkHtml = item.link
+    ? `<span class="link-icon" data-link="${item.link.replace(/"/g, '&quot;')}" title="Скопировать ссылку">🔗</span>`
+    : '';
+
+row.innerHTML = `
+    <td>${item.date || ''}</td>
+    <td>${item.status || ''}</td>
+    <td>${item.docNumber || ''}</td>
+    <td>${item.supplier || ''}</td>
+    <td>${item.amount ? formatCurrency(item.amount) : ''}</td>
+    <td>${item.contract || ''}</td>
+    <td>${linkHtml}</td>
+`;
+if (item.link) {
+    const icon = row.querySelector('.link-icon');
+    if (icon) {
+        icon.addEventListener('click', (e) => {
+            e.stopPropagation(); // чтобы не срабатывал dblclick строки
+            copyToClipboard(item.link);
+        });
+    }
+}
         
         if (isAdmin) {
             row.addEventListener('dblclick', function(e) {
