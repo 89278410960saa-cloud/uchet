@@ -77,16 +77,16 @@
       "name": "Арматура d-10мм (рез по 6 пог. м.)",
       "quantity": "100",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
+      "purchaseName": "Арматура стальная 10\nмм 6 м гладкая А1",
+      "purchaseQuantity": "100",
+      "purchaseUnit": "шт",
+      "amount": "28300.00",
       "supplier": "ООО \"СТД \"Петрович\"",
       "department": "11/0020 ПТО",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № СКЭ00049715",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "1",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -19639,5 +19639,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-05-14T06:45:07.910Z"
+  "exportDate": "2026-05-14T06:46:32.397Z"
 }
