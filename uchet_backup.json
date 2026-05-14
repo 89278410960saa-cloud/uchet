@@ -54,16 +54,16 @@
       "name": "Праймер битумный Bitumast ",
       "quantity": "36",
       "unit": "кг",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
+      "purchaseName": "Праймер битумный\nBitumast 18 кг/21,5 л",
+      "purchaseQuantity": "2",
+      "purchaseUnit": "шт",
+      "amount": "9508.00",
       "supplier": "ООО \"СТД \"Петрович\"",
       "department": "11/0020 ПТО",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № СКЭ00049715",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "1",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -19639,5 +19639,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-05-14T06:47:28.783Z"
+  "exportDate": "2026-05-14T06:47:51.834Z"
 }
