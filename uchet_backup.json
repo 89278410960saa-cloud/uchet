@@ -123,16 +123,16 @@
       "name": "Фанера ламинированная толщ. 18 мм ",
       "quantity": "50",
       "unit": "м2",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
+      "purchaseName": "Фанера\nламинированная\n18х2440х1220 мм сорт\nF1/F1\n",
+      "purchaseQuantity": "17",
+      "purchaseUnit": "листов",
+      "amount": "69683.00",
       "supplier": "ООО \"СТД \"Петрович\"",
       "department": "11/0020 ПТО",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № СКЭ00049715",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "1",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -19639,5 +19639,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-05-14T06:47:51.834Z"
+  "exportDate": "2026-05-14T06:48:27.716Z"
 }
