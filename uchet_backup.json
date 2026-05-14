@@ -376,10 +376,10 @@
       "name": "Велосипед двухколесный STELS NAVIGATOR 300 GENT",
       "quantity": "3",
       "unit": "шт",
-      "purchaseName": "Велосипед AIST Cargo 1.1 24 2025 (ШК 4810310034918)",
+      "purchaseName": "",
       "purchaseQuantity": "3",
       "purchaseUnit": "шт",
-      "amount": "103500.00",
+      "amount": "",
       "supplier": "ООО \"Велосипедиссимо\"",
       "department": "16/0020 АХО",
       "contract": "СЧ № 574222",
@@ -19665,5 +19665,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-05-14T13:56:30.130Z"
+  "exportDate": "2026-05-14T14:22:47.210Z"
 }
