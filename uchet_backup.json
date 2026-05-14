@@ -537,16 +537,16 @@
       "name": "Кабельная муфта вводная МВ22 У2, 3/4''",
       "quantity": "200",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
-      "supplier": "",
+      "purchaseName": "Кабельная муфта вводная МВ22 У2, 3/4''",
+      "purchaseQuantity": "200",
+      "purchaseUnit": "шт",
+      "amount": "32000.00",
+      "supplier": "ООО \"Завод Горэлтех\"",
       "department": "11/0130 Служба АСУ и КИП",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № 194573",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "20",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -19639,5 +19639,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-05-14T06:48:27.716Z"
+  "exportDate": "2026-05-14T06:55:51.538Z"
 }
