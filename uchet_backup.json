@@ -100,16 +100,16 @@
       "name": "Доска обрезная 100х40 ",
       "quantity": "5",
       "unit": "м3",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
+      "purchaseName": "Доска обрезная нестроганая 40х100х6000 мм сорт 1-2 хвойные породы деловая экспортная ФГИС ЛК",
+      "purchaseQuantity": "219",
+      "purchaseUnit": "шт",
+      "amount": "168411.00",
       "supplier": "ООО \"СТД \"Петрович\"",
       "department": "11/0020 ПТО",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № СКЭ00049930",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "1",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -19639,5 +19639,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-05-14T07:01:24.134Z"
+  "exportDate": "2026-05-14T07:29:01.288Z"
 }
