@@ -1,6 +1,236 @@
 {
   "accountingData": [
     {
+      "recordId": "20260515160039552_cgzzj9u24",
+      "docNumber": "2026-392 (от 06.05.2026)",
+      "status": "В работе",
+      "id": "МАТ-04129",
+      "name": "Кольцо TN88-16S(K) НЕРЖ.",
+      "quantity": "54",
+      "unit": "шт",
+      "purchaseName": "",
+      "purchaseQuantity": "",
+      "purchaseUnit": "",
+      "amount": "",
+      "supplier": "",
+      "department": "11/0110 Служба главного механика",
+      "contract": "",
+      "paymentTerms": "",
+      "deliveryDays": "",
+      "deliveryTerms": "",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
+    },
+    {
+      "recordId": "20260515160015060_5m87lmqnx",
+      "docNumber": "2026-392 (от 06.05.2026)",
+      "status": "В работе",
+      "id": "МАТ-04129",
+      "name": "Кольцо TN88-12L/S(K) НЕРЖ.",
+      "quantity": "54",
+      "unit": "шт",
+      "purchaseName": "",
+      "purchaseQuantity": "",
+      "purchaseUnit": "",
+      "amount": "",
+      "supplier": "",
+      "department": "11/0110 Служба главного механика",
+      "contract": "",
+      "paymentTerms": "",
+      "deliveryDays": "",
+      "deliveryTerms": "",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
+    },
+    {
+      "recordId": "20260515155948832_yjagt7qkh",
+      "docNumber": "2026-392 (от 06.05.2026)",
+      "status": "В работе",
+      "id": "МАТ-04902",
+      "name": "Гайка TN81-16S(K) НЕРЖ.",
+      "quantity": "54",
+      "unit": "шт",
+      "purchaseName": "",
+      "purchaseQuantity": "",
+      "purchaseUnit": "",
+      "amount": "",
+      "supplier": "",
+      "department": "11/0110 Служба главного механика",
+      "contract": "",
+      "paymentTerms": "",
+      "deliveryDays": "",
+      "deliveryTerms": "",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
+    },
+    {
+      "recordId": "20260515155923955_t6ko17ycr",
+      "docNumber": "2026-392 (от 06.05.2026)",
+      "status": "В работе",
+      "id": "МАТ-04902",
+      "name": "Гайка TN81-12S(K) НЕРЖ.",
+      "quantity": "54",
+      "unit": "шт",
+      "purchaseName": "",
+      "purchaseQuantity": "",
+      "purchaseUnit": "",
+      "amount": "",
+      "supplier": "",
+      "department": "11/0110 Служба главного механика",
+      "contract": "",
+      "paymentTerms": "",
+      "deliveryDays": "",
+      "deliveryTerms": "",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
+    },
+    {
+      "recordId": "20260515155900299_ily6u1h7n",
+      "docNumber": "2026-392 (от 06.05.2026)",
+      "status": "В работе",
+      "id": "МАТ-06962",
+      "name": "Адаптер для РВД TN98-16S(K) НЕРЖ.",
+      "quantity": "54",
+      "unit": "шт",
+      "purchaseName": "",
+      "purchaseQuantity": "",
+      "purchaseUnit": "",
+      "amount": "",
+      "supplier": "",
+      "department": "11/0110 Служба главного механика",
+      "contract": "",
+      "paymentTerms": "",
+      "deliveryDays": "",
+      "deliveryTerms": "",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
+    },
+    {
+      "recordId": "20260515155831950_t6dtvtxw5",
+      "docNumber": "2026-392 (от 06.05.2026)",
+      "status": "В работе",
+      "id": "МАТ-06962",
+      "name": "Адаптер для РВД TN98-12S(K) НЕРЖ.",
+      "quantity": "54",
+      "unit": "шт",
+      "purchaseName": "",
+      "purchaseQuantity": "",
+      "purchaseUnit": "",
+      "amount": "",
+      "supplier": "",
+      "department": "11/0110 Служба главного механика",
+      "contract": "",
+      "paymentTerms": "",
+      "deliveryDays": "",
+      "deliveryTerms": "",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
+    },
+    {
+      "recordId": "20260515155541680_1ks1ivpu1",
+      "docNumber": "2026-401 (от 06.05.2026)",
+      "status": "В работе",
+      "id": "МАТ-05483",
+      "name": "Пленка полиэтиленовая РУКАВ 1,5М, 200МКМ\n",
+      "quantity": "200",
+      "unit": "пог.м",
+      "purchaseName": "",
+      "purchaseQuantity": "",
+      "purchaseUnit": "",
+      "amount": "",
+      "supplier": "ООО \"Комус\"",
+      "department": "11/0141 Котельная",
+      "contract": "",
+      "paymentTerms": "",
+      "deliveryDays": "",
+      "deliveryTerms": "",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
+    },
+    {
+      "recordId": "20260515155254876_ozv3skoad",
+      "docNumber": "2026-411 (от 12.05.2026)",
+      "status": "В работе",
+      "id": "-",
+      "name": "Алюминиевая профессиональная стремянка-помост Алюмет 8 ступеней. Серия APE1408. Max рабочая нагрузка 150 кг\n",
+      "quantity": "2",
+      "unit": "шт",
+      "purchaseName": "",
+      "purchaseQuantity": "",
+      "purchaseUnit": "",
+      "amount": "",
+      "supplier": "ООО \"Энтузиаст-с\"",
+      "department": "11/0141 Котельная",
+      "contract": "",
+      "paymentTerms": "",
+      "deliveryDays": "",
+      "deliveryTerms": "",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
+    },
+    {
+      "recordId": "20260515155026956_1drkw2nv8",
+      "docNumber": "2026-429 (от 12.05.2026)",
+      "status": "В работе",
+      "id": "МАТ-10323",
+      "name": "Цемент М400 50кг\n",
+      "quantity": "40",
+      "unit": "шт",
+      "purchaseName": "",
+      "purchaseQuantity": "",
+      "purchaseUnit": "",
+      "amount": "",
+      "supplier": "ООО \"Стройторговля\"",
+      "department": "13/0100 Товарная служба",
+      "contract": "",
+      "paymentTerms": "",
+      "deliveryDays": "",
+      "deliveryTerms": "",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
+    },
+    {
+      "recordId": "20260515154839856_iqzdow2m3",
+      "docNumber": "2026-426 (от 13.05.2026)",
+      "status": "В работе",
+      "id": "МАТ-09448",
+      "name": "Бензиновый триммер STIGA SBC 243 D\n",
+      "quantity": "1",
+      "unit": "шт",
+      "purchaseName": "",
+      "purchaseQuantity": "",
+      "purchaseUnit": "",
+      "amount": "",
+      "supplier": "ООО \"Стройторговля\"",
+      "department": "11/0121 Слободка",
+      "contract": "",
+      "paymentTerms": "",
+      "deliveryDays": "",
+      "deliveryTerms": "",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
+    },
+    {
       "recordId": "20260513164015666_zht8zglr4",
       "docNumber": "н/н (от 13.05.2026)",
       "status": "Выполнено",
@@ -21,7 +251,8 @@
       "date": "14.05.2026",
       "planFact": "14.05.2026",
       "fact": "14.05.2026",
-      "shipmentDoc": "385785/16 от 14.05.2026"
+      "shipmentDoc": "385785/16 от 14.05.2026",
+      "plan": "14.05.2026"
     },
     {
       "recordId": "20260513163950764_3kzx5vw8n",
@@ -44,7 +275,8 @@
       "date": "14.05.2026",
       "planFact": "14.05.2026",
       "fact": "14.05.2026",
-      "shipmentDoc": "385785/16 от 14.05.2026"
+      "shipmentDoc": "385785/16 от 14.05.2026",
+      "plan": "14.05.2026"
     },
     {
       "recordId": "20260513163931403_gl99n5sbg",
@@ -67,7 +299,8 @@
       "date": "14.05.2026",
       "planFact": "14.05.2026",
       "fact": "14.05.2026",
-      "shipmentDoc": "385785/16 от 14.05.2026"
+      "shipmentDoc": "385785/16 от 14.05.2026",
+      "plan": "14.05.2026"
     },
     {
       "recordId": "20260513163906224_esyu6omav",
@@ -90,7 +323,8 @@
       "date": "14.05.2026",
       "planFact": "14.05.2026",
       "fact": "14.05.2026",
-      "shipmentDoc": "385785/16 от 14.05.2026"
+      "shipmentDoc": "385785/16 от 14.05.2026",
+      "plan": "14.05.2026"
     },
     {
       "recordId": "20260513163830742_og4rdc1z3",
@@ -113,7 +347,8 @@
       "date": "14.05.2026",
       "planFact": "14.05.2026",
       "fact": "14.05.2026",
-      "shipmentDoc": "СКЭ00040770 от 14.05.2026"
+      "shipmentDoc": "СКЭ00040770 от 14.05.2026",
+      "plan": "14.05.2026"
     },
     {
       "recordId": "20260513163751846_x7fv5nksk",
@@ -136,7 +371,8 @@
       "date": "14.05.2026",
       "planFact": "14.05.2026",
       "fact": "14.05.2026",
-      "shipmentDoc": "385785/16 от 14.05.2026"
+      "shipmentDoc": "385785/16 от 14.05.2026",
+      "plan": "14.05.2026"
     },
     {
       "recordId": "20260512142515787_0cdppepwo",
@@ -159,7 +395,8 @@
       "date": "15.05.2026",
       "planFact": "22.05.2026",
       "fact": "",
-      "shipmentDoc": ""
+      "shipmentDoc": "",
+      "plan": "22.05.2026"
     },
     {
       "recordId": "20260508111341155_dzsfsj0vi",
@@ -182,7 +419,8 @@
       "date": "12.05.2026",
       "planFact": "15.05.2026",
       "fact": "13.05.2026",
-      "shipmentDoc": "УТ-720 от 13.05.2026"
+      "shipmentDoc": "УТ-720 от 13.05.2026",
+      "plan": "15.05.2026"
     },
     {
       "recordId": "20260508111302476_nqfhnkw8d",
@@ -205,7 +443,8 @@
       "date": "12.05.2026",
       "planFact": "15.05.2026",
       "fact": "13.05.2026",
-      "shipmentDoc": "УТ-720 от 13.05.2026"
+      "shipmentDoc": "УТ-720 от 13.05.2026",
+      "plan": "15.05.2026"
     },
     {
       "recordId": "20260508111224952_7kkaqzm7u",
@@ -228,7 +467,8 @@
       "date": "12.05.2026",
       "planFact": "15.05.2026",
       "fact": "13.05.2026",
-      "shipmentDoc": "УТ-720 от 13.05.2026"
+      "shipmentDoc": "УТ-720 от 13.05.2026",
+      "plan": "15.05.2026"
     },
     {
       "recordId": "20260508111145218_gwjdafjrg",
@@ -251,7 +491,8 @@
       "date": "12.05.2026",
       "planFact": "15.05.2026",
       "fact": "13.05.2026",
-      "shipmentDoc": "УТ-720 от 13.05.2026"
+      "shipmentDoc": "УТ-720 от 13.05.2026",
+      "plan": "15.05.2026"
     },
     {
       "recordId": "20260508111053055_kqx467m12",
@@ -274,7 +515,8 @@
       "date": "12.05.2026",
       "planFact": "15.05.2026",
       "fact": "",
-      "shipmentDoc": "УТ-720 от 13.05.2026/"
+      "shipmentDoc": "УТ-720 от 13.05.2026/",
+      "plan": "15.05.2026"
     },
     {
       "recordId": "20260507172948614_1nijjisfs",
@@ -302,7 +544,7 @@
     {
       "recordId": "20260507165619783_0zd3pkxr1",
       "docNumber": "2026-391 (от 29.04.2026)",
-      "status": "Поставка",
+      "status": "Приход",
       "id": "МАТ-01605",
       "name": "Велосипед трехколесный STELS ENERGY III 26 - 3 СК.",
       "quantity": "2",
@@ -319,7 +561,7 @@
       "deliveryTerms": "Самовывоз",
       "date": "12.05.2026",
       "planFact": "26.05.2026",
-      "fact": "",
+      "fact": "18.05.2026",
       "shipmentDoc": ""
     },
     {
@@ -343,7 +585,8 @@
       "date": "12.05.2026",
       "planFact": "26.05.2026",
       "fact": "",
-      "shipmentDoc": ""
+      "shipmentDoc": "",
+      "plan": "26.05.2026"
     },
     {
       "recordId": "20260507161359105_rmk4y8t4l",
@@ -366,7 +609,8 @@
       "date": "08.05.2026",
       "planFact": "12.05.2026",
       "fact": "12.05.2026",
-      "shipmentDoc": "10321559/5 от 12.05.2026"
+      "shipmentDoc": "10321559/5 от 12.05.2026",
+      "plan": "12.05.2026"
     },
     {
       "recordId": "20260507160902955_lcy54umpq",
@@ -412,7 +656,8 @@
       "date": "08.05.2026",
       "planFact": "15.05.2026",
       "fact": "14.05.2026",
-      "shipmentDoc": "168089-КНГ от 13.05.2026"
+      "shipmentDoc": "168089-КНГ от 13.05.2026",
+      "plan": "15.05.2026"
     },
     {
       "recordId": "20260506173308011_mjnv6i1qk",
@@ -435,7 +680,8 @@
       "date": "12.05.2026",
       "planFact": "19.05.2026",
       "fact": "",
-      "shipmentDoc": ""
+      "shipmentDoc": "",
+      "plan": "19.05.2026"
     },
     {
       "recordId": "20260506173246355_h9pbxc9fm",
@@ -458,7 +704,8 @@
       "date": "12.05.2026",
       "planFact": "19.05.2026",
       "fact": "",
-      "shipmentDoc": ""
+      "shipmentDoc": "",
+      "plan": "19.05.2026"
     },
     {
       "recordId": "20260506163051385_l5orlet0k",
@@ -481,7 +728,8 @@
       "date": "15.05.2026",
       "planFact": "04.06.2026",
       "fact": "",
-      "shipmentDoc": ""
+      "shipmentDoc": "",
+      "plan": "04.06.2026"
     },
     {
       "recordId": "20260506163026704_x0ippxcfz",
@@ -504,7 +752,8 @@
       "date": "15.05.2026",
       "planFact": "04.06.2026",
       "fact": "",
-      "shipmentDoc": ""
+      "shipmentDoc": "",
+      "plan": "04.06.2026"
     },
     {
       "recordId": "20260506163004044_iuigtu0sy",
@@ -527,7 +776,8 @@
       "date": "15.05.2026",
       "planFact": "04.06.2026",
       "fact": "",
-      "shipmentDoc": ""
+      "shipmentDoc": "",
+      "plan": "04.06.2026"
     },
     {
       "recordId": "20260506162933095_hjhlbgnou",
@@ -550,7 +800,8 @@
       "date": "15.05.2026",
       "planFact": "04.06.2026",
       "fact": "",
-      "shipmentDoc": ""
+      "shipmentDoc": "",
+      "plan": "04.06.2026"
     },
     {
       "recordId": "20260506162905200_ue1cj2vyb",
@@ -573,7 +824,8 @@
       "date": "15.05.2026",
       "planFact": "04.06.2026",
       "fact": "",
-      "shipmentDoc": ""
+      "shipmentDoc": "",
+      "plan": "04.06.2026"
     },
     {
       "recordId": "20260506162840199_s3zxffhpt",
@@ -596,7 +848,8 @@
       "date": "15.05.2026",
       "planFact": "04.06.2026",
       "fact": "",
-      "shipmentDoc": ""
+      "shipmentDoc": "",
+      "plan": "04.06.2026"
     },
     {
       "recordId": "20260506162816979_nfnubc0gl",
@@ -619,7 +872,8 @@
       "date": "15.05.2026",
       "planFact": "04.06.2026",
       "fact": "",
-      "shipmentDoc": ""
+      "shipmentDoc": "",
+      "plan": "04.06.2026"
     },
     {
       "recordId": "20260506162752861_ojwo5le4z",
@@ -642,7 +896,8 @@
       "date": "15.05.2026",
       "planFact": "04.06.2026",
       "fact": "",
-      "shipmentDoc": ""
+      "shipmentDoc": "",
+      "plan": "04.06.2026"
     },
     {
       "recordId": "20260506141955883_gcaf738hj",
@@ -780,7 +1035,8 @@
       "date": "07.05.2026",
       "planFact": "18.05.2026",
       "fact": "14.05.2026",
-      "shipmentDoc": "1680963-КНГ от 13.05.2026"
+      "shipmentDoc": "1680963-КНГ от 13.05.2026",
+      "plan": "18.05.2026"
     },
     {
       "recordId": "20260504162217774_s4fty1fjb",
@@ -803,7 +1059,8 @@
       "date": "07.05.2026",
       "planFact": "18.05.2026",
       "fact": "14.05.2026",
-      "shipmentDoc": "1680963-КНГ от 13.05.2026"
+      "shipmentDoc": "1680963-КНГ от 13.05.2026",
+      "plan": "18.05.2026"
     },
     {
       "recordId": "20260504162011137_a8jy4k9wp",
@@ -826,7 +1083,8 @@
       "date": "07.05.2026",
       "planFact": "14.05.2026",
       "fact": "15.05.2026",
-      "shipmentDoc": "0ЕР/19308933 от 12.05.2026"
+      "shipmentDoc": "0ЕР/19308933 от 12.05.2026",
+      "plan": "14.05.2026"
     },
     {
       "recordId": "20260504161902590_wbh9aloky",
@@ -849,7 +1107,8 @@
       "date": "06.05.2026",
       "planFact": "13.05.2026",
       "fact": "12.05.2026",
-      "shipmentDoc": "916 от 12.05.2026"
+      "shipmentDoc": "916 от 12.05.2026",
+      "plan": "13.05.2026"
     },
     {
       "recordId": "20260504161842780_m6cr68bdg",
@@ -872,7 +1131,8 @@
       "date": "06.05.2026",
       "planFact": "13.05.2026",
       "fact": "12.05.2026",
-      "shipmentDoc": "111417 от 07.05.2026"
+      "shipmentDoc": "111417 от 07.05.2026",
+      "plan": "13.05.2026"
     },
     {
       "recordId": "20260504161742323_pea4mx7zl",
@@ -895,7 +1155,8 @@
       "date": "06.05.2026",
       "planFact": "13.05.2026",
       "fact": "12.05.2026",
-      "shipmentDoc": "111417 от 07.05.2026"
+      "shipmentDoc": "111417 от 07.05.2026",
+      "plan": "13.05.2026"
     },
     {
       "recordId": "20260504161716781_67wm2ex9o",
@@ -918,7 +1179,8 @@
       "date": "06.05.2026",
       "planFact": "13.05.2026",
       "fact": "12.05.2026",
-      "shipmentDoc": "111417 от 07.05.2026"
+      "shipmentDoc": "111417 от 07.05.2026",
+      "plan": "13.05.2026"
     },
     {
       "recordId": "20260504161654660_ftd6qyuwo",
@@ -941,7 +1203,8 @@
       "date": "06.05.2026",
       "planFact": "13.05.2026",
       "fact": "12.05.2026",
-      "shipmentDoc": "111417 от 07.05.2026"
+      "shipmentDoc": "111417 от 07.05.2026",
+      "plan": "13.05.2026"
     },
     {
       "recordId": "20260504161431779_qcxrvftll",
@@ -988,7 +1251,8 @@
       "date": "06.05.2026",
       "planFact": "20.05.2026",
       "fact": "14.05.2026",
-      "shipmentDoc": "1680927-КНГ от 13.05.2026"
+      "shipmentDoc": "1680927-КНГ от 13.05.2026",
+      "plan": "20.05.2026"
     },
     {
       "recordId": "20260504161304587_o8jyjpdxi",
@@ -1011,7 +1275,8 @@
       "date": "06.05.2026",
       "planFact": "20.05.2026",
       "fact": "14.05.2026",
-      "shipmentDoc": "1680927-КНГ от 13.05.2026"
+      "shipmentDoc": "1680927-КНГ от 13.05.2026",
+      "plan": "20.05.2026"
     },
     {
       "recordId": "20260504161028607_aaov4em8a",
@@ -1057,7 +1322,8 @@
       "date": "12.05.2026",
       "planFact": "26.05.2026",
       "fact": "",
-      "shipmentDoc": ""
+      "shipmentDoc": "",
+      "plan": "26.05.2026"
     },
     {
       "recordId": "20260504160937704_812nn9y2u",
@@ -1080,7 +1346,8 @@
       "date": "12.05.2026",
       "planFact": "26.05.2026",
       "fact": "",
-      "shipmentDoc": ""
+      "shipmentDoc": "",
+      "plan": "26.05.2026"
     },
     {
       "recordId": "20260504160908594_tbt5cur5a",
@@ -1103,7 +1370,8 @@
       "date": "12.05.2026",
       "planFact": "26.05.2026",
       "fact": "",
-      "shipmentDoc": ""
+      "shipmentDoc": "",
+      "plan": "26.05.2026"
     },
     {
       "recordId": "20260504160805396_3g1gg0zsf",
@@ -1126,7 +1394,8 @@
       "date": "07.05.2026",
       "planFact": "12.05.2026",
       "fact": "07.05.2026",
-      "shipmentDoc": "380565/16 от 07.05.2026"
+      "shipmentDoc": "380565/16 от 07.05.2026",
+      "plan": "12.05.2026"
     },
     {
       "recordId": "20260504160741907_13u1v78b3",
@@ -1149,7 +1418,8 @@
       "date": "07.05.2026",
       "planFact": "12.05.2026",
       "fact": "07.05.2026",
-      "shipmentDoc": "380565/16 от 07.05.2026"
+      "shipmentDoc": "380565/16 от 07.05.2026",
+      "plan": "12.05.2026"
     },
     {
       "recordId": "20260504155822826_38e9oiajy",
@@ -1172,7 +1442,8 @@
       "date": "12.05.2026",
       "planFact": "02.06.2026",
       "fact": "",
-      "shipmentDoc": ""
+      "shipmentDoc": "",
+      "plan": "02.06.2026"
     },
     {
       "recordId": "20260504155752937_dnsfsxkps",
@@ -1195,7 +1466,8 @@
       "date": "12.05.2026",
       "planFact": "01.06.2026",
       "fact": "15.05.2026",
-      "shipmentDoc": "0ЕР/19314951 от 14.05.2026"
+      "shipmentDoc": "0ЕР/19314951 от 14.05.2026",
+      "plan": "01.06.2026"
     },
     {
       "recordId": "20260504155728226_l134kwftf",
@@ -1218,7 +1490,8 @@
       "date": "12.05.2026",
       "planFact": "01.06.2026",
       "fact": "15.05.2026",
-      "shipmentDoc": "0ЕР/19308528 от 12.05.2026"
+      "shipmentDoc": "0ЕР/19308528 от 12.05.2026",
+      "plan": "01.06.2026"
     },
     {
       "recordId": "20260504155649612_evf1nj893",
@@ -1265,7 +1538,8 @@
       "date": "05.05.2026",
       "planFact": "12.05.2026",
       "fact": "08.05.2026",
-      "shipmentDoc": "ЦБ-995 от 07.05.2026"
+      "shipmentDoc": "ЦБ-995 от 07.05.2026",
+      "plan": "12.05.2026"
     },
     {
       "recordId": "20260429173048434_1vkfu0ppf",
@@ -1528,7 +1802,8 @@
       "date": "05.05.2026",
       "planFact": "12.05.2026",
       "fact": "08.05.2026",
-      "shipmentDoc": "ЦБ-980 от 05.05.2026"
+      "shipmentDoc": "ЦБ-980 от 05.05.2026",
+      "plan": "12.05.2026"
     },
     {
       "recordId": "20260429172330482_jl736nutp",
@@ -1551,7 +1826,8 @@
       "date": "05.05.2026",
       "planFact": "12.05.2026",
       "fact": "08.05.2026",
-      "shipmentDoc": "ЦБ-995 от 07.05.2026"
+      "shipmentDoc": "ЦБ-995 от 07.05.2026",
+      "plan": "12.05.2026"
     },
     {
       "recordId": "20260429172304082_1y3vq3jvq",
@@ -1742,7 +2018,8 @@
       "date": "30.04.2026",
       "planFact": "14.05.2026",
       "fact": "08.05.2026",
-      "shipmentDoc": "756 от 30.04.2026"
+      "shipmentDoc": "756 от 30.04.2026",
+      "plan": "14.05.2026"
     },
     {
       "recordId": "20260427131534206_4i1yl4uxf",
@@ -1765,7 +2042,8 @@
       "date": "30.04.2026",
       "planFact": "14.05.2026",
       "fact": "08.05.2026",
-      "shipmentDoc": "756 от 30.04.2026"
+      "shipmentDoc": "756 от 30.04.2026",
+      "plan": "14.05.2026"
     },
     {
       "recordId": "20260427131356892_x5l2vtjws",
@@ -2807,7 +3085,8 @@
       "date": "30.04.2026",
       "planFact": "20.05.2026",
       "fact": "15.05.2026",
-      "shipmentDoc": "850 от 07.05.2026"
+      "shipmentDoc": "850 от 07.05.2026",
+      "plan": "20.05.2026"
     },
     {
       "recordId": "20260424105043277_0lu6xkm86",
@@ -2830,7 +3109,8 @@
       "date": "29.04.2026",
       "planFact": "13.05.2026",
       "fact": "15.05.2026",
-      "shipmentDoc": "0450341 от 13.05.2026"
+      "shipmentDoc": "0450341 от 13.05.2026",
+      "plan": "13.05.2026"
     },
     {
       "recordId": "20260424105024631_9qqanctnb",
@@ -2853,7 +3133,8 @@
       "date": "29.04.2026",
       "planFact": "13.05.2026",
       "fact": "15.05.2026",
-      "shipmentDoc": "0450341 от 13.05.2026"
+      "shipmentDoc": "0450341 от 13.05.2026",
+      "plan": "13.05.2026"
     },
     {
       "recordId": "20260424105004542_86purbgug",
@@ -2876,7 +3157,8 @@
       "date": "29.04.2026",
       "planFact": "13.05.2026",
       "fact": "15.05.2026",
-      "shipmentDoc": "0450341 от 13.05.2026"
+      "shipmentDoc": "0450341 от 13.05.2026",
+      "plan": "13.05.2026"
     },
     {
       "recordId": "20260424104940862_lalstjw1u",
@@ -2899,7 +3181,8 @@
       "date": "29.04.2026",
       "planFact": "13.05.2026",
       "fact": "15.05.2026",
-      "shipmentDoc": "0450341 от 13.05.2026"
+      "shipmentDoc": "0450341 от 13.05.2026",
+      "plan": "13.05.2026"
     },
     {
       "recordId": "20260423113246056_uhkn7nz6m",
@@ -3066,7 +3349,8 @@
       "date": "22.04.2026",
       "planFact": "06.05.2026",
       "fact": "06.05.2026",
-      "shipmentDoc": "ОП-111 от 29.04.2026"
+      "shipmentDoc": "ОП-111 от 29.04.2026",
+      "plan": "06.05.2026"
     },
     {
       "recordId": "20260421114213924_652zal0gd",
@@ -3089,7 +3373,8 @@
       "date": "22.04.2026",
       "planFact": "06.05.2026",
       "fact": "06.05.2026",
-      "shipmentDoc": "ОП-111 от 29.04.2026"
+      "shipmentDoc": "ОП-111 от 29.04.2026",
+      "plan": "06.05.2026"
     },
     {
       "recordId": "20260421114116127_alkgfpjv0",
@@ -3112,7 +3397,8 @@
       "date": "22.04.2026",
       "planFact": "06.05.2026",
       "fact": "06.05.2026",
-      "shipmentDoc": "ОП-111 от 29.04.2026"
+      "shipmentDoc": "ОП-111 от 29.04.2026",
+      "plan": "06.05.2026"
     },
     {
       "recordId": "20260421103730216_zfiopcp5u",
@@ -3255,7 +3541,8 @@
       "date": "22.04.2026",
       "planFact": "06.05.2026",
       "fact": "06.05.2026",
-      "shipmentDoc": "ОП-111 от 29.04.2026"
+      "shipmentDoc": "ОП-111 от 29.04.2026",
+      "plan": "06.05.2026"
     },
     {
       "recordId": "20260417130722295_cn9lso5mo",
@@ -3397,7 +3684,8 @@
       "date": "12.05.2026",
       "planFact": "26.05.2026",
       "fact": "",
-      "shipmentDoc": ""
+      "shipmentDoc": "",
+      "plan": "26.05.2026"
     },
     {
       "recordId": "20260416113651047_ilrzb62xr",
@@ -3420,7 +3708,8 @@
       "date": "12.05.2026",
       "planFact": "26.05.2026",
       "fact": "",
-      "shipmentDoc": ""
+      "shipmentDoc": "",
+      "plan": "26.05.2026"
     },
     {
       "recordId": "20260416113600765_k0yfi1vpn",
@@ -10784,7 +11073,8 @@
       "date": "08.05.2026",
       "planFact": "25.09.2026",
       "fact": "",
-      "shipmentDoc": ""
+      "shipmentDoc": "",
+      "plan": "25.09.2026"
     },
     {
       "recordId": "20251218152345678_gtnkhejd8",
@@ -10807,7 +11097,8 @@
       "date": "08.05.2026",
       "planFact": "29.05.2026",
       "fact": "",
-      "shipmentDoc": ""
+      "shipmentDoc": "",
+      "plan": "29.05.2026"
     },
     {
       "recordId": "20251218152345678_1htbod29o",
@@ -10830,7 +11121,8 @@
       "date": "08.05.2026",
       "planFact": "25.09.2026",
       "fact": "",
-      "shipmentDoc": ""
+      "shipmentDoc": "",
+      "plan": "25.09.2026"
     },
     {
       "recordId": "20251218152345678_uw7s5ccy1",
@@ -11311,236 +11603,6 @@
       "fact": "11.12.2025",
       "shipmentDoc": "70019 от 09.12.25",
       "plan": "11.12.2025"
-    },
-    {
-      "recordId": "20260515154839856_iqzdow2m3",
-      "docNumber": "2026-426 (от 13.05.2026)",
-      "status": "В работе",
-      "id": "МАТ-09448",
-      "name": "Бензиновый триммер STIGA SBC 243 D\n",
-      "quantity": "1",
-      "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
-      "supplier": "ООО \"Стройторговля\"",
-      "department": "11/0121 Слободка",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
-      "date": "",
-      "planFact": "",
-      "fact": "",
-      "shipmentDoc": ""
-    },
-    {
-      "recordId": "20260515155026956_1drkw2nv8",
-      "docNumber": "2026-429 (от 12.05.2026)",
-      "status": "В работе",
-      "id": "МАТ-10323",
-      "name": "Цемент М400 50кг\n",
-      "quantity": "40",
-      "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
-      "supplier": "ООО \"Стройторговля\"",
-      "department": "13/0100 Товарная служба",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
-      "date": "",
-      "planFact": "",
-      "fact": "",
-      "shipmentDoc": ""
-    },
-    {
-      "recordId": "20260515155254876_ozv3skoad",
-      "docNumber": "2026-411 (от 12.05.2026)",
-      "status": "В работе",
-      "id": "-",
-      "name": "Алюминиевая профессиональная стремянка-помост Алюмет 8 ступеней. Серия APE1408. Max рабочая нагрузка 150 кг\n",
-      "quantity": "2",
-      "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
-      "supplier": "ООО \"Энтузиаст-с\"",
-      "department": "11/0141 Котельная",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
-      "date": "",
-      "planFact": "",
-      "fact": "",
-      "shipmentDoc": ""
-    },
-    {
-      "recordId": "20260515155541680_1ks1ivpu1",
-      "docNumber": "2026-401 (от 06.05.2026)",
-      "status": "В работе",
-      "id": "МАТ-05483",
-      "name": "Пленка полиэтиленовая РУКАВ 1,5М, 200МКМ\n",
-      "quantity": "200",
-      "unit": "пог.м",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
-      "supplier": "ООО \"Комус\"",
-      "department": "11/0141 Котельная",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
-      "date": "",
-      "planFact": "",
-      "fact": "",
-      "shipmentDoc": ""
-    },
-    {
-      "recordId": "20260515155831950_t6dtvtxw5",
-      "docNumber": "2026-392 (от 06.05.2026)",
-      "status": "В работе",
-      "id": "МАТ-06962",
-      "name": "Адаптер для РВД TN98-12S(K) НЕРЖ.",
-      "quantity": "54",
-      "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
-      "supplier": "",
-      "department": "11/0110 Служба главного механика",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
-      "date": "",
-      "planFact": "",
-      "fact": "",
-      "shipmentDoc": ""
-    },
-    {
-      "recordId": "20260515155900299_ily6u1h7n",
-      "docNumber": "2026-392 (от 06.05.2026)",
-      "status": "В работе",
-      "id": "МАТ-06962",
-      "name": "Адаптер для РВД TN98-16S(K) НЕРЖ.",
-      "quantity": "54",
-      "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
-      "supplier": "",
-      "department": "11/0110 Служба главного механика",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
-      "date": "",
-      "planFact": "",
-      "fact": "",
-      "shipmentDoc": ""
-    },
-    {
-      "recordId": "20260515155923955_t6ko17ycr",
-      "docNumber": "2026-392 (от 06.05.2026)",
-      "status": "В работе",
-      "id": "МАТ-04902",
-      "name": "Гайка TN81-12S(K) НЕРЖ.",
-      "quantity": "54",
-      "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
-      "supplier": "",
-      "department": "11/0110 Служба главного механика",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
-      "date": "",
-      "planFact": "",
-      "fact": "",
-      "shipmentDoc": ""
-    },
-    {
-      "recordId": "20260515155948832_yjagt7qkh",
-      "docNumber": "2026-392 (от 06.05.2026)",
-      "status": "В работе",
-      "id": "МАТ-04902",
-      "name": "Гайка TN81-16S(K) НЕРЖ.",
-      "quantity": "54",
-      "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
-      "supplier": "",
-      "department": "11/0110 Служба главного механика",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
-      "date": "",
-      "planFact": "",
-      "fact": "",
-      "shipmentDoc": ""
-    },
-    {
-      "recordId": "20260515160015060_5m87lmqnx",
-      "docNumber": "2026-392 (от 06.05.2026)",
-      "status": "В работе",
-      "id": "МАТ-04129",
-      "name": "Кольцо TN88-12L/S(K) НЕРЖ.",
-      "quantity": "54",
-      "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
-      "supplier": "",
-      "department": "11/0110 Служба главного механика",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
-      "date": "",
-      "planFact": "",
-      "fact": "",
-      "shipmentDoc": ""
-    },
-    {
-      "recordId": "20260515160039552_cgzzj9u24",
-      "docNumber": "2026-392 (от 06.05.2026)",
-      "status": "В работе",
-      "id": "МАТ-04129",
-      "name": "Кольцо TN88-16S(K) НЕРЖ.",
-      "quantity": "54",
-      "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
-      "supplier": "",
-      "department": "11/0110 Служба главного механика",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
-      "date": "",
-      "planFact": "",
-      "fact": "",
-      "shipmentDoc": ""
     }
   ],
   "counterpartiesData": [
@@ -19935,5 +19997,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-05-15T13:30:13.029Z"
+  "exportDate": "2026-05-18T09:55:37.776Z"
 }
