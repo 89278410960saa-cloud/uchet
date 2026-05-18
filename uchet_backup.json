@@ -215,16 +215,16 @@
       "name": "Бензиновый триммер STIGA SBC 243 D\n",
       "quantity": "1",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
+      "purchaseName": "Триммер бензиновый GGT-1500SX Hunter. 1500Вт (разбор)",
+      "purchaseQuantity": "1",
+      "purchaseUnit": "шт",
+      "amount": "11010.50",
       "supplier": "ООО \"Стройторговля\"",
       "department": "11/0121 Слободка",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № YL113605",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "7",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -19992,5 +19992,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-05-18T11:54:53.507Z"
+  "exportDate": "2026-05-18T11:57:23.688Z"
 }
