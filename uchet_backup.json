@@ -169,16 +169,16 @@
       "name": "Алюминиевая профессиональная стремянка-помост Алюмет 8 ступеней. Серия APE1408. Max рабочая нагрузка 150 кг\n",
       "quantity": "2",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
+      "purchaseName": "Лестница с платформой \nАЛЮМЕТ АРЕ 1408 (APE 1408)",
+      "purchaseQuantity": "2",
+      "purchaseUnit": "шт",
+      "amount": "44030.00",
       "supplier": "ООО \"Энтузиаст-с\"",
       "department": "11/0141 Котельная",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № ДРВ008471",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "20",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -19992,5 +19992,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-05-18T11:58:38.361Z"
+  "exportDate": "2026-05-18T12:06:51.577Z"
 }
