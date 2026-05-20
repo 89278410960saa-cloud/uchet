@@ -45,7 +45,9 @@
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
-            align-items: center;
+            align-items: stretch;
+            padding-left: 0 !important;
+            padding-right: 0 !important;
         }
 
         .sidebar-section {
@@ -55,6 +57,8 @@
             width: 100%;
             margin-bottom: 10.05px;
             max-height: calc(100vh - 134.0px);
+            padding-left: 0 !important;
+            padding-right: 0 !important;
         }
 
         .sidebar-divider {
@@ -79,31 +83,32 @@
         }
 
         .sidebar-cell.menu-item {
-            background: transparent;
-            border: 0.67px solid rgba(102, 192, 244, 0.3);
-            border-radius: 4.02px;
-            transition: all 0.3s ease;
-            position: relative;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 15px;
-            height: 15px;
-            margin: 3.35px 0;
-        }
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    width: 100% !important;
+    padding: 10px !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    border: none !important;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    justify-content: flex-start !important;
+     padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+}
 
         .sidebar-cell.menu-item:hover {
-            background: linear-gradient(135deg, rgba(62, 126, 167, 0.3) 0%, transparent 100%) !important;
-            border-color: #66c0f4 !important;
-            box-shadow: 0 0 6.7px rgba(102, 192, 244, 0.5);
-        }
+    background: rgba(99, 102, 241, 0.2) !important;
+    box-shadow: 0 0 8px rgba(99, 102, 241, 0.4);
+}
 
         .sidebar-cell.menu-item.active {
-            background: linear-gradient(135deg, rgba(62, 126, 167, 0.5) 0%, transparent 100%);
-            border-color: #66c0f4;
-            box-shadow: 0 0 10.05px rgba(102, 192, 244, 0.7);
-        }
+    background: rgba(99, 102, 241, 0.3) !important;
+    box-shadow: 0 0 12px rgba(99, 102, 241, 0.6);
+}
 
         .sidebar-cell.button {
             display: flex;
@@ -136,7 +141,7 @@
         }
 
         .sidebar-icon {
-            font-size: 10px;
+            font-size: 18px !important;
             color: #c7d5e0;
             transition: all 0.3s ease;
             display: flex;
@@ -145,11 +150,21 @@
             width: 100%;
             height: 100%;
         }
+        .menu-text {
+    font-size: 14px;
+    font-weight: 500;
+    color: #cbd5e1;
+    white-space: nowrap;
+}
 
         .sidebar-cell.menu-item.active .sidebar-icon,
         .sidebar-cell.menu-item:hover .sidebar-icon {
-            color: #66c0f4;
-        }
+    color: #ffffff;
+    text-shadow: 0 0 4px #ffffff;
+}
+.sidebar-cell.menu-item:hover .menu-text {
+    color: #ffffff;
+}
 
         .sidebar-cell.button .sidebar-icon {
             color: white;
@@ -224,7 +239,7 @@
         /* Адаптивность */
         @media (max-width: 514.56px) {
             .sidebar-cell.menu-item {
-                width: 30.15px;
+                width: 200px !important;
                 height: 30.15px;
             }
             
@@ -278,7 +293,7 @@
         /* Основной контент */
         .main-content {
             flex: 1;
-            margin-left: 50px;
+            margin-left: 110px !important;
             padding: 13.4px;
             overflow: hidden;
             background: transparent;
@@ -603,6 +618,8 @@
     transition: all 0.3s ease;
     max-height: 0;
     overflow: hidden;
+    width: 100%;
+    margin-top: 8px;
 }
 #mailDateFilter {
     width: 80px !important;
@@ -619,6 +636,9 @@
     transform: translateX(-6.7px);
     opacity: 0;
     transition: all 0.3s ease;
+}
+#settingsMenu .sidebar-cell.menu-item {
+    justify-content: flex-start;
 }
 
 #settingsMenu.show .sidebar-cell {
@@ -656,7 +676,7 @@
 /* Специальная корректировка для бейджа на кнопке GitHub */
 #githubGuestBadge {
     position: absolute;
-            top: 5.36px;
+            top: auto;
             right: 5.36px;
             background: linear-gradient(135deg, #be9e3c 0%, #8c2c24 100%);
             color: white;
@@ -669,6 +689,7 @@
             font-weight: bold;
             box-shadow: 0 1.34px 2.68px rgba(0,0,0,0.3);
             animation: pulse 2s infinite;
+            position: absolute;
         }
         
         /* Стили для бейджа с количеством заявок */
@@ -2408,6 +2429,7 @@
 
 /* === MODERN SIDEBAR REDESIGN === */
 .sidebar {
+    width: 100px !important;
     background: linear-gradient(180deg, #0f172a 0%, #020617 100%);
     border-right: 1px solid rgba(148,163,184,0.15);
     box-shadow: 4px 0 24px rgba(0,0,0,0.4);
@@ -2521,16 +2543,8 @@ body { zoom: 0.9; }
 
 * { letter-spacing: 0 !important; }
 
-.sidebar {
-  width: 10px !important;
-  padding: 4px 0 !important;
-}
-.sidebar-cell,
-.sidebar-cell.menu-item {
-  width: 26px !important;
-  height: 26px !important;
-  margin: 2px 0 !important;
-}
+
+
 .sidebar-icon { font-size: 11px !important; }
 .sidebar-tooltip {
   font-size: 9px !important;
@@ -2538,7 +2552,7 @@ body { zoom: 0.9; }
 }
 
 .main-content {
-  margin-left: 50px !important;
+  margin-left: 110px !important;
   padding: 6px !important;
 }
 .container { padding: 6px !important; }
@@ -2604,6 +2618,7 @@ button:hover,
 
 /* === MODERN SIDEBAR REDESIGN === */
 .sidebar {
+    width: 100px;
     background: linear-gradient(180deg, #0f172a 0%, #020617 100%);
     border-right: 1px solid rgba(148,163,184,0.15);
     box-shadow: 4px 0 24px rgba(0,0,0,0.4);
@@ -2647,25 +2662,31 @@ button:hover,
 <style>
 /* ===== SIDEBAR REDESIGN (VISUAL ONLY) ===== */
 .sidebar {
-    width: 40px;
-    background: linear-gradient(180deg, #1b1d29 0%, #141621 100%);
-    border-right: 1px solid #2a2d3e;
-    padding-top: 20px;
+    width: 100px !important;          /* фиксированная ширина для текста */
+    background: linear-gradient(180deg, #0f172a 0%, #020617 100%);
+    border-right: 1px solid rgba(148,163,184,0.2);
+    padding: 10px;
     display: flex;
     flex-direction: column;
+    gap: 8px;
 }
 
 .sidebar .menu-item {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 12px 18px;
+    gap: 0;
+    padding: 0;
     margin: 4px 12px;
     color: #aeb3d6;
     border-radius: 8px;
     transition: all 0.2s ease;
 }
-
+.sidebar .menu-text {
+    font-size: 11px !important; 
+    }
+.sidebar .sidebar-icon {
+    font-size: 12px !important;
+    }
 .sidebar .menu-item:hover {
     background: rgba(108,92,231,0.15);
     color: #ffffff;
@@ -2705,12 +2726,11 @@ body{background:var(--p-bg)!important;color:var(--p-text)!important}
 
 /* SIDEBAR */
 .sidebar{
-  width:40px!important;
   background:var(--p-panel)!important;
   border-right:1px solid var(--p-border)!important;
   box-shadow:none!important;
 }
-.main-content{margin-left:40px!important}
+.main-content{margin-left:100px!important}
 
 .sidebar-cell.menu-item{
   width:100%!important;
@@ -2762,37 +2782,37 @@ button:hover{background:#222733!important}
 <div class="sidebar-section" style="margin-bottom: 0.0px;">
     
     <div class="sidebar-cell menu-item active" data-page="accounting" onclick="showPage('accounting')" title="Учет закупок">
-        <span class="sidebar-icon">📋</span>
+        <span class="sidebar-icon">Позиции</span>
         <div class="sidebar-tooltip">Учет закупок</div>
         <div class="sidebar-badge" id="accountingBadge" style="display: none;">0</div>
     </div>
     <div class="sidebar-cell menu-item" data-page="counterparties" onclick="showPage('counterparties')" title="Контрагенты">
-        <span class="sidebar-icon">👥</span>
+        <span class="sidebar-icon">Контрагенты</span>
         <div class="sidebar-tooltip">Контрагенты</div>
     </div>
     <div class="sidebar-cell menu-item" data-page="payments" onclick="showPage('payments')" title="Платежи">
-    <span class="sidebar-icon">💰</span>
+    <span class="sidebar-icon">Платежи</span>
     <div class="sidebar-tooltip">Платежи</div>
     <div class="sidebar-badge" id="paymentsBadge" style="display: none;">0</div>
     </div>
     <!-- Перемещенный элемент - теперь после Платежей -->
     <div class="sidebar-cell menu-item" data-page="proxy-registry" onclick="showPage('proxy-registry')" title="Реестр доверенностей">
-    <span class="sidebar-icon">🚙</span>
+    <span class="sidebar-icon">Самовывоз</span>
     <div class="sidebar-tooltip">Реестр доверенностей</div>
     <div class="sidebar-badge" id="proxyBadge" style="display: none;">0</div>
 </div>
     <div class="sidebar-cell menu-item" data-page="settlement" onclick="showPage('settlement')" title="Урегулирование">
-    <span class="sidebar-icon">⚖️</span>
-    <div class="sidebar-tooltip">Урегулирование</div>
+    <span class="sidebar-icon">Рекламации</span>
+    <div class="sidebar-tooltip">Рекламации</div>
     <div class="sidebar-badge" id="settlementBadge" style="display: none;">0</div>
 </div>
     <div class="sidebar-cell menu-item" data-page="mail-registry" onclick="showPage('mail-registry')" title="Почтовый реестр">
-        <span class="sidebar-icon">📦</span>
+        <span class="sidebar-icon">Отправления</span>
         <div class="sidebar-tooltip">Почтовый реестр</div>
     </div>
     <div class="sidebar-divider"></div>
     <div class="sidebar-cell menu-item" id="aiChatButton" onclick="openAiChatModal()" title="AI Чат (OpenRouter)">
-    <span class="sidebar-icon">✨</span>
+    <span class="sidebar-icon">AI Чат</span>
     <div class="sidebar-tooltip">AI Чат</div>
 </div>
     
@@ -2801,23 +2821,23 @@ button:hover{background:#222733!important}
     <!-- Секция управления данными -->
     <div class="sidebar-section" style="margin-bottom: 0.0px;">
     <div class="sidebar-cell menu-item github-export-btn admin-only" onclick="forceExportToGitHub()" title="Принудительный экспорт данных">
-        <span class="sidebar-icon">💾</span>
+        <span class="sidebar-icon">Сохранить</span>
         <span class="github-export-spinner" style="display: none;">◌</span>
         <div class="sidebar-tooltip">Принудительный экспорт</div>
     </div>
     <div class="sidebar-cell menu-item import-btn" onclick="importJSON()" title="Импорт данных" style="display: flex;">
-        <span class="sidebar-icon">🌍</span>
+        <span class="sidebar-icon">Обновить</span>
         <div class="sidebar-tooltip">Импорт данных</div>
     </div>
     <div class="sidebar-cell menu-item" onclick="showStatusStatsModal()" title="Аналитика">
-        <span class="sidebar-icon">📊</span>
+        <span class="sidebar-icon">Аналитика</span>
         <div class="sidebar-tooltip">Аналитика</div>
     </div>
 </div>
 <div class="sidebar-section">
         <!-- Кнопка настроек -->
         <div class="sidebar-cell menu-item" id="settingsButton" title="Настройки" onclick="toggleSettingsMenu()">
-            <span class="sidebar-icon">⚙️</span>
+            <span class="sidebar-icon">Настройки</span>
             <div class="sidebar-tooltip">Настройки</div>
         </div>
     </div>
@@ -2825,24 +2845,24 @@ button:hover{background:#222733!important}
     <!-- Скрытое меню настроек -->
 <div id="settingsMenu" class="sidebar-section" style="display: none;">
     <div class="sidebar-cell menu-item" onclick="showGithubSettingsModal()" title="GitHub настройки">
-    <span class="sidebar-icon">🔒</span>
+    <span class="sidebar-icon">Вход</span>
     <div class="sidebar-tooltip">GitHub настройки</div>
     <div class="sidebar-badge warning" id="githubGuestBadge" style="display: none;">!</div>
 </div>
     <div class="sidebar-cell menu-item admin-only export-btn" onclick="exportJSON()" title="Экспорт данных" style="display: none;">
-        <span class="sidebar-icon">📤</span>
+        <span class="sidebar-icon">Экспорт</span>
         <div class="sidebar-tooltip">Экспорт данных</div>
     </div>
     <!-- Кнопка удаления с классом danger -->
     <div class="sidebar-cell menu-item danger clear-btn" onclick="confirmClearAllData()" title="Очистить все данные">
-        <span class="sidebar-icon">✘</span>
+        <span class="sidebar-icon">Удалить</span>
         <div class="sidebar-tooltip">Очистить все данные</div>
     </div>
 </div>
 </div>
 
     <!-- Основной контент -->
-    <div class="main-content" style="display: block; margin-left: 50px; padding: 0px; height: 100vh;">
+    <div class="main-content" style="display: block; padding: 0px; height: 100vh;">
         <!-- Страница Учет -->
 <div id="accounting" class="page active">
     <div class="container" style="padding-top: 2.01px;padding-left: 3.35px;padding-right: 3.35px;border-left-width: 0.0px;border-right-width: 0.0px;border-top-width: 0.0px;border-bottom-width: 0.0px;padding-bottom: 3.35px; display: flex; flex-direction: column; height: 100%;">
