@@ -11226,13 +11226,12 @@
       "date": "08.05.2026",
       "planFact": "25.09.2026",
       "fact": "",
-      "shipmentDoc": "",
-      "plan": "25.09.2026"
+      "shipmentDoc": "БЦ-96 от 14.05.2026"
     },
     {
       "recordId": "20251218152345678_gtnkhejd8",
       "docNumber": "2025-782 (от 18.12.2025)",
-      "status": "Поставка",
+      "status": "Выполнено",
       "id": "М024793",
       "name": "Клапан магнитный Parker Lucifer 121G2520 115В 50Гц 120В 60Гц 20В",
       "quantity": "11",
@@ -11249,9 +11248,8 @@
       "deliveryTerms": "Включена",
       "date": "08.05.2026",
       "planFact": "29.05.2026",
-      "fact": "",
-      "shipmentDoc": "",
-      "plan": "29.05.2026"
+      "fact": "20.05.2026",
+      "shipmentDoc": "БЦ-96 от 14.05.2026"
     },
     {
       "recordId": "20251218152345678_1htbod29o",
@@ -11763,7 +11761,7 @@
       "status": "В работе",
       "id": "-",
       "name": "Двухболтовой силовой хомут  45 – 55 мм TL45-55DRCSS TITAN LOCK\n",
-      "quantity": "120",
+      "quantity": "34",
       "unit": "шт",
       "purchaseName": "",
       "purchaseQuantity": "",
@@ -11913,6 +11911,29 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "3",
       "deliveryTerms": "Самовывоз",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
+    },
+    {
+      "recordId": "20260520151357320_xkytp7o7y",
+      "docNumber": "2026-427 (от 19.05.2026)",
+      "status": "В работе",
+      "id": "-",
+      "name": "Двухболтовой силовой хомут 45 – 55 мм TL45-55DRCSS TITAN LOCK",
+      "quantity": "86",
+      "unit": "шт",
+      "purchaseName": "2-болтовый силовой хомут (45-55 мм), нержав. сталь, TL45-55DRCSS TITAN \nLOCK",
+      "purchaseQuantity": "86",
+      "purchaseUnit": "шт",
+      "amount": "37840.00",
+      "supplier": "ООО «Техноберинг»",
+      "department": "11/0110 Служба главного механика",
+      "contract": "СЧ № 29760",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "7",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -20349,5 +20370,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-05-20T11:19:07.092Z"
+  "exportDate": "2026-05-20T12:57:02.121Z"
 }
