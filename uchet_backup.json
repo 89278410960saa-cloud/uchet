@@ -555,7 +555,7 @@
     {
       "recordId": "20260515155026956_1drkw2nv8",
       "docNumber": "2026-429 (от 12.05.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "М027815",
       "name": "Цемент М400 50кг\n",
       "quantity": "40",
@@ -570,15 +570,15 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "7",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "22.05.2026",
+      "planFact": "29.05.2026",
       "fact": "",
       "shipmentDoc": ""
     },
     {
       "recordId": "20260515154839856_iqzdow2m3",
       "docNumber": "2026-426 (от 13.05.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "МАТ-09448",
       "name": "Бензиновый триммер STIGA SBC 243 D\n",
       "quantity": "1",
@@ -593,8 +593,8 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "7",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "22.05.2026",
+      "planFact": "29.05.2026",
       "fact": "",
       "shipmentDoc": ""
     },
@@ -18485,7 +18485,7 @@
     },
     {
       "recordId": "20260522093600290_zvhf7gwkw",
-      "status": "План",
+      "status": "Оплачено",
       "date": "22.05.2026",
       "amount": "30292.00",
       "supplier": "ООО \"Стройторговля\"",
@@ -18495,7 +18495,7 @@
     },
     {
       "recordId": "20260522093513204_5conn8c45",
-      "status": "План",
+      "status": "Оплачено",
       "date": "22.05.2026",
       "amount": "14560.50",
       "supplier": "ООО \"Стройторговля\"",
@@ -21113,5 +21113,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-05-22T13:24:10.083Z"
+  "exportDate": "2026-05-22T13:28:52.243Z"
 }
