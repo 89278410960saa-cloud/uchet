@@ -2356,6 +2356,47 @@
     font-size: 11.39px !important;
     background: linear-gradient(135deg, #2a475e 0%, #1f3549 100%) !important;
 }
+#statusStatsModal .modal-content {
+    max-height: 85vh;          /* чуть больше, но не во всю высоту экрана */
+    overflow-y: auto;          /* прокрутка только внутри окна, страница не скроллится */
+    padding: 8px 12px !important;  /* уменьшенные отступы */
+}
+
+#statusStatsModal h2 {
+    margin-bottom: 8px !important;
+    font-size: 18px !important;
+}
+
+#statusStatsModal h3 {
+    font-size: 14px !important;
+    margin: 8px 0 6px 0 !important;
+}
+
+#statusStatsModal .stats-table th,
+#statusStatsModal .stats-table td {
+    padding: 4px 6px !important;
+    font-size: 11px !important;
+}
+
+#statusStatsModal .stats-table table {
+    margin-bottom: 8px !important;
+}
+#statusStatsModal > div {
+    margin-bottom: 12px !important;
+}
+
+#statusStatsModal .stats-table {
+    margin-bottom: 8px;
+}
+
+#statusStatsModal [style*="display: grid"] {
+    gap: 6px !important;
+    margin-bottom: 6px !important;
+}
+
+#statusStatsModal [style*="background: linear-gradient"] {
+    padding: 6px 4px !important;
+}
 
 #statusStatsModal .stats-table td {
     padding: 8.04px 6.7px !important;
