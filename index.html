@@ -2113,20 +2113,37 @@
             align-items: center;
         }
 .github-export-btn.saving {
-    background: linear-gradient(135deg, #2a3a5e, #4a7a9e, #2a3a5e, #ffd966, #2a3a5e) !important;
-    background-size: 400% 100%;
-    animation: button-shimmer 1s ease infinite;
-    border: 1px solid #ffd700 !important;
-    box-shadow: 0 0 12px rgba(255, 220, 100, 0.8) !important;
-    transition: none !important;
+    border: 1px solid #ffd966 !important;
+    box-shadow: 0 0 8px rgba(255, 220, 100, 0.6), inset 0 0 4px rgba(255, 220, 100, 0.3) !important;
+    transition: all 0.2s ease !important;
+    animation: soft-pulse 1.2s infinite ease-in-out;
 }
 
-@keyframes button-shimmer {
+.github-export-btn.saving .sidebar-icon {
+    animation: text-glow 1.5s infinite alternate;
+    color: #ffd966 !important;
+    text-shadow: 0 0 3px #ffb347;
+}
+
+@keyframes soft-pulse {
     0% {
-        background-position: 100% 0;
+        box-shadow: 0 0 4px rgba(255, 220, 100, 0.3), inset 0 0 2px rgba(255, 220, 100, 0.1);
+        border-color: #ffd966;
     }
     100% {
-        background-position: -100% 0;
+        box-shadow: 0 0 14px rgba(255, 220, 100, 0.8), inset 0 0 6px rgba(255, 220, 100, 0.4);
+        border-color: #ffb347;
+    }
+}
+
+@keyframes text-glow {
+    from {
+        text-shadow: 0 0 2px #ffd966;
+        color: #ffd966;
+    }
+    to {
+        text-shadow: 0 0 8px #ffaa33;
+        color: #ffcc77;
     }
 }
 
