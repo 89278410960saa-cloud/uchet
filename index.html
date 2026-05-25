@@ -2114,37 +2114,32 @@
         }
 .github-export-btn.saving {
     border: 1px solid #ffd966 !important;
-    box-shadow: 0 0 8px rgba(255, 220, 100, 0.6), inset 0 0 4px rgba(255, 220, 100, 0.3) !important;
-    transition: all 0.2s ease !important;
-    animation: soft-pulse 1.2s infinite ease-in-out;
+    box-shadow: 0 0 8px rgba(255, 220, 100, 0.6) !important;
+    animation: border-pulse 1s infinite ease-in-out;
+    background: inherit !important; /* принудительно не меняем фон */
 }
 
-.github-export-btn.saving .sidebar-icon {
-    animation: text-glow 1.5s infinite alternate;
-    color: #ffd966 !important;
-    text-shadow: 0 0 3px #ffb347;
-}
-
-@keyframes soft-pulse {
+/* Опционально: пульсация рамки (можно убрать, если не нужна) */
+@keyframes border-pulse {
     0% {
-        box-shadow: 0 0 4px rgba(255, 220, 100, 0.3), inset 0 0 2px rgba(255, 220, 100, 0.1);
         border-color: #ffd966;
+        box-shadow: 0 0 4px rgba(255, 220, 100, 0.4);
+    }
+    50% {
+        border-color: #ffcc44;
+        box-shadow: 0 0 12px rgba(255, 220, 100, 0.9);
     }
     100% {
-        box-shadow: 0 0 14px rgba(255, 220, 100, 0.8), inset 0 0 6px rgba(255, 220, 100, 0.4);
-        border-color: #ffb347;
+        border-color: #ffd966;
+        box-shadow: 0 0 4px rgba(255, 220, 100, 0.4);
     }
 }
 
-@keyframes text-glow {
-    from {
-        text-shadow: 0 0 2px #ffd966;
-        color: #ffd966;
-    }
-    to {
-        text-shadow: 0 0 8px #ffaa33;
-        color: #ffcc77;
-    }
+/* Убираем любую анимацию текста/иконки */
+.github-export-btn.saving .sidebar-icon {
+    animation: none;
+    color: inherit !important;
+    text-shadow: none !important;
 }
 
         /* Разделитель в сайдбаре */
