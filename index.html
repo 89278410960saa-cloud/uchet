@@ -2116,24 +2116,44 @@
     background: linear-gradient(
         120deg,
         #c7d5e0 0%,
-        #c7d5e0 30%,
+        #c7d5e0 25%,
+        #ffdd88 45%,
         #ffffff 50%,
-        #c7d5e0 70%,
+        #ffdd88 55%,
+        #c7d5e0 75%,
         #c7d5e0 100%
     );
-    background-size: 200% auto;
+    background-size: 300% auto;
     background-clip: text;
     -webkit-background-clip: text;
     color: transparent !important;
-    animation: shimmer 1.2s linear infinite;
+    animation: shimmer-fast 0.8s linear infinite;
+    text-shadow: none;
 }
 
-@keyframes shimmer {
+@keyframes shimmer-fast {
     0% {
-        background-position: 200% 0;
+        background-position: 300% 0;
     }
     100% {
-        background-position: -200% 0;
+        background-position: -300% 0;
+    }
+}
+.github-export-btn.saving {
+    background: linear-gradient(135deg, #2a3a5e, #4a7a9e, #2a3a5e, #ffd966, #2a3a5e) !important;
+    background-size: 400% 100%;
+    animation: button-shimmer 1s ease infinite;
+    border: 1px solid #ffd700 !important;
+    box-shadow: 0 0 12px rgba(255, 220, 100, 0.8) !important;
+    transition: none !important;
+}
+
+@keyframes button-shimmer {
+    0% {
+        background-position: 100% 0;
+    }
+    100% {
+        background-position: -100% 0;
     }
 }
         /* Разделитель в сайдбаре */
