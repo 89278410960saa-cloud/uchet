@@ -2112,16 +2112,29 @@
             margin-bottom: 8.04px;
             align-items: center;
         }
-.github-export-btn.saving {
-    background: linear-gradient(120deg, #2a475e, #4a7a9e, #2a475e);
-    background-size: 200% 100%;
-    animation: shimmer-bg 1.5s infinite;
-    transition: none;
+.github-export-btn.saving .sidebar-icon {
+    background: linear-gradient(
+        120deg,
+        #c7d5e0 0%,
+        #c7d5e0 30%,
+        #ffffff 50%,
+        #c7d5e0 70%,
+        #c7d5e0 100%
+    );
+    background-size: 200% auto;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent !important;
+    animation: shimmer 1.2s linear infinite;
 }
 
-@keyframes shimmer-bg {
-    0% { background-position: 200% 0; }
-    100% { background-position: -200% 0; }
+@keyframes shimmer {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
 }
         /* Разделитель в сайдбаре */
         .sidebar-divider {
