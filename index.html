@@ -2118,6 +2118,17 @@
     animation: border-pulse 1s infinite ease-in-out;
     background: inherit !important; /* принудительно не меняем фон */
 }
+.github-export-btn {
+    background: linear-gradient(135deg, #7a9eb5 0%, #5a7a90 100%) !important;
+}
+
+/* Состояние сохранения – оставляем тот же фон, добавляем рамку и тень */
+.github-export-btn.saving {
+    background: linear-gradient(135deg, #7a9eb5 0%, #5a7a90 100%) !important;
+    border: 1px solid #ffd966 !important;
+    box-shadow: 0 0 8px rgba(255, 220, 100, 0.6) !important;
+    animation: border-pulse 1s infinite ease-in-out;
+}
 
 /* Опционально: пульсация рамки (можно убрать, если не нужна) */
 @keyframes border-pulse {
