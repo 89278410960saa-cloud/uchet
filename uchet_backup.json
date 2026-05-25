@@ -468,16 +468,16 @@
       "name": "Гильза ГМЛ 16-6 ЛУЖЕНАЯ",
       "quantity": "150",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
+      "purchaseName": "Гильза кабельная ГМЛ 16-6",
+      "purchaseQuantity": "150",
+      "purchaseUnit": "шт",
+      "amount": "6293.37",
       "supplier": "АО \"ТД \"Электротехмонтаж\"",
       "department": "11/0120 Служба главного энергетика",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № 104/5503094",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "7",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -491,16 +491,16 @@
       "name": "Гильза ГМЛ 10-5 ЛУЖЕНАЯ",
       "quantity": "100",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
+      "purchaseName": "Гильза кабельная ГМЛ 10-5",
+      "purchaseQuantity": "100",
+      "purchaseUnit": "шт",
+      "amount": "3644.14",
       "supplier": "АО \"ТД \"Электротехмонтаж\"",
       "department": "11/0120 Служба главного энергетика",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № 104/5503094",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "7",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -1590,7 +1590,7 @@
     {
       "recordId": "20260515155026956_1drkw2nv8",
       "docNumber": "2026-429 (от 12.05.2026)",
-      "status": "Приход",
+      "status": "Выполнено",
       "id": "М027815",
       "name": "Цемент М400 50кг\n",
       "quantity": "40",
@@ -1608,12 +1608,12 @@
       "date": "22.05.2026",
       "planFact": "29.05.2026",
       "fact": "25.05.2026",
-      "shipmentDoc": ""
+      "shipmentDoc": "72748КИН от 25.05.2026"
     },
     {
       "recordId": "20260515154839856_iqzdow2m3",
       "docNumber": "2026-426 (от 13.05.2026)",
-      "status": "Приход",
+      "status": "Выполнено",
       "id": "МАТ-09448",
       "name": "Бензиновый триммер STIGA SBC 243 D\n",
       "quantity": "1",
@@ -1631,7 +1631,7 @@
       "date": "22.05.2026",
       "planFact": "29.05.2026",
       "fact": "25.05.2026",
-      "shipmentDoc": ""
+      "shipmentDoc": "72749КИН от 25.05.2026"
     },
     {
       "recordId": "20260513164015666_zht8zglr4",
@@ -1922,7 +1922,7 @@
     {
       "recordId": "20260507172948614_1nijjisfs",
       "docNumber": "2026-424 (от 07.05.2026)",
-      "status": "Поставка",
+      "status": "Выполнено",
       "id": "МАТ-01821",
       "name": "Биг-Бэг 4-х стропный 95 х 95 х 130 см, до 1 тонны, верх открытый, низ глухой",
       "quantity": "204",
@@ -1939,8 +1939,8 @@
       "deliveryTerms": "Включена",
       "date": "25.05.2026",
       "planFact": "29.05.2026",
-      "fact": "",
-      "shipmentDoc": ""
+      "fact": "25.05.2026",
+      "shipmentDoc": "10386716/4; 10386719/26; 10384877/2 от 25.05.2026"
     },
     {
       "recordId": "20260507165619783_0zd3pkxr1",
@@ -21574,5 +21574,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-05-25T12:51:36.849Z"
+  "exportDate": "2026-05-25T13:26:09.990Z"
 }
