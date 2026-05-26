@@ -2987,7 +2987,7 @@ button:hover{background:#222733!important}
         <!-- Страница Учет -->
 <div id="accounting" class="page active">
     <div class="container" style="padding-top: 2.01px;padding-left: 3.35px;padding-right: 3.35px;border-left-width: 0.0px;border-right-width: 0.0px;border-top-width: 0.0px;border-bottom-width: 0.0px;padding-bottom: 3.35px; display: flex; flex-direction: column; height: 100%;">
-        <div class="controls-container" style="padding-top: 0.0px;margin-top: 0px;margin-bottom: 6.7px;padding-bottom: 0.0px;border-bottom-width: 1px;">
+        <div class="controls-container" style="padding-top: 0.0px;margin-top: 0px;margin-bottom: 6px;padding-bottom: 0.0px;border-bottom-width: 1px;">
             <div class="controls" style="margin-bottom: 3.35px; display: flex; flex-wrap: wrap; align-items: center; gap: 6.7px;">
                 <input type="text" id="searchAccountingInput" placeholder="Поиск по всем столбцам..." oninput="filterAccountingTable()" style="min-width: 93.8px; flex: 1;">
                 <select id="yearFilter" class="year-filter" onchange="filterAccountingTable()" style="min-width: 67.0px; flex: 1;" autocomplete="off">
@@ -3126,8 +3126,8 @@ button:hover{background:#222733!important}
         <!-- Страница Платежи -->
 <div id="payments" class="page">
     <div class="container" style="padding-top: 3.35px;border-top-width: 0.0px;border-bottom-width: 0.0px;border-right-width: 0.0px;border-left-width: 0.0px;padding-left: 3.35px;padding-right: 3.35px;padding-bottom: 3.35px;">
-        <div class="controls-container" style="margin-top: -13.4px;padding-bottom: 0px;padding-top: 0px;">
-            <div class="controls" style="margin-bottom: 0.0px;">
+        <div class="controls-container" style="margin-top: 0px;padding-bottom: 0px;padding-top: 0px;">
+            <div class="controls" style="margin-bottom: 0px;">
     <input type="text" id="searchPaymentsInput" placeholder="Поиск по всем столбцам..." oninput="filterPaymentsTable()">
     <input list="applicationsListFilter" id="paymentsApplicationFilter" class="application-filter" placeholder="Фильтр по заявкам..." oninput="filterPaymentsTable()">
     <input list="suppliersListFilter" id="paymentsSupplierFilter" class="supplier-filter" placeholder="Фильтр по контрагентам..." oninput="filterPaymentsTable()">
@@ -3152,7 +3152,7 @@ button:hover{background:#222733!important}
             </div>
         </div>
         
-        <div class="table-scroll-container" style="height: auto; margin-top: 10.05px;">
+        <div class="table-scroll-container" style="height: auto; margin-top: 0px;">
             <table id="paymentsTable" style="table-layout: fixed;">
                 <thead>
     <tr>
@@ -3178,7 +3178,7 @@ button:hover{background:#222733!important}
         <!-- Страница Урегулирование -->
 <div id="settlement" class="page">
     <div class="container" style="padding-top: 3.35px;border-top-width: 0.0px;border-right-width: 0.0px;border-bottom-width: 0.0px;border-left-width: 0.0px;padding-left: 3.35px;padding-right: 3.35px;padding-bottom: 3.35px;">
-        <div class="controls-container" style="margin-bottom: 13.4px;padding-bottom: 0.0px;padding-top: 0px;height: 21px;">
+        <div class="controls-container" style="margin-bottom: 7px;padding-bottom: 0.0px;padding-top: 0px;">
             <div class="controls">
                 <input type="text" id="searchSettlementInput" placeholder="Поиск по всем столбцам..." oninput="filterSettlementTable()">
                 <input list="suppliersListFilter" id="settlementSupplierFilter" class="supplier-filter" placeholder="Фильтр по контрагентам..." oninput="filterSettlementTable()">
@@ -3224,7 +3224,7 @@ button:hover{background:#222733!important}
         <!-- Страница Почтовый реестр -->
 <div id="mail-registry" class="page">
     <div class="container" style="padding-top: 3.35px;border-top-width: 0.0px;border-bottom-width: 0.0px;border-right-width: 0.0px;border-left-width: 0.0px;padding-left: 3.35px;padding-right: 3.35px;padding-bottom: 3.35px;">
-        <div class="controls-container" style="padding-top: 0px;padding-bottom: 0.0px;margin-bottom: 20.1px;height: 21px;">
+        <div class="controls-container" style="padding-top: 0px;padding-bottom: 0.0px;margin-bottom: 0px;">
             <div class="controls">
                 <input type="text" id="searchMailInput" placeholder="Поиск по всем столбцам..." oninput="filterMailTable()">
                 <input list="suppliersListFilter" id="mailSupplierFilter" class="supplier-filter" placeholder="Фильтр по контрагентам..." oninput="filterMailTable()">
@@ -3241,7 +3241,7 @@ button:hover{background:#222733!important}
             </div>
         </div>
         
-        <div class="table-scroll-container" style="height: auto; margin-top: 0.0px;">
+        <div class="table-scroll-container" style="height: auto; margin-top: 6.7px;">
             <table id="mailTable" style="table-layout: fixed;">
                 <thead>
         <tr>
@@ -3266,7 +3266,7 @@ button:hover{background:#222733!important}
         <!-- Страница Реестр доверенностей -->
 <div id="proxy-registry" class="page">
     <div class="container" style="padding-top: 3.35px;border-top-width: 0.0px;border-right-width: 0.0px;border-bottom-width: 0.0px;border-left-width: 0.0px;padding-left: 3.35px;padding-right: 3.35px;padding-bottom: 3.35px;">
-        <div class="controls-container" style="padding-bottom: 0.0px;padding-top: 0px;height: 21px;">
+        <div class="controls-container" style="padding-bottom: 0.0px;padding-top: 0px;">
             <div class="controls">
     <input type="text" id="searchProxyInput" placeholder="Поиск по всем столбцам..." oninput="filterProxyTable()">
     <input list="suppliersListFilter" id="proxySupplierFilter" class="supplier-filter" placeholder="Фильтр по контрагентам..." oninput="filterProxyTable()">
@@ -3288,7 +3288,7 @@ button:hover{background:#222733!important}
             </div>
         </div>
         
-        <div class="table-scroll-container" style="height: auto; margin-top: 10.05px;">
+        <div class="table-scroll-container" style="height: auto; margin-top: 0px;">
             <table id="proxyTable" style="table-layout: fixed;">
                 <thead>
     <tr>
@@ -11041,8 +11041,179 @@ document.addEventListener('DOMContentLoaded', () => {
 .selected-row {
   outline: 2px solid #6c5ce7;
 }
+/* Убираем лишние отступы между панелью управления и таблицей
+   на страницах Платежи, Рекламации, Отправления, Самовывоз */
+#payments .controls,
+#settlement .controls,
+#mail-registry .controls,
+#proxy-registry .controls {
+    margin-bottom: 7px !important;
+}
+/* Убираем нижний отступ у controls-container на странице Платежи */
+#payments .controls-container {
+    margin-bottom: 0 !important;
+}
+#mailTable th {
+    min-height: 32px;
+    padding: 8px 4px !important;   /* переопределить компактный padding */
+    vertical-align: middle;
+}
 </style>
+<!-- НОВЫЙ СКРИПТ ДЛЯ ПЕРЕСТАНОВКИ КНОПОК -->
+<script>
+(function() {
+    // --------------------------------------------------------------
+    // 1. Настройки
+    // --------------------------------------------------------------
+    const SELECTOR = '.controls';          // блоки с фильтрами и кнопками
+    const BUTTONS_WRAPPER_CLASS = 'buttons-wrapper';
+    const COMMENT_BLOCK_CLASS = 'comment-control'; // блок комментариев не трогаем
 
+    // Хранилище уже обработанных контейнеров (чтобы не дублировать)
+    const processedContainers = new WeakSet();
+
+    // --------------------------------------------------------------
+    // 2. Функция переноса и растягивания кнопок для одного .controls
+    // --------------------------------------------------------------
+    function rearrangeControls(container) {
+        if (processedContainers.has(container)) return;
+        processedContainers.add(container);
+
+        // Собираем элементы:
+        // - фильтры и прочие не-кнопки (nonButtons)
+        // - кнопки и контейнеры с кнопками (buttons), исключая блок комментариев
+        const nonButtons = [];
+        const buttons = [];
+
+        Array.from(container.children).forEach(child => {
+            // Блок комментариев оставляем наверху
+            if (child.classList && child.classList.contains(COMMENT_BLOCK_CLASS)) {
+                nonButtons.push(child);
+                return;
+            }
+
+            // Обычная кнопка
+            if (child.tagName === 'BUTTON') {
+                buttons.push(child);
+                return;
+            }
+
+            // DIV, внутри которого есть кнопки (но не comment-control)
+            if (child.tagName === 'DIV' && child.querySelector('button')) {
+                buttons.push(child);
+                return;
+            }
+
+            // Всё остальное (поля ввода, селекты, даталисты, блок суммы) – оставляем наверху
+            nonButtons.push(child);
+        });
+
+        if (buttons.length === 0) return;
+
+        // Очищаем контейнер
+        container.innerHTML = '';
+
+        // Вставляем все поля фильтров (они остаются на своих местах)
+        nonButtons.forEach(el => container.appendChild(el));
+
+        // --------------------------------------------------------------
+        // 3. Создаём обёртку для кнопок
+        //    Используем CSS Grid, чтобы кнопки растягивались равномерно
+        // --------------------------------------------------------------
+        const wrapper = document.createElement('div');
+        wrapper.className = BUTTONS_WRAPPER_CLASS;
+        wrapper.style.display = 'grid';
+        wrapper.style.gridTemplateColumns = 'repeat(auto-fit, minmax(100px, 1fr))';
+        wrapper.style.gap = '5px';
+        wrapper.style.marginTop = '3px';
+        wrapper.style.width = '100%';
+        wrapper.style.flex = '0 0 100%';   // принудительный перенос строки внутри flex-родителя
+
+        // --------------------------------------------------------------
+        // 4. Добавляем кнопки в обёртку и заставляем их растягиваться
+        // --------------------------------------------------------------
+        buttons.forEach(btn => {
+            // Принудительно растягиваем сам элемент (кнопку или контейнер)
+            btn.style.width = '100%';
+            btn.style.minWidth = '0';
+            btn.style.maxWidth = '100%';
+            btn.style.boxSizing = 'border-box';
+
+            // Если это контейнер (например, div с группой кнопок), то и все внутренние кнопки растягиваем
+            if (btn.tagName === 'DIV') {
+                const innerButtons = btn.querySelectorAll('button');
+                innerButtons.forEach(inner => {
+                    inner.style.width = '100%';
+                    inner.style.minWidth = '0';
+                    inner.style.maxWidth = '100%';
+                    inner.style.boxSizing = 'border-box';
+                });
+            }
+
+            wrapper.appendChild(btn);
+        });
+
+        container.appendChild(wrapper);
+        console.log('[Rearrange] Кнопки перенесены и растянуты в', container);
+    }
+
+    // --------------------------------------------------------------
+    // 5. Функция обработки всех .controls на странице
+    // --------------------------------------------------------------
+    function processAllControls() {
+        document.querySelectorAll(SELECTOR).forEach(rearrangeControls);
+    }
+
+    // --------------------------------------------------------------
+    // 6. Запуск после полной загрузки страницы
+    // --------------------------------------------------------------
+    window.addEventListener('load', function() {
+        // Небольшая задержка, чтобы другие скрипты успели отрендерить динамический контент
+        setTimeout(processAllControls, 300);
+    });
+
+    // --------------------------------------------------------------
+    // 7. Дополнительно: отслеживаем изменения DOM (MutationObserver)
+    //    – если какой-то скрипт позже перерисовывает .controls, мы снова применим перенос
+    // --------------------------------------------------------------
+    const observer = new MutationObserver(function(mutations) {
+        let shouldUpdate = false;
+        for (const mutation of mutations) {
+            if (mutation.type === 'childList' && mutation.target.matches && mutation.target.matches(SELECTOR)) {
+                shouldUpdate = true;
+                break;
+            }
+            if (mutation.addedNodes.length) {
+                for (const node of mutation.addedNodes) {
+                    if (node.nodeType === Node.ELEMENT_NODE && node.matches && node.matches(SELECTOR)) {
+                        shouldUpdate = true;
+                        break;
+                    }
+                }
+            }
+        }
+        if (shouldUpdate) {
+            setTimeout(processAllControls, 100);
+        }
+    });
+
+    observer.observe(document.body, {
+        childList: true,
+        subtree: true
+    });
+
+    // Небольшой багфикс: при ручном переключении страниц (например, через showPage)
+    // таблицы могут перерисовываться, но .controls при этом не пересоздаётся.
+    // Поэтому дополнительно обрабатываем клики по пунктам меню.
+    document.addEventListener('click', function(e) {
+        const menuItem = e.target.closest('.sidebar-cell.menu-item[data-page]');
+        if (menuItem) {
+            setTimeout(processAllControls, 200);
+        }
+    });
+
+})();
+</script>
 
 
 </body>
