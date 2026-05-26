@@ -522,6 +522,49 @@
 #proxyTable th:nth-child(2) {
     width: 100px !important;
 }
+    /* ===== ФИКСИРОВАННАЯ ШИРИНА ДЛЯ ТАБЛИЦЫ ДОВЕРЕННОСТЕЙ (Самовывоз) ===== */
+#proxyTable {
+    table-layout: fixed !important;
+    width: 100% !important;
+}
+
+/* Новые ширины столбцов */
+#proxyTable th:nth-child(1), #proxyTable td:nth-child(1) { width: 15px !important; }  /* Дата — уменьшено */
+#proxyTable th:nth-child(2), #proxyTable td:nth-child(2) { width: 15px !important; }  /* Статус — уменьшено */
+#proxyTable th:nth-child(3), #proxyTable td:nth-child(3) { width: 25px !important; }  /* Заявка */
+#proxyTable th:nth-child(4), #proxyTable td:nth-child(4) { width: 25px !important; }  /* Контрагент */
+#proxyTable th:nth-child(5), #proxyTable td:nth-child(5) { width: 25px !important; }  /* Документ */
+#proxyTable th:nth-child(6), #proxyTable td:nth-child(6) { width: 150px !important; }  /* Адрес — расширено */
+#proxyTable th:nth-child(7), #proxyTable td:nth-child(7) { width: 25px !important; }  /* Водитель */
+
+/* ===== ФИКСИРОВАННАЯ ШИРИНА ДЛЯ ПОЧТОВОГО РЕЕСТРА (Отправления) ===== */
+#mailTable {
+    table-layout: fixed !important;
+    width: 100% !important;
+}
+
+/* Ширина столбцов (6 столбцов) */
+#mailTable th:nth-child(1), #mailTable td:nth-child(1) { width: 10px !important; }  /* Дата */
+#mailTable th:nth-child(2), #mailTable td:nth-child(2) { width: 35px !important; }  /* Контрагент */
+#mailTable th:nth-child(3), #mailTable td:nth-child(3) { width: 35px !important; }  /* Документ */
+#mailTable th:nth-child(4), #mailTable td:nth-child(4) { width: 1px !important; }  /* Кол-во листов */
+#mailTable th:nth-child(5), #mailTable td:nth-child(5) { width: 50px !important; }  /* Адрес организации */
+#mailTable th:nth-child(6), #mailTable td:nth-child(6) { width: 30px !important; }  /* Отправитель */
+
+/* ===== ФИКСИРОВАННАЯ ШИРИНА ДЛЯ ТАБЛИЦЫ УРЕГУЛИРОВАНИЯ (Рекламации) ===== */
+#settlementTable {
+    table-layout: fixed !important;
+    width: 100% !important;
+}
+
+/* Ширина столбцов (7 столбцов) */
+#settlementTable th:nth-child(1), #settlementTable td:nth-child(1) { width: 45px !important; }  /* Примечание */
+#settlementTable th:nth-child(2), #settlementTable td:nth-child(2) { width: 15px !important; }  /* Статус */
+#settlementTable th:nth-child(3), #settlementTable td:nth-child(3) { width: 35px !important; }  /* Контрагент */
+#settlementTable th:nth-child(4), #settlementTable td:nth-child(4) { width: 35px !important; }  /* Договор */
+#settlementTable th:nth-child(5), #settlementTable td:nth-child(5) { width: 60px !important; }  /* Замечание */
+#settlementTable th:nth-child(6), #settlementTable td:nth-child(6) { width: 20px !important; }  /* № Исходящее */
+#settlementTable th:nth-child(7), #settlementTable td:nth-child(7) { width: 20px !important; }  /* № Входящее */
 /* Для таблицы учета - более сложное распределение */
 #accountingTable th {
     width: auto !important;
@@ -542,7 +585,19 @@
     width: 100% !important;
     table-layout: auto !important;
 }
+/* Центрирование текста в таблице Доверенностей (Самовывоз) */
+#proxyTable th,
+#proxyTable td {
 
+    vertical-align: middle !important;
+}
+
+/* Центрирование текста в таблице Урегулирования (Рекламации) */
+#settlementTable th,
+#settlementTable td {
+
+    vertical-align: middle !important;
+}
 /* Автоматическое распределение для таблиц */
 #counterpartiesTable,
 #settlementTable,
