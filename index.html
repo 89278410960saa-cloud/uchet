@@ -544,12 +544,18 @@
 }
 
 /* Ширина столбцов (6 столбцов) */
-#mailTable th:nth-child(1), #mailTable td:nth-child(1) { width: 10px !important; }  /* Дата */
-#mailTable th:nth-child(2), #mailTable td:nth-child(2) { width: 35px !important; }  /* Контрагент */
-#mailTable th:nth-child(3), #mailTable td:nth-child(3) { width: 35px !important; }  /* Документ */
-#mailTable th:nth-child(4), #mailTable td:nth-child(4) { width: 1px !important; }  /* Кол-во листов */
-#mailTable th:nth-child(5), #mailTable td:nth-child(5) { width: 50px !important; }  /* Адрес организации */
-#mailTable th:nth-child(6), #mailTable td:nth-child(6) { width: 30px !important; }  /* Отправитель */
+#mailTable th:nth-child(1), #mailTable td:nth-child(1) { width: 70px !important; }  /* Дата */
+#mailTable th:nth-child(2), #mailTable td:nth-child(2) { width: 120px !important; } /* Контрагент */
+#mailTable th:nth-child(3), #mailTable td:nth-child(3) { width: 100px !important; } /* Документ */
+#mailTable th:nth-child(4), #mailTable td:nth-child(4) { 
+    width: 20px !important; 
+    max-width: 20px !important; 
+    overflow: hidden !important;
+    white-space: nowrap !important;
+    text-overflow: ellipsis !important;
+}  /* Кол-во листов */
+#mailTable th:nth-child(5), #mailTable td:nth-child(5) { width: 180px !important; } /* Адрес организации */
+#mailTable th:nth-child(6), #mailTable td:nth-child(6) { width: 100px !important; } /* Отправитель */
 
 /* ===== ФИКСИРОВАННАЯ ШИРИНА ДЛЯ ТАБЛИЦЫ УРЕГУЛИРОВАНИЯ (Рекламации) ===== */
 #settlementTable {
