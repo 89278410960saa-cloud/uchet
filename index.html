@@ -2827,6 +2827,19 @@ button:hover,
 .clickable-row {
     cursor: default !important;
 }
+/* Стиль для кнопки "Сбросить фильтры" – более серый */
+.reset-filter-btn {
+    background: linear-gradient(135deg, #6c757d 0%, #495057 100%) !important;
+    color: #e9ecef !important;
+    border: none;
+    transition: all 0.2s ease;
+}
+
+.reset-filter-btn:hover {
+    background: linear-gradient(135deg, #868e96 0%, #5a6268 100%) !important;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
 </style>
 
 
@@ -3023,9 +3036,9 @@ button:hover{background:#222733!important}
 </select>
                 
                 <div style="display: flex; gap: 6.7px;">
-                    <button onclick="clearAccountingFilters()">Сбросить фильтры</button>
-                    <button onclick="showAddAccountingForm()" id="addRecordBtn">Добавить запись</button>
-                    <button onclick="exportToExcel('main')">Экспорт в Excel</button>
+    <button onclick="showAddAccountingForm()" id="addRecordBtn">Добавить запись</button>
+    <button onclick="clearAccountingFilters()" class="reset-filter-btn">Сбросить фильтры</button>
+    <button onclick="exportToExcel('main')">Экспорт в Excel</button>
                     <button onclick="toggleWeeklyDeliveriesMode()" id="weeklyDeliveriesBtn" style="background: linear-gradient(135deg, rgb(255, 215, 0) 0%, rgb(255, 165, 0) 100%); color: rgb(27, 40, 56); border: 0.67px solid rgb(255, 215, 0); box-shadow: none;">Поставки на неделю (0)</button>
                     <button onclick="toggleOverdueMode()" id="overdueBtn" style="background: linear-gradient(135deg, rgba(190, 70, 60, 0.6) 0%, rgba(140, 44, 36, 0.6) 100%); color: white; border: 0.67px solid rgb(190, 70, 60); box-shadow: none;">Просроченные (0)</button>
                     <button onclick="printDeliveriesAndOverdue()" style="background: linear-gradient(135deg, #6c757d 0%, #495057 100%); color: white;">🖨️</button>
@@ -3086,13 +3099,12 @@ button:hover{background:#222733!important}
     <div class="container" style="padding-top: 3.35px;border-top-width: 0.0px;border-left-width: 0.0px;border-bottom-width: 0.0px;border-right-width: 0.0px;padding-left: 3.35px;padding-right: 3.35px;padding-bottom: 3.35px;">
         <div class="controls-container" style="margin-top: -13.4px;padding-bottom: 0px;padding-top: 0px;margin-bottom: 6.7px;">
             <div class="controls" style="margin-bottom: 0.0px;">
-                <input type="text" id="searchCounterpartiesInput" placeholder="Поиск по всем столбцам..." oninput="filterCounterpartiesTable()">
-                <!-- ИЗМЕНЕН ПОРЯДОК КНОПОК -->
-                <button onclick="clearCounterpartiesFilters()">Сбросить фильтры</button>
-                <button onclick="showAddCounterpartyForm()" id="addCounterpartyBtn">Добавить контрагента</button>
-                <button onclick="toggleBlacklistFilter()" id="blacklistFilterBtn">Показать черный список</button>
-                <button onclick="exportToExcel('counterparties')">Экспорт в Excel</button>
-            </div>
+    <input type="text" id="searchCounterpartiesInput" placeholder="Поиск по всем столбцам..." oninput="filterCounterpartiesTable()">
+    <button onclick="showAddCounterpartyForm()" id="addCounterpartyBtn">Добавить контрагента</button>
+    <button onclick="clearCounterpartiesFilters()" class="reset-filter-btn">Сбросить фильтры</button>
+    <button onclick="toggleBlacklistFilter()" id="blacklistFilterBtn">Показать черный список</button>
+    <button onclick="exportToExcel('counterparties')">Экспорт в Excel</button>
+</div>
             
             <!-- ДОБАВЛЕНО: Контейнер для заголовков таблицы контрагентов -->
             <div class="table-headers-container" id="counterpartiesHeaders" style="width: 100%; overflow-x: hidden; margin-top: 6.7px; display: none;">
@@ -3142,7 +3154,7 @@ button:hover{background:#222733!important}
     </select>
     <input type="date" id="paymentDateFilter" onchange="filterPaymentsTable()" title="Фильтр по дате платежа">
     <button onclick="showAddPaymentForm()" id="addPaymentBtn">Добавить платеж</button>
-    <button onclick="clearPaymentsFilters()">Сбросить фильтры</button>
+    <button onclick="clearPaymentsFilters()" class="reset-filter-btn">Сбросить фильтры</button>
     <button onclick="exportToExcel('payments')">Экспорт в Excel</button>
 </div>
             
@@ -3188,7 +3200,7 @@ button:hover{background:#222733!important}
                     <option value="Выполнено">Выполнено</option>
                 </select>
                 <button onclick="showAddSettlementForm()" id="addSettlementBtn">Добавить запись</button>
-                <button onclick="clearSettlementFilters()">Сбросить фильтры</button>
+                <button onclick="clearSettlementFilters()" class="reset-filter-btn">Сбросить фильтры</button>
                 <button onclick="exportToExcel('settlement')">Экспорт в Excel</button>
             </div>
             
@@ -3226,14 +3238,14 @@ button:hover{background:#222733!important}
     <div class="container" style="padding-top: 3.35px;border-top-width: 0.0px;border-bottom-width: 0.0px;border-right-width: 0.0px;border-left-width: 0.0px;padding-left: 3.35px;padding-right: 3.35px;padding-bottom: 3.35px;">
         <div class="controls-container" style="padding-top: 0px;padding-bottom: 0.0px;margin-bottom: 0px;">
             <div class="controls">
-                <input type="text" id="searchMailInput" placeholder="Поиск по всем столбцам..." oninput="filterMailTable()">
-                <input list="suppliersListFilter" id="mailSupplierFilter" class="supplier-filter" placeholder="Фильтр по контрагентам..." oninput="filterMailTable()">
-                <input type="date" id="mailDateFilter" onchange="filterMailTable()">
-                <button onclick="printMailTable()">Печать</button>
-                <button onclick="showAddMailForm()" id="addMailBtn">Добавить запись</button>
-                <button onclick="clearMailFilters()">Сбросить фильтры</button>
-                <button onclick="exportToExcel('mail')">Экспорт в Excel</button>
-            </div>
+    <input type="text" id="searchMailInput" placeholder="Поиск по всем столбцам..." oninput="filterMailTable()">
+    <input list="suppliersListFilter" id="mailSupplierFilter" class="supplier-filter" placeholder="Фильтр по контрагентам..." oninput="filterMailTable()">
+    <input type="date" id="mailDateFilter" onchange="filterMailTable()">
+    <button onclick="showAddMailForm()" id="addMailBtn">Добавить запись</button>
+    <button onclick="clearMailFilters()" class="reset-filter-btn">Сбросить фильтры</button>
+    <button onclick="printMailTable()">Печать</button>
+    <button onclick="exportToExcel('mail')">Экспорт в Excel</button>
+</div>
             
             <!-- ДОБАВЛЕНО: Контейнер для заголовков таблицы почтового реестра -->
             <div class="table-headers-container" id="mailHeaders" style="width: 100%; overflow-x: hidden; margin-top: 6.7px; display: none;">
@@ -3278,7 +3290,7 @@ button:hover{background:#222733!important}
 </select>
 <input type="date" id="proxyDateFilter" onchange="filterProxyTable()" title="Фильтр по дате доверенности">
     <button onclick="showAddProxyForm()" id="addProxyBtn">Добавить доверенность</button>
-    <button onclick="clearProxyFilters()">Сбросить фильтры</button>
+    <button onclick="clearProxyFilters()" class="reset-filter-btn">Сбросить фильтры</button>
     <button onclick="exportToExcel('proxy')">Экспорт в Excel</button>
 </div>
             
