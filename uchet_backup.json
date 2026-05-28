@@ -1,6 +1,52 @@
 {
   "accountingData": [
     {
+      "recordId": "20260528114926670_rvcv4mm3m",
+      "docNumber": "2026-214 (от 20.03.2026)",
+      "status": "В работе",
+      "id": "-",
+      "name": "-",
+      "quantity": "-",
+      "unit": "-",
+      "purchaseName": "Элемент охлаждающий KS-4 Cooling Unit",
+      "purchaseQuantity": "10",
+      "purchaseUnit": "шт",
+      "amount": "3150.77",
+      "supplier": "ООО \"Коловрат\"",
+      "department": "11/0141 Котельная",
+      "contract": "",
+      "paymentTerms": "50 %, 50 %",
+      "deliveryDays": "112",
+      "deliveryTerms": "Включена",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
+    },
+    {
+      "recordId": "20260528114828352_h957mcgqc",
+      "docNumber": "2026-214 (от 20.03.2026)",
+      "status": "В работе",
+      "id": "-",
+      "name": "-",
+      "quantity": "-",
+      "unit": "-",
+      "purchaseName": "Клапан проходной H2F-25 valve cast steel DN 25",
+      "purchaseQuantity": "10",
+      "purchaseUnit": "шт",
+      "amount": "26802.06",
+      "supplier": "ООО \"Коловрат\"",
+      "department": "11/0141 Котельная",
+      "contract": "",
+      "paymentTerms": "50 %, 50 %",
+      "deliveryDays": "112",
+      "deliveryTerms": "Включена",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
+    },
+    {
       "recordId": "20260527170536815_h3e1vrzm4",
       "docNumber": "2026-427 (от 19.05.2026)",
       "status": "В работе",
@@ -1618,16 +1664,16 @@
       "name": "Роллет для окна (ОК- L = 1,65; h=1,475) \n",
       "quantity": "1",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
-      "supplier": "",
+      "purchaseName": "Жалюзи-роллета (Спецификация-заказ № 12_26052802)",
+      "purchaseQuantity": "1",
+      "purchaseUnit": "шт",
+      "amount": "45000.00",
+      "supplier": "ЗАО \"Астахов\"",
       "department": "17/0030 Строительства и ремонта",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № 222",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "21",
+      "deliveryTerms": "Самовывоз",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -13347,55 +13393,21 @@
       "fact": "11.12.2025",
       "shipmentDoc": "70019 от 09.12.25",
       "plan": "11.12.2025"
-    },
-    {
-      "recordId": "20260528114828352_h957mcgqc",
-      "docNumber": "2026-214 (от 20.03.2026)",
-      "status": "В работе",
-      "id": "-",
-      "name": "-",
-      "quantity": "-",
-      "unit": "-",
-      "purchaseName": "Клапан проходной H2F-25 valve cast steel DN 25",
-      "purchaseQuantity": "10",
-      "purchaseUnit": "шт",
-      "amount": "26802.06",
-      "supplier": "ООО \"Коловрат\"",
-      "department": "11/0141 Котельная",
-      "contract": "",
-      "paymentTerms": "50 %, 50 %",
-      "deliveryDays": "112",
-      "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
-      "fact": "",
-      "shipmentDoc": ""
-    },
-    {
-      "recordId": "20260528114926670_rvcv4mm3m",
-      "docNumber": "2026-214 (от 20.03.2026)",
-      "status": "В работе",
-      "id": "-",
-      "name": "-",
-      "quantity": "-",
-      "unit": "-",
-      "purchaseName": "Элемент охлаждающий KS-4 Cooling Unit",
-      "purchaseQuantity": "10",
-      "purchaseUnit": "шт",
-      "amount": "3150.77",
-      "supplier": "ООО \"Коловрат\"",
-      "department": "11/0141 Котельная",
-      "contract": "",
-      "paymentTerms": "50 %, 50 %",
-      "deliveryDays": "112",
-      "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
-      "fact": "",
-      "shipmentDoc": ""
     }
   ],
   "counterpartiesData": [
+    {
+      "recordId": "20260528122612274_9cn88ztpb",
+      "supplier": "ЗАО \"Астахов\"",
+      "inn": "7825122179",
+      "phone": "8-952-395-16-48",
+      "contact": "Цветкова Галина",
+      "email": "tgv@rollstandart.ru",
+      "address": "-",
+      "material": "роллеты",
+      "blacklisted": false,
+      "blacklistComment": ""
+    },
     {
       "recordId": "20260527095733093_yadcew7lu",
       "supplier": "ООО \"Фаворит\"",
@@ -21383,14 +21395,13 @@
       "incoming": "1 от 26.02.2026"
     },
     {
-      "note": "-",
+      "note": "согласование Смирнова замены",
       "status": "В работе",
       "supplier": "ООО \"Велосипедиссимо\"",
       "contract": "СЧ № 574222",
       "remark": "замена поз. 1 счета на другую марку велосипеда или возврат ДС",
       "outgoing": "1112 от 26.05.2026",
-      "incoming": "",
-      "recordId": "20260527110054255_wd6t7ez26"
+      "incoming": "б/н от 28.05.2026"
     },
     {
       "note": "фото серийного номера с коробки, а также на штанге триммера",
@@ -21399,7 +21410,8 @@
       "contract": "СЧ № YL113605",
       "remark": "отсутствует бенз. двигатель при поставке триммера",
       "outgoing": "1127 от 27.05.2026",
-      "incoming": ""
+      "incoming": "",
+      "recordId": "20260528122438361_kcdb2awa1"
     },
     {
       "note": "-",
@@ -21408,7 +21420,8 @@
       "contract": "СЧ № 17248132",
       "remark": "Возврат ДС",
       "outgoing": "1132 от 27.05.2026",
-      "incoming": ""
+      "incoming": "",
+      "recordId": "20260528122438361_ll8a9kgxi"
     }
   ],
   "mailData": [
@@ -22145,5 +22158,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-05-28T08:52:48.599Z"
+  "exportDate": "2026-05-28T09:36:03.632Z"
 }
