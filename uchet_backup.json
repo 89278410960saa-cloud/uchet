@@ -1,6 +1,29 @@
 {
   "accountingData": [
     {
+      "recordId": "20260529125232279_sy3jbyy8t",
+      "docNumber": "2026-380 (от 29.04.2026)",
+      "status": "В работе",
+      "id": "М000028933",
+      "name": "Гидроизоляция Гидропласт Стоп 5кг",
+      "quantity": "5",
+      "unit": "шт",
+      "purchaseName": "Гидроизоляция Гидропласт Стоп 5кг",
+      "purchaseQuantity": "5",
+      "purchaseUnit": "шт",
+      "amount": "9037.50",
+      "supplier": "ООО \"Базмон\"",
+      "department": "11/0144 НСВиК",
+      "contract": "СЧ № ЦБ-1829",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "7",
+      "deliveryTerms": "Включена",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
+    },
+    {
       "recordId": "20260528144613643_xa7vatx9a",
       "docNumber": "2026-369 (от 29.04.2026)",
       "status": "В работе",
@@ -238,16 +261,16 @@
       "name": "Растворитель (шт)\t646 BITUMAST 2,4КГ/2,8Л\n",
       "quantity": "2",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
-      "supplier": "",
+      "purchaseName": "Растворитель 646 \nBitumast 2,4 кг/2,8 л \nГОСТ",
+      "purchaseQuantity": "2",
+      "purchaseUnit": "шт",
+      "amount": "2662.00",
+      "supplier": "ООО \"СТД \"Петрович\"",
       "department": "11/0144 НСВиК",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № СКЭ00058508",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "7",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -261,16 +284,16 @@
       "name": "Мастика каучукобитумная Btumast 18кг/21,5л\n",
       "quantity": "1",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
-      "supplier": "",
+      "purchaseName": "Мастика каучукобитумная \nBitumast 18 кг/21,5 л",
+      "purchaseQuantity": "1",
+      "purchaseUnit": "шт",
+      "amount": "5866.00",
+      "supplier": "ООО \"СТД \"Петрович\"",
       "department": "11/0144 НСВиК",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № СКЭ00058508",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "7",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -282,18 +305,18 @@
       "status": "В работе",
       "id": "М000028933",
       "name": "Гидроизоляция Гидропласт Стоп 5кг\n",
-      "quantity": "30",
+      "quantity": "25",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
-      "supplier": "",
+      "purchaseName": "Гидропломба Гидроласт \nСтоп 5 кг",
+      "purchaseQuantity": "25",
+      "purchaseUnit": "шт",
+      "amount": "36150.00",
+      "supplier": "ООО \"СТД \"Петрович\"",
       "department": "11/0144 НСВиК",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № СКЭ00058508",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "7",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -307,16 +330,16 @@
       "name": "ЦПС-300 Профи (цементно-песчаная смесь), 25 кг\tПЕТРОЛИТ",
       "quantity": "30",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
-      "supplier": "",
+      "purchaseName": "Смесь цементно-песчаная \n(ЦПС) М300 MixMaster \nУниверсал 25 кг",
+      "purchaseQuantity": "30",
+      "purchaseUnit": "шт",
+      "amount": "7950.00",
+      "supplier": "ООО \"СТД \"Петрович\"",
       "department": "11/0144 НСВиК",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № СКЭ00058508",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "7",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -624,7 +647,7 @@
     {
       "recordId": "20260527170536815_h3e1vrzm4",
       "docNumber": "2026-427 (от 19.05.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "МАТ-04427",
       "name": "Двухболтовой силовой хомут 45 – 55 мм TL45-55DRCSS TITAN LOCK",
       "quantity": "34",
@@ -639,8 +662,8 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "14",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "29.05.2026",
+      "planFact": "12.06.2026",
       "fact": "",
       "shipmentDoc": ""
     },
@@ -946,7 +969,7 @@
     {
       "recordId": "20260527130029113_lww2vq0kg",
       "docNumber": "2026-424 (от 07.05.2026)",
-      "status": "Приход",
+      "status": "Выполнено",
       "id": "МАТ-01821",
       "name": "Биг-Бэг 4-х стропный 95 х 95 х 130 см, до 1 тонны, верх открытый, низ глухой",
       "quantity": "25",
@@ -964,7 +987,7 @@
       "date": "29.05.2026",
       "planFact": "05.06.2026",
       "fact": "29.05.2026",
-      "shipmentDoc": ""
+      "shipmentDoc": "398559/16 от 29.05.2026"
     },
     {
       "recordId": "20260526105033953_q12su4m3t",
@@ -1452,7 +1475,7 @@
     {
       "recordId": "20260522162351218_kh9s9k39e",
       "docNumber": "2026-438 (от 19.05.2026)",
-      "status": "Приход",
+      "status": "Выполнено",
       "id": "МАТ-07232",
       "name": "Гильза ГМЛ 16-6 ЛУЖЕНАЯ",
       "quantity": "150",
@@ -1470,12 +1493,12 @@
       "date": "28.05.2026",
       "planFact": "04.06.2026",
       "fact": "29.05.2026",
-      "shipmentDoc": ""
+      "shipmentDoc": "104/5503094 от 29.05.2026"
     },
     {
       "recordId": "20260522162323482_cry2c0i5p",
       "docNumber": "2026-438 (от 19.05.2026)",
-      "status": "Приход",
+      "status": "Выполнено",
       "id": "МАТ-07232",
       "name": "Гильза ГМЛ 10-5 ЛУЖЕНАЯ",
       "quantity": "100",
@@ -1493,7 +1516,7 @@
       "date": "28.05.2026",
       "planFact": "04.06.2026",
       "fact": "29.05.2026",
-      "shipmentDoc": ""
+      "shipmentDoc": "104/5503094 от 29.05.2026"
     },
     {
       "recordId": "20260522162225905_np64g1xz7",
@@ -6326,7 +6349,7 @@
     {
       "recordId": "20260416112738856_fip3anvbn",
       "docNumber": "2026-311 (от 14.04.2026)",
-      "status": "Поставка",
+      "status": "Выполнено",
       "id": "МАТ-10304",
       "name": "Ремень зубчатый для BD 530, D43, D51 (аналог) HTD 475 5M 40  Для поломоечной машины Karcher B 40 C BP + D43\n",
       "quantity": "3",
@@ -6343,8 +6366,8 @@
       "deliveryTerms": "Включена",
       "date": "23.04.2026",
       "planFact": "21.05.2026",
-      "fact": "",
-      "shipmentDoc": ""
+      "fact": "29.05.2026",
+      "shipmentDoc": "409 от 21.05.2026"
     },
     {
       "recordId": "20260416112638218_jyr5vkbbf",
@@ -9025,12 +9048,11 @@
       "contract": "СЧ № 288",
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "35",
-      "deliveryTerms": "Включена",
+      "deliveryTerms": "Терминал",
       "date": "14.04.2026",
       "planFact": "19.05.2026",
       "fact": "",
-      "shipmentDoc": "",
-      "plan": "19.05.2026"
+      "shipmentDoc": ""
     },
     {
       "recordId": "20260317145959028_34e99tnuq",
@@ -9121,12 +9143,11 @@
       "contract": "СЧ № 288",
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "35",
-      "deliveryTerms": "Включена",
+      "deliveryTerms": "Терминал",
       "date": "14.04.2026",
       "planFact": "19.05.2026",
       "fact": "",
-      "shipmentDoc": "",
-      "plan": "19.05.2026"
+      "shipmentDoc": ""
     },
     {
       "recordId": "20260317145812063_j3vi1o4vy",
@@ -9145,12 +9166,11 @@
       "contract": "СЧ № 288",
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "35",
-      "deliveryTerms": "Включена",
+      "deliveryTerms": "Терминал",
       "date": "14.04.2026",
       "planFact": "19.05.2026",
       "fact": "",
-      "shipmentDoc": "",
-      "plan": "19.05.2026"
+      "shipmentDoc": ""
     },
     {
       "recordId": "20260317145618200_bxzrz7dud",
@@ -19989,7 +20009,7 @@
     },
     {
       "recordId": "20260528151214769_facnh7x25",
-      "status": "План",
+      "status": "Оплачено",
       "date": "29.05.2026",
       "amount": "7446.00",
       "supplier": "ООО «Техноберинг»",
@@ -22021,6 +22041,7 @@
   "settlementData": [
     {
       "recordId": "20260226132529859_j651aj3i0",
+      "date": "16.02.2026",
       "note": "Переходники получены Деловые Линии от 11.02.2026",
       "status": "Выполнено",
       "supplier": "ООО \"АНП Сервис\" ",
@@ -22031,6 +22052,7 @@
     },
     {
       "recordId": "20260313151827480_u2jgfcfrp",
+      "date": "23.02.2026",
       "note": "поступили на склад 13.03.2026",
       "status": "Выполнено",
       "supplier": "ООО \"Иннорус\"",
@@ -22040,34 +22062,37 @@
       "incoming": "1 от 26.02.2026"
     },
     {
+      "recordId": "20260529090222391_boetwl6yj",
+      "date": "26.05.2026",
       "note": "пиьсьмо и счет о доплате",
       "status": "В работе",
       "supplier": "ООО \"Велосипедиссимо\"",
       "contract": "СЧ № 574222",
       "remark": "замена поз. 1 счета на другую марку велосипеда или возврат ДС",
       "outgoing": "1112 от 26.05.2026",
-      "incoming": "б/н от 28.05.2026",
-      "recordId": "20260529090222391_boetwl6yj"
+      "incoming": "б/н от 28.05.2026"
     },
     {
+      "recordId": "20260529090222391_vuf3c2t6z",
+      "date": "27.05.2026",
       "note": "ждем письмо о замене",
       "status": "В работе",
       "supplier": "ООО \"Стройторговля\"",
       "contract": "СЧ № YL113605",
       "remark": "отсутствует бенз. двигатель при поставке триммера",
       "outgoing": "1127 от 27.05.2026",
-      "incoming": "",
-      "recordId": "20260529090222391_vuf3c2t6z"
+      "incoming": ""
     },
     {
+      "recordId": "20260528122438361_ll8a9kgxi",
+      "date": "27.05.2026",
       "note": "-",
       "status": "В работе",
       "supplier": "АО \"ЧИП и Дип\"",
       "contract": "СЧ № 17248132",
       "remark": "Возврат ДС",
       "outgoing": "1132 от 27.05.2026",
-      "incoming": "",
-      "recordId": "20260528122438361_ll8a9kgxi"
+      "incoming": ""
     }
   ],
   "mailData": [
@@ -22751,7 +22776,7 @@
     "2026-320 (от 16.04.2026)": "",
     "2026-325 (от 14.04.2026)": "",
     "2026-311 (от 14.04.2026)": "",
-    "2026-323 (от 24.04.2026)": "договор на согласовании/",
+    "2026-323 (от 24.04.2026)": "договор на подписании у поставщика /",
     "2026-334 (от 24.04.2026)": "",
     "2026-344 (от 24.04.2026)": "",
     "2026-404 (от 29.04.2026)": "",
@@ -22806,5 +22831,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-05-29T07:09:35.369Z"
+  "exportDate": "2026-05-29T12:50:57.687Z"
 }
