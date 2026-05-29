@@ -7293,7 +7293,16 @@ function editDepartment(index) {
         return;
     }
 
-    settlementData.forEach((item) => {
+    // ✅ СОРТИРОВКА ПО ДАТЕ (УБЫВАНИЕ – СНАЧАЛА НОВЫЕ)
+    const sortedData = [...settlementData].sort((a, b) => {
+        const dateA = parseDate(a.date);
+        const dateB = parseDate(b.date);
+        const timeA = dateA ? dateA.getTime() : 0;
+        const timeB = dateB ? dateB.getTime() : 0;
+        return timeB - timeA;
+    });
+
+    sortedData.forEach((item) => {
         const row = document.createElement('tr');
         row.dataset.recordId = item.recordId || '';
 
@@ -7301,7 +7310,6 @@ function editDepartment(index) {
         row.classList.add('clickable-row');
         if (!isAdmin) row.classList.add('guest-mode');
 
-        // Форматируем дату для отображения
         const displayDate = item.date ? item.date : '';
         
         row.innerHTML = `
