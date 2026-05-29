@@ -563,14 +563,15 @@
     width: 100% !important;
 }
 
-/* Ширина столбцов (7 столбцов) */
-#settlementTable th:nth-child(1), #settlementTable td:nth-child(1) { width: 45px !important; }  /* Примечание */
-#settlementTable th:nth-child(2), #settlementTable td:nth-child(2) { width: 15px !important; }  /* Статус */
-#settlementTable th:nth-child(3), #settlementTable td:nth-child(3) { width: 35px !important; }  /* Контрагент */
-#settlementTable th:nth-child(4), #settlementTable td:nth-child(4) { width: 35px !important; }  /* Договор */
-#settlementTable th:nth-child(5), #settlementTable td:nth-child(5) { width: 60px !important; }  /* Замечание */
-#settlementTable th:nth-child(6), #settlementTable td:nth-child(6) { width: 20px !important; }  /* № Исходящее */
-#settlementTable th:nth-child(7), #settlementTable td:nth-child(7) { width: 20px !important; }  /* № Входящее */
+/* Новые ширины столбцов (8 столбцов) */
+#settlementTable th:nth-child(1), #settlementTable td:nth-child(1) { width: 90px !important; }  /* Дата */
+#settlementTable th:nth-child(2), #settlementTable td:nth-child(2) { width: 120px !important; } /* Примечание */
+#settlementTable th:nth-child(3), #settlementTable td:nth-child(3) { width: 70px !important; }  /* Статус */
+#settlementTable th:nth-child(4), #settlementTable td:nth-child(4) { width: 150px !important; } /* Контрагент */
+#settlementTable th:nth-child(5), #settlementTable td:nth-child(5) { width: 100px !important; } /* Договор */
+#settlementTable th:nth-child(6), #settlementTable td:nth-child(6) { width: 150px !important; } /* Замечание */
+#settlementTable th:nth-child(7), #settlementTable td:nth-child(7) { width: 100px !important; } /* № Исходящее */
+#settlementTable th:nth-child(8), #settlementTable td:nth-child(8) { width: 100px !important; } /* № Входящее */
 /* Для таблицы учета - более сложное распределение */
 #accountingTable th {
     width: auto !important;
@@ -3214,13 +3215,14 @@ button:hover{background:#222733!important}
             <table id="settlementTable" style="table-layout: fixed;">
                 <thead>
         <tr>
-            <th style="width: 134px;">Примечание</th>
-            <th style="width: 67px;">Статус</th>
-            <th style="width: 120.6px;">Контрагент</th>
-            <th style="width: 100px;">Договор</th>
-            <th style="width: 167.5px;">Замечание</th>
-            <th style="width: 80.4px;">№ Исходящее</th>
-            <th style="width: 80.4px;">№ Входящее</th>
+            <th style="width: 90px;">Дата</th>
+            <th style="width: 120px;">Примечание</th>
+      <th style="width: 70px;">Статус</th>
+      <th style="width: 150px;">Контрагент</th>
+      <th style="width: 100px;">Договор</th>
+      <th style="width: 150px;">Замечание</th>
+      <th style="width: 100px;">№ Исходящее</th>
+      <th style="width: 100px;">№ Входящее</th>
         </tr>
     </thead>
                 <tbody id="settlementTableBody"><tr>
@@ -3620,6 +3622,10 @@ button:hover{background:#222733!important}
             <form id="editSettlementForm" onsubmit="saveSettlementChanges(event)">
                 <input type="hidden" id="editSettlementIndex" value="0">
                 
+                <div style="margin-bottom: 10px;">
+                <label>Дата:</label>
+                <input type="date" id="editSettlementDate" style="width: 100%;">
+                </div>
                 <div style="margin-bottom: 10.05px;">
                     <label>Примечание:</label>
                     <input type="text" id="editSettlementNote" required="" style="width: 100%;">
@@ -7278,58 +7284,51 @@ function editDepartment(index) {
 
         // ========== ФУНКЦИИ ДЛЯ СТРАНИЦЫ УРЕГУЛИРОВАНИЯ ==========
         function updateSettlementTable() {
-            const tableBody = document.querySelector('#settlementTable tbody');
-            if (!tableBody) return;
-            
-            tableBody.innerHTML = '';
-            
-            if (settlementData.length === 0) {
-                const emptyRow = document.createElement('tr');
-                emptyRow.innerHTML = `
-                    <td colspan="6" style="text-align: center; color: #8f98a0; padding: 20px;">
-                        Нет данных об урегулировании. Добавьте первую запись.
-                    </td>
-                `;
-                tableBody.appendChild(emptyRow);
-                return;
-            }
-            
-            settlementData.forEach((item, index) => {
-                const row = document.createElement('tr');
-                if (isAdmin) {
-                    row.classList.add('clickable-row');
-                    row.style.cursor = 'pointer';
+    const tableBody = document.querySelector('#settlementTable tbody');
+    if (!tableBody) return;
+    tableBody.innerHTML = '';
+
+    if (settlementData.length === 0) {
+        // ... сообщение "нет данных"
+        return;
+    }
+
+    settlementData.forEach((item) => {
+        const row = document.createElement('tr');
+        row.dataset.recordId = item.recordId || '';
+
+        if (item.status === 'Выполнено') row.classList.add('status-completed');
+        row.classList.add('clickable-row');
+        if (!isAdmin) row.classList.add('guest-mode');
+
+        // Форматируем дату для отображения
+        const displayDate = item.date ? item.date : '';
+        
+        row.innerHTML = `
+            <td>${displayDate}</td>
+            <td>${escapeString(item.note || '')}</td>
+            <td>${escapeString(item.status || '')}</td>
+            <td>${escapeString(item.supplier || '')}</td>
+            <td>${escapeString(item.contract || '')}</td>
+            <td>${escapeString(item.remark || '')}</td>
+            <td>${escapeString(item.outgoing || '')}</td>
+            <td>${escapeString(item.incoming || '')}</td>
+        `;
+
+        if (isAdmin) {
+            row.addEventListener('dblclick', function(e) {
+                if (!e.target.closest('button') && !e.target.closest('input')) {
+                    const recordId = e.currentTarget.dataset.recordId;
+                    const index = settlementData.findIndex(record => record.recordId === recordId);
+                    if (index !== -1) editSettlementRow(index);
                 }
-                if (item.status === 'Выполнено') row.classList.add('status-completed');
-                if (item.status === 'Иное') row.classList.add('status-other');
-                
-                row.classList.add('clickable-row');
-                if (!isAdmin) {
-                row.classList.add('guest-mode');
-                }
-                row.innerHTML = `
-                    <td>${item.note || ''}</td>
-                    <td>${item.status || ''}</td>
-                    <td>${item.supplier || ''}</td>
-                    <td>${item.contract || ''}</td>
-                    <td>${item.remark || ''}</td>
-                    <td>${item.outgoing || ''}</td>
-                    <td>${item.incoming || ''}</td>
-                `;
-                
-                if (isAdmin) {
-                    row.addEventListener('dblclick', function(e) {
-                        // Проверяем, что клик не по кнопке или другому интерактивному элементу
-                        if (!e.target.closest('button') && !e.target.closest('input')) {
-                            editSettlementRow(index);
-                        }
-                    });
-                }
-                
-                tableBody.appendChild(row);
-                updateSettlementBadge();
             });
         }
+
+        tableBody.appendChild(row);
+    });
+    updateSettlementBadge();
+}
 
         function filterSettlementTable() {
     const searchText = document.getElementById('searchSettlementInput').value.toLowerCase();
@@ -7371,19 +7370,23 @@ function editDepartment(index) {
 }
 
         function showAddSettlementForm() {
-            if (!isAdmin) {
-                alert('Только администратор может добавлять записи');
-                return;
-            }
-            
-            document.getElementById('modalSettlementTitle').textContent = 'Добавить запись урегулирования';
-            document.getElementById('editSettlementIndex').value = '';
-            document.getElementById('editSettlementForm').reset();
-            document.getElementById('editSettlementContract').value = '';
-            const deleteBtn = document.querySelector('#editSettlementModal .delete-btn');
-            if (deleteBtn) deleteBtn.style.display = 'none';
-            document.getElementById('editSettlementModal').style.display = 'block';
-        }
+    if (!isAdmin) {
+        alert('Только администратор может добавлять записи');
+        return;
+    }
+    document.getElementById('modalSettlementTitle').textContent = 'Добавить запись урегулирования';
+    document.getElementById('editSettlementIndex').value = '';
+    document.getElementById('editSettlementForm').reset();
+    document.getElementById('editSettlementContract').value = '';
+    
+    // Установить сегодняшнюю дату
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('editSettlementDate').value = today;
+    
+    const deleteBtn = document.querySelector('#editSettlementModal .delete-btn');
+    if (deleteBtn) deleteBtn.style.display = 'none';
+    document.getElementById('editSettlementModal').style.display = 'block';
+}
 
         function editSettlementRow(index) {
             if (!isAdmin) return;
@@ -7404,32 +7407,38 @@ function editDepartment(index) {
         }
 
         function saveSettlementChanges(event) {
-            event.preventDefault();
-            
-            const index = document.getElementById('editSettlementIndex').value;
-            const item = {
-                note: document.getElementById('editSettlementNote').value,
-                status: document.getElementById('editSettlementStatus').value,
-                supplier: document.getElementById('editSettlementSupplier').value,
-                contract: document.getElementById('editSettlementContract').value,
-                remark: document.getElementById('editSettlementRemark').value,
-                outgoing: document.getElementById('editSettlementOutgoing').value,
-                incoming: document.getElementById('editSettlementIncoming').value
-            };
-            
-            if (index === '') {
-                settlementData.push(item);
-            } else {
-                settlementData[index] = item;
-            }
-            
-            saveAllData();
-            updateSettlementBadge();
-            updateSettlementTable();
-            closeSettlementModal();
-            markChangesMade();
-            refreshStatusStatsIfOpen();
-        }
+    event.preventDefault();
+    const index = document.getElementById('editSettlementIndex').value;
+    const recordId = (index !== '') ? settlementData[index]?.recordId || generateUniqueId() : generateUniqueId();
+    
+    const rawDate = document.getElementById('editSettlementDate').value;
+    const formattedDate = rawDate ? formatDateForDisplay(rawDate) : '';
+    
+    const item = {
+        recordId: recordId,
+        date: formattedDate,
+        note: document.getElementById('editSettlementNote').value,
+        status: document.getElementById('editSettlementStatus').value,
+        supplier: document.getElementById('editSettlementSupplier').value,
+        contract: document.getElementById('editSettlementContract').value,
+        remark: document.getElementById('editSettlementRemark').value,
+        outgoing: document.getElementById('editSettlementOutgoing').value,
+        incoming: document.getElementById('editSettlementIncoming').value
+    };
+    
+    if (index === '') {
+        settlementData.push(item);
+    } else {
+        settlementData[index] = item;
+    }
+    
+    saveAllData();
+    updateSettlementBadge();
+    updateSettlementTable();
+    closeSettlementModal();
+    markChangesMade();
+    refreshStatusStatsIfOpen();
+}
 
         function closeSettlementModal() {
             document.getElementById('editSettlementModal').style.display = 'none';
@@ -9267,15 +9276,16 @@ function deleteProxyRecord() {
             docNumber: item.docNumber || ''
         })),
         settlementData: settlementData.map(item => ({
-            recordId: item.recordId || generateUniqueId(),
-            note: item.note || '',
-            status: item.status || '',
-            supplier: item.supplier || '',
-            contract: item.contract || '',
-            remark: item.remark || '',
-            outgoing: item.outgoing || '',
-            incoming: item.incoming || ''
-        })),
+    recordId: item.recordId || generateUniqueId(),
+    date: item.date || '',
+    note: item.note || '',
+    status: item.status || '',
+    supplier: item.supplier || '',
+    contract: item.contract || '',
+    remark: item.remark || '',
+    outgoing: item.outgoing || '',
+    incoming: item.incoming || ''
+})),
         mailData: mailData.map(item => ({
             recordId: item.recordId || generateUniqueId(),
             date: item.date || '',
@@ -9391,11 +9401,12 @@ function importJSON() {
 
             // Урегулирование
             if (importedData.settlementData) {
-                settlementData = importedData.settlementData.map(item => {
-                    if (fileVersion === '1.0' && !item.recordId) item.recordId = generateUniqueId();
-                    return item;
-                });
-            }
+    settlementData = importedData.settlementData.map(item => {
+        if (fileVersion === '1.0' && !item.recordId) item.recordId = generateUniqueId();
+        if (!item.date) item.date = '';       // на случай старых данных
+        return item;
+    });
+}
 
             // Почтовый реестр
             if (importedData.mailData) {
