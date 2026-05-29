@@ -127,7 +127,7 @@
       "purchaseQuantity": "",
       "purchaseUnit": "",
       "amount": "",
-      "supplier": "",
+      "supplier": "ООО «Техноберинг»",
       "department": "11/0144 НСВиК",
       "contract": "",
       "paymentTerms": "",
@@ -22950,5 +22950,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-05-29T13:06:20.697Z"
+  "exportDate": "2026-05-29T13:06:27.257Z"
 }
