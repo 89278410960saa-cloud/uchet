@@ -4230,30 +4230,17 @@ function initializeApp() {
     }, 1000);
 }
 
-// Запускаем приложение при загрузке страницы
+// Инициализация при загрузке – только подготовка данных, без показа интерфейса
 document.addEventListener('DOMContentLoaded', function() {
-    // Сначала проверяем сохраненную авторизацию
-    const hasSavedAuth = checkAuthOnLoad();
-    
-    // Если нет сохраненной авторизации или она невалидна, 
-    // инициализируем с гостевого режима
-    if (!hasSavedAuth) {
-        // Сбрасываем возможные старые данные
-        isAdmin = false;
-        currentUser = 'guest';
-        localStorage.removeItem('userAuth');
-        
-        // Показываем уведомление
-        setTimeout(() => {
-            showAutosaveNotification('Гостевой режим активен');
-        }, 500);
-    }
-    
-    // Инициализируем приложение
-    initializeApp();
-    // Инициализируем ID для существующих записей
+    // Загружаем данные в фоне, но интерфейс не показываем
+    loadAllData();
     initializeRecordIds();
-    saveAllData(); // Сохраняем записи с ID
+    
+    // Если был сохранён токен GitHub – забираем его, но не входим
+    const savedToken = localStorage.getItem('github_token');
+    if (savedToken) {
+        githubToken = savedToken;
+    }
 });
 // ========== ФУНКЦИИ ДЛЯ УНИКАЛЬНЫХ ID ==========
 function generateUniqueId() {
@@ -10409,15 +10396,16 @@ function hideLoginPage() {
 
 // Основная функция запуска приложения
 function startApplication() {
-    // Показываем индикатор загрузки
     document.getElementById('startButton').style.display = 'none';
     document.getElementById('loginLoading').classList.add('active');
     
-    // Имитация загрузки (можно убрать setTimeout в рабочей версии)
     setTimeout(() => {
-        // Проверяем, есть ли сохраненная авторизация
-        const savedAuth = localStorage.getItem('userAuth');
+        // 1. Загружаем данные (если ещё не загружены)
+        loadAllData();
+        initializeRecordIds();
         
+        // 2. Определяем режим (админ / гость)
+        const savedAuth = localStorage.getItem('userAuth');
         if (savedAuth) {
             try {
                 const auth = JSON.parse(savedAuth);
@@ -10425,37 +10413,27 @@ function startApplication() {
                     isAdmin = auth.isAdmin;
                     currentUser = auth.currentUser;
                 } else {
-                    // Если данные некорректные, используем гостевой режим
                     isAdmin = false;
                     currentUser = 'guest';
                 }
             } catch (e) {
-                console.error('Ошибка при загрузке данных авторизации:', e);
                 isAdmin = false;
                 currentUser = 'guest';
             }
         } else {
-            // Нет сохраненной авторизации - гостевой режим
             isAdmin = false;
             currentUser = 'guest';
         }
         
-        // Отмечаем, что вход выполнен в этой сессии
-        hasLoggedInThisSession = true;
+        // 3. Обновляем весь интерфейс (кнопки, таблицы, фильтры)
+        updateUserInterface();   // применяет права и перерисовывает таблицы
+        resetAllFilters();
+        updateAllBadges();
         
-        // Сохраняем состояние авторизации
-        localStorage.setItem('userAuth', JSON.stringify({ 
-            isAdmin, 
-            currentUser 
-        }));
-        
-        // Инициализируем приложение
-        initializeApp();
-        
-        // Скрываем страницу входа
+        // 4. Показываем основной интерфейс
         hideLoginPage();
         
-        // Показываем уведомление о режиме
+        // 5. Уведомление
         setTimeout(() => {
             if (isAdmin) {
                 showAutosaveNotification('Режим администратора активен');
@@ -10464,7 +10442,7 @@ function startApplication() {
             }
         }, 500);
         
-    }, 1000); // Задержка для эффекта загрузки
+    }, 1000);
 }
 
 // Модифицируем функцию initializeApp для проверки страницы входа
