@@ -5071,7 +5071,7 @@
     {
       "recordId": "20260427130027044_m5y6dtoe3",
       "docNumber": "2026-334 (от 24.04.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "МАТ-06786",
       "name": "Болт анкерный TEX-C3 M8*95 HDG Lex IMT38016",
       "quantity": "20",
@@ -5086,8 +5086,8 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "14",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "01.06.2026",
+      "planFact": "15.06.2026",
       "fact": "",
       "shipmentDoc": ""
     },
@@ -22949,5 +22949,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-06-01T07:06:35.673Z"
+  "exportDate": "2026-06-01T07:06:42.871Z"
 }
