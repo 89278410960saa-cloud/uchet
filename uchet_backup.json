@@ -1047,8 +1047,8 @@
       "quantity": "10",
       "unit": "шт",
       "purchaseName": "",
-      "purchaseQuantity": "10",
-      "purchaseUnit": "шт",
+      "purchaseQuantity": "",
+      "purchaseUnit": "",
       "amount": "",
       "supplier": "",
       "department": "16/0020 АХО",
@@ -22961,5 +22961,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-06-01T12:52:18.861Z"
+  "exportDate": "2026-06-01T12:52:23.661Z"
 }
