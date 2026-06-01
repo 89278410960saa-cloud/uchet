@@ -1230,16 +1230,16 @@
       "name": "Фильтр топливный R 422 TS AWD",
       "quantity": "2",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
-      "supplier": "",
+      "purchaseName": "Фильтр топливный SN200022",
+      "purchaseQuantity": "2",
+      "purchaseUnit": "шт",
+      "amount": "1000.00",
+      "supplier": "ООО \"Трансстрой-Инструмент\"",
       "department": "16/0020 АХО",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № 1227",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "42",
+      "deliveryTerms": "Самовывоз",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -22950,5 +22950,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-06-01T06:18:22.187Z"
+  "exportDate": "2026-06-01T06:19:09.692Z"
 }
