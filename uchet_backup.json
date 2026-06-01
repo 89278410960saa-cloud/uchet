@@ -376,16 +376,16 @@
       "name": "Люк чугунный Л-60.76 10-ВЧ,ТЯЖЕЛЫЙ,С ЗАПОР.УСТР. С УПЛОТ.ПРОКЛ.",
       "quantity": "2",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
-      "supplier": "",
+      "purchaseName": "Люк тяжелый круглый высотой  H-100 с фиксатором, З.У. и \nпружиной, Т(С250)-К-2-60, ВЧ-50",
+      "purchaseQuantity": "2",
+      "purchaseUnit": "шт",
+      "amount": "30800.00",
+      "supplier": "ООО \"ТПК \"Бастион\"",
       "department": "11/0144 НСВиК",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № 2026/10432",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "7",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -22961,5 +22961,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-06-01T11:15:16.965Z"
+  "exportDate": "2026-06-01T11:15:49.087Z"
 }
