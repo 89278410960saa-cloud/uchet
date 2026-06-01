@@ -1027,7 +1027,7 @@
       "purchaseQuantity": "",
       "purchaseUnit": "",
       "amount": "",
-      "supplier": "ООО \"Трансстрой-Инструмент\"",
+      "supplier": "",
       "department": "16/0020 АХО",
       "contract": "",
       "paymentTerms": "",
@@ -22961,5 +22961,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-06-01T12:52:23.661Z"
+  "exportDate": "2026-06-01T12:52:27.498Z"
 }
