@@ -215,16 +215,16 @@
       "name": "СТРОЙМАТ Хомут силовой ROBUST W1 с одним шарн.болт.29-31мм\n",
       "quantity": "20",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
+      "purchaseName": "Усиленный хомут (29-31 мм), оцинк. сталь TL29-31RC TITAN LOCK",
+      "purchaseQuantity": "20",
+      "purchaseUnit": "шт",
+      "amount": "1450.00",
       "supplier": "ООО «Техноберинг»",
       "department": "11/0144 НСВиК",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № 31990",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "7",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -22950,5 +22950,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-06-01T06:09:35.242Z"
+  "exportDate": "2026-06-01T06:10:00.848Z"
 }
