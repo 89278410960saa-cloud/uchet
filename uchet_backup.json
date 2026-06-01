@@ -1414,16 +1414,16 @@
       "name": "Корд триммерный\t2.0 15М ECHO",
       "quantity": "10",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
-      "supplier": "",
+      "purchaseName": "Корд триммерный \"Still line\" (витой квадрат, диаметр 2,0 мм, длина 15 м) 644-986",
+      "purchaseQuantity": "10",
+      "purchaseUnit": "шт",
+      "amount": "980.00",
+      "supplier": "ООО \"Трансстрой-Инструмент\"",
       "department": "16/0020 АХО",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № 1227",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "42",
+      "deliveryTerms": "Самовывоз",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -22961,5 +22961,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-06-01T12:56:28.298Z"
+  "exportDate": "2026-06-01T12:57:00.121Z"
 }
