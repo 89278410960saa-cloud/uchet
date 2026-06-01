@@ -468,16 +468,16 @@
       "name": "Кольцо опорное регулировочное ж/б КО\t58*84*5 СМ",
       "quantity": "15",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
-      "supplier": "",
+      "purchaseName": "КО6",
+      "purchaseQuantity": "15",
+      "purchaseUnit": "шт",
+      "amount": "10800.00",
+      "supplier": "ООО \"ТПК \"Бастион\"",
       "department": "11/0144 НСВиК",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № 2026/10432",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "7",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -22961,5 +22961,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-06-01T11:11:55.654Z"
+  "exportDate": "2026-06-01T11:12:39.651Z"
 }
