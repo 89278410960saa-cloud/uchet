@@ -924,7 +924,7 @@
     {
       "recordId": "20260527151035400_gqermgzwx",
       "docNumber": "2026-457 (от 22.05.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "МАТ-05138",
       "name": "Изолента ЭРА PRO PRORUMAS50 50мм, 3м, шт\n",
       "quantity": "10",
@@ -939,8 +939,8 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "7",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "01.06.2026",
+      "planFact": "08.06.2026",
       "fact": "",
       "shipmentDoc": ""
     },
@@ -22950,5 +22950,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-06-01T05:57:08.482Z"
+  "exportDate": "2026-06-01T05:57:16.571Z"
 }
