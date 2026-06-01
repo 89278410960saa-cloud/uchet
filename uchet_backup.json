@@ -1184,16 +1184,16 @@
       "name": "Нож для сад. техники\tРАЙДЕРА HUSQVARNA R316T AWD",
       "quantity": "3",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
-      "supplier": "",
+      "purchaseName": "Нож к деке Combi122 5354294-10",
+      "purchaseQuantity": "3",
+      "purchaseUnit": "шт",
+      "amount": "14850.00",
+      "supplier": "ООО \"Трансстрой-Инструмент\"",
       "department": "16/0020 АХО",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № 1227",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "42",
+      "deliveryTerms": "Самовывоз",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -22961,5 +22961,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-06-01T13:00:15.127Z"
+  "exportDate": "2026-06-01T13:01:03.453Z"
 }
