@@ -1046,16 +1046,16 @@
       "name": "Корд трим. Cross Fire Line 3,0мм* 15м(крест)",
       "quantity": "10",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
-      "supplier": "",
+      "purchaseName": "Корд триммерный \"Still line\" (витой квадрат, диаметр 3,0 мм, длина 30 м) 645-020",
+      "purchaseQuantity": "5",
+      "purchaseUnit": "шт",
+      "amount": "1585.00",
+      "supplier": "ООО \"Трансстрой-Инструмент\"",
       "department": "16/0020 АХО",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № 1227",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "42",
+      "deliveryTerms": "Самовывоз",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -22961,5 +22961,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-06-01T13:05:30.682Z"
+  "exportDate": "2026-06-01T13:07:06.302Z"
 }
