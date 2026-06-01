@@ -2913,88 +2913,83 @@ button:hover{background:#222733!important}
     
     <!-- Сайдбар меню -->
 <div class="sidebar">
-    
-
-
     <!-- Секция навигации по страницам -->
-<div class="sidebar-section" style="margin-bottom: 0.0px;">
-    
-    <div class="sidebar-cell menu-item active" data-page="accounting" onclick="showPage('accounting')" title="Учет закупок">
-        <span class="sidebar-icon">Позиции</span>
-        <div class="sidebar-tooltip">Учет закупок</div>
-        <div class="sidebar-badge" id="accountingBadge" style="display: none;">0</div>
-    </div>
-    <div class="sidebar-cell menu-item" data-page="counterparties" onclick="showPage('counterparties')" title="Контрагенты">
-        <span class="sidebar-icon">Контрагенты</span>
-        <div class="sidebar-tooltip">Контрагенты</div>
-    </div>
-    <div class="sidebar-cell menu-item" data-page="payments" onclick="showPage('payments')" title="Платежи">
-    <span class="sidebar-icon">Платежи</span>
-    <div class="sidebar-tooltip">Платежи</div>
-    <div class="sidebar-badge" id="paymentsBadge" style="display: none;">0</div>
-    </div>
-    <!-- Перемещенный элемент - теперь после Платежей -->
-    <div class="sidebar-cell menu-item" data-page="proxy-registry" onclick="showPage('proxy-registry')" title="Реестр доверенностей">
-    <span class="sidebar-icon">Самовывоз</span>
-    <div class="sidebar-tooltip">Реестр доверенностей</div>
-    <div class="sidebar-badge" id="proxyBadge" style="display: none;">0</div>
-</div>
-    <div class="sidebar-cell menu-item" data-page="settlement" onclick="showPage('settlement')" title="Урегулирование">
-    <span class="sidebar-icon">Рекламации</span>
-    <div class="sidebar-tooltip">Рекламации</div>
-    <div class="sidebar-badge" id="settlementBadge" style="display: none;">0</div>
-</div>
-    <div class="sidebar-cell menu-item" data-page="mail-registry" onclick="showPage('mail-registry')" title="Почтовый реестр">
-        <span class="sidebar-icon">Отправления</span>
-        <div class="sidebar-tooltip">Почтовый реестр</div>
-    
-</div>
+    <div class="sidebar-section" style="margin-bottom: 0.0px;">
+        <div class="sidebar-cell menu-item active" data-page="accounting" onclick="showPage('accounting')" title="Учет закупок">
+            <span class="sidebar-icon">Позиции</span>
+            <div class="sidebar-tooltip">Учет закупок</div>
+            <div class="sidebar-badge" id="accountingBadge" style="display: none;">0</div>
+        </div>
+        <div class="sidebar-cell menu-item" data-page="counterparties" onclick="showPage('counterparties')" title="Контрагенты">
+            <span class="sidebar-icon">Контрагенты</span>
+            <div class="sidebar-tooltip">Контрагенты</div>
+        </div>
+        <div class="sidebar-cell menu-item" data-page="payments" onclick="showPage('payments')" title="Платежи">
+            <span class="sidebar-icon">Платежи</span>
+            <div class="sidebar-tooltip">Платежи</div>
+            <div class="sidebar-badge" id="paymentsBadge" style="display: none;">0</div>
+        </div>
+        <div class="sidebar-cell menu-item" data-page="proxy-registry" onclick="showPage('proxy-registry')" title="Реестр доверенностей">
+            <span class="sidebar-icon">Самовывоз</span>
+            <div class="sidebar-tooltip">Реестр доверенностей</div>
+            <div class="sidebar-badge" id="proxyBadge" style="display: none;">0</div>
+        </div>
+        <div class="sidebar-cell menu-item" data-page="settlement" onclick="showPage('settlement')" title="Урегулирование">
+            <span class="sidebar-icon">Рекламации</span>
+            <div class="sidebar-tooltip">Рекламации</div>
+            <div class="sidebar-badge" id="settlementBadge" style="display: none;">0</div>
+        </div>
+        <div class="sidebar-cell menu-item" data-page="mail-registry" onclick="showPage('mail-registry')" title="Почтовый реестр">
+            <span class="sidebar-icon">Отправления</span>
+            <div class="sidebar-tooltip">Почтовый реестр</div>
+        </div>
+    </div> <!-- закрытие первой секции навигации -->
 
     <!-- Секция управления данными -->
     <div class="sidebar-section" style="margin-bottom: 0.0px;">
-    <div class="sidebar-cell menu-item github-export-btn admin-only" onclick="forceExportToGitHub()" title="Принудительный экспорт данных">
-        <span class="sidebar-icon">Сохранить</span>
-        <span class="github-export-spinner" style="display: none;">◌</span>
-        <div class="sidebar-tooltip">Принудительный экспорт</div>
+        <div class="sidebar-cell menu-item github-export-btn admin-only" onclick="forceExportToGitHub()" title="Принудительный экспорт данных">
+            <span class="sidebar-icon">Сохранить</span>
+            <span class="github-export-spinner" style="display: none;">◌</span>
+            <div class="sidebar-tooltip">Принудительный экспорт</div>
+        </div>
+        <div class="sidebar-cell menu-item import-btn" onclick="importJSON()" title="Импорт данных" style="display: flex;">
+            <span class="sidebar-icon">Обновить</span>
+            <div class="sidebar-tooltip">Импорт данных</div>
+        </div>
+        <div class="sidebar-cell menu-item" onclick="showStatusStatsModal()" title="Аналитика">
+            <span class="sidebar-icon">Аналитика</span>
+            <div class="sidebar-tooltip">Аналитика</div>
+        </div>
     </div>
-    <div class="sidebar-cell menu-item import-btn" onclick="importJSON()" title="Импорт данных" style="display: flex;">
-        <span class="sidebar-icon">Обновить</span>
-        <div class="sidebar-tooltip">Импорт данных</div>
-    </div>
-    <div class="sidebar-cell menu-item" onclick="showStatusStatsModal()" title="Аналитика">
-        <span class="sidebar-icon">Аналитика</span>
-        <div class="sidebar-tooltip">Аналитика</div>
-    </div>
-</div>
-<div class="sidebar-section">
-        <!-- Кнопка настроек -->
+
+    <!-- Кнопка настроек -->
+    <div class="sidebar-section">
         <div class="sidebar-cell menu-item" id="settingsButton" title="Настройки" onclick="toggleSettingsMenu()">
             <span class="sidebar-icon">Настройки</span>
             <div class="sidebar-tooltip">Настройки</div>
         </div>
     </div>
 
-    <!-- Скрытое меню настроек -->
-<div id="settingsMenu" class="sidebar-section" style="display: none;">
-    <div class="sidebar-cell menu-item" onclick="showGithubSettingsModal()" title="GitHub настройки">
-    <span class="sidebar-icon">Вход</span>
-    <div class="sidebar-tooltip">GitHub настройки</div>
-    <div class="sidebar-badge warning" id="githubGuestBadge" style="display: none;">!</div>
-</div>
- <div class="sidebar-cell menu-item" id="aiChatButton" onclick="openAiChatModal()" title="AI Чат (OpenRouter)">
-        <span class="sidebar-icon">AI Чат</span>
-        <div class="sidebar-tooltip">AI Чат</div>
+    <!-- Скрытое выпадающее меню настроек (AI Чат перенесён сюда) -->
+    <div id="settingsMenu" class="sidebar-section" style="display: none;">
+        <div class="sidebar-cell menu-item" onclick="showGithubSettingsModal()" title="GitHub настройки">
+            <span class="sidebar-icon">Вход</span>
+            <div class="sidebar-tooltip">GitHub настройки</div>
+            <div class="sidebar-badge warning" id="githubGuestBadge" style="display: none;">!</div>
+        </div>
+        <div class="sidebar-cell menu-item" id="aiChatButton" onclick="openAiChatModal()" title="AI Чат (OpenRouter)">
+            <span class="sidebar-icon">AI Чат</span>
+            <div class="sidebar-tooltip">AI Чат</div>
+        </div>
+        <div class="sidebar-cell menu-item admin-only export-btn" onclick="exportJSON()" title="Экспорт данных" style="display: none;">
+            <span class="sidebar-icon">Экспорт</span>
+            <div class="sidebar-tooltip">Экспорт данных</div>
+        </div>
+        <div class="sidebar-cell menu-item danger clear-btn" onclick="confirmClearAllData()" title="Очистить все данные">
+            <span class="sidebar-icon">Удалить</span>
+            <div class="sidebar-tooltip">Очистить все данные</div>
+        </div>
     </div>
-    <div class="sidebar-cell menu-item admin-only export-btn" onclick="exportJSON()" title="Экспорт данных" style="display: none;">
-        <span class="sidebar-icon">Экспорт</span>
-        <div class="sidebar-tooltip">Экспорт данных</div>
-    </div>
-    <!-- Кнопка удаления с классом danger -->
-    <div class="sidebar-cell menu-item danger clear-btn" onclick="confirmClearAllData()" title="Очистить все данные">
-        <span class="sidebar-icon">Удалить</span>
-        <div class="sidebar-tooltip">Очистить все данные</div>
-    </div>
-</div>
 </div>
 
     <!-- Основной контент -->
