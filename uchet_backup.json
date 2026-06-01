@@ -192,16 +192,16 @@
       "name": "Хомут силовой  VAPER W1 MEGA SUPER 40-43",
       "quantity": "20",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
+      "purchaseName": "Усиленный хомут (40-43 мм), оцинк. железо TL40-43RC TITAN LOCK",
+      "purchaseQuantity": "20",
+      "purchaseUnit": "шт",
+      "amount": "1610.00",
       "supplier": "ООО «Техноберинг»",
       "department": "11/0144 НСВиК",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № 31990",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "7",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -22950,5 +22950,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-06-01T06:09:10.900Z"
+  "exportDate": "2026-06-01T06:09:35.242Z"
 }
