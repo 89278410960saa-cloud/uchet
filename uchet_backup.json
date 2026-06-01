@@ -1207,16 +1207,16 @@
       "name": "Нож для сад. техники\tДЛЯ РАЙДЕРА  R 422 TS AWD\n",
       "quantity": "3",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
-      "supplier": "",
+      "purchaseName": "Нож к деке Combi122 5354294-103",
+      "purchaseQuantity": "3",
+      "purchaseUnit": "шт",
+      "amount": "14850.00",
+      "supplier": "ООО \"Трансстрой-Инструмент\"",
       "department": "16/0020 АХО",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № 1227",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "42",
+      "deliveryTerms": "Самовывоз",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -22950,5 +22950,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-06-01T06:19:09.692Z"
+  "exportDate": "2026-06-01T06:20:03.108Z"
 }
