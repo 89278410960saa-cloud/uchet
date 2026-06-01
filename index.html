@@ -10392,6 +10392,10 @@ function hideLoginPage() {
     document.getElementById('login-page').classList.remove('active');
     document.querySelector('.sidebar').style.display = 'block';
     document.querySelector('.main-content').style.display = 'block';
+    // Принудительно перерисовываем таблицы после показа
+    setTimeout(() => {
+        updateAllTables();
+    }, 10);
 }
 
 // Основная функция запуска приложения
@@ -10425,15 +10429,20 @@ function startApplication() {
             currentUser = 'guest';
         }
         
-        // 3. Обновляем весь интерфейс (кнопки, таблицы, фильтры)
+        // 3. Сначала ПОКАЗЫВАЕМ основной интерфейс
+        hideLoginPage();   // делает .sidebar и .main-content видимыми
+        
+        // 4. Теперь обновляем интерфейс (кнопки, таблицы, фильтры)
         updateUserInterface();   // применяет права и перерисовывает таблицы
         resetAllFilters();
         updateAllBadges();
         
-        // 4. Показываем основной интерфейс
-        hideLoginPage();
+        // 5. Принудительно перерисовываем таблицы (на всякий случай)
+        setTimeout(() => {
+            updateAllTables();
+        }, 50);
         
-        // 5. Уведомление
+        // 6. Уведомление
         setTimeout(() => {
             if (isAdmin) {
                 showAutosaveNotification('Режим администратора активен');
@@ -10444,6 +10453,7 @@ function startApplication() {
         
     }, 1000);
 }
+
 
 // Модифицируем функцию initializeApp для проверки страницы входа
 function initializeApp() {
