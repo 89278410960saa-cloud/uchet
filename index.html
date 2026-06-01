@@ -28,6 +28,9 @@
             transform-origin: top left;
             font-size: 13.4px;
         }
+        .sidebar, .main-content {
+        display: none;
+        }
         /* Сайдбар в стиле Steam */
         .sidebar {
             width: 20px;
@@ -98,7 +101,7 @@
      padding-left: 0 !important;
     padding-right: 0 !important;
 }
-}
+
 
         .sidebar-cell.menu-item:hover {
     background: rgba(99, 102, 241, 0.2) !important;
@@ -9659,21 +9662,20 @@ function closeCounterpartyInfoModal() {
     currentCounterpartyInfo = null;
 }
 document.addEventListener('DOMContentLoaded', async function() {
-    // Всегда показываем страницу входа
+    // Показываем страницу входа (она активна по умолчанию)
     showLoginPage();
-    
-    // Загружаем данные в фоне (интерфейс останется скрытым)
+
+    // Загружаем данные в фоне, но интерфейс не показываем
     loadAllData();
     initializeRecordIds();
-    
-    // Сохраняем токен, если он есть, но не входим автоматически
+
+    // Если есть сохранённый токен – забираем его, но не входим автоматически
     const savedToken = localStorage.getItem('github_token');
     if (savedToken) {
         githubToken = savedToken;
-        // При желании можно проверить валидность токена, но не переключать интерфейс
     }
-    
-    // Обработчик кнопки Enter на странице входа
+
+    // Обработчик Enter на странице входа
     const loginPage = document.getElementById('login-page');
     if (loginPage) {
         loginPage.addEventListener('keypress', function(e) {
@@ -10846,31 +10848,7 @@ function forceTableUpdate() {
                 initializeCurrentPage();
             }, 100);
         });
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOM загружен, начинаем инициализацию...');
-    
-    // Проверяем и загружаем данные
-    checkAuthOnLoad();
-    
-    // Инициализируем другие элементы интерфейса
-    initializeCurrentPage();
-    
-    // Добавляем глобальные обработчики событий
-    document.addEventListener('mousemove', handleResize);
-    document.addEventListener('mouseup', stopResizing);
-    
-    // Инициализация изменения ширины столбцов
-    setTimeout(() => {
-        initColumnResize();
-        loadColumnWidths();
-    }, 500);
-    
-    console.log('Данные загружены:', {
-        accounting: accountingData.length,
-        counterparties: counterpartiesData.length,
-        payments: paymentsData.length
-    });
-});
+
 // ========== ФИКСИРОВАННЫЙ МАСШТАБ 100% ==========
 function setFixedZoom() {
     // Устанавливаем масштаб 100% для body (нормальный размер)
