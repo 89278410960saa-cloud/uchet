@@ -3754,7 +3754,7 @@
     {
       "recordId": "20260504161028607_aaov4em8a",
       "docNumber": "2026-391 (от 29.04.2026)",
-      "status": "Поставка",
+      "status": "Иное",
       "id": "МАТ-01605",
       "name": "Велосипед трехколесный STELS ENERGY I 26 V020",
       "quantity": "2",
@@ -3770,10 +3770,9 @@
       "deliveryDays": "14",
       "deliveryTerms": "Самовывоз",
       "date": "25.05.2026",
-      "planFact": "08.06.2026",
+      "planFact": "",
       "fact": "",
-      "shipmentDoc": "",
-      "plan": "08.06.2026"
+      "shipmentDoc": ""
     },
     {
       "recordId": "20260504161005808_4jxb5msyv",
@@ -22950,5 +22949,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-06-01T06:43:56.777Z"
+  "exportDate": "2026-06-01T06:44:04.930Z"
 }
