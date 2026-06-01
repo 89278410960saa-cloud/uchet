@@ -607,9 +607,9 @@
       "quantity": "-",
       "unit": "-",
       "purchaseName": "Элемент охлаждающий KS-4 Cooling Unit",
-      "purchaseQuantity": "10",
+      "purchaseQuantity": "5",
       "purchaseUnit": "шт",
-      "amount": "3150.77",
+      "amount": "",
       "supplier": "ООО \"Коловрат\"",
       "department": "11/0141 Котельная",
       "contract": "",
@@ -22950,5 +22950,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-06-01T06:28:55.192Z"
+  "exportDate": "2026-06-01T06:31:22.302Z"
 }
