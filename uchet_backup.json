@@ -1368,16 +1368,16 @@
       "name": "Фильтр\tМАСЛ. Д/ДВИГАТ. РАЙДЕР. HUSQVARNA R422 TS AWD",
       "quantity": "4",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
-      "supplier": "",
+      "purchaseName": "Фильтр масляный SO100014",
+      "purchaseQuantity": "4",
+      "purchaseUnit": "шт",
+      "amount": "6240.00",
+      "supplier": "ООО \"Трансстрой-Инструмент\"",
       "department": "16/0020 АХО",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № 1227",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "42",
+      "deliveryTerms": "Самовывоз",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -22950,5 +22950,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-06-01T06:16:28.851Z"
+  "exportDate": "2026-06-01T06:17:36.158Z"
 }
