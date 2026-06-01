@@ -1138,16 +1138,16 @@
       "name": "воздушный фильтр НА РАЙДЕР 422 АРТИКУЛ: BS792105",
       "quantity": "4",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
-      "supplier": "",
+      "purchaseName": "Фильтр воздушный картридж SA123934",
+      "purchaseQuantity": "4",
+      "purchaseUnit": "шт",
+      "amount": "15080.00",
+      "supplier": "ООО \"Трансстрой-Инструмент\"",
       "department": "16/0020 АХО",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № 1227",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "42",
+      "deliveryTerms": "Самовывоз",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -22950,5 +22950,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-06-01T06:21:49.763Z"
+  "exportDate": "2026-06-01T06:22:25.871Z"
 }
