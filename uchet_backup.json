@@ -445,16 +445,16 @@
       "name": "Плита перекрытия колодца \tПП10-1",
       "quantity": "2",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
-      "supplier": "",
+      "purchaseName": "Плита перекрытия  ПП 10-2",
+      "purchaseQuantity": "2",
+      "purchaseUnit": "шт",
+      "amount": "5800.00",
+      "supplier": "ООО \"ТПК \"Бастион\"",
       "department": "11/0144 НСВиК",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № 2026/10432",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "7",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -22961,5 +22961,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-06-01T11:12:39.651Z"
+  "exportDate": "2026-06-01T11:13:37.283Z"
 }
