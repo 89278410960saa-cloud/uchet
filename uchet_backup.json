@@ -100,16 +100,16 @@
       "name": "Хомут силовой W1 80-85ММ\n",
       "quantity": "4",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
+      "purchaseName": "Усиленный хомут (80-85 мм), оцинк. железо TL80-85RC TITAN LOCK",
+      "purchaseQuantity": "4",
+      "purchaseUnit": "шт",
+      "amount": "630.00",
       "supplier": "ООО «Техноберинг»",
       "department": "11/0144 НСВиК",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № 31990",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "7",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -22950,5 +22950,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-06-01T06:03:01.396Z"
+  "exportDate": "2026-06-01T06:06:33.364Z"
 }
