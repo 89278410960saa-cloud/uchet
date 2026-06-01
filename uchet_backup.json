@@ -14105,6 +14105,29 @@
       "fact": "11.12.2025",
       "shipmentDoc": "70019 от 09.12.25",
       "plan": "11.12.2025"
+    },
+    {
+      "recordId": "20260601163125640_k0k737ekw",
+      "docNumber": "2026-462 (от 29.05.2026)",
+      "status": "В работе",
+      "id": "МАТ-01606",
+      "name": "Велосипед двухколесный STELS",
+      "quantity": "2",
+      "unit": "шт",
+      "purchaseName": "",
+      "purchaseQuantity": "",
+      "purchaseUnit": "",
+      "amount": "",
+      "supplier": "",
+      "department": "16/0020 АХО",
+      "contract": "",
+      "paymentTerms": "",
+      "deliveryDays": "",
+      "deliveryTerms": "",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
     }
   ],
   "counterpartiesData": [
@@ -22961,5 +22984,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-06-01T13:15:08.555Z"
+  "exportDate": "2026-06-01T13:31:25.728Z"
 }
