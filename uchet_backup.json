@@ -1437,16 +1437,16 @@
       "name": "Корд триммерный\t2,7ММ*10М, ECHO",
       "quantity": "30",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
-      "supplier": "",
+      "purchaseName": "Леска триммерная VILLARTEC PRO (by Tecomec) круглая 2.7мм x 15м",
+      "purchaseQuantity": "30",
+      "purchaseUnit": "шт",
+      "amount": "11100.00",
+      "supplier": "ООО \"Трансстрой-Инструмент\"",
       "department": "16/0020 АХО",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № 1227",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "42",
+      "deliveryTerms": "Самовывоз",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -22950,5 +22950,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-06-01T06:15:13.901Z"
+  "exportDate": "2026-06-01T06:15:53.649Z"
 }
