@@ -123,16 +123,16 @@
       "name": "хомут силовой ROBUST W1 с одним шар.болт.104-112мм\n",
       "quantity": "20",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
+      "purchaseName": "Усиленный хомут (104-112 мм), оцинк. железо TL104-112RC TITAN LOCK",
+      "purchaseQuantity": "20",
+      "purchaseUnit": "шт",
+      "amount": "4390.00",
       "supplier": "ООО «Техноберинг»",
       "department": "11/0144 НСВиК",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № 31990",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "7",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -22950,5 +22950,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-06-01T06:06:33.364Z"
+  "exportDate": "2026-06-01T06:07:02.237Z"
 }
