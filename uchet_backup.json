@@ -1460,16 +1460,16 @@
       "name": "Корд триммерный\t3,0 ММ*236M, CHAMPION",
       "quantity": "2",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
-      "supplier": "",
+      "purchaseName": "Леска триммерная VILLARTEC PRO (by Tecomec) круглая 2.7мм x 215м",
+      "purchaseQuantity": "2",
+      "purchaseUnit": "шт",
+      "amount": "7200.00",
+      "supplier": "ООО \"Трансстрой-Инструмент\"",
       "department": "16/0020 АХО",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № 1227",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "42",
+      "deliveryTerms": "Самовывоз",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -22950,5 +22950,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-06-01T06:10:00.848Z"
+  "exportDate": "2026-06-01T06:15:13.901Z"
 }
