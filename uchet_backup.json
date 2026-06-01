@@ -14109,6 +14109,18 @@
   ],
   "counterpartiesData": [
     {
+      "recordId": "20260601141155617_6gmiv8ez6",
+      "supplier": "ООО \"ТПК \"Бастион\"",
+      "inn": "7806243989",
+      "phone": "7 (921) 793-65-96",
+      "contact": "Юлия",
+      "email": "s01@poad.ru",
+      "address": "-",
+      "material": "железобетонные изделия",
+      "blacklisted": false,
+      "blacklistComment": ""
+    },
+    {
       "recordId": "20260528122612274_9cn88ztpb",
       "supplier": "ЗАО \"Астахов\"",
       "inn": "7825122179",
@@ -22949,5 +22961,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-06-01T11:06:26.134Z"
+  "exportDate": "2026-06-01T11:11:55.654Z"
 }
