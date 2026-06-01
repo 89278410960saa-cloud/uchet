@@ -341,7 +341,7 @@
     padding: 5.36px 8.04px !important;   /* вертикальный + горизонтальный отступ, как у остальных таблиц */
 }
         .sidebar, .main-content {
-            display: block !important;
+            display: none;
         }
 
         #login-page {
@@ -9659,27 +9659,29 @@ function closeCounterpartyInfoModal() {
     currentCounterpartyInfo = null;
 }
 document.addEventListener('DOMContentLoaded', async function() {
-    // Сначала проверяем, есть ли сохранённый администратор
-    const hasSavedAuth = await checkAuthOnLoad(); // checkAuthOnLoad возвращает true, если админ авторизован
-
-    if (hasSavedAuth) {
-        // Если админ уже авторизован – сразу показываем интерфейс
-        hideLoginPage();
-        initializeApp();
-    } else {
-        // Иначе показываем страницу входа (она уже активна по умолчанию)
-        showLoginPage();
-        // Данные всё равно загружаем в фоне, чтобы интерфейс был готов
-        loadAllData();
-        initializeRecordIds();
+    // Всегда показываем страницу входа
+    showLoginPage();
+    
+    // Загружаем данные в фоне (интерфейс останется скрытым)
+    loadAllData();
+    initializeRecordIds();
+    
+    // Сохраняем токен, если он есть, но не входим автоматически
+    const savedToken = localStorage.getItem('github_token');
+    if (savedToken) {
+        githubToken = savedToken;
+        // При желании можно проверить валидность токена, но не переключать интерфейс
     }
-
-    // Добавляем обработчик Enter на странице входа
-    document.getElementById('login-page').addEventListener('keypress', function(e) {
-        if (e.key === 'Enter' && document.getElementById('login-page').classList.contains('active')) {
-            startApplication();
-        }
-    });
+    
+    // Обработчик кнопки Enter на странице входа
+    const loginPage = document.getElementById('login-page');
+    if (loginPage) {
+        loginPage.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && loginPage.classList.contains('active')) {
+                startApplication();
+            }
+        });
+    }
 });
 document.addEventListener('DOMContentLoaded', function() {
     // Обработчик для ссылки "Редактировать (для администратора)"
