@@ -422,16 +422,16 @@
       "name": "Люк чугунный тяжелый тип К, Т(С250)-К1.-60 корпус",
       "quantity": "5",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
-      "supplier": "",
+      "purchaseName": "Люк кан.тяжелый тип Т(С250) -  К.1-60",
+      "purchaseQuantity": "5",
+      "purchaseUnit": "шт",
+      "amount": "49500.00",
+      "supplier": "ООО \"ТПК \"Бастион\"",
       "department": "11/0144 НСВиК",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № 2026/10432",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "7",
+      "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -22961,5 +22961,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-06-01T11:14:10.166Z"
+  "exportDate": "2026-06-01T11:14:44.372Z"
 }
