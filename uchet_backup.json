@@ -1023,16 +1023,16 @@
       "name": "Головка для триммера KASEI, арт CG63",
       "quantity": "20",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
-      "supplier": "",
+      "purchaseName": "Головка триммерная 26-2/Т25/Т35 (12) 5010260000",
+      "purchaseQuantity": "20",
+      "purchaseUnit": "шт",
+      "amount": "24000.00",
+      "supplier": "ООО \"Трансстрой-Инструмент\"",
       "department": "16/0020 АХО",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № 1227",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "42",
+      "deliveryTerms": "Самовывоз",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -22961,5 +22961,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-06-01T13:07:06.302Z"
+  "exportDate": "2026-06-01T13:07:42.642Z"
 }
