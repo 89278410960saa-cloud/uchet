@@ -1437,16 +1437,16 @@
       "name": "Корд триммерный\t2,7ММ*10М, ECHO",
       "quantity": "30",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
-      "supplier": "",
+      "purchaseName": "Леска для триммера витой квадрат 2,7мм VERTEX 15м УК-777-2-7-15",
+      "purchaseQuantity": "30",
+      "purchaseUnit": "шт",
+      "amount": "4350.00",
+      "supplier": "ООО \"Трансстрой-Инструмент\"",
       "department": "16/0020 АХО",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № 1227",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "42",
+      "deliveryTerms": "Самовывоз",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -22961,5 +22961,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-06-01T12:55:41.215Z"
+  "exportDate": "2026-06-01T12:56:28.298Z"
 }
