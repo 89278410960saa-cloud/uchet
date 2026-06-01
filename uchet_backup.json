@@ -1115,16 +1115,16 @@
       "name": "Фильтр масляный  (масл. д/двигат.  райдера HUSQVARNA R316T AWD )",
       "quantity": "3",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
-      "supplier": "",
+      "purchaseName": "Фильтр масляный Kawasaki (49065-7007) 5781592-013",
+      "purchaseQuantity": "3",
+      "purchaseUnit": "шт",
+      "amount": "12150.00",
+      "supplier": "ООО \"Трансстрой-Инструмент\"",
       "department": "16/0020 АХО",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № 1227",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "42",
+      "deliveryTerms": "Самовывоз",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -22950,5 +22950,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-06-01T06:23:42.589Z"
+  "exportDate": "2026-06-01T06:24:24.930Z"
 }
