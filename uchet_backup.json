@@ -8888,9 +8888,9 @@
       "quantity": "10",
       "unit": "шт",
       "purchaseName": "Регулятор температуры V4.05 thermostat 40-160gr 3.0m cu Rod ss",
-      "purchaseQuantity": "10",
+      "purchaseQuantity": "5",
       "purchaseUnit": "шт",
-      "amount": "18120.78",
+      "amount": "",
       "supplier": "ООО \"Коловрат\"",
       "department": "11/0141 Котельная",
       "contract": "",
@@ -22950,5 +22950,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-06-01T06:31:28.052Z"
+  "exportDate": "2026-06-01T06:31:33.413Z"
 }
