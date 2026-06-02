@@ -1,6 +1,29 @@
 {
   "accountingData": [
     {
+      "recordId": "20260602162026340_r1wueyg7c",
+      "docNumber": "2026-448 (от 22.05.2026)",
+      "status": "В работе",
+      "id": "МАТ-05355",
+      "name": "Масло Moto 2T  Gazpromneft для садовой техники (для 2-х тактных двигателей) 1 литровое",
+      "quantity": "6",
+      "unit": "шт",
+      "purchaseName": "",
+      "purchaseQuantity": "",
+      "purchaseUnit": "",
+      "amount": "",
+      "supplier": "",
+      "department": "16/0020 АХО",
+      "contract": "",
+      "paymentTerms": "",
+      "deliveryDays": "",
+      "deliveryTerms": "",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
+    },
+    {
       "recordId": "20260602091217889_gqi49o2xt",
       "docNumber": "2026-391 (от 29.04.2026)",
       "status": "В работе",
@@ -14404,29 +14427,6 @@
       "fact": "11.12.2025",
       "shipmentDoc": "70019 от 09.12.25",
       "plan": "11.12.2025"
-    },
-    {
-      "recordId": "20260602162026340_r1wueyg7c",
-      "docNumber": "2026-448 (от 22.05.2026)",
-      "status": "В работе",
-      "id": "МАТ-05355",
-      "name": "Масло Moto 2T  Gazpromneft для садовой техники (для 2-х тактных двигателей) 1 литровое",
-      "quantity": "6",
-      "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
-      "supplier": "",
-      "department": "16/0020 АХО",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
-      "date": "",
-      "planFact": "",
-      "fact": "",
-      "shipmentDoc": ""
     }
   ],
   "counterpartiesData": [
@@ -23337,7 +23337,7 @@
     "2026-222 (от 11.03.2026)": "",
     "2026-246 (от 16.03.2026)": "",
     "2026-203 (от 16.03.2026)": "",
-    "2026-214 (от 20.03.2026)": "ПЗ на тендер Тлустый/ корректировка ПЗ",
+    "2026-214 (от 20.03.2026)": "ПЗ на тендер Тлустый/",
     "2026-268 (от 19.03.2026)": "",
     "2026-260 (от 24.03.2026)": "",
     "2026-257 (от 24.03.2026)": "",
@@ -23408,5 +23408,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-06-02T13:39:41.701Z"
+  "exportDate": "2026-06-02T13:59:06.251Z"
 }
