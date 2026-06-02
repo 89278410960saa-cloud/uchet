@@ -1,6 +1,29 @@
 {
   "accountingData": [
     {
+      "recordId": "20260602091217889_gqi49o2xt",
+      "docNumber": "2026-391 (от 29.04.2026)",
+      "status": "В работе",
+      "id": "МАТ-01605",
+      "name": "Велосипед трехколесный STELS ENERGY I 26 V020",
+      "quantity": "2",
+      "unit": "шт",
+      "purchaseName": "Велосипед трехколесный STELS ENERGY VI VB 26 2025 (доплата по счету 574222)",
+      "purchaseQuantity": "2",
+      "purchaseUnit": "шт",
+      "amount": "27900.00",
+      "supplier": "ООО \"Велосипедиссимо\"",
+      "department": "16/0020 АХО",
+      "contract": "СЧ № 575867",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "14",
+      "deliveryTerms": "Самовывоз",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
+    },
+    {
       "recordId": "20260601164706668_470y8j4m7",
       "docNumber": "2026-464 (от 29.05.2026)",
       "status": "В работе",
@@ -14404,29 +14427,6 @@
       "fact": "11.12.2025",
       "shipmentDoc": "70019 от 09.12.25",
       "plan": "11.12.2025"
-    },
-    {
-      "recordId": "20260602091217889_gqi49o2xt",
-      "docNumber": "2026-391 (от 29.04.2026)",
-      "status": "В работе",
-      "id": "МАТ-01605",
-      "name": "Велосипед трехколесный STELS ENERGY I 26 V020",
-      "quantity": "2",
-      "unit": "шт",
-      "purchaseName": "Велосипед трехколесный STELS ENERGY VI VB 26 2025 (доплата по счету 574222)",
-      "purchaseQuantity": "2",
-      "purchaseUnit": "шт",
-      "amount": "27900.00",
-      "supplier": "ООО \"Велосипедиссимо\"",
-      "department": "16/0020 АХО",
-      "contract": "СЧ № 575867",
-      "paymentTerms": "100 % предоплата",
-      "deliveryDays": "14",
-      "deliveryTerms": "Самовывоз",
-      "date": "",
-      "planFact": "",
-      "fact": "",
-      "shipmentDoc": ""
     }
   ],
   "counterpartiesData": [
@@ -22525,14 +22525,14 @@
     },
     {
       "recordId": "20260529090222391_vuf3c2t6z",
-      "date": "27.05.2026",
-      "note": "ждем письмо о замене",
+      "date": "26.05.2026",
+      "note": "заявка на вывоз и обмен",
       "status": "В работе",
       "supplier": "ООО \"Стройторговля\"",
       "contract": "СЧ № YL113605",
       "remark": "отсутствует бенз. двигатель при поставке триммера",
       "outgoing": "1127 от 27.05.2026",
-      "incoming": ""
+      "incoming": "б/н от 02.06.2026"
     },
     {
       "recordId": "20260528122438361_ll8a9kgxi",
@@ -23296,5 +23296,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-06-02T07:17:31.176Z"
+  "exportDate": "2026-06-02T08:23:13.880Z"
 }
