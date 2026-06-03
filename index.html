@@ -7380,22 +7380,26 @@ function editDepartment(index) {
 }
 
         function editSettlementRow(index) {
-            if (!isAdmin) return;
-            
-            const item = settlementData[index];
-            document.getElementById('modalSettlementTitle').textContent = 'Редактировать запись урегулирования';
-            document.getElementById('editSettlementIndex').value = index;
-            document.getElementById('editSettlementNote').value = item.note || '';
-            document.getElementById('editSettlementStatus').value = item.status || 'В работе';
-            document.getElementById('editSettlementSupplier').value = item.supplier || '';
-            document.getElementById('editSettlementContract').value = item.contract || '';
-            document.getElementById('editSettlementRemark').value = item.remark || '';
-            document.getElementById('editSettlementOutgoing').value = item.outgoing || '';
-            document.getElementById('editSettlementIncoming').value = item.incoming || '';
-            const deleteBtn = document.querySelector('#editSettlementModal .delete-btn');
-            if (deleteBtn) deleteBtn.style.display = 'inline-block';
-            document.getElementById('editSettlementModal').style.display = 'block';
-        }
+    if (!isAdmin) return;
+    
+    const item = settlementData[index];
+    document.getElementById('modalSettlementTitle').textContent = 'Редактировать запись урегулирования';
+    document.getElementById('editSettlementIndex').value = index;
+    document.getElementById('editSettlementNote').value = item.note || '';
+    document.getElementById('editSettlementStatus').value = item.status || 'В работе';
+    document.getElementById('editSettlementSupplier').value = item.supplier || '';
+    document.getElementById('editSettlementContract').value = item.contract || '';
+    document.getElementById('editSettlementRemark').value = item.remark || '';
+    document.getElementById('editSettlementOutgoing').value = item.outgoing || '';
+    document.getElementById('editSettlementIncoming').value = item.incoming || '';
+    
+    // ✅ Добавленная строка — установка даты
+    document.getElementById('editSettlementDate').value = formatDateForInput(item.date);
+    
+    const deleteBtn = document.querySelector('#editSettlementModal .delete-btn');
+    if (deleteBtn) deleteBtn.style.display = 'inline-block';
+    document.getElementById('editSettlementModal').style.display = 'block';
+}
 
         function saveSettlementChanges(event) {
     event.preventDefault();
