@@ -42,7 +42,7 @@
       "deliveryDays": "14",
       "deliveryTerms": "Самовывоз",
       "date": "",
-      "planFact": "",
+      "planFact": "17.06.2026",
       "fact": "",
       "shipmentDoc": ""
     },
@@ -3445,10 +3445,9 @@
       "deliveryDays": "14",
       "deliveryTerms": "Самовывоз",
       "date": "25.05.2026",
-      "planFact": "08.06.2026",
+      "planFact": "17.06.2026",
       "fact": "",
-      "shipmentDoc": "",
-      "plan": "08.06.2026"
+      "shipmentDoc": ""
     },
     {
       "recordId": "20260507145359794_5kc28mf8h",
@@ -23408,5 +23407,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-06-02T14:37:17.115Z"
+  "exportDate": "2026-06-03T06:10:20.833Z"
 }
