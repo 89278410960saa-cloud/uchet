@@ -2493,6 +2493,7 @@
     width: 100% !important;
 }
 
+
 /* ФИКСИРОВАННЫЕ ШИРИНЫ СТОЛБЦОВ ДЛЯ ТАБЛИЦЫ КОНТРАГЕНТОВ */
 #counterpartiesTable th:nth-child(1) { width: 100.5px !important; } /* Контрагент */
 #counterpartiesTable th:nth-child(2) { width: 33.5px !important; } /* ИНН */
@@ -2989,8 +2990,16 @@ button:hover{background:#222733!important}
             <span class="sidebar-icon">Удалить</span>
             <div class="sidebar-tooltip">Очистить все данные</div>
         </div>
-    </div>
+        <!-- Кнопка компактного режима (прижата к низу) -->
+    <div class="sidebar-cell menu-item" id="toggleHideColumnsBtn" onclick="toggleHideColumns()">
+    <span class="sidebar-icon">Compact</span>
+    <div class="sidebar-tooltip">Скрыть/показать столбцы</div>
 </div>
+</div>
+</div>
+
+
+
 
     <!-- Основной контент -->
     <div class="main-content" style="padding: 0px; height: 100vh;">
@@ -9989,14 +9998,20 @@ function showPage(pageId) {
     }
     
     // Обновляем активный пункт меню в сайдбаре
-    document.querySelectorAll('.sidebar-cell.menu-item').forEach(item => {
-        item.classList.remove('active');
-    });
+    document.querySelectorAll('.sidebar-cell.menu-item[data-page]').forEach(item => {
+    item.classList.remove('active');
+});
+
     
     const activeMenuItem = document.querySelector(`.sidebar-cell.menu-item[data-page="${pageId}"]`);
     if (activeMenuItem) {
         activeMenuItem.classList.add('active');
     }
+    // Восстанавливаем подсветку кнопки Compact
+    if (typeof updateHideColumnsButtonState === 'function') {
+        updateHideColumnsButtonState();
+    }
+
     
     // Убираем активный класс со всех подпунктов меню настроек
     document.querySelectorAll('#settingsMenu .sidebar-cell.menu-item').forEach(item => {
@@ -11222,6 +11237,189 @@ document.addEventListener('DOMContentLoaded', () => {
 })();
 </script>
 
+<script>
+    // ========== УПРАВЛЕНИЕ СКРЫТИЕМ СТОЛБЦОВ ==========
+    let hideColumnsEnabled = false; // глобальный флаг
 
+    // Конфигурация: для каждой страницы – массив индексов столбцов (0‑based)
+    const COLUMNS_TO_HIDE = {
+        accounting: [2, 13, 14, 15, 16, 19],   // Статус, Оплата, Срок, Поставка, Утверждено, Документ
+        counterparties: [5, 6],                // Материал, Адрес
+        payments: [1],                         // Статус
+        proxy: [1, 6],                         // Статус, Водитель
+        settlement: [2, 6, 7]                  // Статус, № Исходящее, № Входящее
+    };
+
+    // Соответствие названий страниц их HTML‑идентификаторам
+    const PAGE_ID_MAP = {
+        accounting: 'accounting',
+        counterparties: 'counterparties',
+        payments: 'payments',
+        proxy: 'proxy-registry',
+        settlement: 'settlement'
+    };
+
+    // Загружаем сохранённое состояние
+    function loadHideColumnsSetting() {
+        const saved = localStorage.getItem('hideColumnsEnabled');
+        if (saved !== null) {
+            hideColumnsEnabled = saved === 'true';
+        }
+        updateHideColumnsButtonState();
+    }
+
+    // Сохраняем состояние
+    function saveHideColumnsSetting() {
+        localStorage.setItem('hideColumnsEnabled', hideColumnsEnabled);
+    }
+
+    // Обновляем внешний вид кнопки в меню
+    function updateHideColumnsButtonState() {
+    const btn = document.getElementById('toggleHideColumnsBtn');
+    if (!btn) return;
+    if (hideColumnsEnabled) {
+        btn.classList.add('active');
+    } else {
+        btn.classList.remove('active');
+    }
+}
+
+    // Основной переключатель
+    function toggleHideColumns() {
+        hideColumnsEnabled = !hideColumnsEnabled;
+        saveHideColumnsSetting();
+        updateHideColumnsButtonState();
+
+        // Применяем для всех страниц (текущей и будущих)
+        applyCurrentColumnHiding();
+
+        // Показываем уведомление
+        showAutosaveNotification(hideColumnsEnabled ? 'Служебные столбцы скрыты' : 'Все столбцы показаны');
+    }
+
+    // Применяет скрытие/показ для конкретной таблицы по её ID и индексам
+    function applyColumnHidingForTable(tableId, columnIndices) {
+        const table = document.getElementById(tableId);
+        if (!table) return;
+
+        // Удаляем класс hidden-column со всех ячеек и заголовков
+        const allCells = table.querySelectorAll('th, td');
+        allCells.forEach(cell => cell.classList.remove('hidden-column'));
+
+        if (!hideColumnsEnabled) return; // если режим выключен – ничего не скрываем
+
+        // Для каждого индекса столбца скрываем все ячейки в этом столбце
+        columnIndices.forEach(colIdx => {
+            // Скрываем заголовок
+            const headerRow = table.querySelector('thead tr');
+            if (headerRow && headerRow.children[colIdx]) {
+                headerRow.children[colIdx].classList.add('hidden-column');
+            }
+            // Скрываем все строки тела таблицы
+            const rows = table.querySelectorAll('tbody tr');
+            rows.forEach(row => {
+                if (row.children[colIdx]) {
+                    row.children[colIdx].classList.add('hidden-column');
+                }
+            });
+        });
+    }
+
+    // Применяет настройки для страницы по её ID (accounting, counterparties, ...)
+    function applyColumnHidingForPage(pageId) {
+        const config = COLUMNS_TO_HIDE[pageId];
+        if (!config) return;
+
+        let tableId = pageId;
+        if (pageId === 'proxy') tableId = 'proxyTable';
+        else if (pageId === 'settlement') tableId = 'settlementTable';
+        else if (pageId === 'payments') tableId = 'paymentsTable';
+        else if (pageId === 'counterparties') tableId = 'counterpartiesTable';
+        else if (pageId === 'accounting') tableId = 'accountingTable';
+
+        applyColumnHidingForTable(tableId, config);
+    }
+
+    // Применяет настройки для всех страниц (обычно после переключения режима)
+    function applyCurrentColumnHiding() {
+        for (const [pageId] of Object.entries(COLUMNS_TO_HIDE)) {
+            const realPageId = PAGE_ID_MAP[pageId];
+            if (realPageId) {
+                const pageElement = document.getElementById(realPageId);
+                // Применяем только если страница существует
+                if (pageElement) {
+                    applyColumnHidingForPage(pageId);
+                }
+            }
+        }
+    }
+
+    // Перехватываем showPage, чтобы применять скрытие при смене страницы
+    const originalShowPage = window.showPage;
+    if (originalShowPage) {
+        window.showPage = function(pageId) {
+            originalShowPage(pageId);
+            // Через небольшую задержку, так как таблицы могут ещё не отрисоваться
+            setTimeout(() => {
+                for (const [key, val] of Object.entries(PAGE_ID_MAP)) {
+                    if (val === pageId) {
+                        applyColumnHidingForPage(key);
+                        break;
+                    }
+                }
+            }, 150);
+        };
+    }
+
+    // Дополнительно: после обновления каждой таблицы вызываем скрытие столбцов
+    function patchTableUpdateFunctions() {
+        const originalUpdateAccounting = window.updateAccountingTable;
+        if (originalUpdateAccounting) {
+            window.updateAccountingTable = function() {
+                originalUpdateAccounting();
+                applyColumnHidingForPage('accounting');
+            };
+        }
+
+        const originalUpdateCounterparties = window.updateCounterpartiesTable;
+        if (originalUpdateCounterparties) {
+            window.updateCounterpartiesTable = function() {
+                originalUpdateCounterparties();
+                applyColumnHidingForPage('counterparties');
+            };
+        }
+
+        const originalUpdatePayments = window.updatePaymentsTable;
+        if (originalUpdatePayments) {
+            window.updatePaymentsTable = function() {
+                originalUpdatePayments();
+                applyColumnHidingForPage('payments');
+            };
+        }
+
+        const originalUpdateProxy = window.updateProxyTable;
+        if (originalUpdateProxy) {
+            window.updateProxyTable = function() {
+                originalUpdateProxy();
+                applyColumnHidingForPage('proxy');
+            };
+        }
+
+        const originalUpdateSettlement = window.updateSettlementTable;
+        if (originalUpdateSettlement) {
+            window.updateSettlementTable = function() {
+                originalUpdateSettlement();
+                applyColumnHidingForPage('settlement');
+            };
+        }
+    }
+
+    // Инициализация при загрузке
+    document.addEventListener('DOMContentLoaded', function() {
+        loadHideColumnsSetting();
+        applyCurrentColumnHiding();
+        patchTableUpdateFunctions();
+    });
+</script>
 </body>
 </html>
