@@ -608,13 +608,7 @@
 
     vertical-align: middle !important;
 }
-/* Автоматическое распределение для таблиц */
-#counterpartiesTable,
-#settlementTable,
-#mailTable,
-#proxyTable {
-    table-layout: auto !important;
-}
+
 
 /* Для таблиц аналитики */
 #weeklyDeliveriesTable table,
@@ -4497,7 +4491,6 @@ function safeParseJSON(jsonString) {
 
 function applyFixedTableLayouts() {
     const tables = [
-        {id: 'counterpartiesTable', cols: 7},
         {id: 'settlementTable', cols: 6},
         {id: 'mailTable', cols: 7},
         {id: 'proxyTable', cols: 9} 
@@ -6264,13 +6257,15 @@ if (emailCell) {
         function filterCounterpartiesTable() {
     const searchText = document.getElementById('searchCounterpartiesInput').value.toLowerCase();
     const rows = document.querySelectorAll('#counterpartiesTable tbody tr');
+    const thead = document.querySelector('#counterpartiesTable thead');
     
     let visibleCount = 0;
     
     rows.forEach(row => {
-        // Пропускаем строку с сообщением "нет данных"
+        // Строка-заглушка "нет данных"
         if (row.cells.length === 1 && row.cells[0].colSpan > 1) {
             row.style.display = (searchText || showOnlyBlacklisted) ? 'none' : '';
+            if (!searchText && !showOnlyBlacklisted) visibleCount++;
             return;
         }
         
@@ -6291,23 +6286,43 @@ if (emailCell) {
         }
     });
     
-    // Показываем сообщение, если нет видимых строк
-    if (visibleCount === 0 && (searchText || showOnlyBlacklisted)) {
-        const tableBody = document.querySelector('#counterpartiesTable tbody');
-        if (tableBody.querySelector('tr[data-no-results]')) return;
+    const tableBody = document.querySelector('#counterpartiesTable tbody');
+    let noDataRow = tableBody.querySelector('tr[data-no-results]');
+    
+    // Если включён показ чёрного списка и нет видимых строк (нет контрагентов в ЧС)
+    if (showOnlyBlacklisted && visibleCount === 0) {
+        // Скрываем заголовок таблицы
+        if (thead) thead.style.display = 'none';
         
-        const noResultsRow = document.createElement('tr');
-        noResultsRow.setAttribute('data-no-results', 'true');
-        noResultsRow.innerHTML = `
-            <td colspan="7" style="text-align: center; color: #8f98a0; padding: 20px;">
-                ${showOnlyBlacklisted ? 'В черном списке нет контрагентов' : `По запросу "${searchText}" ничего не найдено`}
-            </td>
-        `;
-        tableBody.appendChild(noResultsRow);
+        if (!noDataRow) {
+            noDataRow = document.createElement('tr');
+            noDataRow.setAttribute('data-no-results', 'true');
+            noDataRow.innerHTML = `
+                <td colspan="7" style="text-align: center; color: #8f98a0; padding: 20px;">
+                    В черном списке нет контрагентов
+                </td>
+            `;
+            tableBody.appendChild(noDataRow);
+        }
     } else {
-        const noResultsRow = document.querySelector('tr[data-no-results]');
-        if (noResultsRow) {
-            noResultsRow.remove();
+        // Показываем заголовок
+        if (thead) thead.style.display = '';
+        
+        // Удаляем сообщение, если оно было
+        if (noDataRow) noDataRow.remove();
+        
+        // Если нет результатов поиска – показываем стандартное сообщение
+        if (visibleCount === 0 && searchText) {
+            if (!noDataRow) {
+                noDataRow = document.createElement('tr');
+                noDataRow.setAttribute('data-no-results', 'true');
+                noDataRow.innerHTML = `
+                    <td colspan="7" style="text-align: center; color: #8f98a0; padding: 20px;">
+                        По запросу "${searchText}" ничего не найдено
+                    </td>
+                `;
+                tableBody.appendChild(noDataRow);
+            }
         }
     }
 }
@@ -11080,6 +11095,44 @@ document.addEventListener('DOMContentLoaded', () => {
     padding: 8px 4px !important;   /* переопределить компактный padding */
     vertical-align: middle;
 }
+/* 1. Экспорт в Excel – очень бледный фиолетовый */
+button[onclick*="exportToExcel"] {
+    background: rgba(100, 70, 150, 0.30) !important;
+    color: #c7d5e0 !important;
+}
+button[onclick*="exportToExcel"]:hover {
+    background: rgba(100, 70, 150, 0.50) !important;
+}
+
+/* 2. Поставки на неделю – бледно-желтоватый (почти незаметный) */
+#weeklyDeliveriesBtn {
+    background: rgba(200, 180, 50, 0.30) !important;
+    color: #c7d5e0 !important;
+}
+#weeklyDeliveriesBtn:hover {
+    background: rgba(200, 180, 50, 0.50) !important;
+}
+
+/* 3. Просроченные – бледно-красноватый */
+#overdueBtn {
+    background: rgba(180, 70, 60, 0.30) !important;
+    color: #c7d5e0 !important;
+}
+#overdueBtn:hover {
+    background: rgba(180, 70, 60, 0.50) !important;
+}
+
+
+
+/* 5. Показать черный список – едва уловимый красноватый */
+#blacklistFilterBtn {
+    background: rgba(180, 70, 60, 0.30) !important;
+    color: #c7d5e0 !important;
+}
+#blacklistFilterBtn:hover {
+    background: rgba(180, 70, 60, 0.50) !important;
+}
+
 </style>
 <!-- НОВЫЙ СКРИПТ ДЛЯ ПЕРЕСТАНОВКИ КНОПОК -->
 <script>
