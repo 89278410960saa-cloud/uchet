@@ -625,7 +625,7 @@
     {
       "recordId": "20260602162026340_r1wueyg7c",
       "docNumber": "2026-448 (от 22.05.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "МАТ-05355",
       "name": "Масло Moto 2T  Gazpromneft для садовой техники (для 2-х тактных двигателей) 1 литровое",
       "quantity": "6",
@@ -640,8 +640,8 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "14",
       "deliveryTerms": "Самовывоз",
-      "date": "",
-      "planFact": "",
+      "date": "10.06.2026",
+      "planFact": "24.06.2026",
       "fact": "",
       "shipmentDoc": ""
     },
@@ -2389,7 +2389,7 @@
     {
       "recordId": "20260525124025612_9jjpqgrzb",
       "docNumber": "2026-448 (от 22.05.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "МАТ-05355",
       "name": "Масло для сад. техники\tBRIGGS & STRATTON SAE 30, 0.6Л, 4Х ТАКТ.",
       "quantity": "14",
@@ -2404,8 +2404,8 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "14",
       "deliveryTerms": "Самовывоз",
-      "date": "",
-      "planFact": "",
+      "date": "10.06.2026",
+      "planFact": "24.06.2026",
       "fact": "",
       "shipmentDoc": ""
     },
@@ -21197,7 +21197,7 @@
     },
     {
       "recordId": "20260609174051466_k5h4ahc5h",
-      "status": "План",
+      "status": "Оплачено",
       "date": "10.06.2026",
       "amount": "16004.00",
       "supplier": "ООО \"Интернет Решения\"",
@@ -24361,5 +24361,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-06-10T13:56:15.507Z"
+  "exportDate": "2026-06-10T14:08:59.076Z"
 }
