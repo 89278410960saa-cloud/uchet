@@ -1,6 +1,29 @@
 {
   "accountingData": [
     {
+      "recordId": "20260610115339778_oqrotu92j",
+      "docNumber": "2026-426 (от 13.05.2026)",
+      "status": "В работе",
+      "id": "-",
+      "name": "Стартер для триммера - Huter",
+      "quantity": "1",
+      "unit": "шт",
+      "purchaseName": "Стартер для триммера - Huter GGT-1000T/S \nGGT-2500T/S, 43см3, 52см3",
+      "purchaseQuantity": "1",
+      "purchaseUnit": "шт",
+      "amount": "418.00",
+      "supplier": "ООО \"Интернет Решения\"",
+      "department": "11/0121 Слободка",
+      "contract": "СЧ № 0237806506-0008",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "7",
+      "deliveryTerms": "Самовывоз",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
+    },
+    {
       "recordId": "20260609090735475_xx5c8p5qn",
       "docNumber": "2026-467 (от 01.06.2026)",
       "status": "В работе",
@@ -6341,7 +6364,7 @@
     {
       "recordId": "20260427125426647_qmf7yvuv7",
       "docNumber": "2026-334 (от 24.04.2026)",
-      "status": "Поставка",
+      "status": "Приход",
       "id": "МАТ-04639",
       "name": "Электроводонагреватель \tТЕРМЕКС Н 10-О",
       "quantity": "5",
@@ -6358,14 +6381,13 @@
       "deliveryTerms": "Включена",
       "date": "28.05.2026",
       "planFact": "11.06.2026",
-      "fact": "",
-      "shipmentDoc": "",
-      "plan": "11.06.2026"
+      "fact": "10.06.2026",
+      "shipmentDoc": ""
     },
     {
       "recordId": "20260427125358051_3ptpgpivb",
       "docNumber": "2026-334 (от 24.04.2026)",
-      "status": "Поставка",
+      "status": "Приход",
       "id": "МАТ-04639",
       "name": "Электроводонагреватель \tТЕРМЕКС Н 10-U",
       "quantity": "10",
@@ -6382,9 +6404,8 @@
       "deliveryTerms": "Включена",
       "date": "28.05.2026",
       "planFact": "11.06.2026",
-      "fact": "",
-      "shipmentDoc": "",
-      "plan": "11.06.2026"
+      "fact": "10.06.2026",
+      "shipmentDoc": ""
     },
     {
       "recordId": "20260427125329712_5zf3bx5k9",
@@ -15061,29 +15082,6 @@
       "fact": "11.12.2025",
       "shipmentDoc": "70019 от 09.12.25",
       "plan": "11.12.2025"
-    },
-    {
-      "recordId": "20260610115339778_oqrotu92j",
-      "docNumber": "2026-426 (от 13.05.2026)",
-      "status": "В работе",
-      "id": "-",
-      "name": "Стартер для триммера - Huter",
-      "quantity": "1",
-      "unit": "шт",
-      "purchaseName": "Стартер для триммера - Huter GGT-1000T/S \nGGT-2500T/S, 43см3, 52см3",
-      "purchaseQuantity": "1",
-      "purchaseUnit": "шт",
-      "amount": "418.00",
-      "supplier": "ООО \"Интернет Решения\"",
-      "department": "11/0121 Слободка",
-      "contract": "СЧ № 0237806506-0008",
-      "paymentTerms": "100 % предоплата",
-      "deliveryDays": "7",
-      "deliveryTerms": "Самовывоз",
-      "date": "",
-      "planFact": "",
-      "fact": "",
-      "shipmentDoc": ""
     }
   ],
   "counterpartiesData": [
@@ -23533,17 +23531,6 @@
       "remark": "Возврат ДС",
       "outgoing": "1132 от 27.05.2026",
       "incoming": "-"
-    },
-    {
-      "recordId": "20260609132422783_ysams23ht",
-      "date": "09.06.2026",
-      "note": "замена стартера за счет поставщика",
-      "status": "В работе",
-      "supplier": "ООО \"Стройторговля\"",
-      "contract": "СЧ № YL113605",
-      "remark": "новый триммер появился дефект муфты стартера",
-      "outgoing": "-",
-      "incoming": "-"
     }
   ],
   "mailData": [
@@ -23679,7 +23666,8 @@
       "document": "УПД № УТУ30030573 от 05.06.2026",
       "sheets": "1",
       "address": "192236, г. Санкт-Петербург, а/я 44",
-      "sender": "Сидорченко А.А."
+      "sender": "Сидорченко А.А.",
+      "recordId": "20260610131901790_15wvr66fl"
     }
   ],
   "proxyData": [
@@ -24343,5 +24331,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-06-10T09:47:24.950Z"
+  "exportDate": "2026-06-10T10:24:20.586Z"
 }
