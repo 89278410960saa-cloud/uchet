@@ -5043,6 +5043,7 @@ if (accountingData.length > 0) {
     
     // Обновляем таблицу
     updateAccountingTable();
+    updateButtonsVisibility();
     
     // Показываем уведомление
     showAutosaveNotification('Фильтры сброшены');
@@ -5393,8 +5394,9 @@ function toggleOverdueMode() {
             overdueBtn.textContent = `Просроченные (${count})`;
             clearAccountingFilters();
         }
-    }
+        updateButtonsVisibility();   // <-- ДОБАВИТЬ ЭТУ СТРОКУ
 }
+    }
 function restoreAccountingTable() {
     // Восстанавливаем заголовок
     const thead = document.querySelector('#accountingTable thead');
@@ -5471,6 +5473,25 @@ function updateOverdueButton() {
         overdueBtn.textContent = `Скрыть просроченные (${count})`;
     } else {
         overdueBtn.textContent = `Просроченные (${count})`;
+    }
+}
+function updateButtonsVisibility() {
+    const overdueBtn = document.getElementById('overdueBtn');
+    const weeklyBtn = document.getElementById('weeklyDeliveriesBtn');
+    if (!overdueBtn || !weeklyBtn) return;
+    
+    if (showOverdueMode) {
+        // Режим просроченных активен → скрываем кнопку поставок на неделю
+        weeklyBtn.style.display = 'none';
+        overdueBtn.style.display = '';  // или 'inline-flex', смотря что в CSS
+    } else if (showWeeklyDeliveriesMode) {
+        // Режим поставок на неделю активен → скрываем кнопку просроченных
+        weeklyBtn.style.display = 'flex';
+        overdueBtn.style.display = 'none';
+    } else {
+        // Оба режима выключены → показываем обе кнопки
+        weeklyBtn.style.display = 'flex';
+        overdueBtn.style.display = 'flex';
     }
 }
 function countWeeklyDeliveries() {
@@ -5636,7 +5657,8 @@ function toggleWeeklyDeliveriesMode() {
                 thead.style.display = '';
             }
             clearAccountingFilters();
-        }
+}
+updateButtonsVisibility();
     }
 }
 function updateWeeklyDeliveriesButton() {
@@ -10098,9 +10120,9 @@ function showPage(pageId) {
                     updateOverdueButton();
                     updateWeeklyDeliveriesButton();
                 }
-                
+                updateButtonsVisibility();
                 updateCommentBlockVisibility();
-                
+                break;
                 // Восстанавливаем состояние активной кнопки быстрых фильтров (если было сохранено)
                 // Только если не активны специальные фильтры (просроченные/поставки на неделю)
                 if (!showOverdueMode && !showWeeklyDeliveriesMode && savedQuickFilterState && savedQuickFilterState.application && savedQuickFilterState.status) {
@@ -11121,6 +11143,13 @@ button[onclick*="exportToExcel"]:hover {
 #weeklyDeliveriesBtn {
     background: rgba(200, 180, 50, 0.30) !important;
     color: #c7d5e0 !important;
+    display: inline-flex;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 8px !important;      /* убираем лишние вертикальные отступы */
+    line-height: normal !important;
+    white-space: nowrap;
+    height: auto !important;
 }
 #weeklyDeliveriesBtn:hover {
     background: rgba(200, 180, 50, 0.50) !important;
@@ -11130,6 +11159,13 @@ button[onclick*="exportToExcel"]:hover {
 #overdueBtn {
     background: rgba(180, 70, 60, 0.30) !important;
     color: #c7d5e0 !important;
+    display: inline-flex;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 8px !important;      /* убираем лишние вертикальные отступы */
+    line-height: normal !important;
+    white-space: nowrap;
+    height: auto !important;
 }
 #overdueBtn:hover {
     background: rgba(180, 70, 60, 0.50) !important;
