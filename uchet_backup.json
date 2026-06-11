@@ -72,7 +72,7 @@
     {
       "recordId": "20260608165709255_bkalwoxsv",
       "docNumber": "2026-467 (от 01.06.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "МАТ-07982",
       "name": "-",
       "quantity": "-",
@@ -87,15 +87,15 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "7",
       "deliveryTerms": "Самовывоз",
-      "date": "",
-      "planFact": "",
+      "date": "11.06.2026",
+      "planFact": "19.06.2026",
       "fact": "",
       "shipmentDoc": ""
     },
     {
       "recordId": "20260608165621312_cwf1tv8rm",
       "docNumber": "2026-467 (от 01.06.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "МАТ-08867",
       "name": "-",
       "quantity": "-",
@@ -110,8 +110,8 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "7",
       "deliveryTerms": "Самовывоз",
-      "date": "",
-      "planFact": "",
+      "date": "11.06.2026",
+      "planFact": "19.06.2026",
       "fact": "",
       "shipmentDoc": ""
     },
@@ -164,7 +164,7 @@
     {
       "recordId": "20260608120911024_5rc3moe1e",
       "docNumber": "2026-467 (от 01.06.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "МАТ-10544",
       "name": "Дополнительная ёмкость для промывочной жидкости для промывочного компрессора ROTHENBERGER\n",
       "quantity": "1",
@@ -179,8 +179,8 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "7",
       "deliveryTerms": "Самовывоз",
-      "date": "",
-      "planFact": "",
+      "date": "11.06.2026",
+      "planFact": "19.06.2026",
       "fact": "",
       "shipmentDoc": ""
     },
@@ -256,7 +256,7 @@
     {
       "recordId": "20260605155253043_oa8s3m2ga",
       "docNumber": "2026-480 (от 01.06.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "МАТ-07096",
       "name": "Эмаль DALI КОРИЧНЕВЫЙ RAL8017 (2Л) \n",
       "quantity": "6",
@@ -271,15 +271,15 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "7",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "11.06.2026",
+      "planFact": "18.06.2026",
       "fact": "",
       "shipmentDoc": ""
     },
     {
       "recordId": "20260605155230136_m97p31ocw",
       "docNumber": "2026-480 (от 01.06.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "МАТ-07026",
       "name": "Грунт-ЭМАЛЬ DALI ПО РЖАВЧИНЕ 3 В 1 RAL3001 КРАСН. (2Л)",
       "quantity": "2",
@@ -294,8 +294,8 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "7",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "11.06.2026",
+      "planFact": "18.06.2026",
       "fact": "",
       "shipmentDoc": ""
     },
@@ -325,7 +325,7 @@
     {
       "recordId": "20260605155140408_8pg1jmvz3",
       "docNumber": "2026-480 (от 01.06.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "МАТ-07026",
       "name": "Грунт-ЭМАЛЬ DALI  ПО РЖАВЧИНЕ 3 В 1 ГЛАДКАЯ RAL 1021 (2Л)",
       "quantity": "6",
@@ -340,8 +340,8 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "7",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "11.06.2026",
+      "planFact": "18.06.2026",
       "fact": "",
       "shipmentDoc": ""
     },
@@ -371,7 +371,7 @@
     {
       "recordId": "20260605155050293_7w3voga1c",
       "docNumber": "2026-480 (от 01.06.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "МАТ-07026",
       "name": "Грунт-ЭМАЛЬ DALI  ПО РЖВЧИНЕ 3 В 1 ГЛАДКАЯ RAL 7004 (2Л)",
       "quantity": "6",
@@ -386,15 +386,15 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "7",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "11.06.2026",
+      "planFact": "18.06.2026",
       "fact": "",
       "shipmentDoc": ""
     },
     {
       "recordId": "20260605155026621_imp0bnp3b",
       "docNumber": "2026-480 (от 01.06.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "МАТ-07026",
       "name": "Грунт-ЭМАЛЬ DALI RAL 9010 (2Л)\n",
       "quantity": "4",
@@ -409,15 +409,15 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "7",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "11.06.2026",
+      "planFact": "18.06.2026",
       "fact": "",
       "shipmentDoc": ""
     },
     {
       "recordId": "20260605154159567_b4i02c8s4",
       "docNumber": "2026-474 (от 01.06.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "МАТ-04118",
       "name": "Пресс-масленка прямая DIN 71412 с конической головкой и резьбой М8х1, AISI 304\n",
       "quantity": "200",
@@ -432,8 +432,8 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "7",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "11.06.2026",
+      "planFact": "18.06.2026",
       "fact": "",
       "shipmentDoc": ""
     },
@@ -21167,7 +21167,7 @@
     },
     {
       "recordId": "20260609174227534_l9ltpjef3",
-      "status": "План",
+      "status": "Оплачено",
       "date": "10.06.2026",
       "amount": "64000.00",
       "supplier": "ООО \"Спецкрепеж\"",
@@ -21207,7 +21207,7 @@
     },
     {
       "recordId": "20260609173957675_jyac8zmmu",
-      "status": "План",
+      "status": "Оплачено",
       "date": "10.06.2026",
       "amount": "35407.45",
       "supplier": "ООО \"Ольмакс - СПБ\"",
@@ -21247,7 +21247,7 @@
     },
     {
       "recordId": "20260609173715344_jo7gxrydv",
-      "status": "План",
+      "status": "Оплачено",
       "date": "10.06.2026",
       "amount": "65464.58",
       "supplier": "ООО \"СТД \"Петрович\"",
@@ -23739,7 +23739,7 @@
       "contract": "СЧ № АСП 00409/1",
       "address": "Ленинградская область, Тосненский район,  деревня Аннолово, 1-й Индустриальный проезд, дом 8, корпусы 1 - 8",
       "driver": "Елистратов И.Н.",
-      "status": "В работе"
+      "status": "Выполнено"
     },
     {
       "recordId": "20260512090604870_kg8ko6zp7",
@@ -24361,5 +24361,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-06-10T14:08:59.076Z"
+  "exportDate": "2026-06-11T06:55:25.780Z"
 }
