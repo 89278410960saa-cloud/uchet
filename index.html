@@ -1851,7 +1851,13 @@
         tr.overdue-row {
             background-color: rgba(190, 70, 60, 0.3) !important;
         }
-
+/* Подсветка активных фильтров – фон становится светлее */
+input.filter-active,
+select.filter-active {
+    background-color: #485080 !important;
+    border-left: 3px solid #7ca2b8;
+    transition: all 0.2s ease;
+}
         /* Подсветка статусов */
         tr.status-completed {
             background-color: rgba(92, 126, 16, 0.3) !important;
@@ -4998,6 +5004,11 @@ function editAccountingRowByRecordId(recordId) {
     document.getElementById('yearFilter').value = '';
     document.getElementById('applicationComment').value = '';
     document.getElementById('factMonthFilter').value = '';
+    const accountingFilters = ['#searchAccountingInput', '#statusFilter', '#departmentFilter', '#applicationFilter', '#supplierFilter', '#yearFilter', '#factMonthFilter'];
+accountingFilters.forEach(sel => {
+    const el = document.querySelector(sel);
+    if (el) updateFilterHighlight(el);
+});
     // Восстанавливаем исходную сортировку (по убыванию recordId)
 if (accountingData.length > 0) {
     updateAccountingTable(); // перерисовывает таблицу с исходной сортировкой
@@ -8378,7 +8389,7 @@ function printDeliveriesAndOverdue() {
     const searchText = document.getElementById('searchAccountingInput').value.toLowerCase().trim();
 
     // Скрываем блок, если статус не выбран или статус "Выполнено"/"Приход"
-    if (!statusFilter || statusFilter === 'Выполнено' || statusFilter === 'Приход') {
+    if (!statusFilter || statusFilter === 'Выполнено') {
         quickFiltersContainer.style.display = 'none';
         quickFiltersContainer.innerHTML = '';
         return;
@@ -10177,7 +10188,7 @@ function updateQuickFilters() {
     quickFiltersContainer.innerHTML = '';
     
     // Скрываем блок, если статус не выбран или статус "Выполнено"/"Приход"
-    if (!statusFilter || statusFilter === 'Выполнено' || statusFilter === 'Приход') {
+    if (!statusFilter || statusFilter === 'Выполнено') {
         quickFiltersContainer.style.display = 'none';
         return;
     }
@@ -11474,7 +11485,47 @@ button[onclick*="exportToExcel"]:hover {
         loadHideColumnsSetting();
         applyCurrentColumnHiding();
         patchTableUpdateFunctions();
+        initFiltersHighlight();
     });
+    // Функция для обновления класса подсветки на одном элементе
+function updateFilterHighlight(element) {
+    const isEmpty = element.value === null || element.value.trim() === '';
+    if (isEmpty) {
+        element.classList.remove('filter-active');
+    } else {
+        element.classList.add('filter-active');
+    }
+}
+
+// Функция для инициализации подсветки всех фильтров на странице
+function initFiltersHighlight() {
+    // Селекторы всех полей фильтрации на всех страницах
+    const filterSelectors = [
+        '#searchAccountingInput', '#yearFilter', '#statusFilter', '#supplierFilter',
+        '#departmentFilter', '#applicationFilter', '#factMonthFilter',
+        '#searchCounterpartiesInput', '#blacklistFilterBtn', // кнопка – не поле, пропустим
+        '#searchPaymentsInput', '#paymentsApplicationFilter', '#paymentsSupplierFilter',
+        '#paymentsStatusFilter', '#paymentDateFilter',
+        '#searchSettlementInput', '#settlementSupplierFilter', '#settlementStatusFilter',
+        '#searchMailInput', '#mailSupplierFilter', '#mailDateFilter',
+        '#searchProxyInput', '#proxySupplierFilter', '#proxyApplicationFilter',
+        '#proxyStatusFilter', '#proxyDateFilter'
+    ];
+
+    // Находим все элементы по этим селекторам
+    const filters = filterSelectors
+        .map(sel => document.querySelector(sel))
+        .filter(el => el !== null);
+
+    // Навешиваем обработчики событий
+    filters.forEach(input => {
+        // При любом изменении значения
+        input.addEventListener('input', () => updateFilterHighlight(input));
+        input.addEventListener('change', () => updateFilterHighlight(input));
+        // И сразу проверим начальное состояние
+        updateFilterHighlight(input);
+    });
+}
 </script>
 </body>
 </html>
