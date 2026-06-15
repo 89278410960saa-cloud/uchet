@@ -2281,12 +2281,13 @@ select.filter-active {
     left: 0;
     width: 100%;
     height: 100%;
-    backdrop-filter: blur(5.36px);
-    background-color: rgba(23, 30, 38, 0.7);
+    backdrop-filter: blur(12px);
+    background-color: rgba(0, 0, 0, 0.85);
     z-index: 9998;
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.2s ease, visibility 0.2s ease; /* Уменьшил с 0.3s до 0.2s */
+    transition: opacity 0.2s ease, visibility 0.2s ease; 
+    box-shadow: inset 0 0 50px rgba(0,0,0,0.5);
 }
 
 .page-transition-blur.active {
@@ -10012,185 +10013,100 @@ function updateAllBadges() {
         let pageTransitionTimeout = null;
 
 function showPage(pageId) {
-    // Показываем окно загрузки
     const blurOverlay = document.querySelector('.page-transition-blur');
     const loadingSpinner = document.querySelector('.loading-spinner-blur');
     
+    // 1. Мгновенно показываем блюр (синхронно)
     if (blurOverlay && loadingSpinner) {
         blurOverlay.classList.add('active');
         loadingSpinner.classList.add('active');
     }
     
-    // Сохраняем текущее состояние активной кнопки быстрых фильтров (если есть)
-    const activeQuickFilterBtn = document.querySelector('.quick-filter-btn.active');
-    let savedQuickFilterState = null;
-    
-    if (activeQuickFilterBtn && activeQuickFilterBtn.textContent) {
-        savedQuickFilterState = {
-            application: activeQuickFilterBtn.textContent.trim(),
-            status: document.getElementById('statusFilter')?.value || ''
-        };
-    }
-    
-    // Скрываем все страницы с анимацией
-    document.querySelectorAll('.page').forEach(page => {
-        page.classList.remove('active');
-    });
-    
-    // Показываем выбранную страницу
-    const activePage = document.getElementById(pageId);
-    if (activePage) {
+    // 2. Даём браузеру один кадр, чтобы отрендерить блюр
+    requestAnimationFrame(() => {
+        // Небольшая задержка для гарантии (но обычно достаточно одного кадра)
         setTimeout(() => {
-            activePage.classList.add('active');
-        }, 10);
-    }
-    
-    // Обновляем активный пункт меню в сайдбаре
-    document.querySelectorAll('.sidebar-cell.menu-item[data-page]').forEach(item => {
-    item.classList.remove('active');
-});
-
-    
-    const activeMenuItem = document.querySelector(`.sidebar-cell.menu-item[data-page="${pageId}"]`);
-    if (activeMenuItem) {
-        activeMenuItem.classList.add('active');
-    }
-    // Восстанавливаем подсветку кнопки Compact
-    if (typeof updateHideColumnsButtonState === 'function') {
-        updateHideColumnsButtonState();
-    }
-
-    
-    // Убираем активный класс со всех подпунктов меню настроек
-    document.querySelectorAll('#settingsMenu .sidebar-cell.menu-item').forEach(item => {
-        item.classList.remove('active');
-    });
-    
-    // Закрываем меню настроек при переключении страниц
-    closeSettingsMenu();
-    
-    // Обновляем таблицы в зависимости от выбранной страницы
-    setTimeout(() => {
-        switch(pageId) {
-            case 'accounting':
-                updateAccountingTable();
-                
-                // Восстанавливаем состояние активных фильтров
-                if (showOverdueMode) {
-                    // Восстанавливаем фильтр просроченных
-                    showOverdueOnly();
-                    const overdueBtn = document.getElementById('overdueBtn');
-                    if (overdueBtn) {
-                        const count = countOverdueRecords();
-                        overdueBtn.style.background = 'linear-gradient(135deg, rgba(190, 70, 60, 0.9) 0%, rgba(140, 44, 36, 0.9) 100%)';
-                        overdueBtn.style.boxShadow = '0 0 10px rgba(190, 70, 60, 0.5)';
-                        overdueBtn.textContent = `Скрыть просроченные (${count})`;
-                    }
-                    // Сбрасываем режим поставок на неделю, если он был
-                    showWeeklyDeliveriesMode = false;
-                    const weeklyDeliveriesBtn = document.getElementById('weeklyDeliveriesBtn');
-                    if (weeklyDeliveriesBtn) {
-                        weeklyDeliveriesBtn.style.background = 'linear-gradient(135deg, #ffd700 0%, #ffa500 100%)';
-                        weeklyDeliveriesBtn.style.boxShadow = 'none';
-                        weeklyDeliveriesBtn.textContent = `Поставки на неделю (${countWeeklyDeliveries()})`;
-                    }
-                } else if (showWeeklyDeliveriesMode) {
-                    // Восстанавливаем фильтр поставок на неделю
-                    showWeeklyDeliveriesOnly();
-                    const weeklyDeliveriesBtn = document.getElementById('weeklyDeliveriesBtn');
-                    if (weeklyDeliveriesBtn) {
-                        const count = countWeeklyDeliveries();
-                        weeklyDeliveriesBtn.style.background = 'linear-gradient(135deg, #ffd700 0%, #ffa500 100%)';
-                        weeklyDeliveriesBtn.style.boxShadow = '0 0 10px rgba(255, 215, 0, 0.5)';
-                        weeklyDeliveriesBtn.textContent = `Скрыть поставки на неделю (${count})`;
-                    }
-                    // Сбрасываем режим просроченных, если он был
-                    showOverdueMode = false;
-                    const overdueBtn = document.getElementById('overdueBtn');
-                    if (overdueBtn) {
-                        overdueBtn.style.background = 'linear-gradient(135deg, rgba(190, 70, 60, 0.6) 0%, rgba(140, 44, 36, 0.6) 100%)';
-                        overdueBtn.style.boxShadow = 'none';
-                        overdueBtn.textContent = `Просроченные (${countOverdueRecords()})`;
-                    }
-                } else {
-                    // Иначе применяем обычную фильтрацию
-                    filterAccountingTable();
-                    updateOverdueButton();
-                    updateWeeklyDeliveriesButton();
-                }
-                updateButtonsVisibility();
-                updateCommentBlockVisibility();
-                break;
-                // Восстанавливаем состояние активной кнопки быстрых фильтров (если было сохранено)
-                // Только если не активны специальные фильтры (просроченные/поставки на неделю)
-                if (!showOverdueMode && !showWeeklyDeliveriesMode && savedQuickFilterState && savedQuickFilterState.application && savedQuickFilterState.status) {
-                    // Устанавливаем значения фильтров
-                    document.getElementById('applicationFilter').value = savedQuickFilterState.application;
-                    document.getElementById('statusFilter').value = savedQuickFilterState.status;
-                    
-                    // Обновляем быстрые фильтры
-                    updateQuickFilters();
-                    
-                    // Ждем, пока кнопки создадутся, затем восстанавливаем активное состояние
-                    setTimeout(() => {
-                        const quickFilterButtons = document.querySelectorAll('.quick-filter-btn');
-                        quickFilterButtons.forEach(btn => {
-                            if (btn.textContent.trim() === savedQuickFilterState.application) {
-                                // Убираем активный класс со всех кнопок
-                                document.querySelectorAll('.quick-filter-btn').forEach(b => {
-                                    b.classList.remove('active');
-                                });
-                                // Добавляем активный класс нужной кнопке
-                                btn.classList.add('active');
-                            }
-                        });
-                        
-                        // Применяем фильтрацию
-                        filterByApplicationAndStatus(savedQuickFilterState.application, savedQuickFilterState.status);
-                    }, 50);
-                }
-                break;
-                
-            case 'counterparties':
-                updateCounterpartiesTable();
-                filterCounterpartiesTable();
-                break;
-                
-            case 'payments':
-                updatePaymentsTable();
-                filterPaymentsTable();
-                break;
-                
-            case 'settlement':
-                updateSettlementTable();
-                filterSettlementTable();
-                break;
-                
-            case 'mail-registry':
-                updateMailTable();
-                filterMailTable();
-                break;
-                
-            case 'proxy-registry':
-                updateProxyTable();
-                filterProxyTable();
-                break;
-        }
-        // Принудительно применяем фиксированные ширины после обновления таблиц
-        setTimeout(() => {
+            // Сохраняем состояние быстрых фильтров (если нужно)
+            const activeQuickFilterBtn = document.querySelector('.quick-filter-btn.active');
+            let savedQuickFilterState = null;
+            if (activeQuickFilterBtn && activeQuickFilterBtn.textContent) {
+                savedQuickFilterState = {
+                    application: activeQuickFilterBtn.textContent.trim(),
+                    status: document.getElementById('statusFilter')?.value || ''
+                };
+            }
+            
+            // Скрываем все страницы
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Показываем новую страницу
+            const activePage = document.getElementById(pageId);
+            if (activePage) {
+                activePage.classList.add('active');
+            }
+            
+            // Обновляем активный пункт меню
+            document.querySelectorAll('.sidebar-cell.menu-item[data-page]').forEach(item => {
+                item.classList.remove('active');
+            });
+            const activeMenuItem = document.querySelector(`.sidebar-cell.menu-item[data-page="${pageId}"]`);
+            if (activeMenuItem) activeMenuItem.classList.add('active');
+            if (typeof updateHideColumnsButtonState === 'function') updateHideColumnsButtonState();
+            
+            // Закрываем меню настроек
+            document.querySelectorAll('#settingsMenu .sidebar-cell.menu-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            closeSettingsMenu();
+            
+            // Обновляем таблицы в зависимости от страницы
+            switch(pageId) {
+                case 'accounting':
+                    updateAccountingTable();
+                    if (showOverdueMode) showOverdueOnly();
+                    else if (showWeeklyDeliveriesMode) showWeeklyDeliveriesOnly();
+                    else filterAccountingTable();
+                    updateButtonsVisibility();
+                    updateCommentBlockVisibility();
+                    break;
+                case 'counterparties':
+                    updateCounterpartiesTable();
+                    filterCounterpartiesTable();
+                    break;
+                case 'payments':
+                    updatePaymentsTable();
+                    filterPaymentsTable();
+                    break;
+                case 'settlement':
+                    updateSettlementTable();
+                    filterSettlementTable();
+                    break;
+                case 'mail-registry':
+                    updateMailTable();
+                    filterMailTable();
+                    break;
+                case 'proxy-registry':
+                    updateProxyTable();
+                    filterProxyTable();
+                    break;
+            }
+            
+            // Применяем фиксированные ширины и загружаем сохранённые настройки столбцов
             applyFixedTableLayouts();
             loadColumnWidths();
-        }, 100);
-        
-        // Скрываем окно загрузки после обновления страницы
-        setTimeout(() => {
-            if (blurOverlay && loadingSpinner) {
-                blurOverlay.classList.remove('active');
-                loadingSpinner.classList.remove('active');
-            }
-        }, 200);
-        
-    }, 100); // Небольшая задержка для плавности перехода
+            
+            // 3. Убираем блюр после того, как данные загрузились
+            setTimeout(() => {
+                if (blurOverlay && loadingSpinner) {
+                    blurOverlay.classList.remove('active');
+                    loadingSpinner.classList.remove('active');
+                }
+            }, 200); // небольшая задержка для плавного исчезновения
+            
+        }, 10); // микро-задержка после requestAnimationFrame
+    });
 }
 
 // В функции updateQuickFilters добавьте автоматическую активацию кнопки по текущим фильтрам
