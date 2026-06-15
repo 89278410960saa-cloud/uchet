@@ -689,7 +689,7 @@
 }
 #settingsMenu.show {
     display: flex !important;
-    max-height: 201.0px;
+    max-height: 400px;
     opacity: 1;
     flex-direction: column;
 }
@@ -2949,22 +2949,7 @@ button:hover{background:#222733!important}
         </div>
     </div> <!-- закрытие первой секции навигации -->
 
-    <!-- Секция управления данными -->
-    <div class="sidebar-section" style="margin-bottom: 0.0px;">
-        <div class="sidebar-cell menu-item github-export-btn admin-only" onclick="forceExportToGitHub()" title="Принудительный экспорт данных">
-            <span class="sidebar-icon">Сохранить</span>
-            <span class="github-export-spinner" style="display: none;">◌</span>
-            <div class="sidebar-tooltip">Принудительный экспорт</div>
-        </div>
-        <div class="sidebar-cell menu-item import-btn" onclick="importJSON()" title="Импорт данных" style="display: flex;">
-            <span class="sidebar-icon">Обновить</span>
-            <div class="sidebar-tooltip">Импорт данных</div>
-        </div>
-        <div class="sidebar-cell menu-item" onclick="showStatusStatsModal()" title="Аналитика">
-            <span class="sidebar-icon">Аналитика</span>
-            <div class="sidebar-tooltip">Аналитика</div>
-        </div>
-    </div>
+    
 
     <!-- Кнопка настроек -->
     <div class="sidebar-section">
@@ -2981,10 +2966,23 @@ button:hover{background:#222733!important}
             <div class="sidebar-tooltip">GitHub настройки</div>
             <div class="sidebar-badge warning" id="githubGuestBadge" style="display: none;">!</div>
         </div>
+        <div class="sidebar-cell menu-item github-export-btn admin-only" onclick="forceExportToGitHub()" title="Принудительный экспорт данных">
+            <span class="sidebar-icon">Сохранить</span>
+            <span class="github-export-spinner" style="display: none;">◌</span>
+            <div class="sidebar-tooltip">Принудительный экспорт</div>
+        </div>
+        <div class="sidebar-cell menu-item import-btn" onclick="importJSON()" title="Импорт данных" style="display: flex;">
+            <span class="sidebar-icon">Обновить</span>
+            <div class="sidebar-tooltip">Импорт данных</div>
+        </div>
         <div class="sidebar-cell menu-item" id="aiChatButton" onclick="openAiChatModal()" title="AI Чат (OpenRouter)">
             <span class="sidebar-icon">AI Чат</span>
             <div class="sidebar-tooltip">AI Чат</div>
         </div>
+        <div class="sidebar-cell menu-item" onclick="showStatusStatsModal()" title="Аналитика">
+    <span class="sidebar-icon">Аналитика</span>
+    <div class="sidebar-tooltip">Аналитика</div>
+</div>
         <div class="sidebar-cell menu-item admin-only export-btn" onclick="exportJSON()" title="Экспорт данных" style="display: none;">
             <span class="sidebar-icon">Экспорт</span>
             <div class="sidebar-tooltip">Экспорт данных</div>
@@ -11180,6 +11178,15 @@ button[onclick*="exportToExcel"]:hover {
 }
 #blacklistFilterBtn:hover {
     background: rgba(180, 70, 60, 0.50) !important;
+}
+/* Единый стиль для всех пунктов меню, включая выпадающее */
+.sidebar .sidebar-cell.menu-item,
+#settingsMenu .sidebar-cell.menu-item {
+    height: 36px !important;
+    padding: 0 12px !important;
+    line-height: 36px !important;
+    font-size: 12px !important;
+    box-sizing: border-box !important;
 }
 
 </style>
