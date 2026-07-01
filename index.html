@@ -4699,13 +4699,20 @@ function normalizeContract(str) {
 
 const contract = item.contract || '';
 const docNumber = item.docNumber || '';
-const normContract = normalizeContract(contract);
+const contractNumbers = extractContractNumbers(contract);
 const matchingPayment = paymentsData.find(p => {
     if (p.status !== 'План') return false;
     if (p.docNumber !== docNumber) return false;
     const normPContract = normalizeContract(p.contract || '');
-    // Проверяем, содержится ли normPContract в normContract
-    // или разбиваем normContract по разделителям
+    if (!normPContract) return false;
+
+    // Если в договоре учёта есть номера в скобках, проверяем вхождение
+    if (contractNumbers.length > 0) {
+        return contractNumbers.some(num => num === normPContract || num.includes(normPContract));
+    }
+
+    // Иначе сравниваем нормализованные договоры целиком
+    const normContract = normalizeContract(contract);
     return normContract.includes(normPContract);
 });
 if (matchingPayment) {
@@ -4782,6 +4789,14 @@ if (isAdmin) {
     updateOverdueButton();
     setTimeout(forceTableUpdate, 100);
     
+}
+function extractContractNumbers(str) {
+    if (!str) return [];
+    // Ищем содержимое в круглых скобках
+    const match = str.match(/\(([^)]+)\)/);
+    if (!match) return [];
+    // Разбиваем по разделителям ; или , и убираем лишние пробелы
+    return match[1].split(/[;,]\s*/).map(s => s.trim()).filter(Boolean);
 }
 function editAccountingRowByRecordId(recordId) {
     if (!isAdmin) {
