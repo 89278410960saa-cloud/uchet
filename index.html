@@ -4704,7 +4704,9 @@ const matchingPayment = paymentsData.find(p => {
     if (p.status !== 'План') return false;
     if (p.docNumber !== docNumber) return false;
     const normPContract = normalizeContract(p.contract || '');
-    return normPContract === normContract;
+    // Проверяем, содержится ли normPContract в normContract
+    // или разбиваем normContract по разделителям
+    return normContract.includes(normPContract);
 });
 if (matchingPayment) {
     contractCell.style.position = 'relative';
