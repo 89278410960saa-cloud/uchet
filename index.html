@@ -1943,7 +1943,7 @@ select.filter-active {
 
         /* Подсветка просроченных дат */
         .overdue-date {
-            color: #be463c;
+            color: #e45411;
             font-weight: bold;
         }
 
@@ -4691,6 +4691,21 @@ if (openParenIndex !== -1) {
         const purchaseUnitCell = createCell(item.purchaseUnit || '', '100px');
         const amountCell = createCell(item.amount ? formatCurrency(item.amount) : '', '148px');
         const contractCell = createCell(item.contract || '', '114px');
+        // ---- НОВАЯ ЛОГИКА ИНДИКАТОРА ----
+const contract = item.contract || '';
+const docNumber = item.docNumber || '';
+// Ищем платеж с таким же договором, заявкой и статусом "План"
+const matchingPayment = paymentsData.find(p =>
+    p.contract === contract &&
+    p.docNumber === docNumber &&
+    p.status === 'План'
+);
+if (matchingPayment) {
+    contractCell.style.position = 'relative';
+    const indicator = document.createElement('span');
+    indicator.className = 'payment-plan-indicator';
+    contractCell.appendChild(indicator);
+}
         const paymentTermsCell = createCell(item.paymentTerms || '', '96px');
         const deliveryDaysCell = createCell(item.deliveryDays || '', '148px');
         const deliveryTermsCell = createCell(item.deliveryTerms || '', '81px');
@@ -7138,6 +7153,7 @@ function editPaymentRow(index) {
     updatePaymentsBadge();
     updatePaymentsTable();
     updatePaymentsTotal();
+    updateAccountingTable();
     updateContractsList();
     closePaymentModal();
     markChangesMade();
@@ -7165,6 +7181,7 @@ function editPaymentRow(index) {
         updatePaymentsBadge();
         updatePaymentsTable();
         updatePaymentsTotal();
+        updateAccountingTable();
         closePaymentModal();
         markChangesMade();
         refreshStatusStatsIfOpen();
@@ -11103,6 +11120,18 @@ button[onclick*="exportToExcel"]:hover {
     line-height: 36px !important;
     font-size: 12px !important;
     box-sizing: border-box !important;
+}
+/* Индикатор наличия платежа в статусе "План" для договора */
+.payment-plan-indicator {
+    position: absolute;
+    bottom: 1px;               /* прижимаем к нижнему краю */
+    right: 1px;                /* прижимаем к правому краю */
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #be9e3c 0%, #8c2c24 100%);
+    pointer-events: none;
+    box-shadow: none;
 }
 
 </style>
