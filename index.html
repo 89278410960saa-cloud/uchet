@@ -3473,6 +3473,7 @@ button:hover{background:#222733!important}
             <datalist id="suppliersList"></datalist>
             <datalist id="contractsList"></datalist>
             <datalist id="applicationsList"></datalist>
+            <datalist id="shipmentDocsList"></datalist>
             
             <!-- Таблица 4x5 для полей ввода с НОВЫМ ПОРЯДКОМ -->
             <table style="width: 100%; border-collapse: collapse; margin-bottom: 13.4px;">
@@ -3502,7 +3503,7 @@ button:hover{background:#222733!important}
                     </td>
                     <td style="padding: 8.04px 5.36px; width: 20%; vertical-align: top;">
                         <label style="display: block; margin-bottom: 5.36px; color: #66c0f4; font-size: 8.71px; font-weight: bold;">Документ отгрузочный:</label>
-                        <input type="text" id="editShipmentDoc" style="width: 100%; padding: 6.7px; height: 26.8px;" placeholder="Документ">
+                        <input type="text" id="editShipmentDoc" list="shipmentDocsList" style="width: 100%; padding: 6.7px; height: 26.8px;" placeholder="Документ">
                     </td>
                 </tr>
                 
@@ -4429,6 +4430,7 @@ function updateCommentFieldPermissions() {
         updateSuppliersList();
         updateApplicationsList();
         updateContractsList();
+        updateShipmentDocsList()
         updateQuickFilters();
         updateAllBadges()
         updateDepartmentsFilter();
@@ -4481,6 +4483,7 @@ function safeParseJSON(jsonString) {
         function updateAllTables() {
     updateAccountingTable();
     updateCounterpartiesTable();
+    updateShipmentDocsList()
     updatePaymentsTable();
     updateSettlementTable();
     updateMailTable();
@@ -5244,7 +5247,8 @@ if (editPurchaseName && editPurchaseName.tagName === 'TEXTAREA') {
     saveAllData();
     updateAccountingTable();
     updateDepartmentsFilter();
-    updateContractsList(); 
+    updateContractsList();
+    updateShipmentDocsList() 
     updateQuickFilters();
     updateYearsFilter();
     filterAccountingTable();
@@ -6839,6 +6843,25 @@ function updateContractsList() {
         const option = document.createElement('option');
         option.value = contract;
         contractsList.appendChild(option);
+    });
+}
+function updateShipmentDocsList() {
+    const datalist = document.getElementById('shipmentDocsList');
+    if (!datalist) return;
+    datalist.innerHTML = '';
+
+    const docs = new Set();
+    accountingData.forEach(item => {
+        if (item.shipmentDoc && item.shipmentDoc.trim()) {
+            docs.add(item.shipmentDoc.trim());
+        }
+    });
+
+    const sortedDocs = Array.from(docs).sort();
+    sortedDocs.forEach(doc => {
+        const option = document.createElement('option');
+        option.value = doc;
+        datalist.appendChild(option);
     });
 }
 
@@ -8721,6 +8744,7 @@ function updateCommentFieldPermissions() {
             updateAccountingTable();
             updateQuickFilters();
             updateYearsFilter();
+            updateShipmentDocsList()
             filterAccountingTable();
             closeAccountingModal();
             markChangesMade();
@@ -9533,6 +9557,7 @@ function importJSON() {
             saveAllData();
             updateAllTables();
             updateAllBadges();
+            updateShipmentDocsList()
 
             // Скрываем индикатор
             if (blurOverlay && loadingSpinner) {
