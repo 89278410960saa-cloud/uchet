@@ -4691,15 +4691,21 @@ if (openParenIndex !== -1) {
         const purchaseUnitCell = createCell(item.purchaseUnit || '', '100px');
         const amountCell = createCell(item.amount ? formatCurrency(item.amount) : '', '148px');
         const contractCell = createCell(item.contract || '', '114px');
-        // ---- НОВАЯ ЛОГИКА ИНДИКАТОРА ----
+        // Функция нормализации: убираем всё, что в круглых скобках, и лишние пробелы
+function normalizeContract(str) {
+    if (!str) return '';
+    return str.replace(/\s*\([^)]*\)/g, '').trim();
+}
+
 const contract = item.contract || '';
 const docNumber = item.docNumber || '';
-// Ищем платеж с таким же договором, заявкой и статусом "План"
-const matchingPayment = paymentsData.find(p =>
-    p.contract === contract &&
-    p.docNumber === docNumber &&
-    p.status === 'План'
-);
+const normContract = normalizeContract(contract);
+const matchingPayment = paymentsData.find(p => {
+    if (p.status !== 'План') return false;
+    if (p.docNumber !== docNumber) return false;
+    const normPContract = normalizeContract(p.contract || '');
+    return normPContract === normContract;
+});
 if (matchingPayment) {
     contractCell.style.position = 'relative';
     const indicator = document.createElement('span');
