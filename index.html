@@ -7040,13 +7040,14 @@ function updateSuppliersFilterList() {
         return;
     }
     
+    // Сортировка по дате (убывание)
     const sortedPayments = [...paymentsData].sort((a, b) => {
-    const dateA = parseDate(a.date);
-    const dateB = parseDate(b.date);
-    const timeA = dateA ? dateA.getTime() : 0;
-    const timeB = dateB ? dateB.getTime() : 0;
-    return timeB - timeA; // убывание (новые сверху)
-});
+        const dateA = parseDate(a.date);
+        const dateB = parseDate(b.date);
+        const timeA = dateA ? dateA.getTime() : 0;
+        const timeB = dateB ? dateB.getTime() : 0;
+        return timeB - timeA;
+    });
     
     sortedPayments.forEach((item) => {
         const row = document.createElement('tr');
@@ -7055,29 +7056,40 @@ function updateSuppliersFilterList() {
         row.classList.add('clickable-row');
         if (!isAdmin) row.classList.add('guest-mode');
         
-        const linkHtml = item.link
-    ? `<span class="link-icon" data-link="${item.link.replace(/"/g, '&quot;')}" title="Скопировать ссылку">🔗</span>`
-    : '';
-
-row.innerHTML = `
-    <td>${item.date || ''}</td>
-    <td>${item.status || ''}</td>
-    <td>${item.docNumber || ''}</td>
-    <td>${item.supplier || ''}</td>
-    <td>${item.amount ? formatCurrency(item.amount) : ''}</td>
-    <td>${item.contract || ''}</td>
-    <td>${linkHtml}</td>
-`;
-if (item.link) {
-    const icon = row.querySelector('.link-icon');
-    if (icon) {
-        icon.addEventListener('click', (e) => {
-            e.stopPropagation(); // чтобы не срабатывал dblclick строки
-            copyToClipboard(item.link);
-        });
-    }
-}
+        // Ссылка на договор (кликабельная)
+        const contractText = item.contract || '';
+        const supplier = item.supplier || '';
+        const contractLink = contractText
+            ? `<a href="javascript:void(0)" onclick="filterByContract('${escapeJsString(contractText)}', '${escapeJsString(supplier)}')" style="color: #66c0f4; text-decoration: underline; cursor: pointer;">${escapeString(contractText)}</a>`
+            : '';
         
+        // Ссылка на внешний ресурс (иконка копирования)
+        const linkHtml = item.link
+            ? `<span class="link-icon" data-link="${item.link.replace(/"/g, '&quot;')}" title="Скопировать ссылку" style="cursor:pointer;">🔗</span>`
+            : '';
+        
+        row.innerHTML = `
+            <td>${item.date || ''}</td>
+            <td>${item.status || ''}</td>
+            <td>${item.docNumber || ''}</td>
+            <td>${item.supplier || ''}</td>
+            <td>${item.amount ? formatCurrency(item.amount) : ''}</td>
+            <td>${contractLink}</td>
+            <td>${linkHtml}</td>
+        `;
+        
+        // Обработчик для копирования ссылки
+        if (item.link) {
+            const icon = row.querySelector('.link-icon');
+            if (icon) {
+                icon.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    copyToClipboard(item.link);
+                });
+            }
+        }
+        
+        // Двойной клик для редактирования (только для админа)
         if (isAdmin) {
             row.addEventListener('dblclick', function(e) {
                 if (!e.target.closest('button') && !e.target.closest('input')) {
@@ -7086,6 +7098,7 @@ if (item.link) {
                     if (recordIndex !== -1) {
                         editPaymentRow(recordIndex);
                     } else {
+                        // fallback
                         const supplier = e.currentTarget.querySelector('td:nth-child(4)').textContent;
                         const amount = e.currentTarget.querySelector('td:nth-child(5)').textContent;
                         const fallbackIndex = paymentsData.findIndex(record => 
@@ -7101,9 +7114,10 @@ if (item.link) {
         }
         
         tableBody.appendChild(row);
-        updatePaymentsTotal();
-        updatePaymentsBadge();
     });
+    
+    updatePaymentsTotal();
+    updatePaymentsBadge();
 }
 // ========== ФУНКЦИИ ДЛЯ парсинга суммы ==========
 function parseCurrency(currencyText) {
@@ -8354,6 +8368,10 @@ function parseDate(dateString) {
             if (!str) return '';
             return str.replace(/'/g, "&#39;").replace(/"/g, "&quot;").replace(/\n/g, " ");
         }
+        function escapeJsString(str) {
+    if (!str) return '';
+    return str.replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/"/g, '\\"');
+}
     function getCurrentMonthDeliveries() {
     if (!accountingData || accountingData.length === 0) return [];
     const now = new Date();
@@ -8365,6 +8383,46 @@ function parseDate(dateString) {
         if (!date) return false;
         return date.getFullYear() === currentYear && date.getMonth() === currentMonth;
     });
+}
+function filterByContract(contract, supplier) {
+    if (!contract) return;
+    showPage('accounting'); // переключаем на страницу учёта
+    setTimeout(() => {
+        // Сброс всех фильтров вручную
+        const searchInput = document.getElementById('searchAccountingInput');
+        const statusFilter = document.getElementById('statusFilter');
+        const departmentFilter = document.getElementById('departmentFilter');
+        const applicationFilter = document.getElementById('applicationFilter');
+        const supplierFilter = document.getElementById('supplierFilter');
+        const yearFilter = document.getElementById('yearFilter');
+        const factMonthFilter = document.getElementById('factMonthFilter');
+
+        if (searchInput) searchInput.value = '';
+        if (statusFilter) statusFilter.value = '';
+        if (departmentFilter) departmentFilter.value = '';
+        if (applicationFilter) applicationFilter.value = '';
+        if (supplierFilter) supplierFilter.value = '';
+        if (yearFilter) yearFilter.value = '';
+        if (factMonthFilter) factMonthFilter.value = '';
+
+        // Убираем активные классы с быстрых фильтров
+        document.querySelectorAll('.quick-filter-btn').forEach(btn => btn.classList.remove('active'));
+
+        // Устанавливаем поиск по договору
+        if (searchInput) {
+            searchInput.value = contract;
+            updateFilterHighlight(searchInput);
+        }
+        // Если передан поставщик, устанавливаем фильтр по поставщику
+        if (supplier && supplierFilter) {
+            supplierFilter.value = supplier;
+            updateFilterHighlight(supplierFilter);
+        }
+
+        // Применяем фильтрацию
+        filterAccountingTable();
+        updateCommentBlockVisibility();
+    }, 300);
 }
 // ========== ФУНКЦИИ ДЛЯ ПЕЧАТИ ПОСТАВОК И ПРОСРОЧКИ ==========
 function printDeliveriesAndOverdue() {
