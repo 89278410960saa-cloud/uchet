@@ -332,6 +332,7 @@
             height: 100vh;
             display: flex;
             flex-direction: column;
+            transition: margin-left 0.3s ease;
         }
 
         .container {
@@ -2946,6 +2947,7 @@ button:hover{background:#222733!important}
     width: 85px !important;
     min-width: 85px !important;
     padding: 8px 6px !important;
+    
 }
 
 .sidebar .sidebar-cell.menu-item {
@@ -2986,90 +2988,93 @@ button:hover{background:#222733!important}
     
     <!-- Сайдбар меню -->
 <div class="sidebar">
-    <!-- Основные страницы -->
-    <div class="sidebar-section" style="margin-bottom: 0.0px;">
-        <div class="sidebar-cell menu-item active" data-page="accounting" onclick="showPage('accounting')" title="Учет закупок">
-            <span class="menu-icon"><i class="fas fa-list"></i></span>
-            <span class="menu-text">Позиции</span>
-            <div class="sidebar-tooltip">Учет закупок</div>
-            <div class="sidebar-badge" id="accountingBadge" style="display: none;">0</div>
+        <!-- Основные страницы -->
+        <div class="sidebar-section" style="margin-bottom: 0.0px;">
+            <div class="sidebar-cell menu-item active" data-page="accounting" onclick="showPage('accounting')" title="Учет закупок">
+                <span class="menu-icon"><i class="fas fa-list"></i></span>
+                <span class="menu-text">Позиции</span>
+                <div class="sidebar-tooltip">Учет закупок</div>
+                <div class="sidebar-badge" id="accountingBadge" style="display: none;">0</div>
+            </div>
+            <div class="sidebar-cell menu-item" data-page="counterparties" onclick="showPage('counterparties')" title="Контрагенты">
+                <span class="menu-icon"><i class="fas fa-users"></i></span>
+                <span class="menu-text">Контрагенты</span>
+                <div class="sidebar-tooltip">Контрагенты</div>
+            </div>
+            <div class="sidebar-cell menu-item" data-page="payments" onclick="showPage('payments')" title="Платежи">
+                <span class="menu-icon"><i class="fas fa-credit-card"></i></span>
+                <span class="menu-text">Платежи</span>
+                <div class="sidebar-tooltip">Платежи</div>
+                <div class="sidebar-badge" id="paymentsBadge" style="display: none;">0</div>
+            </div>
+            <div class="sidebar-cell menu-item" data-page="proxy-registry" onclick="showPage('proxy-registry')" title="Реестр доверенностей">
+                <span class="menu-icon"><i class="fas fa-truck"></i></span>
+                <span class="menu-text">Самовывоз</span>
+                <div class="sidebar-tooltip">Реестр доверенностей</div>
+                <div class="sidebar-badge" id="proxyBadge" style="display: none;">0</div>
+            </div>
+            <div class="sidebar-cell menu-item" data-page="settlement" onclick="showPage('settlement')" title="Урегулирование">
+                <span class="menu-icon"><i class="fas fa-balance-scale"></i></span>
+                <span class="menu-text">Рекламации</span>
+                <div class="sidebar-tooltip">Рекламации</div>
+                <div class="sidebar-badge" id="settlementBadge" style="display: none;">0</div>
+            </div>
+            <div class="sidebar-cell menu-item" data-page="mail-registry" onclick="showPage('mail-registry')" title="Почтовый реестр">
+                <span class="menu-icon"><i class="fas fa-envelope"></i></span>
+                <span class="menu-text">Отправления</span>
+                <div class="sidebar-tooltip">Почтовый реестр</div>
+            </div>
         </div>
-        <div class="sidebar-cell menu-item" data-page="counterparties" onclick="showPage('counterparties')" title="Контрагенты">
-            <span class="menu-icon"><i class="fas fa-users"></i></span>
-            <span class="menu-text">Контрагенты</span>
-            <div class="sidebar-tooltip">Контрагенты</div>
+
+        <!-- Настройки (кнопка) -->
+        <div class="sidebar-section">
+            <div class="sidebar-cell menu-item" id="settingsButton" title="Настройки" onclick="toggleSettingsMenu()">
+                <span class="menu-icon"><i class="fas fa-cog"></i></span>
+                <span class="menu-text">Настройки</span>
+                <div class="sidebar-tooltip">Настройки</div>
+            </div>
         </div>
-        <div class="sidebar-cell menu-item" data-page="payments" onclick="showPage('payments')" title="Платежи">
-            <span class="menu-icon"><i class="fas fa-credit-card"></i></span>
-            <span class="menu-text">Платежи</span>
-            <div class="sidebar-tooltip">Платежи</div>
-            <div class="sidebar-badge" id="paymentsBadge" style="display: none;">0</div>
-        </div>
-        <div class="sidebar-cell menu-item" data-page="proxy-registry" onclick="showPage('proxy-registry')" title="Реестр доверенностей">
-            <span class="menu-icon"><i class="fas fa-truck"></i></span>
-            <span class="menu-text">Самовывоз</span>
-            <div class="sidebar-tooltip">Реестр доверенностей</div>
-            <div class="sidebar-badge" id="proxyBadge" style="display: none;">0</div>
-        </div>
-        <div class="sidebar-cell menu-item" data-page="settlement" onclick="showPage('settlement')" title="Урегулирование">
-            <span class="menu-icon"><i class="fas fa-balance-scale"></i></span>
-            <span class="menu-text">Рекламации</span>
-            <div class="sidebar-tooltip">Рекламации</div>
-            <div class="sidebar-badge" id="settlementBadge" style="display: none;">0</div>
-        </div>
-        <div class="sidebar-cell menu-item" data-page="mail-registry" onclick="showPage('mail-registry')" title="Почтовый реестр">
-            <span class="menu-icon"><i class="fas fa-envelope"></i></span>
-            <span class="menu-text">Отправления</span>
-            <div class="sidebar-tooltip">Почтовый реестр</div>
-        </div>
+        <!-- СТАРЫЙ БЛОК #settingsMenu УДАЛЁН -->
     </div>
 
-    <!-- Настройки -->
-    <div class="sidebar-section">
-        <div class="sidebar-cell menu-item" id="settingsButton" title="Настройки" onclick="toggleSettingsMenu()">
-            <span class="menu-icon"><i class="fas fa-cog"></i></span>
-            <span class="menu-text">Настройки</span>
-            <div class="sidebar-tooltip">Настройки</div>
+    <!-- ВТОРОЙ САЙДБАР ДЛЯ НАСТРОЕК (правый) -->
+    <div id="settingsSidebar" class="settings-sidebar">
+        <div class="sidebar-section">
+            <div class="sidebar-cell menu-item" onclick="showGithubSettingsModal()" title="GitHub настройки">
+                <span class="menu-icon"><i class="fas fa-key"></i></span>
+                <span class="menu-text">Вход</span>
+                <div class="sidebar-badge warning" id="githubGuestBadge" style="display: none;">!</div>
+            </div>
+            <div class="sidebar-cell menu-item github-export-btn admin-only" onclick="forceExportToGitHub()" title="Принудительный экспорт данных">
+                <span class="menu-icon"><i class="fas fa-save"></i></span>
+                <span class="menu-text">Сохранить</span>
+            </div>
+            <div class="sidebar-cell menu-item import-btn" onclick="importJSON()" title="Импорт данных">
+                <span class="menu-icon"><i class="fas fa-upload"></i></span>
+                <span class="menu-text">Обновить</span>
+            </div>
+            <div class="sidebar-cell menu-item" id="aiChatButton" onclick="openAiChatModal()" title="AI Чат">
+                <span class="menu-icon"><i class="fas fa-robot"></i></span>
+                <span class="menu-text">AI Чат</span>
+            </div>
+            <div class="sidebar-cell menu-item" onclick="showStatusStatsModal()" title="Аналитика">
+                <span class="menu-icon"><i class="fas fa-chart-bar"></i></span>
+                <span class="menu-text">Аналитика</span>
+            </div>
+            <div class="sidebar-cell menu-item admin-only export-btn" onclick="exportJSON()" title="Экспорт данных" style="display: none;">
+                <span class="menu-icon"><i class="fas fa-download"></i></span>
+                <span class="menu-text">Экспорт</span>
+            </div>
+            <div class="sidebar-cell menu-item danger clear-btn" onclick="confirmClearAllData()" title="Очистить все данные">
+                <span class="menu-icon"><i class="fas fa-trash"></i></span>
+                <span class="menu-text">Удалить</span>
+            </div>
+            <div class="sidebar-cell menu-item" id="toggleHideColumnsBtn" onclick="toggleHideColumns()">
+                <span class="menu-icon"><i class="fas fa-compress"></i></span>
+                <span class="menu-text">Compact</span>
+            </div>
         </div>
     </div>
-
-    <!-- Выпадающее меню настроек (также обновить) -->
-    <div id="settingsMenu" class="sidebar-section" style="display: none;">
-        <div class="sidebar-cell menu-item" onclick="showGithubSettingsModal()" title="GitHub настройки">
-            <span class="menu-icon"><i class="fas fa-key"></i></span>
-            <span class="menu-text">Вход</span>
-            <div class="sidebar-badge warning" id="githubGuestBadge" style="display: none;">!</div>
-        </div>
-        <div class="sidebar-cell menu-item github-export-btn admin-only" onclick="forceExportToGitHub()" title="Принудительный экспорт данных">
-            <span class="menu-icon"><i class="fas fa-save"></i></span>
-            <span class="menu-text">Сохранить</span>
-        </div>
-        <div class="sidebar-cell menu-item import-btn" onclick="importJSON()" title="Импорт данных">
-            <span class="menu-icon"><i class="fas fa-upload"></i></span>
-            <span class="menu-text">Обновить</span>
-        </div>
-        <div class="sidebar-cell menu-item" id="aiChatButton" onclick="openAiChatModal()" title="AI Чат">
-            <span class="menu-icon"><i class="fas fa-robot"></i></span>
-            <span class="menu-text">AI Чат</span>
-        </div>
-        <div class="sidebar-cell menu-item" onclick="showStatusStatsModal()" title="Аналитика">
-            <span class="menu-icon"><i class="fas fa-chart-bar"></i></span>
-            <span class="menu-text">Аналитика</span>
-        </div>
-        <div class="sidebar-cell menu-item admin-only export-btn" onclick="exportJSON()" title="Экспорт данных" style="display: none;">
-            <span class="menu-icon"><i class="fas fa-download"></i></span>
-            <span class="menu-text">Экспорт</span>
-        </div>
-        <div class="sidebar-cell menu-item danger clear-btn" onclick="confirmClearAllData()" title="Очистить все данные">
-            <span class="menu-icon"><i class="fas fa-trash"></i></span>
-            <span class="menu-text">Удалить</span>
-        </div>
-        <div class="sidebar-cell menu-item" id="toggleHideColumnsBtn" onclick="toggleHideColumns()">
-            <span class="menu-icon"><i class="fas fa-compress"></i></span>
-            <span class="menu-text">Compact</span>
-        </div>
-    </div>
-</div>
 
 
 
@@ -4250,8 +4255,10 @@ function updateGitHubGuestBadge() {
 }
 // Новая функция для обновления меню настроек
 function updateSettingsMenu() {
-    const importBtn = document.querySelector('.import-btn');
-    const adminButtons = document.querySelectorAll('.admin-only');
+    const sidebar = document.querySelector('.settings-sidebar');
+    if (!sidebar) return;
+    const importBtn = sidebar.querySelector('.import-btn');
+    const adminButtons = sidebar.querySelectorAll('.admin-only');
     if (isAdmin) {
         adminButtons.forEach(btn => btn.style.display = 'flex');
         if (importBtn) importBtn.style.display = 'flex';
@@ -4260,6 +4267,18 @@ function updateSettingsMenu() {
         if (importBtn) importBtn.style.display = 'flex';
     }
 }
+
+// Делегирование: клик по пункту меню в правом сайдбаре закрывает его
+document.addEventListener('click', function(e) {
+    const settingsSidebar = document.getElementById('settingsSidebar');
+    if (settingsSidebar && settingsSidebar.style.display === 'flex') {
+        const target = e.target.closest('.sidebar-cell.menu-item');
+        if (target && settingsSidebar.contains(target)) {
+            closeSettingsMenu();
+        }
+    }
+});
+
 
 // Функция для обновления интерфейса после смены режима
 function updateUserInterface() {
@@ -8121,85 +8140,49 @@ const supplierCell = row.querySelector('td:nth-child(4)')?.textContent.toLowerCa
 
         // ========== ФУНКЦИИ ДЛЯ МЕНЮ НАСТРОЕК ==========
 function toggleSettingsMenu() {
-    const settingsMenu = document.getElementById('settingsMenu');
-    const settingsButton = document.getElementById('settingsButton');
-    
-    if (settingsMenu.classList.contains('show')) {
-        // Закрываем меню
-        settingsMenu.classList.remove('show');
-        settingsButton.classList.remove('active');
-        setTimeout(() => {
-            settingsMenu.style.display = 'none';
-        }, 300);
+    const sidebar = document.getElementById('settingsSidebar');
+    if (!sidebar) return;
+    if (sidebar.style.display === 'flex') {
+        sidebar.style.display = 'none';
+        document.body.classList.remove('settings-open');
     } else {
-        // Открываем меню
-        settingsMenu.style.display = 'flex';
-        
-        if (isAdmin) {
-            // Для администратора показываем все кнопки
-            const adminButtons = settingsMenu.querySelectorAll('.admin-only');
-            adminButtons.forEach(btn => {
-                btn.style.display = 'flex';
-            });
-            
-            const importBtn = settingsMenu.querySelector('.import-btn');
-            if (importBtn) importBtn.style.display = 'flex';
-        } else {
-            // Для гостя показываем только кнопку импорта
-            const adminButtons = settingsMenu.querySelectorAll('.admin-only');
-            adminButtons.forEach(btn => {
-                btn.style.display = 'none';
-            });
-            
-            const importBtn = settingsMenu.querySelector('.import-btn');
-            if (importBtn) importBtn.style.display = 'flex';
-        }
-        
-        setTimeout(() => {
-            settingsMenu.classList.add('show');
-            settingsButton.classList.add('active');
-        }, 10);
+        sidebar.style.display = 'flex';
+        document.body.classList.add('settings-open');
+        // Обновить видимость admin‑кнопок при открытии
+        updateSettingsMenu();
     }
 }
-function closeSettingsMenu() {
-    const settingsMenu = document.getElementById('settingsMenu');
-    const settingsButton = document.getElementById('settingsButton');
-    
-    settingsMenu.classList.remove('show');
-    settingsButton.classList.remove('active');
-    setTimeout(() => {
-        settingsMenu.style.display = 'none';
-        
-        // Восстанавливаем отображение кнопок в зависимости от режима
-        if (isAdmin) {
-            // Для администратора показываем все кнопки
-            const adminButtons = settingsMenu.querySelectorAll('.admin-only');
-            adminButtons.forEach(btn => {
-                btn.style.display = 'flex';
-            });
-        } else {
-            // Для гостя показываем только кнопку импорта
-            const importBtn = settingsMenu.querySelector('.import-btn');
-            if (importBtn) importBtn.style.display = 'flex';
-            
-            // Скрываем административные кнопки
-            const adminButtons = settingsMenu.querySelectorAll('.admin-only');
-            adminButtons.forEach(btn => {
-                btn.style.display = 'none';
-            });
-        }
-    }, 300);
+
+        function closeSettingsMenu() {
+    const sidebar = document.getElementById('settingsSidebar');
+    if (sidebar) {
+        sidebar.style.display = 'none';
+        document.body.classList.remove('settings-open'); 
+    }
 }
-// Закрытие меню при клике вне его области
-document.addEventListener('click', function(event) {
-    const settingsMenu = document.getElementById('settingsMenu');
+
+        // Функция обновления видимости пунктов в правом сайдбаре
+        function updateSettingsMenu() {
+            const sidebar = document.querySelector('.settings-sidebar');
+            if (!sidebar) return;
+            const importBtn = sidebar.querySelector('.import-btn');
+            const adminButtons = sidebar.querySelectorAll('.admin-only');
+            if (isAdmin) {
+                adminButtons.forEach(btn => btn.style.display = 'flex');
+                if (importBtn) importBtn.style.display = 'flex';
+            } else {
+                adminButtons.forEach(btn => btn.style.display = 'none');
+                if (importBtn) importBtn.style.display = 'flex';
+            }
+        }
+
+        // Делегирование: клик по пункту меню в правом сайдбаре закрывает его
+        document.addEventListener('click', function(e) {
+    const settingsSidebar = document.getElementById('settingsSidebar');
     const settingsButton = document.getElementById('settingsButton');
-    
-    if (settingsMenu && settingsMenu.classList.contains('show')) {
-        const isClickInsideMenu = settingsMenu.contains(event.target);
-        const isClickOnButton = settingsButton.contains(event.target);
-        
-        if (!isClickInsideMenu && !isClickOnButton) {
+    if (settingsSidebar && settingsSidebar.style.display === 'flex') {
+        // Если клик не по кнопке "Настройки", закрываем сайдбар
+        if (!settingsButton.contains(e.target)) {
             closeSettingsMenu();
         }
     }
@@ -11251,6 +11234,109 @@ button[onclick*="exportToExcel"]:hover {
     background: linear-gradient(135deg, #be9e3c 0%, #8c2c24 100%);
     pointer-events: none;
     box-shadow: none;
+}
+/* Второй сайдбар для настроек */
+.settings-sidebar {
+    position: fixed;
+    left: 85px;          /* примыкает к основному сайдбару */
+    top: 0;
+    width: 85px !important;
+    height: 100vh;
+    background: var(--p-panel, #0f172a); /* используем ту же переменную или явный цвет */
+    border-right: 1px solid rgba(148,163,184,0.15);
+    box-shadow: -4px 0 24px rgba(0,0,0,0.4);
+    z-index: 1000;
+    padding: 8px 6px !important; /* как у основного */
+    display: none;
+    flex-direction: column;
+    gap: 0;              /* убираем лишние gap, используем отступы пунктов */
+    overflow-y: auto;
+}
+
+.settings-sidebar .sidebar-cell.menu-item {
+    width: 100% !important;
+    height: 34px !important;      /* как у основного */
+    min-height: 34px !important;
+    margin: 6px 0 !important;
+    padding: 0 6px !important;
+    justify-content: flex-start !important;
+    gap: 4px !important;
+    border-radius: 6px !important;
+    border: none !important;
+    color: #aeb3d6 !important;
+    background: transparent !important;
+    transition: background 0.2s, color 0.2s;
+}
+
+.settings-sidebar .sidebar-cell.menu-item:hover {
+    background: rgba(108,92,231,0.15) !important;
+    color: #ffffff !important;
+}
+
+.settings-sidebar .sidebar-cell.menu-item.active {
+    background: rgba(59,130,246,0.15) !important;
+    color: #ffffff !important;
+}
+/* Иконки и текст – такие же размеры, как в основном сайдбаре */
+.settings-sidebar .menu-icon {
+    font-size: 17px !important;
+    line-height: 1 !important;
+    color: #aeb3d6 !important;
+}
+
+.settings-sidebar .menu-text {
+    font-size: 9px !important;
+    font-weight: 500 !important;
+    color: #aeb3d6 !important;
+    white-space: nowrap !important;
+    letter-spacing: 0 !important;
+    line-height: 1.2 !important;
+}
+
+/* Скрываем старую иконку (если есть) */
+.settings-sidebar .sidebar-icon {
+    display: none !important;
+}
+
+/* Бейджи в настройках (если будут) – копируем стили из основного */
+.settings-sidebar .sidebar-badge {
+    position: absolute;
+    bottom: 2px;
+    right: -4px;
+    top: -4px;
+    left: auto;
+    transform: none;
+    background: linear-gradient(135deg, #be9e3c 0%, #8c2c24 100%);
+    color: rgb(39, 39, 39);
+    border-radius: 3px;
+    width: 14px;
+    height: 12px;
+    font-size: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    box-shadow: 0 1.34px 2.68px rgba(0,0,0,0.3);
+    animation: pulse 2s infinite;
+    pointer-events: none;
+    z-index: 10;
+}
+/* ===== СЛИЯНИЕ ВТОРОГО САЙДБАРА С ОСНОВНЫМ ===== */
+.settings-sidebar {
+    border-right: none !important;        /* убираем правую рамку */
+    box-shadow: none !important;          /* убираем тень */
+    background: var(--p-panel, #0f172a); /* тот же фон, что и у основного */
+    padding: 16px 6px !important;         /* одинаковые внутренние отступы */
+    width: 85px !important;              /* точно такая же ширина */
+    min-width: 85px !important;
+    left: 85px !important;               /* прилегает вплотную */
+    margin-left: 0;                      /* убираем возможные отступы */
+}
+.settings-sidebar .sidebar-cell.menu-item:first-child {
+    margin-top: 0 !important;
+}
+body.settings-open .main-content {
+    margin-left: 170px !important; /* 85 + 85 */
 }
 
 </style>
