@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Учет закупки</title>
     <link rel="icon" href="https://cdn.jsdelivr.net/gh/twitter/twemoji/assets/svg/1f6d2.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -87,19 +88,25 @@
 
         .sidebar-cell.menu-item {
     display: flex !important;
+    flex-direction: column !important;
     align-items: center !important;
-    gap: 12px !important;
-    width: 100% !important;
-    padding: 10px !important;
-    margin: 0 !important;
-    border-radius: 0 !important;
-    background: transparent !important;
-    border: none !important;
+    justify-content: center !important;
+    gap: 3px !important;
+    padding: 6px 2px !important;
+    height: auto !important;
+    min-height: 56px !important;
+    text-align: center !important;
+    border-radius: 6px !important;
     cursor: pointer;
-    transition: all 0.2s ease;
-    justify-content: flex-start !important;
-     padding-left: 0 !important;
-    padding-right: 0 !important;
+    transition: background 0.2s, color 0.2s;
+    width: 100% !important;
+    margin: 2px 0 !important;
+}
+.menu-icon {
+    font-size: 22px !important;
+    line-height: 1 !important;
+    color: #aeb3d6 !important;
+    transition: color 0.2s;
 }
 
 
@@ -154,10 +161,32 @@
             height: 100%;
         }
         .menu-text {
-    font-size: 14px;
-    font-weight: 500;
-    color: #cbd5e1;
-    white-space: nowrap;
+    font-size: 9px !important;
+    font-weight: 500 !important;
+    color: #aeb3d6 !important;
+    white-space: nowrap !important;
+    letter-spacing: 0.3px !important;
+}
+/* Активный пункт */
+.sidebar-cell.menu-item.active .menu-icon,
+.sidebar-cell.menu-item.active .menu-text {
+    color: #ffffff !important;
+}
+
+.sidebar-cell.menu-item:hover .menu-icon,
+.sidebar-cell.menu-item:hover .menu-text {
+    color: #ffffff !important;
+}
+
+/* Скрываем старую иконку, если она осталась в разметке */
+.sidebar-cell.menu-item .sidebar-icon {
+    display: none !important;
+}
+
+/* Подстроить ширину сайдбара под новые размеры (опционально) */
+.sidebar {
+    width: 72px !important;  /* чуть шире для комфорта */
+    min-width: 72px !important;
 }
 
         .sidebar-cell.menu-item.active .sidebar-icon,
@@ -176,8 +205,8 @@
         .sidebar-badge {
     position: absolute;
     bottom: 2px; 
-    right: 2px;
-    top: auto;
+    right: -4px;
+    top: -4px;
     left: auto;
     transform: none;
     background: linear-gradient(135deg, #be9e3c 0%, #8c2c24 100%);
@@ -2798,7 +2827,7 @@ button:hover,
     padding: 10px;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 16px;
 }
 
 .sidebar .menu-item {
@@ -2911,6 +2940,45 @@ input,select,button{
   border-color:var(--p-border)!important;
 }
 button:hover{background:#222733!important}
+
+/* ===== КОМПАКТНЫЙ САЙДБАР 85px ===== */
+.sidebar {
+    width: 85px !important;
+    min-width: 85px !important;
+    padding: 8px 6px !important;
+}
+
+.sidebar .sidebar-cell.menu-item {
+    padding: 0 6px !important;
+    gap: 4px !important;
+    height: 34px !important;
+    min-height: 34px !important;
+    margin: 6px 0 !important;
+    border-radius: 6px !important;
+    justify-content: flex-start !important;
+}
+
+.sidebar .menu-icon {
+    font-size: 17px !important;
+}
+
+.sidebar .menu-text {
+    font-size: 9px !important;
+    line-height: 1.2 !important;
+    letter-spacing: 0 !important;
+    white-space: nowrap !important;
+}
+
+/* Сдвигаем основной контент под новую ширину */
+.main-content {
+    margin-left: 85px !important;
+}
+
+/* Подсказки при наведении – тоже уменьшаем */
+.sidebar-tooltip {
+    font-size: 8px !important;
+    padding: 2px 6px !important;
+}
 </style>
 
 </head>
@@ -2918,86 +2986,89 @@ button:hover{background:#222733!important}
     
     <!-- Сайдбар меню -->
 <div class="sidebar">
-    <!-- Секция навигации по страницам -->
+    <!-- Основные страницы -->
     <div class="sidebar-section" style="margin-bottom: 0.0px;">
         <div class="sidebar-cell menu-item active" data-page="accounting" onclick="showPage('accounting')" title="Учет закупок">
-            <span class="sidebar-icon">Позиции</span>
+            <span class="menu-icon"><i class="fas fa-list"></i></span>
+            <span class="menu-text">Позиции</span>
             <div class="sidebar-tooltip">Учет закупок</div>
             <div class="sidebar-badge" id="accountingBadge" style="display: none;">0</div>
         </div>
         <div class="sidebar-cell menu-item" data-page="counterparties" onclick="showPage('counterparties')" title="Контрагенты">
-            <span class="sidebar-icon">Контрагенты</span>
+            <span class="menu-icon"><i class="fas fa-users"></i></span>
+            <span class="menu-text">Контрагенты</span>
             <div class="sidebar-tooltip">Контрагенты</div>
         </div>
         <div class="sidebar-cell menu-item" data-page="payments" onclick="showPage('payments')" title="Платежи">
-            <span class="sidebar-icon">Платежи</span>
+            <span class="menu-icon"><i class="fas fa-credit-card"></i></span>
+            <span class="menu-text">Платежи</span>
             <div class="sidebar-tooltip">Платежи</div>
             <div class="sidebar-badge" id="paymentsBadge" style="display: none;">0</div>
         </div>
         <div class="sidebar-cell menu-item" data-page="proxy-registry" onclick="showPage('proxy-registry')" title="Реестр доверенностей">
-            <span class="sidebar-icon">Самовывоз</span>
+            <span class="menu-icon"><i class="fas fa-truck"></i></span>
+            <span class="menu-text">Самовывоз</span>
             <div class="sidebar-tooltip">Реестр доверенностей</div>
             <div class="sidebar-badge" id="proxyBadge" style="display: none;">0</div>
         </div>
         <div class="sidebar-cell menu-item" data-page="settlement" onclick="showPage('settlement')" title="Урегулирование">
-            <span class="sidebar-icon">Рекламации</span>
+            <span class="menu-icon"><i class="fas fa-balance-scale"></i></span>
+            <span class="menu-text">Рекламации</span>
             <div class="sidebar-tooltip">Рекламации</div>
             <div class="sidebar-badge" id="settlementBadge" style="display: none;">0</div>
         </div>
         <div class="sidebar-cell menu-item" data-page="mail-registry" onclick="showPage('mail-registry')" title="Почтовый реестр">
-            <span class="sidebar-icon">Отправления</span>
+            <span class="menu-icon"><i class="fas fa-envelope"></i></span>
+            <span class="menu-text">Отправления</span>
             <div class="sidebar-tooltip">Почтовый реестр</div>
         </div>
-    </div> <!-- закрытие первой секции навигации -->
+    </div>
 
-    
-
-    <!-- Кнопка настроек -->
+    <!-- Настройки -->
     <div class="sidebar-section">
         <div class="sidebar-cell menu-item" id="settingsButton" title="Настройки" onclick="toggleSettingsMenu()">
-            <span class="sidebar-icon">Настройки</span>
+            <span class="menu-icon"><i class="fas fa-cog"></i></span>
+            <span class="menu-text">Настройки</span>
             <div class="sidebar-tooltip">Настройки</div>
         </div>
     </div>
 
-    <!-- Скрытое выпадающее меню настроек (AI Чат перенесён сюда) -->
+    <!-- Выпадающее меню настроек (также обновить) -->
     <div id="settingsMenu" class="sidebar-section" style="display: none;">
         <div class="sidebar-cell menu-item" onclick="showGithubSettingsModal()" title="GitHub настройки">
-            <span class="sidebar-icon">Вход</span>
-            <div class="sidebar-tooltip">GitHub настройки</div>
+            <span class="menu-icon"><i class="fas fa-key"></i></span>
+            <span class="menu-text">Вход</span>
             <div class="sidebar-badge warning" id="githubGuestBadge" style="display: none;">!</div>
         </div>
         <div class="sidebar-cell menu-item github-export-btn admin-only" onclick="forceExportToGitHub()" title="Принудительный экспорт данных">
-            <span class="sidebar-icon">Сохранить</span>
-            <span class="github-export-spinner" style="display: none;">◌</span>
-            <div class="sidebar-tooltip">Принудительный экспорт</div>
+            <span class="menu-icon"><i class="fas fa-save"></i></span>
+            <span class="menu-text">Сохранить</span>
         </div>
-        <div class="sidebar-cell menu-item import-btn" onclick="importJSON()" title="Импорт данных" style="display: flex;">
-            <span class="sidebar-icon">Обновить</span>
-            <div class="sidebar-tooltip">Импорт данных</div>
+        <div class="sidebar-cell menu-item import-btn" onclick="importJSON()" title="Импорт данных">
+            <span class="menu-icon"><i class="fas fa-upload"></i></span>
+            <span class="menu-text">Обновить</span>
         </div>
-        <div class="sidebar-cell menu-item" id="aiChatButton" onclick="openAiChatModal()" title="AI Чат (OpenRouter)">
-            <span class="sidebar-icon">AI Чат</span>
-            <div class="sidebar-tooltip">AI Чат</div>
+        <div class="sidebar-cell menu-item" id="aiChatButton" onclick="openAiChatModal()" title="AI Чат">
+            <span class="menu-icon"><i class="fas fa-robot"></i></span>
+            <span class="menu-text">AI Чат</span>
         </div>
         <div class="sidebar-cell menu-item" onclick="showStatusStatsModal()" title="Аналитика">
-    <span class="sidebar-icon">Аналитика</span>
-    <div class="sidebar-tooltip">Аналитика</div>
-</div>
+            <span class="menu-icon"><i class="fas fa-chart-bar"></i></span>
+            <span class="menu-text">Аналитика</span>
+        </div>
         <div class="sidebar-cell menu-item admin-only export-btn" onclick="exportJSON()" title="Экспорт данных" style="display: none;">
-            <span class="sidebar-icon">Экспорт</span>
-            <div class="sidebar-tooltip">Экспорт данных</div>
+            <span class="menu-icon"><i class="fas fa-download"></i></span>
+            <span class="menu-text">Экспорт</span>
         </div>
         <div class="sidebar-cell menu-item danger clear-btn" onclick="confirmClearAllData()" title="Очистить все данные">
-            <span class="sidebar-icon">Удалить</span>
-            <div class="sidebar-tooltip">Очистить все данные</div>
+            <span class="menu-icon"><i class="fas fa-trash"></i></span>
+            <span class="menu-text">Удалить</span>
         </div>
-        <!-- Кнопка компактного режима (прижата к низу) -->
-    <div class="sidebar-cell menu-item" id="toggleHideColumnsBtn" onclick="toggleHideColumns()">
-    <span class="sidebar-icon">Compact</span>
-    <div class="sidebar-tooltip">Скрыть/показать столбцы</div>
-</div>
-</div>
+        <div class="sidebar-cell menu-item" id="toggleHideColumnsBtn" onclick="toggleHideColumns()">
+            <span class="menu-icon"><i class="fas fa-compress"></i></span>
+            <span class="menu-text">Compact</span>
+        </div>
+    </div>
 </div>
 
 
