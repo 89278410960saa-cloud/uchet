@@ -7060,8 +7060,8 @@ function updateSuppliersFilterList() {
         const contractText = item.contract || '';
         const supplier = item.supplier || '';
         const contractLink = contractText
-            ? `<a href="javascript:void(0)" onclick="filterByContract('${escapeJsString(contractText)}', '${escapeJsString(supplier)}')" style="color: #66c0f4; text-decoration: underline; cursor: pointer;">${escapeString(contractText)}</a>`
-            : '';
+    ? `<a href="#" class="contract-filter-link" data-contract="${encodeURIComponent(contractText)}" data-supplier="${encodeURIComponent(supplier)}" style="color: #66c0f4; text-decoration: underline; cursor: pointer;">${escapeString(contractText)}</a>`
+    : '';
         
         // Ссылка на внешний ресурс (иконка копирования)
         const linkHtml = item.link
@@ -8424,6 +8424,31 @@ function filterByContract(contract, supplier) {
         updateCommentBlockVisibility();
     }, 300);
 }
+// Перехватываем клики по ссылкам с классом .contract-filter-link
+document.addEventListener('click', function(e) {
+    // Ищем ближайший родительский элемент с классом .contract-filter-link
+    const link = e.target.closest('.contract-filter-link');
+    if (!link) return; // если ссылка не найдена – выходим
+
+    e.preventDefault(); // предотвращаем переход по ссылке (href="#")
+
+    // Извлекаем закодированные данные из data-атрибутов и декодируем их
+    const contract = decodeURIComponent(link.dataset.contract);
+    const supplier = decodeURIComponent(link.dataset.supplier);
+
+    // Проверяем, что функция filterByContract существует
+    if (typeof filterByContract === 'function') {
+        filterByContract(contract, supplier);
+    } else {
+        console.error('Функция filterByContract не определена!');
+        // Можно также запасной вариант – просто установить поиск через поле ввода
+        const searchInput = document.getElementById('searchAccountingInput');
+        if (searchInput) {
+            searchInput.value = contract;
+            filterAccountingTable();
+        }
+    }
+});
 // ========== ФУНКЦИИ ДЛЯ ПЕЧАТИ ПОСТАВОК И ПРОСРОЧКИ ==========
 function printDeliveriesAndOverdue() {
     const deliveries = getCurrentMonthDeliveries();
