@@ -4756,7 +4756,15 @@ if (openParenIndex !== -1) {
         const purchaseQuantityCell = createCell(item.purchaseQuantity || '', '97px');
         const purchaseUnitCell = createCell(item.purchaseUnit || '', '100px');
         const amountCell = createCell(item.amount ? formatCurrency(item.amount) : '', '148px');
-        const contractCell = createCell(item.contract || '', '114px');
+        const contractText = item.contract || '';
+const supplier = item.supplier || '';
+const application = item.docNumber || '';
+const contractLink = contractText
+    ? `<a href="#" class="contract-filter-link-payments" data-contract="${encodeURIComponent(contractText)}" data-supplier="${encodeURIComponent(supplier)}" data-application="${encodeURIComponent(application)}" style="color: #66c0f4; text-decoration: underline; cursor: pointer;">${escapeString(contractText)}</a>`
+    : '';
+const contractCell = document.createElement('td');
+contractCell.style.width = '114px';
+contractCell.innerHTML = contractLink;
         // Функция нормализации: убираем всё, что в круглых скобках, и лишние пробелы
 function normalizeContract(str) {
     if (!str) return '';
@@ -8439,6 +8447,46 @@ document.addEventListener('click', function(e) {
         }
     }
 });
+
+function filterPaymentsByContract(contract, supplier, application) {
+    if (!contract) return;
+    showPage('payments');
+    setTimeout(() => {
+        const searchInput = document.getElementById('searchPaymentsInput');
+        const applicationFilter = document.getElementById('paymentsApplicationFilter');
+        const supplierFilter = document.getElementById('paymentsSupplierFilter');
+        const statusFilter = document.getElementById('paymentsStatusFilter');
+        const dateFilter = document.getElementById('paymentDateFilter');
+        // Сброс всех фильтров
+        if (searchInput) searchInput.value = '';
+        if (applicationFilter) applicationFilter.value = '';
+        if (supplierFilter) supplierFilter.value = '';
+        if (statusFilter) statusFilter.value = '';
+        if (dateFilter) dateFilter.value = '';
+
+        [searchInput, applicationFilter, supplierFilter, statusFilter, dateFilter].forEach(el => {
+            if (el) el.classList.remove('filter-active');
+        });
+
+        // Устанавливаем только договор в поле поиска
+        if (searchInput) {
+            searchInput.value = contract;
+            updateFilterHighlight(searchInput);
+        }
+        // Если передан поставщик — заполняем фильтр по контрагентам
+        if (supplier && supplierFilter) {
+            supplierFilter.value = supplier;
+            updateFilterHighlight(supplierFilter);
+        }
+        // Если передана заявка — заполняем фильтр по заявкам
+        if (application && applicationFilter) {
+            applicationFilter.value = application;
+            updateFilterHighlight(applicationFilter);
+        }
+        // Применяем фильтрацию
+        filterPaymentsTable();
+    }, 300);
+}
 // ========== ФУНКЦИИ ДЛЯ ПЕЧАТИ ПОСТАВОК И ПРОСРОЧКИ ==========
 function printDeliveriesAndOverdue() {
     const deliveries = getCurrentMonthDeliveries();
@@ -11515,7 +11563,15 @@ button[onclick*="exportToExcel"]:hover {
         }
     }
 });
-
+document.addEventListener('click', function(e) {
+    const link = e.target.closest('.contract-filter-link-payments');
+    if (!link) return;
+    e.preventDefault();
+    const contract = decodeURIComponent(link.dataset.contract || '');
+    const supplier = decodeURIComponent(link.dataset.supplier || '');
+    const application = decodeURIComponent(link.dataset.application || '');
+    filterPaymentsByContract(contract, supplier, application);
+});
 })();
 </script>
 
