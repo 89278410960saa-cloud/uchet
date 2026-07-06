@@ -1165,12 +1165,17 @@
     display: flex;
     flex-direction: column;
     height: 80%;
-    width: 50%;
+    width: 35% !important;
+    height: 100% !important;
+    max-width: none !important;
+    max-height: none !important;
     padding-right: 40px;
     background: linear-gradient(135deg, #1a1e2a 0%, #0f1119 100%) !important;
-    border-radius: 16px !important;
+    border-radius: 0 !important;
     overflow: hidden;
     position: relative;
+    margin: 0 !important;
+    margin-right: 0 !important;
 }
 
 .chat-header {
@@ -1993,7 +1998,7 @@ select.filter-active {
 
         /* Модальное окно */
         .modal {
-    display: none;                /* оставляем скрытым по умолчанию */
+    display: flex;
     position: fixed;
     top: 0;
     left: 0;
@@ -2004,24 +2009,27 @@ select.filter-active {
     /* Убираем overflow: auto, чтобы не мешать flex */
     display: flex;                /* включаем flex */
     justify-content: flex-end;    /* прижимаем содержимое к правому краю */
-    align-items: center;          /* центрируем по вертикали */
+    align-items: stretch;
     padding: 0;                  /* убираем лишние отступы */
+    padding-right: 20px;
 }
 
         .modal-content {
     background: linear-gradient(135deg, #1b2838 0%, #2a475e 100%);
-    margin: 0;                   /* убираем auto-отступы */
+    margin: 0 !important;                   /* убираем auto-отступы */
     padding: 13.4px;
-    width: 90%;
-    max-width: 536px;
-    border-radius: 5.36px;
+    width: 25% !important;
+    height: 100% !important;
+    max-width: none !important;
+    max-height: none !important;
+    border-radius: 0 !important;
     position: relative;
     max-height: 80vh;
     overflow-y: auto;
     border: 0.67px solid #3d4450;
     box-shadow: 0 6.7px 20.1px rgba(0,0,0,0.5);
     color: #c7d5e0;
-    margin-right: 20px;          /* небольшой отступ от правого края */
+    margin-right: 0 !important;
 }
 
         .close {
