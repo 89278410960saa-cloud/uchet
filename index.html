@@ -1993,31 +1993,36 @@ select.filter-active {
 
         /* Модальное окно */
         .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.7);
-            z-index: 1000;
-            overflow: auto;
-        }
+    display: none;                /* оставляем скрытым по умолчанию */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.7);
+    z-index: 1000;
+    /* Убираем overflow: auto, чтобы не мешать flex */
+    display: flex;                /* включаем flex */
+    justify-content: flex-end;    /* прижимаем содержимое к правому краю */
+    align-items: center;          /* центрируем по вертикали */
+    padding: 0;                  /* убираем лишние отступы */
+}
 
         .modal-content {
-            background: linear-gradient(135deg, #1b2838 0%, #2a475e 100%);
-            margin: 5% auto;
-            padding: 13.4px;
-            width: 90%;
-            max-width: 536.0px;
-            border-radius: 5.36px;
-            position: relative;
-            max-height: 80vh;
-            overflow-y: auto;
-            border: 0.67px solid #3d4450;
-            box-shadow: 0 6.7px 20.1px rgba(0,0,0,0.5);
-            color: #c7d5e0;
-        }
+    background: linear-gradient(135deg, #1b2838 0%, #2a475e 100%);
+    margin: 0;                   /* убираем auto-отступы */
+    padding: 13.4px;
+    width: 90%;
+    max-width: 536px;
+    border-radius: 5.36px;
+    position: relative;
+    max-height: 80vh;
+    overflow-y: auto;
+    border: 0.67px solid #3d4450;
+    box-shadow: 0 6.7px 20.1px rgba(0,0,0,0.5);
+    color: #c7d5e0;
+    margin-right: 20px;          /* небольшой отступ от правого края */
+}
 
         .close {
             position: absolute;
@@ -4116,7 +4121,7 @@ function updateGuestWarningBadge() {
 }
 
 function showAdminPasswordModal() {
-    document.getElementById('adminPasswordModal').style.display = 'block';
+    document.getElementById('adminPasswordModal').style.display = 'flex';
     document.getElementById('adminPasswordInput').value = '';
     document.getElementById('adminPasswordError').style.display = 'none';
     document.getElementById('adminPasswordInput').focus();
@@ -5191,7 +5196,7 @@ if (accountingData.length > 0) {
     document.getElementById('editAccountingForm').reset();
     const deleteBtn = document.querySelector('#editAccountingModal .delete-btn');
     if (deleteBtn) deleteBtn.style.display = 'none';
-    document.getElementById('editAccountingModal').style.display = 'block';
+    document.getElementById('editAccountingModal').style.display = 'flex';
     
     // Инициализируем автозаполнение для договора
     setTimeout(autoFillContract, 100);
@@ -5259,7 +5264,7 @@ if (editPurchaseName && editPurchaseName.tagName === 'TEXTAREA') {
     }
     
     // Показываем модальное окно
-    document.getElementById('editAccountingModal').style.display = 'block';
+    document.getElementById('editAccountingModal').style.display = 'flex';
     
     // Инициализируем автозаполнение для договора
     setTimeout(autoFillContract, 100);
@@ -5814,7 +5819,7 @@ function showStatusStatsModal() {
     updateLocalStorageStats();
     
     // Показываем модальное окно
-    document.getElementById('statusStatsModal').style.display = 'block';
+    document.getElementById('statusStatsModal').style.display = 'flex';
     
     // Обновляем дату
     const now = new Date();
@@ -6539,7 +6544,7 @@ if (emailCell) {
     if (blacklistCheckbox) blacklistCheckbox.style.display = 'none';
     if (blacklistLabel) blacklistLabel.style.display = 'none';
     
-    document.getElementById('editCounterpartyModal').style.display = 'block';
+    document.getElementById('editCounterpartyModal').style.display = 'flex';
 }
 
         function editCounterpartyRow(index) {
@@ -6569,7 +6574,7 @@ if (emailCell) {
     
     const deleteBtn = document.querySelector('#editCounterpartyModal .delete-btn');
     if (deleteBtn) deleteBtn.style.display = 'inline-block';
-    document.getElementById('editCounterpartyModal').style.display = 'block';
+    document.getElementById('editCounterpartyModal').style.display = 'flex';
 }
 
         function saveCounterpartyChanges(event) {
@@ -6694,7 +6699,7 @@ loadGithubSettings();
 function showGithubSettingsModal() {
     document.getElementById('githubToken').value = githubToken || '';
     document.getElementById('githubAutoSave').checked = githubAutoSaveEnabled;
-    document.getElementById('githubSettingsModal').style.display = 'block';
+    document.getElementById('githubSettingsModal').style.display = 'flex';
 }
 
 function closeGithubSettingsModal() {
@@ -7238,7 +7243,7 @@ function updatePaymentsTotal() {
     document.getElementById('editPaymentForm').reset();
     const deleteBtn = document.querySelector('#editPaymentModal .delete-btn');
     if (deleteBtn) deleteBtn.style.display = 'none';
-    document.getElementById('editPaymentModal').style.display = 'block';
+    document.getElementById('editPaymentModal').style.display = 'flex';
     
     // Инициализируем автозаполнение для договора
     setTimeout(autoFillPaymentContract, 100);
@@ -7261,7 +7266,7 @@ function editPaymentRow(index) {
     
     const deleteBtn = document.querySelector('#editPaymentModal .delete-btn');
     if (deleteBtn) deleteBtn.style.display = 'inline-block';
-    document.getElementById('editPaymentModal').style.display = 'block';
+    document.getElementById('editPaymentModal').style.display = 'flex';
     
     // Инициализируем автозаполнение для договора
     setTimeout(autoFillPaymentContract, 100);
@@ -7600,7 +7605,7 @@ function editDepartment(index) {
     
     const deleteBtn = document.querySelector('#editSettlementModal .delete-btn');
     if (deleteBtn) deleteBtn.style.display = 'none';
-    document.getElementById('editSettlementModal').style.display = 'block';
+    document.getElementById('editSettlementModal').style.display = 'flex';
 }
 
         function editSettlementRow(index) {
@@ -7622,7 +7627,7 @@ function editDepartment(index) {
     
     const deleteBtn = document.querySelector('#editSettlementModal .delete-btn');
     if (deleteBtn) deleteBtn.style.display = 'inline-block';
-    document.getElementById('editSettlementModal').style.display = 'block';
+    document.getElementById('editSettlementModal').style.display = 'flex';
 }
 
         function saveSettlementChanges(event) {
@@ -7832,7 +7837,7 @@ if (isAdmin) {
             const deleteBtn = document.querySelector('#editMailModal .delete-btn');
             if (deleteBtn) deleteBtn.style.display = 'none';
             document.getElementById('editMailSender').value = 'Сидорченко А.А.';
-            document.getElementById('editMailModal').style.display = 'block';
+            document.getElementById('editMailModal').style.display = 'flex';
             
             // Инициализируем автозаполнение адреса
             setTimeout(autoFillCounterpartyAddress, 100);
@@ -7858,7 +7863,7 @@ if (isAdmin) {
         deleteBtn.onclick = function() { deleteMailRecord(); }
     }
     
-    document.getElementById('editMailModal').style.display = 'block';
+    document.getElementById('editMailModal').style.display = 'flex';
 }
 
         function saveMailChanges(event) {
@@ -8080,7 +8085,7 @@ const supplierCell = row.querySelector('td:nth-child(4)')?.textContent.toLowerCa
     
     const deleteBtn = document.querySelector('#editProxyModal .delete-btn');
     if (deleteBtn) deleteBtn.style.display = 'none';
-    document.getElementById('editProxyModal').style.display = 'block';
+    document.getElementById('editProxyModal').style.display = 'flex';
     
     // Инициализируем автозаполнение адреса и телефона
     setTimeout(autoFillProxyCounterpartyAddress, 100);
@@ -8102,7 +8107,7 @@ const supplierCell = row.querySelector('td:nth-child(4)')?.textContent.toLowerCa
     
     const deleteBtn = document.querySelector('#editProxyModal .delete-btn');
     if (deleteBtn) deleteBtn.style.display = 'inline-block';
-    document.getElementById('editProxyModal').style.display = 'block';
+    document.getElementById('editProxyModal').style.display = 'flex';
     
     // Инициализируем автозаполнение адреса и телефона
     setTimeout(autoFillProxyCounterpartyAddress, 100);
@@ -9954,7 +9959,7 @@ function showCounterpartyInfo(supplierName) {
     content.innerHTML = html;
     
     // Показываем модальное окно
-    document.getElementById('counterpartyInfoModal').style.display = 'block';
+    document.getElementById('counterpartyInfoModal').style.display = 'flex';
 }
 
 function closeCounterpartyInfoModal() {
@@ -10743,7 +10748,7 @@ initApiKeyControl();
 
 
 function openAiChatModal() {
-    document.getElementById('aiChatModal').style.display = 'block';
+    document.getElementById('aiChatModal').style.display = 'flex';
     const keyInput = document.getElementById('chatApiKeyInput');
     if (keyInput) keyInput.value = openRouterKey;
     renderAttachedFilesList();
