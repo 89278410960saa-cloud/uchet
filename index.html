@@ -7241,6 +7241,7 @@ function updatePaymentsTotal() {
     document.getElementById('modalPaymentTitle').textContent = 'Добавить платеж';
     document.getElementById('editPaymentIndex').value = '';
     document.getElementById('editPaymentForm').reset();
+    document.getElementById('editPaymentContract').value = '-';
     const deleteBtn = document.querySelector('#editPaymentModal .delete-btn');
     if (deleteBtn) deleteBtn.style.display = 'none';
     document.getElementById('editPaymentModal').style.display = 'flex';
