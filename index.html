@@ -2642,7 +2642,7 @@ select.filter-active {
     font-size: 12px;
 }
 .total-sum-block {
-    height: 20px;                 /* такая же высота, как у input/select/button */
+    height: 22px;                 /* такая же высота, как у input/select/button */
     box-sizing: border-box;           /* учитываем border и padding в высоте */
     background: #2a475e;              /* такой же фон, как у полей ввода */
     border: 0.67px solid #3d4450;     /* такая же рамка */
@@ -2687,10 +2687,11 @@ select.filter-active {
 #settlementTable th,
 #mailTable th {
     padding: 5.36px !important;
-    vertical-align: top !important;
+    vertical-align: middle !important;
     line-height: 1.3 !important;
     white-space: normal !important;
 }
+
 #paymentsTable td {
     padding: 5.36px !important;
     vertical-align: top !important;
@@ -2740,14 +2741,14 @@ body { zoom: 0.9; }
 }
 
 input, select, button {
-  height: 20px !important;
-  padding: 2px 6px !important;
-  font-size: 10px !important;
+  height: 22px !important;
+  padding: 4px 8px !important;
+  font-size: 11px !important;
 }
 
 table { font-size: 9px !important; }
 th, td { padding: 3px 4px !important; }
-th { font-size: 9px !important; }
+th { font-size: 11px !important; }
 
 button { min-height: 18px !important; }
 .action-btn {
@@ -3275,7 +3276,7 @@ button:hover{background:#222733!important}
     </tr>
 </thead>
                 <tbody id="paymentsTableBody"><tr>
-            <td colspan="7" style="text-align: center; color: rgb(143, 152, 160); padding: 20px; width: 174px;">
+            <td colspan="8" style="text-align: center; color: rgb(143, 152, 160); padding: 20px; width: 174px;">
                 Нет данных о платежах. Добавьте первую запись.
             </td>
         </tr></tbody>
@@ -7034,7 +7035,7 @@ function updateSuppliersFilterList() {
     if (paymentsData.length === 0) {
         const emptyRow = document.createElement('tr');
         emptyRow.innerHTML = `
-            <td colspan="7" style="text-align: center; color: #8f98a0; padding: 20px;">
+            <td colspan="8" style="text-align: center; color: #8f98a0; padding: 20px;">
                 Нет данных о платежах. Добавьте первую запись.
             </td>
         `;
@@ -11339,7 +11340,7 @@ document.addEventListener('DOMContentLoaded', () => {
 #mailTable th {
     min-height: 32px;
     padding: 8px 4px !important;   /* переопределить компактный padding */
-    vertical-align: middle;
+    vertical-align: middle !important;
 }
 /* 1. Экспорт в Excel – очень бледный фиолетовый */
 button[onclick*="exportToExcel"] {
@@ -11509,6 +11510,7 @@ input:checked + .slider:before {
 .slider.round:before {
     border-radius: 50%;
 }
+
 
 </style>
 <!-- НОВЫЙ СКРИПТ ДЛЯ ПЕРЕСТАНОВКИ КНОПОК -->
