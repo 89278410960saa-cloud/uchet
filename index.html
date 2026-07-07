@@ -3430,7 +3430,7 @@ button:hover{background:#222733!important}
     <div id="editCounterpartyModal" class="modal" style="display: none;">
         <div class="modal-content">
             <span class="close" onclick="closeCounterpartyModal()">×</span>
-            <h2 id="modalCounterpartyTitle" style="margin-left: 147.4px;">Редактировать контрагента</h2>
+            <h2 id="modalCounterpartyTitle" style="text-align: center;">Редактировать контрагента</h2>
             <form id="editCounterpartyForm" onsubmit="saveCounterpartyChanges(event)">
                 <input type="hidden" id="editCounterpartyIndex" value="0">
                 <div style="margin-bottom: 10.05px;">
@@ -3498,7 +3498,7 @@ button:hover{background:#222733!important}
 <div id="editPaymentModal" class="modal" style="display: none;">
     <div class="modal-content">
         <span class="close" onclick="closePaymentModal()">×</span>
-        <h2 id="modalPaymentTitle" style="margin-left: 167.5px;">Добавить платеж</h2>
+        <h2 id="modalPaymentTitle" style="text-align: center;">Добавить платеж</h2>
         <form id="editPaymentForm" onsubmit="savePaymentChanges(event)">
             <input type="hidden" id="editPaymentIndex" value="">
             
@@ -3692,7 +3692,7 @@ button:hover{background:#222733!important}
             <!-- Кнопки в одну строку -->
             <div style="display: flex; gap: 6.7px; justify-content: center; margin-top: 13.4px;">
                 <button type="submit" style="padding: 6.7px 13.4px; background: linear-gradient(135deg, #5c7e10 0%, #4c6b22 100%); 
-                        color: white; border: none; border-radius: 2.68px; cursor: pointer;">
+                        color: rgba(122, 218, 58, 0.575); border: none; border-radius: 2.68px; cursor: pointer;">
                     Сохранить
                 </button>
                 <button type="button" onclick="deleteAccountingRecord()" class="delete-btn" style="
@@ -3708,7 +3708,7 @@ button:hover{background:#222733!important}
                     Удалить запись
                 </button>
                 <button type="button" onclick="closeAccountingModal()" style="padding: 6.7px 13.4px; background: linear-gradient(135deg, #8f98a0 0%, #6d7882 100%); 
-                        color: white; border: none; border-radius: 2.68px; cursor: pointer;">
+                        color: rgba(161, 151, 151, 0.452); border: none; border-radius: 2.68px; cursor: pointer;">
                     Отмена
                 </button>
             </div>
@@ -3720,7 +3720,7 @@ button:hover{background:#222733!important}
     <div id="editSettlementModal" class="modal" style="display: none;">
         <div class="modal-content">
             <span class="close" onclick="closeSettlementModal()">×</span>
-            <h2 id="modalSettlementTitle" style="margin-left: 120.6px;">Редактировать запись урегулирования</h2>
+            <h2 id="modalSettlementTitle" style="text-align: center;">Редактировать запись урегулирования</h2>
             <form id="editSettlementForm" onsubmit="saveSettlementChanges(event)">
                 <input type="hidden" id="editSettlementIndex" value="0">
                 
@@ -3770,7 +3770,7 @@ button:hover{background:#222733!important}
     <div id="editMailModal" class="modal" style="display: none;">
         <div class="modal-content">
             <span class="close" onclick="closeMailModal()">×</span>
-            <h2 id="modalMailTitle" style="margin-left: 120.6px;">Редактировать запись в почтовый реестр</h2>
+            <h2 id="modalMailTitle" style="text-align: center;">Редактировать запись в почтовый реестр</h2>
             <form id="editMailForm" onsubmit="saveMailChanges(event)">
                 <input type="hidden" id="editMailIndex" value="0">
                 <div style="margin-bottom: 10.05px;">
@@ -3808,7 +3808,7 @@ button:hover{background:#222733!important}
     <div id="editProxyModal" class="modal" style="display: none;">
         <div class="modal-content">
             <span class="close" onclick="closeProxyModal()">×</span>
-            <h2 id="modalProxyTitle" style="margin-left: 154.1px;">Редактировать доверенность</h2>
+            <h2 id="modalProxyTitle" style="text-align: center;">Редактировать доверенность</h2>
             <form id="editProxyForm" onsubmit="saveProxyChanges(event)">
                 <input type="hidden" id="editProxyIndex" value="0">
                 <div style="margin-bottom: 10.05px;">
@@ -7241,7 +7241,7 @@ function updatePaymentsTotal() {
     document.getElementById('modalPaymentTitle').textContent = 'Добавить платеж';
     document.getElementById('editPaymentIndex').value = '';
     document.getElementById('editPaymentForm').reset();
-    document.getElementById('editPaymentContract').value = '-';
+    document.getElementById('editPaymentAgreement').value = '-';
     const deleteBtn = document.querySelector('#editPaymentModal .delete-btn');
     if (deleteBtn) deleteBtn.style.display = 'none';
     document.getElementById('editPaymentModal').style.display = 'flex';
