@@ -1165,7 +1165,7 @@
     display: flex;
     flex-direction: column;
     height: 80%;
-    width: 75% !important;
+    width: 25% !important;
     height: 100% !important;
     max-width: none !important;
     max-height: none !important;
@@ -1813,31 +1813,32 @@
     width: 100% !important;
 }
 
-/* Задаём ширину для каждого столбца (подберите значения под свои данные) */
-#paymentsTable th:nth-child(1), #paymentsTable td:nth-child(1) { width: 20px !important; }  /* Дата */
-#paymentsTable th:nth-child(2), #paymentsTable td:nth-child(2) { width: 20px !important; }  /* Статус */
-#paymentsTable th:nth-child(3), #paymentsTable td:nth-child(3) { width: 40px !important; } /* Заявка */
-#paymentsTable th:nth-child(4), #paymentsTable td:nth-child(4) { width: 40px !important; } /* Контрагент */
-#paymentsTable th:nth-child(5), #paymentsTable td:nth-child(5) { width: 30px !important; }  /* Сумма */
-#paymentsTable th:nth-child(6), #paymentsTable td:nth-child(6) { width: 40px !important; } /* Договор */
-#paymentsTable th:nth-child(7), #paymentsTable td:nth-child(7) { width: 10px !important; } /* Ссылка */
+/* Ширина столбцов (подберите под свои данные) */
+#paymentsTable th:nth-child(1), #paymentsTable td:nth-child(1) { width: 90px !important; }  /* Дата */
+#paymentsTable th:nth-child(2), #paymentsTable td:nth-child(2) { width: 80px !important; }  /* Статус */
+#paymentsTable th:nth-child(3), #paymentsTable td:nth-child(3) { width: 100px !important; } /* Заявка */
+#paymentsTable th:nth-child(4), #paymentsTable td:nth-child(4) { width: 120px !important; } /* Контрагент */
+#paymentsTable th:nth-child(5), #paymentsTable td:nth-child(5) { width: 110px !important; } /* Сумма */
+#paymentsTable th:nth-child(6), #paymentsTable td:nth-child(6) { width: 100px !important; } /* Счет */
+#paymentsTable th:nth-child(7), #paymentsTable td:nth-child(7) { width: 100px !important; } /* Договор */
+#paymentsTable th:nth-child(8), #paymentsTable td:nth-child(8) { width: 60px !important; }  /* Ссылка (иконка) */
 
 /* Задаём фиксированную ширину для столбца "Ссылка" */
-#paymentsTable th:nth-child(7),
-#paymentsTable td:nth-child(7) {
-    max-width: 10px !important;
-    width: 10px !important;
+#paymentsTable th:nth-child(8),
+#paymentsTable td:nth-child(8) {
+    max-width: 30px !important;
+    width: 30px !important;
     overflow: hidden !important;
     text-overflow: ellipsis !important;
     white-space: nowrap !important;
 }
-#paymentsTable td:nth-child(7) {
+#paymentsTable td:nth-child(8) {
     padding: 4px 2px !important;
     text-align: center !important;
 }
 
 /* Саму ссылку внутри ячейки тоже обрезаем */
-#paymentsTable td:nth-child(7) a {
+#paymentsTable td:nth-child(8) a {
     display: block !important;
     overflow: hidden !important;
     text-overflow: ellipsis !important;
@@ -2018,7 +2019,7 @@ select.filter-active {
     background: linear-gradient(135deg, #1b2838 0%, #2a475e 100%);
     margin: 0 !important;                   /* убираем auto-отступы */
     padding: 13.4px;
-    width: 50% !important;
+    width: 25% !important;
     height: 100% !important;
     max-width: none !important;
     max-height: none !important;
@@ -3267,6 +3268,7 @@ button:hover{background:#222733!important}
         <th style="width: 130px;">Заявка</th>
         <th style="width: 60px;">Контрагент</th>
         <th style="width: 120px;">Сумма</th>
+        <th style="width: 60px;">Счет</th>
         <th style="width: 60px;">Договор</th>
         <th style="width: 10px;">Ссылка</th>
     </tr>
@@ -3516,8 +3518,12 @@ button:hover{background:#222733!important}
             </div>
             
             <div style="margin-bottom: 10.05px;">
-    <label>Договор:</label>
+    <label>Счет:</label>
     <input type="text" id="editPaymentContract" style="width: 100%;" list="contractsList">
+</div>
+<div style="margin-bottom: 10.05px;">
+    <label>Договор:</label>
+    <input type="text" id="editPaymentAgreement" style="width: 100%;" list="contractsList" placeholder="Номер договора">
 </div>
             <div style="margin-bottom: 10.05px;">
     <label>Ссылка:</label>
@@ -4446,6 +4452,12 @@ function updateCommentFieldPermissions() {
         accountingData = safeParseJSON(localStorage.getItem('accountingData')) || [];
         counterpartiesData = safeParseJSON(localStorage.getItem('counterpartiesData')) || [];
         paymentsData = safeParseJSON(localStorage.getItem('paymentsData')) || [];
+        paymentsData = paymentsData.map(p => {
+    if (!p.hasOwnProperty('agreement')) {
+        p.agreement = '';
+    }
+    return p;
+});
         settlementData = safeParseJSON(localStorage.getItem('settlementData')) || [];
         mailData = safeParseJSON(localStorage.getItem('mailData')) || [];
         proxyData = safeParseJSON(localStorage.getItem('proxyData')) || [];
@@ -7081,14 +7093,15 @@ function updateSuppliersFilterList() {
             : '';
         
         row.innerHTML = `
-            <td>${item.date || ''}</td>
-            <td>${item.status || ''}</td>
-            <td>${item.docNumber || ''}</td>
-            <td>${item.supplier || ''}</td>
-            <td>${item.amount ? formatCurrency(item.amount) : ''}</td>
-            <td>${contractLink}</td>
-            <td>${linkHtml}</td>
-        `;
+    <td>${item.date || ''}</td>
+    <td>${item.status || ''}</td>
+    <td>${item.docNumber || ''}</td>
+    <td>${item.supplier || ''}</td>
+    <td>${item.amount ? formatCurrency(item.amount) : ''}</td>
+    <td>${contractLink}</td>
+    <td>${escapeString(item.agreement || '')}</td>
+    <td>${linkHtml}</td>
+`;
         
         // Обработчик для копирования ссылки
         if (item.link) {
@@ -7271,6 +7284,7 @@ function editPaymentRow(index) {
     document.getElementById('editPaymentLink').value = item.link || '';
     document.getElementById('editPaymentStatus').value = item.status || 'План';
     document.getElementById('editPaymentApplication').value = item.docNumber || '';
+    document.getElementById('editPaymentAgreement').value = item.agreement || '';
     
     const deleteBtn = document.querySelector('#editPaymentModal .delete-btn');
     if (deleteBtn) deleteBtn.style.display = 'inline-block';
@@ -7294,6 +7308,7 @@ function editPaymentRow(index) {
         amount: document.getElementById('editPaymentAmount').value,
         supplier: document.getElementById('editPaymentSupplier').value,
         contract: document.getElementById('editPaymentContract').value,
+        agreement: document.getElementById('editPaymentAgreement').value,
         link: document.getElementById('editPaymentLink').value,
         docNumber: document.getElementById('editPaymentApplication').value
     };
