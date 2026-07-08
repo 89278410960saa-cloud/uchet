@@ -16,7 +16,7 @@
       "department": "11/0143 Участок по ОСП",
       "contract": "СЧ № 2026/10719",
       "paymentTerms": "100 % предоплата",
-      "deliveryDays": "14",
+      "deliveryDays": "7",
       "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
@@ -39,7 +39,7 @@
       "department": "11/0143 Участок по ОСП",
       "contract": "СЧ № 2026/10719",
       "paymentTerms": "100 % предоплата",
-      "deliveryDays": "14",
+      "deliveryDays": "7",
       "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
@@ -62,7 +62,7 @@
       "department": "11/0143 Участок по ОСП",
       "contract": "СЧ № 2026/10719",
       "paymentTerms": "100 % предоплата",
-      "deliveryDays": "14",
+      "deliveryDays": "7",
       "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
@@ -85,7 +85,7 @@
       "department": "11/0143 Участок по ОСП",
       "contract": "СЧ № 2026/10719",
       "paymentTerms": "100 % предоплата",
-      "deliveryDays": "14",
+      "deliveryDays": "7",
       "deliveryTerms": "Включена",
       "date": "",
       "planFact": "",
@@ -16001,6 +16001,29 @@
       "fact": "11.12.2025",
       "shipmentDoc": "70019 от 09.12.25",
       "plan": "11.12.2025"
+    },
+    {
+      "recordId": "20260708173006514_ih5wrgoae",
+      "docNumber": "2026-638 (от 08.07.2026)",
+      "status": "В работе",
+      "id": "-",
+      "name": "Шпилька DIN 975 резьбовая кл.пр. 8.8 M30x2000",
+      "quantity": "20",
+      "unit": "шт",
+      "purchaseName": "",
+      "purchaseQuantity": "",
+      "purchaseUnit": "",
+      "amount": "",
+      "supplier": "",
+      "department": "11/0100 Управление по эксплуатации и ремонту",
+      "contract": "",
+      "paymentTerms": "",
+      "deliveryDays": "",
+      "deliveryTerms": "",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
     }
   ],
   "counterpartiesData": [
@@ -25912,12 +25935,13 @@
     "2026-309 (от 23.06.2026)": "на согласовании Механик",
     "2026-433 (от 30.06.2026)": "",
     "2026-568 (от 30.06.2026)": "",
-    "2026-545 (от 07.07.2026)": "на согласовании Грунин"
+    "2026-545 (от 07.07.2026)": ""
   },
   "departmentsList": [
     "11/0020 ПТО",
     "11/0030 Отдел ПБ, ОТ, ГО и ЧС",
     "11/0040 Отдел IT",
+    "11/0100 Управление по эксплуатации и ремонту",
     "11/0110 Служба главного механика",
     "11/0111 Участок по обслуж. ж/д путей",
     "11/0120 Служба главного энергетика",
@@ -25939,5 +25963,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-07-08T13:33:43.412Z"
+  "exportDate": "2026-07-08T14:39:58.717Z"
 }
