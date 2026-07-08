@@ -211,10 +211,10 @@
     transform: none;
     background: linear-gradient(135deg, #be9e3c 0%, #8c2c24 100%);
     color: rgb(39, 39, 39);
-    border-radius: 3px;
-    width: 14px;
-    height: 12px;
-    font-size: 8px;
+    border-radius: 4px;
+    width: 15px;
+    height: 15px;
+    font-size: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -229,6 +229,9 @@
 .sidebar-badge.warning {
     background: linear-gradient(135deg, #d69b76 0%, #ffa500 100%);
     color: black !important;
+    width: 15px !important;
+    height: 15px !important;
+    font-size: 10px !important;
 }
 
         @keyframes pulse {
@@ -2757,13 +2760,18 @@ button { min-height: 18px !important; }
   font-size: 7px !important;
   height: 14px !important;
 }
+.modal-content label {
+  font-size: 13px !important;
+  margin-bottom: 4px !important;
+}
 
 .modal-content { padding: 8px !important; }
 .modal-content input,
 .modal-content select,
 .modal-content button {
-  height: 20px !important;
-  font-size: 10px !important;
+  height: 25px !important;       
+  font-size: 11px !important;     
+  padding: 5px 8px !important;   
 }
 
 .login-container {
@@ -2962,24 +2970,15 @@ button:hover{background:#222733!important}
 
 /* ===== КОМПАКТНЫЙ САЙДБАР 85px ===== */
 .sidebar {
-    width: 85px !important;
-    min-width: 85px !important;
-    padding: 8px 6px !important;
+    width: 90px !important;
+    min-width: 90px !important;
+    padding: 6px 6px !important;
     
 }
 
-.sidebar .sidebar-cell.menu-item {
-    padding: 0 6px !important;
-    gap: 4px !important;
-    height: 34px !important;
-    min-height: 34px !important;
-    margin: 6px 0 !important;
-    border-radius: 6px !important;
-    justify-content: flex-start !important;
-}
 
 .sidebar .menu-icon {
-    font-size: 17px !important;
+    font-size: 16px !important;
 }
 
 .sidebar .menu-text {
@@ -2991,7 +2990,7 @@ button:hover{background:#222733!important}
 
 /* Сдвигаем основной контент под новую ширину */
 .main-content {
-    margin-left: 85px !important;
+    margin-left: 90px !important;
 }
 
 /* Подсказки при наведении – тоже уменьшаем */
@@ -3608,7 +3607,7 @@ button:hover{background:#222733!important}
     <td style="padding: 8.04px 5.36px; vertical-align: top;">
         <label style="display: block; margin-bottom: 5.36px; color: #66c0f4; font-size: 8.71px; font-weight: bold;">Наименование позиции:</label>
         <!-- ЗАМЕНА: input на textarea -->
-        <textarea id="editName" required="" style="width: 100%; padding: 6.7px; height: 67.0px; resize: vertical; 
+        <textarea id="editName" required="" style="width: 100%; padding: 6.7px; height: 90px; resize: vertical; 
                    background: #2a475e; border: 0.67px solid #3d4450; 
                    color: #c7d5e0; border-radius: 2.68px; font-family: inherit; 
                    font-size: 9.38px; line-height: 1.4; white-space: pre-wrap; 
@@ -3617,7 +3616,7 @@ button:hover{background:#222733!important}
     <td style="padding: 8.04px 5.36px; vertical-align: top;">
         <label style="display: block; margin-bottom: 5.36px; color: #66c0f4; font-size: 8.71px; font-weight: bold;">Наименование закупки:</label>
         <!-- ЗАМЕНА: input на textarea -->
-        <textarea id="editPurchaseName" style="width: 100%; padding: 6.7px; height: 67.0px; resize: vertical; 
+        <textarea id="editPurchaseName" style="width: 100%; padding: 6.7px; height: 90px; resize: vertical; 
                    background: #2a475e; border: 0.67px solid #3d4450; 
                    color: #c7d5e0; border-radius: 2.68px; font-family: inherit; 
                    font-size: 9.38px; line-height: 1.4; white-space: pre-wrap; 
@@ -11399,11 +11398,21 @@ button[onclick*="exportToExcel"]:hover {
 /* Единый стиль для всех пунктов меню, включая выпадающее */
 .sidebar .sidebar-cell.menu-item,
 #settingsMenu .sidebar-cell.menu-item {
-    height: 36px !important;
-    padding: 0 12px !important;
-    line-height: 36px !important;
+    height: 30px !important;
+    padding: 0 6px !important;
+    line-height: 30px !important;
     font-size: 12px !important;
     box-sizing: border-box !important;
+}
+/* Исправление высоты и отступов в сайдбаре */
+.sidebar .sidebar-cell.menu-item {
+    height: auto !important;          /* убираем фиксированную высоту */
+    min-height: 45px !important;      /* оставляем минимальную, чтобы кнопка не сжималась */
+    line-height: normal !important;   /* убираем line-height, чтобы не влиять на flex */
+    padding: 4px 4px !important;      /* уменьшаем вертикальные отступы, если нужно */
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 4px !important;
 }
 /* Индикатор наличия платежа в статусе "План" для договора */
 .payment-plan-indicator {
