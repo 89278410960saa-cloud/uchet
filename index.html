@@ -493,7 +493,7 @@
 /* Новые ширины столбцов таблицы учета после перемещения "План" */
 #accountingTable th:nth-child(1) { width: 53.6px !important; }   /* Подразделение */
 #accountingTable th:nth-child(2) { width: 40.2px !important; }   /* Заявка */
-#accountingTable th:nth-child(3) { width: 33.5px !important; }   /* Статус */
+#accountingTable th:nth-child(3) { width: 38px !important; }   /* Статус */
 #accountingTable th:nth-child(4) { width: 40.2px !important; }   /* ID */
 #accountingTable th:nth-child(5) { width: 120.6px !important; }  /* Наименование позиции */
 #accountingTable th:nth-child(6) { width: 26.8px !important; }   /* Кол-во */
@@ -506,16 +506,16 @@
 #accountingTable th:nth-child(13) { width: 67.0px !important; } /* Договор */
 #accountingTable th:nth-child(14) { width: 67.0px !important; } /* Оплата */
 #accountingTable th:nth-child(15) { width: 26.8px !important; }  /* Срок */
-#accountingTable th:nth-child(16) { width: 33.5px !important; }  /* Поставка */
-#accountingTable th:nth-child(17) { width: 33.5px !important; }  /* Утверждено (Дата) */
-#accountingTable th:nth-child(18) { width: 33.5px !important; }  /* План */
-#accountingTable th:nth-child(19) { width: 33.5px !important; }  /* Факт */
+#accountingTable th:nth-child(16) { width: 40px !important; }  /* Поставка */
+#accountingTable th:nth-child(17) { width: 35px !important; }  /* Утверждено (Дата) */
+#accountingTable th:nth-child(18) { width: 40px !important; }  /* План */
+#accountingTable th:nth-child(19) { width: 35px !important; }  /* Факт */
 #accountingTable th:nth-child(20) { width: 60.3px !important; }  /* Документ */
 
 /* Применить те же ширины к ячейкам */
 #accountingTable td:nth-child(1) { width: 53.6px !important; }
 #accountingTable td:nth-child(2) { width: 40.2px !important; }
-#accountingTable td:nth-child(3) { width: 33.5px !important; }
+#accountingTable td:nth-child(3) { width: 38px !important; }
 #accountingTable td:nth-child(4) { width: 40.2px !important; }
 #accountingTable td:nth-child(5) { width: 120.6px !important; }
 #accountingTable td:nth-child(6) { width: 26.8px !important; }
@@ -528,10 +528,10 @@
 #accountingTable td:nth-child(13) { width: 67.0px !important; }
 #accountingTable td:nth-child(14) { width: 67.0px !important; }
 #accountingTable td:nth-child(15) { width: 26.8px !important; }
-#accountingTable td:nth-child(16) { width: 33.5px !important; }
-#accountingTable td:nth-child(17) { width: 33.5px !important; }
-#accountingTable td:nth-child(18) { width: 33.5px !important; }
-#accountingTable td:nth-child(19) { width: 33.5px !important; }
+#accountingTable td:nth-child(16) { width: 40px !important; }
+#accountingTable td:nth-child(17) { width: 35px !important; }
+#accountingTable td:nth-child(18) { width: 40px !important; }
+#accountingTable td:nth-child(19) { width: 35px !important; }
 #accountingTable td:nth-child(20) { width: 60.3px !important; }
 /* Гарантируем, что таблицы растягиваются на всю ширину */
 .table-scroll-container table {
@@ -612,9 +612,11 @@
 #accountingTable th {
     width: auto !important;
     min-width: 26.8px !important;
-    white-space: nowrap !important;
+    white-space: normal !important;
     overflow: hidden !important;
     text-overflow: ellipsis !important;
+    padding: 6px 4px !important;
+    font-size: 11px !important;
 }
 #accountingTable td {
     min-width: 26.8px !important;
@@ -1859,7 +1861,7 @@
             border: 0.67px solid #3d4450;
             padding: 5.36px;
             text-align: left;
-            font-size: 9.38px;
+            font-size: 10px;
             max-width: 134.0px;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -3159,25 +3161,25 @@ button:hover{background:#222733!important}
             <table id="accountingTable" style="table-layout: fixed;">
                 <thead>
         <tr>
-            <th style="width: 53.6px;">Подразделение</th>
+            <th style="width: 53.6px;">Служба</th>
             <th style="width: 40.2px;">Заявка</th>
-            <th style="width: 33.5px;">Статус</th>
+            <th style="width: 38px;">Статус</th>
             <th style="width: 40.2px;">ID</th>
             <th style="width: 120.6px;">Наименование позиции</th>
-            <th style="width: 26.8px;">Кол-во</th>
+            <th style="width: 26.8px;">Кол- во</th>
             <th style="width: 26.8px;">Ед. изм.</th>
             <th style="width: 120.6px;">Наименование закупки</th>
-            <th style="width: 26.8px;">Кол-во (закуп)</th>
-            <th style="width: 26.8px;">Ед.изм. (закуп)</th>
+            <th style="width: 26.8px;">Кол- во</th>
+            <th style="width: 26.8px;">Ед. изм.</th>
             <th style="width: 46.9px;">Сумма, НДС</th>
             <th style="width: 80.4px;">Контрагент</th>
             <th style="width: 67.0px;">Договор</th>
             <th style="width: 67.0px;">Оплата</th>
             <th style="width: 26.8px;">Срок</th>
-            <th style="width: 33.5px;">Поставка</th>
-            <th style="width: 33.5px;">Утверждено (Дата)</th>
-            <th style="width: 33.5px;">План</th>
-            <th style="width: 33.5px;">Факт</th>
+            <th style="width: 40px;">Поставка</th>
+            <th style="width: 35px;">От</th>
+            <th style="width: 40px;">План</th>
+            <th style="width: 35px;">Факт</th>
             <th style="width: 60.3px;">Документ</th>
         </tr>
     </thead>
