@@ -4787,7 +4787,7 @@ function updateAccountingTable() {
         const purchaseNameCell = createCell(item.purchaseName || '', '200px');
         const purchaseQuantityCell = createCell(item.purchaseQuantity || '', '97px');
         const purchaseUnitCell = createCell(item.purchaseUnit || '', '100px');
-        const amountCell = createCell(item.amount ? formatCurrency(item.amount) : '', '148px');
+        const amountCell = createCell(item.amount ? formatNumber(item.amount) : '', '148px');
         
         // ---------- НОВАЯ ЛОГИКА ДЛЯ ЯЧЕЙКИ ДОГОВОРА ----------
         const contractText = item.contract || '';
@@ -7491,12 +7491,12 @@ function editDepartment(index) {
 }
 
         // Вспомогательная функция для форматирования валюты
-        function formatCurrency(value) {
-            if (!value) return '';
-            const number = parseFloat(value);
-            if (isNaN(number)) return value;
-            return number.toLocaleString('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' руб.';
-        }
+        function formatNumber(value) {
+    if (!value) return '';
+    const number = parseFloat(value);
+    if (isNaN(number)) return value;
+    return number.toLocaleString('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
 
         // ========== ФУНКЦИИ ДЛЯ СТРАНИЦЫ УРЕГУЛИРОВАНИЯ ==========
     function updateSettlementTable() {
