@@ -7497,6 +7497,12 @@ function editDepartment(index) {
     if (isNaN(number)) return value;
     return number.toLocaleString('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
+function formatCurrency(value) {
+    if (!value) return '';
+    const number = parseFloat(value);
+    if (isNaN(number)) return value;
+    return number.toLocaleString('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' руб.';
+}
 
         // ========== ФУНКЦИИ ДЛЯ СТРАНИЦЫ УРЕГУЛИРОВАНИЯ ==========
     function updateSettlementTable() {
@@ -8641,7 +8647,7 @@ function printDeliveriesAndOverdue() {
             item.purchaseName || '',
             item.purchaseQuantity || '',
             item.purchaseUnit || '',
-            item.amount ? formatCurrency(item.amount) : '',
+            item.amount ? formatNumber(item.amount) : '',
             item.supplier || '',
             item.contract || '',
             item.paymentTerms || '',
