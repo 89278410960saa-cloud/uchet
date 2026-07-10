@@ -4791,62 +4791,49 @@ function updateAccountingTable() {
         
         // ---------- НОВАЯ ЛОГИКА ДЛЯ ЯЧЕЙКИ ДОГОВОРА ----------
         const contractText = item.contract || '';
-        const supplier = item.supplier || '';
-        const application = item.docNumber || '';
-        const docNumber = item.docNumber || '';
-        const contractNumbers = extractContractNumbers(contractText);
+const supplier = item.supplier || '';
+const application = item.docNumber || '';
+const docNumber = item.docNumber || '';
+const contractNumbers = extractContractNumbers(contractText);
 
-        // ----- Поиск для ссылки (любой статус) -----
-        const matchingPaymentAny = paymentsData.find(p => {
-            if (p.docNumber !== docNumber) return false;
-            const normPContract = normalizeContract(p.contract || '');
-            if (!normPContract) return false;
-            if (contractNumbers.length > 0) {
-                return contractNumbers.some(num => num === normPContract || num.includes(normPContract));
-            }
-            const normContract = normalizeContract(contractText);
-            return normContract.includes(normPContract);
-        });
+// ----- Поиск для индикатора (только статус "План") -----
+const matchingPaymentPlan = paymentsData.find(p => {
+    if (p.status !== 'План') return false;
+    if (p.docNumber !== docNumber) return false;
+    const normPContract = normalizeContract(p.contract || '');
+    if (!normPContract) return false;
+    if (contractNumbers.length > 0) {
+        return contractNumbers.some(num => num === normPContract || num.includes(normPContract));
+    }
+    const normContract = normalizeContract(contractText);
+    return normContract.includes(normPContract);
+});
 
-        // ----- Поиск для индикатора (только статус "План") -----
-        const matchingPaymentPlan = paymentsData.find(p => {
-            if (p.status !== 'План') return false;
-            if (p.docNumber !== docNumber) return false;
-            const normPContract = normalizeContract(p.contract || '');
-            if (!normPContract) return false;
-            if (contractNumbers.length > 0) {
-                return contractNumbers.some(num => num === normPContract || num.includes(normPContract));
-            }
-            const normContract = normalizeContract(contractText);
-            return normContract.includes(normPContract);
-        });
+// ----- Всегда ссылка, если договор не пустой и не "-" -----
+let contractHtml = '';
+if (contractText && contractText.trim() !== '-' && contractText.trim() !== '') {
+    contractHtml = `<a href="#" class="contract-filter-link-payments" 
+                       data-contract="${encodeURIComponent(contractText)}" 
+                       data-supplier="${encodeURIComponent(supplier)}" 
+                       data-application="${encodeURIComponent(application)}" 
+                       style="color: #66c0f4; text-decoration: underline; cursor: pointer;">
+                       ${escapeString(contractText)}
+                    </a>`;
+} else {
+    contractHtml = escapeString(contractText);
+}
 
-        let contractHtml = '';
-        if (contractText && matchingPaymentAny) {
-            // Ссылка, если есть любой платёж
-            contractHtml = `<a href="#" class="contract-filter-link-payments" 
-                               data-contract="${encodeURIComponent(contractText)}" 
-                               data-supplier="${encodeURIComponent(supplier)}" 
-                               data-application="${encodeURIComponent(application)}" 
-                               style="color: #66c0f4; text-decoration: underline; cursor: pointer;">
-                               ${escapeString(contractText)}
-                            </a>`;
-        } else {
-            // Платежа нет – просто текст
-            contractHtml = escapeString(contractText);
-        }
+const contractCell = document.createElement('td');
+contractCell.style.width = '114px';
+contractCell.innerHTML = contractHtml;
 
-        const contractCell = document.createElement('td');
-        contractCell.style.width = '114px';
-        contractCell.innerHTML = contractHtml;
-
-        // Индикатор только если есть платёж со статусом "План"
-        if (matchingPaymentPlan) {
-            contractCell.style.position = 'relative';
-            const indicator = document.createElement('span');
-            indicator.className = 'payment-plan-indicator';
-            contractCell.appendChild(indicator);
-        }
+// Индикатор только если есть платёж со статусом "План"
+if (matchingPaymentPlan) {
+    contractCell.style.position = 'relative';
+    const indicator = document.createElement('span');
+    indicator.className = 'payment-plan-indicator';
+    contractCell.appendChild(indicator);
+}
         // -------------------------------------------------------
 
         const paymentTermsCell = createCell(item.paymentTerms || '', '96px');
