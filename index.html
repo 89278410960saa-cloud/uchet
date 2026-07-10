@@ -7027,7 +7027,7 @@ function updateSuppliersFilterList() {
     });
 }
         // ========== ФУНКЦИИ ДЛЯ СТРАНИЦЫ ПЛАТЕЖЕЙ ==========
-        function updatePaymentsTable() {
+    function updatePaymentsTable() {
     const tableBody = document.querySelector('#paymentsTable tbody');
     if (!tableBody) return;
     
@@ -7060,12 +7060,33 @@ function updateSuppliersFilterList() {
         row.classList.add('clickable-row');
         if (!isAdmin) row.classList.add('guest-mode');
         
-        // Ссылка на договор (кликабельная)
         const contractText = item.contract || '';
+        const agreementText = item.agreement || '';
         const supplier = item.supplier || '';
-        const contractLink = contractText
-    ? `<a href="#" class="contract-filter-link" data-contract="${encodeURIComponent(contractText)}" data-supplier="${encodeURIComponent(supplier)}" style="color: #66c0f4; text-decoration: underline; cursor: pointer;">${escapeString(contractText)}</a>`
-    : '';
+        
+        // Проверяем, есть ли договор в таблице учёта (точное совпадение без учёта пробелов)
+        const foundInAccounting = accountingData.some(accItem => 
+            accItem.contract && accItem.contract.trim() === contractText.trim()
+        );
+        
+        let contractHtml = '';
+        let agreementHtml = '';
+        
+        if (foundInAccounting && contractText) {
+            // Ссылка для столбца "Счет"
+            contractHtml = `<a href="#" class="contract-filter-link" data-contract="${encodeURIComponent(contractText)}" data-supplier="${encodeURIComponent(supplier)}" style="color: #66c0f4; text-decoration: underline; cursor: pointer;">${escapeString(contractText)}</a>`;
+            // Договор остаётся простым текстом
+            agreementHtml = escapeString(agreementText);
+        } else {
+            // Счет – просто текст
+            contractHtml = escapeString(contractText);
+            // Для Договора создаём ссылку, если значение не "-" и не пустое
+            if (agreementText && agreementText.trim() !== '-') {
+                agreementHtml = `<a href="#" class="contract-filter-link" data-contract="${encodeURIComponent(agreementText)}" data-supplier="${encodeURIComponent(supplier)}" style="color: #66c0f4; text-decoration: underline; cursor: pointer;">${escapeString(agreementText)}</a>`;
+            } else {
+                agreementHtml = escapeString(agreementText);
+            }
+        }
         
         // Ссылка на внешний ресурс (иконка копирования)
         const linkHtml = item.link
@@ -7073,15 +7094,15 @@ function updateSuppliersFilterList() {
             : '';
         
         row.innerHTML = `
-    <td>${item.date || ''}</td>
-    <td>${item.status || ''}</td>
-    <td>${item.docNumber || ''}</td>
-    <td>${item.supplier || ''}</td>
-    <td>${item.amount ? formatCurrency(item.amount) : ''}</td>
-    <td>${contractLink}</td>
-    <td>${escapeString(item.agreement || '')}</td>
-    <td>${linkHtml}</td>
-`;
+            <td>${item.date || ''}</td>
+            <td>${item.status || ''}</td>
+            <td>${item.docNumber || ''}</td>
+            <td>${item.supplier || ''}</td>
+            <td>${item.amount ? formatCurrency(item.amount) : ''}</td>
+            <td>${contractHtml}</td>
+            <td>${agreementHtml}</td>
+            <td>${linkHtml}</td>
+        `;
         
         // Обработчик для копирования ссылки
         if (item.link) {
