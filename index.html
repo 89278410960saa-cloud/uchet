@@ -2079,17 +2079,13 @@ select.filter-active {
         .application-filter {
             min-width: 100.5px;
         }
-/* Стили для жирных границ у столбца "План" */
-#accountingTable th:nth-child(18),
-#accountingTable td:nth-child(18) {
-    border-left: 2px solid #8b8b8b !important;
-    border-right: 2px solid #8b8b8b !important;
-}
-/* Жирные границы только для статусов "Поставка" и "Приход" */
-#accountingTable tr.status-supply td:nth-child(18),
-#accountingTable tr.status-receipt td:nth-child(18) {
-    border-left: 2px solid #8b8b8b !important;
-    border-right: 2px solid #8b8b8b !important;
+
+
+/* Для статусов "Поставка" и "Приход" можно сделать рамку более яркой */
+#accountingTable tr.status-supply td:nth-child(18):not(:empty),
+#accountingTable tr.status-receipt td:nth-child(18):not(:empty) {
+    border: 2px solid #ff8c00;          /* более насыщенный цвет */
+    background-color: rgba(255, 140, 0, 0.12);
 }
 
 
@@ -2368,6 +2364,27 @@ select.filter-active {
 @keyframes spin {
     0% { transform: translate(-50%, -50%) rotate(0deg); }
     100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+/* Анимация появления справа */
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Применяем ко всем модальным окнам */
+.modal-content {
+    animation: slideInRight 0.3s ease-out;
+}
+
+/* Для чата, если у него свой класс, тоже можно применить */
+.chat-modal-content {
+    animation: slideInRight 0.3s ease-out;
 }
 /* Убираем подсветку строк и ячеек в модальном окне редактирования Учета */
 #editAccountingModal table tr:hover {
