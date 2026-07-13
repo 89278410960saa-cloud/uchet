@@ -486,7 +486,7 @@
     {
       "recordId": "20260708143527300_8wjhd7m2p",
       "docNumber": "2026-589 (от 02.07.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "МАТ-05874",
       "name": "Люк чугунный ТЯЖЕЛЫЙ КРУГЛЫЙ Т(С250)-К-2-60, ВЧ-50\n",
       "quantity": "1",
@@ -501,15 +501,15 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "7",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "13.07.2026",
+      "planFact": "20.07.2026",
       "fact": "",
       "shipmentDoc": ""
     },
     {
       "recordId": "20260708143458285_0k1axly4b",
       "docNumber": "2026-589 (от 02.07.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "МАТ-03543",
       "name": "Кольцо опорное регулировочное ж/б КО КО6\n",
       "quantity": "2",
@@ -524,15 +524,15 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "7",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "13.07.2026",
+      "planFact": "20.07.2026",
       "fact": "",
       "shipmentDoc": ""
     },
     {
       "recordId": "20260708143321364_mf2d81nfq",
       "docNumber": "2026-589 (от 02.07.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "МАТ-03542",
       "name": "Кольцо колодезное сквозное ж/б КС\n",
       "quantity": "4",
@@ -547,15 +547,15 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "7",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "13.07.2026",
+      "planFact": "20.07.2026",
       "fact": "",
       "shipmentDoc": ""
     },
     {
       "recordId": "20260708143252213_dkb6sso8y",
       "docNumber": "2026-589 (от 02.07.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "МАТ-01131",
       "name": "Плита перекрытия колодца \tПП 15.2\n",
       "quantity": "2",
@@ -570,8 +570,8 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "7",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "13.07.2026",
+      "planFact": "20.07.2026",
       "fact": "",
       "shipmentDoc": ""
     },
@@ -22608,7 +22608,7 @@
     },
     {
       "recordId": "20260709171557664_7k5uy9nr4",
-      "status": "План",
+      "status": "Оплачено",
       "date": "10.07.2026",
       "amount": "90500.00",
       "supplier": "ООО \"ТПК \"Бастион\"",
@@ -26493,5 +26493,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-07-13T14:27:32.319Z"
+  "exportDate": "2026-07-13T14:38:11.929Z"
 }
