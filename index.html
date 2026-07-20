@@ -581,11 +581,9 @@
     table-layout: fixed !important;
     width: 100% !important;
 }
-
-/* Ширина столбцов (6 столбцов) */
-#mailTable th:nth-child(1), #mailTable td:nth-child(1) { width: 70px !important; }  /* Дата */
-#mailTable th:nth-child(2), #mailTable td:nth-child(2) { width: 120px !important; } /* Контрагент */
-#mailTable th:nth-child(3), #mailTable td:nth-child(3) { width: 100px !important; } /* Документ */
+#mailTable th:nth-child(1), #mailTable td:nth-child(1) { width: 70px !important; }   /* Дата */
+#mailTable th:nth-child(2), #mailTable td:nth-child(2) { width: 120px !important; }  /* Контрагент */
+#mailTable th:nth-child(3), #mailTable td:nth-child(3) { width: 100px !important; }  /* Документ */
 #mailTable th:nth-child(4), #mailTable td:nth-child(4) { 
     width: 20px !important; 
     max-width: 20px !important; 
@@ -593,8 +591,7 @@
     white-space: nowrap !important;
     text-overflow: ellipsis !important;
 }  /* Кол-во листов */
-#mailTable th:nth-child(5), #mailTable td:nth-child(5) { width: 180px !important; } /* Адрес организации */
-#mailTable th:nth-child(6), #mailTable td:nth-child(6) { width: 100px !important; } /* Отправитель */
+#mailTable th:nth-child(5), #mailTable td:nth-child(5) { width: 180px !important; }  /* Адрес организации */
 
 /* ===== ФИКСИРОВАННАЯ ШИРИНА ДЛЯ ТАБЛИЦЫ УРЕГУЛИРОВАНИЯ (Рекламации) ===== */
 #settlementTable {
@@ -3371,16 +3368,15 @@ button:hover{background:#222733!important}
             <table id="mailTable" style="table-layout: fixed;">
                 <thead>
         <tr>
-            <th style="width: 80.4px;">Дата</th>
-            <th style="width: 120.6px;">Контрагент</th>
-            <th style="width: 134px;">Документ</th>
-            <th style="width: 67px;">Кол-во листов</th>
-            <th style="width: 167.5px;">Адрес организации</th>
-            <th style="width: 100.5px;">Отправитель</th>
-        </tr>
+    <th style="width: 80.4px;">Дата</th>
+    <th style="width: 120.6px;">Контрагент</th>
+    <th style="width: 134px;">Документ</th>
+    <th style="width: 67px;">Кол-во листов</th>
+    <th style="width: 167.5px;">Адрес организации</th>
+</tr>
     </thead>
                 <tbody id="mailTableBody"><tr>
-            <td colspan="6" style="text-align: center; color: rgb(143, 152, 160); padding: 20px; width: 80.4px;">
+            <td colspan="5" style="text-align: center; color: rgb(143, 152, 160); padding: 20px; width: 80.4px;">
                 Нет данных в почтовом реестре. Добавьте первую запись.
             </td>
         </tr></tbody>
@@ -3611,7 +3607,7 @@ button:hover{background:#222733!important}
                         <input type="text" id="editId" required="" style="width: 100%; padding: 6.7px; height: 26.8px;" placeholder="ID позиции">
                     </td>
                     <td style="padding: 8.04px 5.36px; width: 20%; vertical-align: top;">
-                        <label style="display: block; margin-bottom: 5.36px; color: #66c0f4; font-size: 8.71px; font-weight: bold;">Документ отгрузочный:</label>
+                        <label style="display: block; margin-bottom: 5.36px; color: #66c0f4; font-size: 8.71px; font-weight: bold;">Документ:</label>
                         <input type="text" id="editShipmentDoc" list="shipmentDocsList" style="width: 100%; padding: 6.7px; height: 26.8px;" placeholder="Документ">
                     </td>
                 </tr>
@@ -3808,10 +3804,7 @@ button:hover{background:#222733!important}
                     <label>Адрес организации:</label>
                     <input type="text" id="editMailAddress" style="width: 100%;">
                 </div>
-                <div style="margin-bottom: 10.05px;">
-                    <label>Отправитель:</label>
-                    <input type="text" id="editMailSender" value="Сидорченко А.А." style="width: 100%;">
-                </div>
+                
                 <button type="submit">Сохранить</button>
                 <button type="button" onclick="deleteMailRecord()" class="delete-btn" style="background: linear-gradient(135deg, rgb(190, 70, 60) 0%, rgb(140, 44, 36) 100%);display: inline-block;margin-left: 0.0px;">Удалить запись</button>
                 <button type="button" onclick="closeMailModal()">Отмена</button>
@@ -7743,7 +7736,7 @@ function formatCurrency(value) {
     if (mailData.length === 0) {
         const emptyRow = document.createElement('tr');
         emptyRow.innerHTML = `
-            <td colspan="6" style="text-align: center; color: #8f98a0; padding: 20px;">
+            <td colspan="5" style="text-align: center; color: #8f98a0; padding: 20px;">
                 Нет данных в почтовом реестре. Добавьте первую запись.
             </td>
         `;
@@ -7773,7 +7766,6 @@ function formatCurrency(value) {
             <td>${item.document || ''}</td>
             <td>${item.sheets || ''}</td>
             <td>${item.address || ''}</td>
-            <td>${item.sender || ''}</td>
         `;
         
 // ВСЕГДА добавляем класс для подсветки
@@ -7868,7 +7860,7 @@ if (isAdmin) {
             noDataRow = document.createElement('tr');
             noDataRow.setAttribute('data-no-results', 'true');
             noDataRow.innerHTML = `
-                <td colspan="7" style="text-align: center; color: #8f98a0; padding: 20px;">
+                <td colspan="5" style="text-align: center; color: #8f98a0; padding: 20px;">
                     По вашему запросу ничего не найдено
                 </td>
             `;
@@ -7901,7 +7893,6 @@ if (isAdmin) {
             document.getElementById('editMailForm').reset();
             const deleteBtn = document.querySelector('#editMailModal .delete-btn');
             if (deleteBtn) deleteBtn.style.display = 'none';
-            document.getElementById('editMailSender').value = 'Сидорченко А.А.';
             document.getElementById('editMailModal').style.display = 'flex';
             
             // Инициализируем автозаполнение адреса
@@ -7919,7 +7910,6 @@ if (isAdmin) {
     document.getElementById('editMailDocument').value = item.document || '';
     document.getElementById('editMailSheets').value = item.sheets || '';
     document.getElementById('editMailAddress').value = item.address || '';
-    document.getElementById('editMailSender').value = item.sender || 'Сидорченко А.А.';
     
     // Показываем кнопку удаления
     const deleteBtn = document.querySelector('#editMailModal .delete-btn');
@@ -7941,7 +7931,6 @@ if (isAdmin) {
                 document: document.getElementById('editMailDocument').value,
                 sheets: document.getElementById('editMailSheets').value,
                 address: document.getElementById('editMailAddress').value,
-                sender: document.getElementById('editMailSender').value,
             };
             
             if (index === '') {
@@ -11734,11 +11723,11 @@ document.addEventListener('click', function(e) {
 
     // Конфигурация: для каждой страницы – массив индексов столбцов (0‑based)
     const COLUMNS_TO_HIDE = {
-        accounting: [2, 13, 14, 15, 16, 19],   // Статус, Оплата, Срок, Поставка, Утверждено, Документ
-        counterparties: [5, 6],                // Материал, Адрес
-        payments: [1],                         // Статус
-        proxy: [1, 6],                         // Статус, Водитель
-        settlement: [2, 6, 7]                  // Статус, № Исходящее, № Входящее
+        accounting: [2, 3, 13, 14, 15, 16, 19],   
+        counterparties: [5, 6],                
+        payments: [1, 7],                         
+        proxy: [1, 6],                         
+        settlement: [2, 6, 7]                  
     };
 
     // Соответствие названий страниц их HTML‑идентификаторам
