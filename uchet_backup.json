@@ -3,7 +3,7 @@
     {
       "recordId": "20260716105532611_9ihbrak0q",
       "docNumber": "2026-610 (от 13.07.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "МАТ-05614",
       "name": "Шайба М16",
       "quantity": "20",
@@ -18,15 +18,15 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "14",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "20.07.2026",
+      "planFact": "03.08.2026",
       "fact": "",
       "shipmentDoc": ""
     },
     {
       "recordId": "20260716105439867_lvfrggwac",
       "docNumber": "2026-610 (от 13.07.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "МАТ-05472",
       "name": "Гайка М20",
       "quantity": "50",
@@ -41,15 +41,15 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "14",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "20.07.2026",
+      "planFact": "03.08.2026",
       "fact": "",
       "shipmentDoc": ""
     },
     {
       "recordId": "20260715173813057_bo1al7y10",
       "docNumber": "2026-610 (от 13.07.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "МАТ-05472",
       "name": "Гайка М16",
       "quantity": "50",
@@ -64,15 +64,15 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "14",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "20.07.2026",
+      "planFact": "03.08.2026",
       "fact": "",
       "shipmentDoc": ""
     },
     {
       "recordId": "20260715173743561_9mw340eeq",
       "docNumber": "2026-610 (от 13.07.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "МАТ-05614",
       "name": "Шайба d25 (М24)",
       "quantity": "20",
@@ -87,15 +87,15 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "14",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "20.07.2026",
+      "planFact": "03.08.2026",
       "fact": "",
       "shipmentDoc": ""
     },
     {
       "recordId": "20260715173722326_8x66nmwan",
       "docNumber": "2026-610 (от 13.07.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "МАТ-05471",
       "name": "Болт М24Х100 ",
       "quantity": "100",
@@ -110,8 +110,8 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "14",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "20.07.2026",
+      "planFact": "03.08.2026",
       "fact": "",
       "shipmentDoc": ""
     },
@@ -164,7 +164,7 @@
     {
       "recordId": "20260715173250138_gyn3onh85",
       "docNumber": "2026-624 (от 13.07.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "МАТ-05427",
       "name": "Шлифовальная угловая аккумуляторная машина Makita XGT BL 40 В GA050GT101\n",
       "quantity": "2",
@@ -179,8 +179,8 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "10",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "20.07.2026",
+      "planFact": "30.07.2026",
       "fact": "",
       "shipmentDoc": ""
     },
@@ -256,7 +256,7 @@
     {
       "recordId": "20260715094355245_8nm3annle",
       "docNumber": "2026-650 (от 15.07.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "МАТ-02366",
       "name": "Шайба М39",
       "quantity": "100",
@@ -271,15 +271,15 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "7",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "20.07.2026",
+      "planFact": "27.07.2026",
       "fact": "",
       "shipmentDoc": ""
     },
     {
       "recordId": "20260715094330616_xpsid8d56",
       "docNumber": "2026-650 (от 15.07.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "М027152",
       "name": "Гайка М39",
       "quantity": "100",
@@ -294,8 +294,8 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "7",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "20.07.2026",
+      "planFact": "27.07.2026",
       "fact": "",
       "shipmentDoc": ""
     },
@@ -22908,7 +22908,7 @@
     },
     {
       "recordId": "20260716155930694_nyxvgy6t8",
-      "status": "План",
+      "status": "Оплачено",
       "date": "17.07.2026",
       "amount": "63400.00",
       "supplier": "ООО \"Спецкрепеж\"",
@@ -22919,7 +22919,7 @@
     },
     {
       "recordId": "20260716155857896_iyhwyg73x",
-      "status": "План",
+      "status": "Оплачено",
       "date": "17.07.2026",
       "amount": "126200.00",
       "supplier": "ООО \"Энтузиаст-с\"",
@@ -22930,7 +22930,7 @@
     },
     {
       "recordId": "20260716155755649_evz2g185p",
-      "status": "План",
+      "status": "Оплачено",
       "date": "17.07.2026",
       "amount": "44928.40",
       "supplier": "ООО \"Стройметиз\"",
@@ -26192,6 +26192,15 @@
       "address": "194156, г. Санкт-Петербург, ул. Манчестерская, д.2, литер б-2, пом. 21-н",
       "sender": "Сидорченко А.А.",
       "recordId": "20260717085311145_o76dg9u3r"
+    },
+    {
+      "date": "20.07.2026",
+      "supplier": "ООО Фирма \"Водокомфорт\"",
+      "document": "УПД № 5171 от 09.07.2026",
+      "sheets": "1",
+      "address": "115114, г. Москва, ул. Кожевническая, д. 16, стр. 4",
+      "sender": "Сидорченко А.А.",
+      "recordId": "20260720105703859_uh1ekzbus"
     }
   ],
   "proxyData": [
@@ -26956,5 +26965,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-07-17T13:21:59.688Z"
+  "exportDate": "2026-07-20T07:58:38.580Z"
 }
