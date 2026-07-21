@@ -11488,8 +11488,8 @@ input:checked + .slider:before {
     min-width: 0 !important;
     max-width: 100% !important;
     height: auto !important;
-    min-height: 65px !important;
-    padding: 6px 12px !important;
+    min-height: 50px !important;
+    padding: 4px 8px !important;
     margin: 0 !important;
     background: linear-gradient(180deg, #0f172a 0%, #020617 100%) !important;
     border-top: 1px solid rgba(148, 163, 184, 0.2) !important;
@@ -11508,13 +11508,13 @@ input:checked + .slider:before {
 .sidebar-row {
     display: flex !important;
     flex-wrap: wrap !important;
-    justify-content: center !important;
+    justify-content: flex-start !important; /* кнопки прижимаются влево, но растягиваются */
     align-items: center !important;
-    gap: 4px 8px !important;
+    gap: 2px 4px !important;
     width: 100% !important;
     padding: 0 !important;
     margin: 0 !important;
-    flex-direction: row !important; /* явно горизонтально */
+    flex-direction: row !important;
 }
 
 .sidebar-cell.menu-item {
@@ -11522,12 +11522,13 @@ input:checked + .slider:before {
     flex-direction: column !important;
     align-items: center !important;
     justify-content: center !important;
-    padding: 6px 12px !important;
-    min-height: 52px !important;
-    min-width: 60px !important;
+    padding: 3px 10px !important;
+    min-height: 40px !important;
+    min-width: 70px !important;
     height: auto !important;
     width: auto !important;
-    max-width: none !important;
+    flex: 1 0 auto !important;          /* растягивание */
+    max-width: 100% !important;
     border-radius: 6px !important;
     cursor: pointer !important;
     transition: background 0.2s, color 0.2s !important;
@@ -11540,7 +11541,6 @@ input:checked + .slider:before {
     margin: 0 !important;
     line-height: normal !important;
     box-shadow: none !important;
-    flex: 0 0 auto !important;
     white-space: nowrap !important;
 }
 
@@ -11555,8 +11555,9 @@ input:checked + .slider:before {
     box-shadow: 0 0 8px rgba(59, 130, 246, 0.3) !important;
 }
 
+
 .sidebar-cell.menu-item .menu-icon {
-    font-size: 28px !important;
+    font-size: 22px !important;
     line-height: 1 !important;
     color: inherit !important;
 }
@@ -11649,7 +11650,10 @@ input:checked + .slider:before {
 .sidebar-divider {
     display: none !important;
 }
-
+.sidebar-cell.menu-item:not(.active) {
+    background: rgba(255, 255, 255, 0.06);  /* легкий полупрозрачный белый фон */
+    transition: background 0.2s ease;       /* плавное изменение при наведении */
+}
 </style>
 <!-- НОВЫЙ СКРИПТ ДЛЯ ПЕРЕСТАНОВКИ КНОПОК -->
 <script>
