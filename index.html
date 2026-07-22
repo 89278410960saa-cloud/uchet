@@ -4798,7 +4798,11 @@ const contractNumbers = extractContractNumbers(contractText);
 const matchingPaymentPlan = paymentsData.find(p => {
     if (p.status !== 'План') return false;
     if (p.docNumber !== docNumber) return false;
-    const normPContract = normalizeContract(p.contract || '');
+    // Берём значение из поля "Договор" (agreement), если оно не "-" и не пусто, иначе из "Счет" (contract)
+    let contractValue = p.agreement && p.agreement.trim() !== '' && p.agreement.trim() !== '-' 
+        ? p.agreement 
+        : p.contract || '';
+    const normPContract = normalizeContract(contractValue);
     if (!normPContract) return false;
     if (contractNumbers.length > 0) {
         return contractNumbers.some(num => num === normPContract || num.includes(normPContract));
