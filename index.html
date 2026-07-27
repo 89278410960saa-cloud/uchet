@@ -6413,15 +6413,14 @@ if (emailCell) {
     });
 }
 
-        function filterCounterpartiesTable() {
+    function filterCounterpartiesTable() {
     const searchText = document.getElementById('searchCounterpartiesInput').value.toLowerCase();
     const rows = document.querySelectorAll('#counterpartiesTable tbody tr');
-    const thead = document.querySelector('#counterpartiesTable thead');
+    // thead больше не управляется вручную
     
     let visibleCount = 0;
     
     rows.forEach(row => {
-        // Строка-заглушка "нет данных"
         if (row.cells.length === 1 && row.cells[0].colSpan > 1) {
             row.style.display = (searchText || showOnlyBlacklisted) ? 'none' : '';
             if (!searchText && !showOnlyBlacklisted) visibleCount++;
@@ -6448,11 +6447,7 @@ if (emailCell) {
     const tableBody = document.querySelector('#counterpartiesTable tbody');
     let noDataRow = tableBody.querySelector('tr[data-no-results]');
     
-    // Если включён показ чёрного списка и нет видимых строк (нет контрагентов в ЧС)
     if (showOnlyBlacklisted && visibleCount === 0) {
-        // Скрываем заголовок таблицы
-        if (thead) thead.style.display = 'none';
-        
         if (!noDataRow) {
             noDataRow = document.createElement('tr');
             noDataRow.setAttribute('data-no-results', 'true');
@@ -6464,13 +6459,7 @@ if (emailCell) {
             tableBody.appendChild(noDataRow);
         }
     } else {
-        // Показываем заголовок
-        if (thead) thead.style.display = '';
-        
-        // Удаляем сообщение, если оно было
         if (noDataRow) noDataRow.remove();
-        
-        // Если нет результатов поиска – показываем стандартное сообщение
         if (visibleCount === 0 && searchText) {
             if (!noDataRow) {
                 noDataRow = document.createElement('tr');
@@ -6484,6 +6473,9 @@ if (emailCell) {
             }
         }
     }
+    
+    // Применяем компактный режим (скрытие заголовков)
+    applyTheadHiding();
 }
 
         function clearCounterpartiesFilters() {
@@ -11884,16 +11876,16 @@ document.addEventListener('click', function(e) {
 
     // Основной переключатель
     function toggleHideColumns() {
-        hideColumnsEnabled = !hideColumnsEnabled;
-        saveHideColumnsSetting();
-        updateHideColumnsButtonState();
+    hideColumnsEnabled = !hideColumnsEnabled;
+    saveHideColumnsSetting();
+    updateHideColumnsButtonState();
 
-        // Применяем для всех страниц (текущей и будущих)
-        applyCurrentColumnHiding();
+    // Применяем скрытие ко всем таблицам
+    applyTheadHiding();          // скрываем/показываем заголовки
+    applyCurrentColumnHiding();  // скрываем столбцы по индексам
 
-        // Показываем уведомление
-        showAutosaveNotification(hideColumnsEnabled ? 'Служебные столбцы скрыты' : 'Все столбцы показаны');
-    }
+    showAutosaveNotification(hideColumnsEnabled ? 'Компактный режим (заголовки и служебные столбцы скрыты)' : 'Обычный режим');
+}
 
     // Применяет скрытие/показ для конкретной таблицы по её ID и индексам
     function applyColumnHidingForTable(tableId, columnIndices) {
@@ -11922,35 +11914,45 @@ document.addEventListener('click', function(e) {
             });
         });
     }
-
+function applyTheadHiding() {
+    const allTables = document.querySelectorAll('table');
+    allTables.forEach(table => {
+        const thead = table.querySelector('thead');
+        if (thead) {
+            thead.style.display = hideColumnsEnabled ? 'none' : '';
+        }
+    });
+}
     // Применяет настройки для страницы по её ID (accounting, counterparties, ...)
     function applyColumnHidingForPage(pageId) {
-        const config = COLUMNS_TO_HIDE[pageId];
-        if (!config) return;
+    applyTheadHiding(); // скрываем заголовки
 
-        let tableId = pageId;
-        if (pageId === 'proxy') tableId = 'proxyTable';
-        else if (pageId === 'settlement') tableId = 'settlementTable';
-        else if (pageId === 'payments') tableId = 'paymentsTable';
-        else if (pageId === 'counterparties') tableId = 'counterpartiesTable';
-        else if (pageId === 'accounting') tableId = 'accountingTable';
+    const config = COLUMNS_TO_HIDE[pageId];
+    if (!config) return;
 
-        applyColumnHidingForTable(tableId, config);
-    }
+    let tableId = pageId;
+    if (pageId === 'proxy') tableId = 'proxyTable';
+    else if (pageId === 'settlement') tableId = 'settlementTable';
+    else if (pageId === 'payments') tableId = 'paymentsTable';
+    else if (pageId === 'counterparties') tableId = 'counterpartiesTable';
+    else if (pageId === 'accounting') tableId = 'accountingTable';
+
+    applyColumnHidingForTable(tableId, config);
+}
 
     // Применяет настройки для всех страниц (обычно после переключения режима)
     function applyCurrentColumnHiding() {
-        for (const [pageId] of Object.entries(COLUMNS_TO_HIDE)) {
-            const realPageId = PAGE_ID_MAP[pageId];
-            if (realPageId) {
-                const pageElement = document.getElementById(realPageId);
-                // Применяем только если страница существует
-                if (pageElement) {
-                    applyColumnHidingForPage(pageId);
-                }
+    applyTheadHiding();
+    for (const [pageId] of Object.entries(COLUMNS_TO_HIDE)) {
+        const realPageId = PAGE_ID_MAP[pageId];
+        if (realPageId) {
+            const pageElement = document.getElementById(realPageId);
+            if (pageElement) {
+                applyColumnHidingForPage(pageId);
             }
         }
     }
+}
 
     // Перехватываем showPage, чтобы применять скрытие при смене страницы
     const originalShowPage = window.showPage;
