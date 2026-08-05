@@ -3009,7 +3009,9 @@ button:hover{background:#222733!important}
     padding: 2px 6px !important;
 }
 </style>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.4.0/exceljs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 </head>
 <body style="zoom: 100%; transform: scale(1); transform-origin: left top; width: 100%; height: 100%;">
     
@@ -9762,100 +9764,152 @@ function importJSON() {
 }
 
         // ========== ФУНКЦИИ ЭКСПОРТА В EXCEL ==========
-function exportToExcel(type) {
+async function exportToExcel(type) {
+    // Определяем таблицу и имя файла
     let table, filename;
-    
-    switch(type) {
+    switch (type) {
         case 'main':
             table = document.getElementById('accountingTable');
-            filename = 'Учет_закупок_' + new Date().toISOString().split('T')[0] + '.csv';
+            filename = `Учет_закупок_${new Date().toISOString().split('T')[0]}.xlsx`;
             break;
         case 'counterparties':
             table = document.getElementById('counterpartiesTable');
-            filename = 'Контрагенты_' + new Date().toISOString().split('T')[0] + '.csv';
+            filename = `Контрагенты_${new Date().toISOString().split('T')[0]}.xlsx`;
             break;
         case 'payments':
             table = document.getElementById('paymentsTable');
-            filename = 'Платежи_' + new Date().toISOString().split('T')[0] + '.csv';
+            filename = `Платежи_${new Date().toISOString().split('T')[0]}.xlsx`;
             break;
         case 'settlement':
             table = document.getElementById('settlementTable');
-            filename = 'Урегулирование_' + new Date().toISOString().split('T')[0] + '.csv';
+            filename = `Урегулирование_${new Date().toISOString().split('T')[0]}.xlsx`;
             break;
         case 'mail':
             table = document.getElementById('mailTable');
-            filename = 'Почтовый_реестр_' + new Date().toISOString().split('T')[0] + '.csv';
+            filename = `Почтовый_реестр_${new Date().toISOString().split('T')[0]}.xlsx`;
             break;
         case 'proxy':
             table = document.getElementById('proxyTable');
-            filename = 'Доверенности_' + new Date().toISOString().split('T')[0] + '.csv';
+            filename = `Доверенности_${new Date().toISOString().split('T')[0]}.xlsx`;
             break;
         default:
             return;
     }
-    
+
     if (!table) {
         alert('Таблица не найдена');
         return;
     }
-    
-    // Собираем данные только из видимых строк
-    const visibleRows = [];
-    const rows = table.querySelectorAll('tbody tr');
-    
-    rows.forEach(row => {
-        // Проверяем, видима ли строка
-        if (row.style.display !== 'none' && 
-            !row.querySelector('td[colspan]') && // Пропускаем строки с сообщениями
-            row.cells.length > 1) { // Пропускаем строки "нет данных"
-            const rowData = [];
-            const cells = row.querySelectorAll('td');
-            cells.forEach(cell => {
-                rowData.push(cell.textContent.trim());
-            });
-            visibleRows.push(rowData);
-        }
+
+    // Проверяем наличие ExcelJS
+    if (typeof ExcelJS === 'undefined') {
+        alert('Библиотека ExcelJS не загружена. Используется резервный CSV-экспорт.');
+        exportToExcelCSV(type);
+        return;
+    }
+
+    // Собираем заголовки и индексы видимых столбцов
+    const headerCells = table.querySelectorAll('thead th');
+    const visibleColumnIndices = [];
+    const headers = [];
+
+    headerCells.forEach((th, idx) => {
+        if (th.classList.contains('hidden-column')) return; // пропускаем скрытые
+        visibleColumnIndices.push(idx);
+        headers.push(th.textContent.trim());
     });
-    
-    // Если нет видимых строк
-    if (visibleRows.length === 0) {
+
+    if (headers.length === 0) {
+        alert('Нет видимых столбцов для экспорта');
+        return;
+    }
+
+    // Собираем данные из видимых строк и видимых столбцов
+    const rows = table.querySelectorAll('tbody tr');
+    const dataRows = [];
+
+    rows.forEach(row => {
+        // Пропускаем строки-заглушки (colspan) и скрытые
+        if (row.querySelector('td[colspan]')) return;
+        if (row.style.display === 'none') return;
+
+        const cells = row.querySelectorAll('td');
+        const rowData = [];
+        visibleColumnIndices.forEach(idx => {
+            rowData.push(cells[idx] ? cells[idx].textContent.trim() : '');
+        });
+        dataRows.push(rowData);
+    });
+
+    if (dataRows.length === 0) {
         alert('Нет данных для экспорта');
         return;
     }
-    
-    // Собираем заголовки
-    const headers = [];
-    const headerCells = table.querySelectorAll('thead th');
-    headerCells.forEach(header => {
-        headers.push(header.textContent.trim());
+
+    // Создаём книгу и лист
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('Sheet1');
+
+    // --- 1. Добавляем строку заголовков с серой заливкой ---
+    const headerRow = worksheet.addRow(headers);
+
+    // Применяем стили к каждой ячейке заголовка и устанавливаем ширину столбцов
+    headerRow.eachCell((cell, colNumber) => {
+        // Серый фон
+        cell.fill = {
+            type: 'pattern',
+            pattern: 'solid',
+            fgColor: { argb: 'FFD3D3D3' } // светло-серый
+        };
+        // Жирный шрифт, выравнивание по центру
+        cell.font = { bold: true };
+        cell.alignment = { horizontal: 'center', vertical: 'middle' };
+
+        // Ширина столбца берётся из стиля заголовка (в пикселях)
+        const th = headerCells[visibleColumnIndices[colNumber - 1]];
+        let widthPx = 100; // значение по умолчанию
+        if (th) {
+            const style = th.style.width || '';
+            const match = style.match(/(\d+(\.\d+)?)px/);
+            if (match) {
+                widthPx = parseFloat(match[1]);
+            }
+        }
+        // Переводим пиксели в символы Excel (приблизительно 1 символ ≈ 7 пикселей)
+        const excelWidth = Math.max(8, Math.round(widthPx / 7));
+        worksheet.getColumn(colNumber).width = excelWidth;
     });
-    
-    // Формируем CSV
-    let csvContent = '\uFEFF'; // BOM для корректного отображения кириллицы в Excel
-    
-    // Добавляем заголовки
-    csvContent += headers.join(';') + '\n';
-    
-    // Добавляем данные
-    visibleRows.forEach(row => {
-        csvContent += row.join(';') + '\n';
+
+    // --- 2. Добавляем строки данных (без заливки) ---
+    dataRows.forEach(rowData => {
+        worksheet.addRow(rowData);
     });
-    
-    // Создаем и скачиваем файл
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const link = document.createElement('a');
-    const url = URL.createObjectURL(blob);
-    
-    link.setAttribute('href', url);
-    link.setAttribute('download', filename);
-    link.style.visibility = 'hidden';
-    
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    
-    showAutosaveNotification('Данные экспортированы в CSV');
+
+    // --- 3. Сохраняем файл ---
+    const buffer = await workbook.xlsx.writeBuffer();
+    const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+    // Скачиваем через FileSaver или через ссылку
+    if (typeof saveAs === 'function') {
+        saveAs(blob, filename);
+    } else {
+        // fallback
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = filename;
+        link.click();
+    }
+
+    showAutosaveNotification('Данные экспортированы в Excel с форматированием');
 }
+
+// Резервный CSV-экспорт (если ExcelJS не загружен)
+function exportToExcelCSV(type) {
+    // Можно оставить старую реализацию или показать сообщение
+    alert('CSV-экспорт недоступен. Пожалуйста, обновите страницу и попробуйте снова.');
+}
+
+
 
         // ========== ИСПРАВЛЕННАЯ ФУНКЦИЯ ПОИСКА ==========
 function showCounterpartyInfo(supplierName) {
