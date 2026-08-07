@@ -3659,7 +3659,7 @@ button:hover{background:#222733!important}
                         </select>
                     </td>
                     <td style="padding: 8.04px 5.36px; vertical-align: top;">
-                        <label style="display: block; margin-bottom: 5.36px; color: #66c0f4; font-size: 8.71px; font-weight: bold;">Срок поставки (дней):</label>
+                        <label style="display: block; margin-bottom: 5.36px; color: #66c0f4; font-size: 8.71px; font-weight: bold;">Срок поставки:</label>
                         <input type="number" id="editDeliveryDays" style="width: 100%; padding: 6.7px; height: 26.8px;" placeholder="Кол-во дней">
                     </td>
                     <td style="padding: 8.04px 5.36px; vertical-align: top;">
@@ -6481,15 +6481,18 @@ if (emailCell) {
 }
 
         function clearCounterpartiesFilters() {
-            document.getElementById('searchCounterpartiesInput').value = '';
-            showOnlyBlacklisted = false;
-            const button = document.getElementById('blacklistFilterBtn');
-            if (button) {
-                button.textContent = 'Показать черный список';
-                button.style.background = '';
-            }
-            filterCounterpartiesTable();
-        }
+    const searchInput = document.getElementById('searchCounterpartiesInput');
+    searchInput.value = '';
+    updateFilterHighlight(searchInput); // <-- добавляем
+
+    showOnlyBlacklisted = false;
+    const button = document.getElementById('blacklistFilterBtn');
+    if (button) {
+        button.textContent = 'Показать черный список';
+        button.style.background = '';
+    }
+    filterCounterpartiesTable();
+}
 
         function toggleBlacklistFilter() {
     showOnlyBlacklisted = !showOnlyBlacklisted;
@@ -7227,13 +7230,25 @@ function updatePaymentsTotal() {
     }
 }
 
-        function clearPaymentsFilters() {
-    document.getElementById('searchPaymentsInput').value = '';
-    document.getElementById('paymentsApplicationFilter').value = '';
-    document.getElementById('paymentsSupplierFilter').value = '';
-    document.getElementById('paymentsStatusFilter').value = '';
-    document.getElementById('paymentsStatusFilter').value = '';
-    document.getElementById('paymentDateFilter').value = '';
+    function clearPaymentsFilters() {
+    const search = document.getElementById('searchPaymentsInput');
+    const app = document.getElementById('paymentsApplicationFilter');
+    const supp = document.getElementById('paymentsSupplierFilter');
+    const status = document.getElementById('paymentsStatusFilter');
+    const date = document.getElementById('paymentDateFilter');
+
+    search.value = '';
+    app.value = '';
+    supp.value = '';
+    status.value = '';
+    date.value = '';
+
+    updateFilterHighlight(search);
+    updateFilterHighlight(app);
+    updateFilterHighlight(supp);
+    updateFilterHighlight(status);
+    updateFilterHighlight(date);
+
     filterPaymentsTable();
 }
 
@@ -7579,21 +7594,19 @@ function formatCurrency(value) {
     let visibleCount = 0;
     
     rows.forEach(row => {
-        // Проверяем, является ли строка заглушкой "нет данных"
         if (row.cells.length === 1 && row.cells[0].colSpan > 1) {
-            // Если есть фильтры, скрываем заглушку, иначе показываем
             row.style.display = (searchText || statusFilter || supplierFilter) ? 'none' : '';
-            return; // не учитываем в visibleCount
+            return;
         }
         
-        // Собираем текст строки для поиска
         let rowText = '';
         row.querySelectorAll('td').forEach(cell => {
             rowText += cell.textContent.toLowerCase() + ' ';
         });
         
-        const statusCell = row.querySelector('td:nth-child(2)')?.textContent.trim() || '';
-        const supplierCell = row.querySelector('td:nth-child(3)')?.textContent.toLowerCase().trim() || '';
+        // ✅ Исправленные индексы
+        const statusCell = row.querySelector('td:nth-child(3)')?.textContent.trim() || '';
+        const supplierCell = row.querySelector('td:nth-child(4)')?.textContent.toLowerCase().trim() || '';
         
         const statusMatch = !statusFilter || statusCell === statusFilter;
         const searchMatch = !searchText || rowText.includes(searchText);
@@ -7627,11 +7640,19 @@ function formatCurrency(value) {
     }
 }
 
-        function clearSettlementFilters() {
-    document.getElementById('searchSettlementInput').value = '';
-    document.getElementById('settlementStatusFilter').value = '';
-    const supplierFilter = document.getElementById('settlementSupplierFilter');
-    if (supplierFilter) supplierFilter.value = '';
+    function clearSettlementFilters() {
+    const search = document.getElementById('searchSettlementInput');
+    const supp = document.getElementById('settlementSupplierFilter');
+    const status = document.getElementById('settlementStatusFilter');
+
+    search.value = '';
+    supp.value = '';
+    status.value = '';
+
+    updateFilterHighlight(search);
+    updateFilterHighlight(supp);
+    updateFilterHighlight(status);
+
     filterSettlementTable();
 }
 
@@ -7859,10 +7880,19 @@ if (isAdmin) {
     }
 }
 
-        function clearMailFilters() {
-    document.getElementById('searchMailInput').value = '';
-    document.getElementById('mailDateFilter').value = '';
-    document.getElementById('mailSupplierFilter').value = ''; // новое
+function clearMailFilters() {
+    const search = document.getElementById('searchMailInput');
+    const date = document.getElementById('mailDateFilter');
+    const supp = document.getElementById('mailSupplierFilter');
+
+    search.value = '';
+    date.value = '';
+    supp.value = '';
+
+    updateFilterHighlight(search);
+    updateFilterHighlight(date);
+    updateFilterHighlight(supp);
+
     filterMailTable();
 }
 
@@ -8098,12 +8128,25 @@ const supplierCell = row.querySelector('td:nth-child(4)')?.textContent.toLowerCa
     }
 }
 
-        function clearProxyFilters() {
-    document.getElementById('searchProxyInput').value = '';
-    document.getElementById('proxyDateFilter').value = '';
-    document.getElementById('proxySupplierFilter').value = '';
-    document.getElementById('proxyApplicationFilter').value = '';
-    document.getElementById('proxyStatusFilter').value = '';
+function clearProxyFilters() {
+    const search = document.getElementById('searchProxyInput');
+    const date = document.getElementById('proxyDateFilter');
+    const supp = document.getElementById('proxySupplierFilter');
+    const app = document.getElementById('proxyApplicationFilter');
+    const status = document.getElementById('proxyStatusFilter');
+
+    search.value = '';
+    date.value = '';
+    supp.value = '';
+    app.value = '';
+    status.value = '';
+
+    updateFilterHighlight(search);
+    updateFilterHighlight(date);
+    updateFilterHighlight(supp);
+    updateFilterHighlight(app);
+    updateFilterHighlight(status);
+
     filterProxyTable();
 }
 
