@@ -3926,148 +3926,134 @@ button:hover{background:#222733!important}
 </div>
 <!-- Модальное окно статистики по статусам -->
 <div id="statusStatsModal" class="modal" style="display: none;">
-    <div class="modal-content" style="max-width: 402.0px;">
-        <span class="close" onclick="closeStatusStatsModal()">×</span>
-        <h2 style="text-align: center; margin-bottom: 13.4px; color: #66c0f4;">Общая статистика</h2>
-        
-        <!-- Фильтр по годам -->
-        <div style="margin-bottom: 13.4px;">
-            <label style="color: #66c0f4; display: block; margin-bottom: 3.35px;">Фильтр по году:</label>
-            <select id="statsYearFilter" class="year-filter" onchange="calculateStatusStats()" style="width: 100%; padding: 5.36px; background: #2a475e; color: #c7d5e0; border: 0.67px solid #3d4450; border-radius: 2.68px;">
+    <div class="modal-content" style="max-width: 520px; padding: 14px 16px; max-height: 90vh; overflow-y: auto; background: linear-gradient(145deg, #151e28, #1b2633); border-radius: 12px; border: 1px solid #2d3d4a;">
+        <span class="close" onclick="closeStatusStatsModal()" style="font-size: 20px; color: #8f98a0; top: 8px; right: 14px;">×</span>
+        <h2 style="text-align: center; margin: 0 0 10px 0; color: #66c0f4; font-size: 18px; font-weight: 600; letter-spacing: 0.5px;">
+            Общая статистика
+        </h2>
+
+        <!-- Фильтр по годам и дата -->
+        <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 10px;">
+            <select id="statsYearFilter" class="year-filter" onchange="calculateStatusStats()" style="flex: 1; padding: 5px 10px; background: #1e2d3d; color: #c7d5e0; border: 1px solid #3d4a5a; border-radius: 6px; font-size: 12px; height: 28px;">
                 <option value="">Все года</option>
             </select>
+            <span style="font-size: 10px; color: #6a7a8a; white-space: nowrap;" id="statsDate"></span>
         </div>
-        
-        <!-- Блок с общей информацией -->
-        <div style="margin-bottom: 13.4px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10.05px;">
-            <div style="flex: 1; min-width: 134.0px;">
-                <div style="background: rgba(42, 71, 94, 0.3); padding: 10.05px; border-radius: 5.36px; text-align: center;">
-                    <div style="font-size: 10.72px; color: #c7d5e0; margin-bottom: 3.35px;">
-                        Всего позиций
+
+        <!-- Две общие цифры (всего позиций / заявок) -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px;">
+            <div style="background: rgba(42,71,94,0.5); border-radius: 8px; padding: 8px 6px; text-align: center; border: 1px solid rgba(102,192,244,0.2);">
+                <div style="font-size: 10px; color: #8f98a0; text-transform: uppercase; letter-spacing: 0.5px;">Всего позиций</div>
+                <div id="totalRecordsCount" style="font-size: 20px; font-weight: 700; color: #66c0f4;">0</div>
+            </div>
+            <div style="background: rgba(42,71,94,0.5); border-radius: 8px; padding: 8px 6px; text-align: center; border: 1px solid rgba(92,126,16,0.2);">
+                <div style="font-size: 10px; color: #8f98a0; text-transform: uppercase; letter-spacing: 0.5px;">Уникальных заявок</div>
+                <div id="uniqueApplicationsCount" style="font-size: 20px; font-weight: 700; color: #8bc34a;">0</div>
+            </div>
+        </div>
+
+        <!-- Таблица статусов закупок (с прокруткой) -->
+        <div id="statusStatsContent" style="margin-bottom: 10px; max-height: 220px; overflow-y: auto; border-radius: 6px; background: rgba(0,0,0,0.15); padding: 4px 0;"></div>
+
+        <!-- Первая строка: Доверенности, Урегулирование, Почтовый реестр (3 колонки) -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+            <!-- Доверенности -->
+            <div style="background: rgba(20,30,42,0.6); border-radius: 8px; padding: 8px 6px; border: 1px solid rgba(255,215,0,0.15);">
+                <div style="display: flex; align-items: center; gap: 4px; margin-bottom: 6px; color: #ffd700; font-size: 11px; font-weight: 600;">
+                    <span>📄</span> Доверенности
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4px;">
+                    <div style="background: rgba(255,215,0,0.08); border-radius: 4px; padding: 4px 2px; text-align: center; border: 1px solid rgba(255,215,0,0.1);">
+                        <div id="proxyInWorkCount" style="font-size: 16px; font-weight: 700; color: #ffd700;">0</div>
+                        <div style="font-size: 8px; color: #aab8c8;">В работе</div>
                     </div>
-                    <div id="totalRecordsCount" style="font-size: 16.08px; font-weight: bold; color: #66c0f4;">0</div>
-                </div>
-            </div>
-            
-            <div style="flex: 1; min-width: 134.0px;">
-                <div style="background: rgba(42, 71, 94, 0.3); padding: 10.05px; border-radius: 5.36px; text-align: center;">
-                    <div style="font-size: 10.72px; color: #c7d5e0; margin-bottom: 3.35px;">
-                        Уникальных заявок
+                    <div style="background: rgba(92,126,16,0.08); border-radius: 4px; padding: 4px 2px; text-align: center; border: 1px solid rgba(92,126,16,0.1);">
+                        <div id="proxyCompletedCount" style="font-size: 16px; font-weight: 700; color: #8bc34a;">0</div>
+                        <div style="font-size: 8px; color: #aab8c8;">Выполнено</div>
                     </div>
-                    <div id="uniqueApplicationsCount" style="font-size: 16.08px; font-weight: bold; color: #5c7e10;">0</div>
+                </div>
+            </div>
+
+            <!-- Урегулирование -->
+            <div style="background: rgba(20,30,42,0.6); border-radius: 8px; padding: 8px 6px; border: 1px solid rgba(0,188,212,0.15);">
+                <div style="display: flex; align-items: center; gap: 4px; margin-bottom: 6px; color: #4dd0e1; font-size: 11px; font-weight: 600;">
+                    <span>⚖️</span> Урегулирование
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4px;">
+                    <div style="background: rgba(0,188,212,0.08); border-radius: 4px; padding: 4px 2px; text-align: center; border: 1px solid rgba(0,188,212,0.1);">
+                        <div id="settlementInWorkCount" style="font-size: 16px; font-weight: 700; color: #4dd0e1;">0</div>
+                        <div style="font-size: 8px; color: #aab8c8;">В работе</div>
+                    </div>
+                    <div style="background: rgba(92,126,16,0.08); border-radius: 4px; padding: 4px 2px; text-align: center; border: 1px solid rgba(92,126,16,0.1);">
+                        <div id="settlementCompletedCount" style="font-size: 16px; font-weight: 700; color: #8bc34a;">0</div>
+                        <div style="font-size: 8px; color: #aab8c8;">Выполнено</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Почтовый реестр -->
+            <div style="background: rgba(20,30,42,0.6); border-radius: 8px; padding: 8px 6px; border: 1px solid rgba(156,39,176,0.15);">
+                <div style="display: flex; align-items: center; gap: 4px; margin-bottom: 6px; color: #ce93d8; font-size: 11px; font-weight: 600;">
+                    <span>📦</span> Почтовый реестр
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4px;">
+                    <div style="grid-column: 1 / -1; background: rgba(156,39,176,0.08); border-radius: 4px; padding: 4px 2px; text-align: center; border: 1px solid rgba(156,39,176,0.1);">
+                        <div id="totalMailCount" style="font-size: 18px; font-weight: 700; color: #ce93d8;">0</div>
+                        <div style="font-size: 8px; color: #aab8c8;">Всего отправок</div>
+                    </div>
                 </div>
             </div>
         </div>
-        
-        <div style="font-size: 9.38px; color: #8f98a0; text-align: center; margin-bottom: 13.4px;">
-            Актуально на: <span id="statsDate"></span>
-        </div>
-        
-        <!-- Таблица со статистикой по статусам закупок -->
-        <div id="statusStatsContent" style="margin-top: 6.7px;"></div>
-        
-        <!-- Статистика по доверенностям (упрощенная) -->
-        <div style="margin-bottom: 16.75px;">
-            <h3 style="color: #66c0f4; margin-bottom: 10.05px; font-size: 12.06px;">
-                📄 Статистика по доверенностям
-            </h3>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(134.0px, 1fr)); gap: 6.7px; margin-bottom: 10.05px;">
-                <div style="background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, rgba(255, 165, 0, 0.1) 100%); border: 0.67px solid #ffd700; border-radius: 5.36px; padding: 8.04px; text-align: center;">
-                    <div style="font-size: 12.06px; font-weight: bold; color: #ffd700;" id="proxyInWorkCount">0</div>
-                    <div style="font-size: 8.04px; color: #8f98a0;">В работе</div>
+
+        <!-- ===== БЛОК КОНТРАГЕНТЫ (отдельная строка, сверху) ===== -->
+        <div style="background: rgba(20,30,42,0.6); border-radius: 8px; padding: 8px 6px; border: 1px solid rgba(33,150,243,0.15); margin-bottom: 8px; width: 100%;">
+            <div style="display: flex; align-items: center; gap: 4px; margin-bottom: 6px; color: #64b5f6; font-size: 11px; font-weight: 600;">
+                <span>👥</span> Контрагенты
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4px;">
+                <div style="background: rgba(33,150,243,0.08); border-radius: 4px; padding: 4px 2px; text-align: center; border: 1px solid rgba(33,150,243,0.1);">
+                    <div id="totalCounterpartiesCount" style="font-size: 16px; font-weight: 700; color: #64b5f6;">0</div>
+                    <div style="font-size: 8px; color: #aab8c8;">Всего</div>
                 </div>
-                <div style="background: linear-gradient(135deg, rgba(92, 126, 16, 0.1) 0%, rgba(76, 107, 34, 0.1) 100%); border: 0.67px solid #5c7e10; border-radius: 5.36px; padding: 8.04px; text-align: center;">
-                    <div style="font-size: 12.06px; font-weight: bold; color: #5c7e10;" id="proxyCompletedCount">0</div>
-                    <div style="font-size: 8.04px; color: #8f98a0;">Выполнено</div>
+                <div style="background: rgba(244,67,54,0.08); border-radius: 4px; padding: 4px 2px; text-align: center; border: 1px solid rgba(244,67,54,0.1);">
+                    <div id="blacklistedCounterpartiesCount" style="font-size: 16px; font-weight: 700; color: #ef5350;">0</div>
+                    <div style="font-size: 8px; color: #aab8c8;">Черный список</div>
                 </div>
             </div>
         </div>
-        
-        <!-- Статистика по урегулированию (упрощенная) -->
-        <div style="margin-bottom: 16.75px;">
-            <h3 style="color: #66c0f4; margin-bottom: 10.05px; font-size: 12.06px;">
-                ⚖️ Статистика по урегулированию
-            </h3>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(134.0px, 1fr)); gap: 6.7px; margin-bottom: 10.05px;">
-                <div style="background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, rgba(255, 165, 0, 0.1) 100%); border: 0.67px solid #ffd700; border-radius: 5.36px; padding: 8.04px; text-align: center;">
-                    <div style="font-size: 12.06px; font-weight: bold; color: #ffd700;" id="settlementInWorkCount">0</div>
-                    <div style="font-size: 8.04px; color: #8f98a0;">В работе</div>
+
+        <!-- ===== БЛОК ПЛАТЕЖИ (отдельная строка, снизу) ===== -->
+        <div style="background: rgba(20,30,42,0.6); border-radius: 8px; padding: 8px 6px; border: 1px solid rgba(255,193,7,0.15); margin-bottom: 8px; width: 100%;">
+            <div style="display: flex; align-items: center; gap: 4px; margin-bottom: 6px; color: #ffd54f; font-size: 11px; font-weight: 600;">
+                <span>💰</span> Платежи
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4px;">
+                <div style="background: rgba(255,193,7,0.08); border-radius: 4px; padding: 4px 2px; text-align: center; border: 1px solid rgba(255,193,7,0.1);">
+                    <div id="plannedPaymentsCount" style="font-size: 16px; font-weight: 700; color: #ffd54f;">0</div>
+                    <div style="font-size: 8px; color: #aab8c8;">План</div>
+                    <div style="font-size: 9px; color: #ffd54f; font-weight: 600; margin-top: 1px;" id="plannedPaymentsAmount">0</div>
                 </div>
-                <div style="background: linear-gradient(135deg, rgba(92, 126, 16, 0.1) 0%, rgba(76, 107, 34, 0.1) 100%); border: 0.67px solid #5c7e10; border-radius: 5.36px; padding: 8.04px; text-align: center;">
-                    <div style="font-size: 12.06px; font-weight: bold; color: #5c7e10;" id="settlementCompletedCount">0</div>
-                    <div style="font-size: 8.04px; color: #8f98a0;">Выполнено</div>
+                <div style="background: rgba(92,126,16,0.08); border-radius: 4px; padding: 4px 2px; text-align: center; border: 1px solid rgba(92,126,16,0.1);">
+                    <div id="paidPaymentsCount" style="font-size: 16px; font-weight: 700; color: #8bc34a;">0</div>
+                    <div style="font-size: 8px; color: #aab8c8;">Оплачено</div>
+                    <div style="font-size: 9px; color: #8bc34a; font-weight: 600; margin-top: 1px;" id="paidPaymentsAmount">0</div>
                 </div>
             </div>
         </div>
-        
-        <!-- Статистика по почтовому реестру -->
-        <div style="margin-bottom: 16.75px;">
-            <h3 style="color: #66c0f4; margin-bottom: 10.05px; font-size: 12.06px;">
-                📦 Статистика по почтовому реестру
-            </h3>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(134.0px, 1fr)); gap: 6.7px; margin-bottom: 10.05px;">
-                <div style="background: linear-gradient(135deg, rgba(102, 192, 244, 0.1) 0%, rgba(58, 139, 200, 0.1) 100%); border: 0.67px solid #66c0f4; border-radius: 5.36px; padding: 8.04px; text-align: center;">
-                    <div style="font-size: 12.06px; font-weight: bold; color: #66c0f4;" id="totalMailCount">0</div>
-                    <div style="font-size: 8.04px; color: #8f98a0;">Всего отправок</div>
-                </div>
+
+        <!-- localStorage -->
+        <div style="background: rgba(20,30,42,0.4); border-radius: 6px; padding: 6px 10px; border: 1px solid rgba(100,150,200,0.08); margin-top: 2px;">
+            <div style="display: flex; justify-content: space-between; font-size: 9px; color: #8f98a0;">
+                <span>💾 Хранилище: <span id="localStorageUsed" style="color:#c7d5e0;">0</span> МБ</span>
+                <span id="localStoragePercent">0%</span>
             </div>
-        </div>
-        <!-- Статистика по контрагентам -->
-<div style="margin-bottom: 16.75px;">
-    <h3 style="color: #66c0f4; margin-bottom: 10.05px; font-size: 12.06px;">
-        👥 Статистика по контрагентам
-    </h3>
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(134.0px, 1fr)); gap: 6.7px; margin-bottom: 10.05px;">
-        <div style="background: linear-gradient(135deg, rgba(102, 192, 244, 0.1) 0%, rgba(58, 139, 200, 0.1) 100%); border: 0.67px solid #66c0f4; border-radius: 5.36px; padding: 8.04px; text-align: center;">
-            <div style="font-size: 12.06px; font-weight: bold; color: #66c0f4;" id="totalCounterpartiesCount">0</div>
-            <div style="font-size: 8.04px; color: #8f98a0;">Всего контрагентов</div>
-        </div>
-        <div style="background: linear-gradient(135deg, rgba(190, 70, 60, 0.1) 0%, rgba(140, 44, 36, 0.1) 100%); border: 0.67px solid #be463c; border-radius: 5.36px; padding: 8.04px; text-align: center;">
-            <div style="font-size: 12.06px; font-weight: bold; color: #be463c;" id="blacklistedCounterpartiesCount">0</div>
-            <div style="font-size: 8.04px; color: #8f98a0;">В черном списке</div>
+            <div style="width: 100%; height: 4px; background: #1a2a3a; border-radius: 3px; overflow: hidden; margin-top: 3px;">
+                <div id="localStorageBar" style="height: 100%; width: 0%; background: linear-gradient(90deg, #4caf50, #8bc34a); border-radius: 3px; transition: width 0.3s;"></div>
+            </div>
         </div>
     </div>
 </div>
-        <!-- Статистика по платежам -->
-        <div style="margin-bottom: 16.75px;">
-            <h3 style="color: #66c0f4; margin-bottom: 10.05px; font-size: 12.06px;">
-                📊 Статистика по платежам
-            </h3>
-            
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(134.0px, 1fr)); gap: 6.7px; margin-bottom: 10.05px;">
-                <div style="background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, rgba(255, 165, 0, 0.1) 100%); border: 0.67px solid #ffd700; border-radius: 5.36px; padding: 8.04px; text-align: center;">
-                    <div style="font-size: 12.06px; font-weight: bold; color: #ffd700;" id="plannedPaymentsCount">0</div>
-                    <div style="font-size: 8.04px; color: #8f98a0;">План</div>
-                    <div style="font-size: 9.38px; font-weight: bold; color: #ffd700; margin-top: 3.35px;" id="plannedPaymentsAmount">0 руб.</div>
-                </div>
-                
-                <div style="background: linear-gradient(135deg, rgba(92, 126, 16, 0.1) 0%, rgba(76, 107, 34, 0.1) 100%); border: 0.67px solid #5c7e10; border-radius: 5.36px; padding: 8.04px; text-align: center;">
-                    <div style="font-size: 12.06px; font-weight: bold; color: #5c7e10;" id="paidPaymentsCount">0</div>
-                    <div style="font-size: 8.04px; color: #8f98a0;">Оплачено</div>
-                    <div style="font-size: 9.38px; font-weight: bold; color: #5c7e10; margin-top: 3.35px;" id="paidPaymentsAmount">0 руб.</div>
-                </div>
-            </div>
-        </div>
-        <!-- Статистика использования localStorage -->
-<div style="margin-bottom: 16.75px;">
-    <h3 style="color: #66c0f4; margin-bottom: 10.05px; font-size: 12.06px;">
-        💾 Использование локального хранилища
-    </h3>
-    <div style="background: rgba(42, 71, 94, 0.5); border-radius: 5.36px; padding: 10.05px;">
-        <div style="display: flex; justify-content: space-between; margin-bottom: 5.36px;">
-            <span>Заполнено: <span id="localStorageUsed">0</span> МБ из 5 МБ</span>
-            <span id="localStoragePercent">0%</span>
-        </div>
-        <div style="width: 100%; height: 20px; background: #2a475e; border-radius: 10px; overflow: hidden;">
-            <div id="localStorageBar" style="height: 100%; width: 0%; background: linear-gradient(90deg, #5c7e10, #8bc34a); transition: width 0.3s;"></div>
-        </div>
-    </div>
 </div>
-    </div>
-</div>        
-        <!-- Таблица со статистикой по статусам закупок -->
-        <div id="statusStatsContent" style="margin-top: 6.7px;"></div>
-    </div>
 
     <script>
         // ========== ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ==========
@@ -11744,8 +11730,13 @@ input:checked + .slider:before {
     display: none !important;
 }
 .sidebar-cell.menu-item:not(.active) {
-    background: rgba(255, 255, 255, 0.06);  /* легкий полупрозрачный белый фон */
-    transition: background 0.2s ease;       /* плавное изменение при наведении */
+    background: rgba(255, 255, 255, 0.06)!important;  /* белый с прозрачностью 6% */
+    transition: background 0.2s ease;
+}
+
+/* При наведении можно сделать чуть ярче (опционально) */
+.sidebar-cell.menu-item:not(.active):hover {
+    background: rgba(255, 255, 255, 0.15);
 }
 </style>
 <!-- НОВЫЙ СКРИПТ ДЛЯ ПЕРЕСТАНОВКИ КНОПОК -->
