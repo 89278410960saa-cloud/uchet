@@ -4828,7 +4828,25 @@ if (matchingPaymentPlan) {
 
         const paymentTermsCell = createCell(item.paymentTerms || '', '96px');
         const deliveryDaysCell = createCell(item.deliveryDays || '', '148px');
-        const deliveryTermsCell = createCell(item.deliveryTerms || '', '81px');
+        // ---------- Проверка наличия доверенности со статусом "В работе" ----------
+const hasProxyInWork = proxyData.some(proxy =>
+    proxy.status === 'В работе' &&
+    proxy.docNumber === item.docNumber &&
+    proxy.supplier === item.supplier
+);
+// -----------------------------------------------------------------------
+
+// Создаём ячейку для столбца "Поставка" (индекс 15)
+const deliveryTermsCell = document.createElement('td');
+deliveryTermsCell.style.width = '81px';
+deliveryTermsCell.textContent = item.deliveryTerms || '';
+
+if (hasProxyInWork) {
+    deliveryTermsCell.style.position = 'relative';
+    const indicator = document.createElement('span');
+    indicator.className = 'payment-plan-indicator';
+    deliveryTermsCell.appendChild(indicator);
+}
         const dateCell = createCell(item.date || '', '50px');
         const planCell = createCell(item.plan || '', '50px');
         const factCell = createCell(item.fact || '', '50px');
