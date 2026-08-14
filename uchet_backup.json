@@ -18295,6 +18295,75 @@
       "fact": "11.12.2025",
       "shipmentDoc": "70019 от 09.12.25",
       "plan": "11.12.2025"
+    },
+    {
+      "recordId": "20260814160506741_yam6h5f3z",
+      "docNumber": "2026-734 (от 14.08.2026)",
+      "status": "В работе",
+      "id": "-",
+      "name": "Электрод LB-52U (5 кг; 2.6 мм) KOBELCO СВ000000964",
+      "quantity": "60",
+      "unit": "кг",
+      "purchaseName": "",
+      "purchaseQuantity": "12",
+      "purchaseUnit": "упак",
+      "amount": "",
+      "supplier": "ВсеИнструменты.ру, ООО",
+      "department": "11/0110 Служба главного механика",
+      "contract": "СЧ № 2608-343101-62901",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "7",
+      "deliveryTerms": "Включена",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
+    },
+    {
+      "recordId": "20260814160530956_q9zc6jk8c",
+      "docNumber": "2026-734 (от 14.08.2026)",
+      "status": "В работе",
+      "id": "-",
+      "name": "Мешок белый полипропиле-новый 55x105 см, комплект по 50 шт Gigant 55-105-107",
+      "quantity": "2000",
+      "unit": "шт",
+      "purchaseName": "",
+      "purchaseQuantity": "",
+      "purchaseUnit": "",
+      "amount": "",
+      "supplier": "",
+      "department": "11/0110 Служба главного механика",
+      "contract": "",
+      "paymentTerms": "",
+      "deliveryDays": "",
+      "deliveryTerms": "",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
+    },
+    {
+      "recordId": "20260814160555103_yili20y8w",
+      "docNumber": "2026-734 (от 14.08.2026)",
+      "status": "В работе",
+      "id": "-",
+      "name": "Биг-Бэг 4-х стропный 950x950x1300 мм, верх от-крытый, низ глухой ООО Комус 1714487",
+      "quantity": "30",
+      "unit": "шт",
+      "purchaseName": "",
+      "purchaseQuantity": "",
+      "purchaseUnit": "",
+      "amount": "",
+      "supplier": "",
+      "department": "11/0110 Служба главного механика",
+      "contract": "",
+      "paymentTerms": "",
+      "deliveryDays": "",
+      "deliveryTerms": "",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": ""
     }
   ],
   "counterpartiesData": [
@@ -29016,7 +29085,9 @@
     "2026-685 (от 28.07.2026)": "",
     "2026-689 (от 28.07.2026)": "",
     "2026-709 (от 07.08.2026)": "",
-    "2026-686 (от 10.08.2026)": "Метрика Пром Автоматика аналог ?"
+    "2026-686 (от 10.08.2026)": "Метрика Пром Автоматика аналог ? (шевченко)",
+    "2026-719 (от 12.08.2026)": "",
+    "2026-734 (от 14.08.2026)": "мешки и биг-беги ответ о небходимости от Шевчено"
   },
   "departmentsList": [
     "11/0020 ПТО",
@@ -29046,5 +29117,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-08-14T12:15:54.065Z"
+  "exportDate": "2026-08-14T13:26:24.139Z"
 }
