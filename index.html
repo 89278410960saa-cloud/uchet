@@ -194,6 +194,10 @@
     color: #ffffff;
     text-shadow: 0 0 4px #ffffff;
 }
+.today-plan {
+    color: #c9ad0d !important; 
+    font-weight: bold !important;
+}
 .sidebar-cell.menu-item:hover .menu-text {
     color: #ffffff;
 }
@@ -4715,6 +4719,7 @@ function updateAccountingTable() {
         row.dataset.recordId = item.recordId || '';
         
         const today = new Date();
+        today.setHours(0, 0, 0, 0);
         const planFactDate = parseDate(item.planFact);
         const isOverdue = planFactDate && planFactDate < today;
         
@@ -4765,6 +4770,15 @@ function updateAccountingTable() {
         if (isOverdue && item.status !== 'Выполнено' && item.status !== 'Приход') {
             planFactCell.classList.add('overdue-date');
         }
+        // НОВАЯ ПРОВЕРКА НА СЕГОДНЯ
+        const planDate = parseDate(item.planFact);
+        if (planDate) {
+        const planDateOnly = new Date(planDate);
+        planDateOnly.setHours(0, 0, 0, 0);
+        if (planDateOnly.getTime() === today.getTime()) {
+        planFactCell.classList.add('today-plan');
+    }
+}
         
         const idCell = createCell(item.id || '', '52px');
         const nameCell = createCell(item.name || '', '200px', 'multiline-cell');
@@ -4786,7 +4800,6 @@ const contractNumbers = extractContractNumbers(contractText);
 const matchingPaymentPlan = paymentsData.find(p => {
     if (p.status !== 'План') return false;
     if (p.docNumber !== docNumber) return false;
-    // Берём значение из поля "Договор" (agreement), если оно не "-" и не пусто, иначе из "Счет" (contract)
     let contractValue = p.agreement && p.agreement.trim() !== '' && p.agreement.trim() !== '-' 
         ? p.agreement 
         : p.contract || '';
@@ -4798,6 +4811,19 @@ const matchingPaymentPlan = paymentsData.find(p => {
     const normContract = normalizeContract(contractText);
     return normContract.includes(normPContract);
 });
+
+// ---- НОВОЕ: проверяем, просрочен ли найденный платёж ----
+let isPaymentOverdue = false;
+if (matchingPaymentPlan && matchingPaymentPlan.date) {
+    const paymentDate = parseDate(matchingPaymentPlan.date);
+    if (paymentDate) {
+        const paymentDateOnly = new Date(paymentDate);
+        paymentDateOnly.setHours(0, 0, 0, 0);
+        if (paymentDateOnly < today) {
+            isPaymentOverdue = true;
+        }
+    }
+}
 
 // ----- Всегда ссылка, если договор не пустой и не "-" -----
 let contractHtml = '';
@@ -4822,6 +4848,9 @@ if (matchingPaymentPlan) {
     contractCell.style.position = 'relative';
     const indicator = document.createElement('span');
     indicator.className = 'payment-plan-indicator';
+    if (isPaymentOverdue) {
+        indicator.classList.add('overdue');
+    }
     contractCell.appendChild(indicator);
 }
         // -------------------------------------------------------
@@ -4829,11 +4858,24 @@ if (matchingPaymentPlan) {
         const paymentTermsCell = createCell(item.paymentTerms || '', '96px');
         const deliveryDaysCell = createCell(item.deliveryDays || '', '148px');
         // ---------- Проверка наличия доверенности со статусом "В работе" ----------
-const hasProxyInWork = proxyData.some(proxy =>
+const matchingProxy = proxyData.find(proxy =>
     proxy.status === 'В работе' &&
     proxy.docNumber === item.docNumber &&
     proxy.supplier === item.supplier
 );
+
+// ---- НОВОЕ: проверяем, просрочена ли доверенность ----
+let isProxyOverdue = false;
+if (matchingProxy && matchingProxy.date) {
+    const proxyDate = parseDate(matchingProxy.date);
+    if (proxyDate) {
+        const proxyDateOnly = new Date(proxyDate);
+        proxyDateOnly.setHours(0, 0, 0, 0);
+        if (proxyDateOnly < today) {
+            isProxyOverdue = true;
+        }
+    }
+}
 // -----------------------------------------------------------------------
 
 // Создаём ячейку для столбца "Поставка" (индекс 15)
@@ -4841,10 +4883,13 @@ const deliveryTermsCell = document.createElement('td');
 deliveryTermsCell.style.width = '81px';
 deliveryTermsCell.textContent = item.deliveryTerms || '';
 
-if (hasProxyInWork) {
+if (matchingProxy) {
     deliveryTermsCell.style.position = 'relative';
     const indicator = document.createElement('span');
     indicator.className = 'payment-plan-indicator';
+    if (isProxyOverdue) {
+        indicator.classList.add('overdue');
+    }
     deliveryTermsCell.appendChild(indicator);
 }
         const dateCell = createCell(item.date || '', '50px');
@@ -7043,6 +7088,10 @@ function updateSuppliersFilterList() {
         return timeB - timeA;
     });
     
+    // НОВОЕ: текущая дата без времени для сравнения
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
     sortedPayments.forEach((item) => {
         const row = document.createElement('tr');
         row.dataset.recordId = item.recordId || '';
@@ -7050,11 +7099,27 @@ function updateSuppliersFilterList() {
         row.classList.add('clickable-row');
         if (!isAdmin) row.classList.add('guest-mode');
         
+        // НОВОЕ: проверка на просрочку (статус "План" и дата < сегодня)
+        let isOverdue = false;
+        if (item.status === 'План' && item.date) {
+            const paymentDate = parseDate(item.date);
+            if (paymentDate) {
+                const dateOnly = new Date(paymentDate);
+                dateOnly.setHours(0, 0, 0, 0);
+                if (dateOnly < today) {
+                    isOverdue = true;
+                }
+            }
+        }
+        if (isOverdue) {
+            row.classList.add('overdue-row');
+        }
+        
+        // Формирование остальных ячеек (без изменений)
         const contractText = item.contract || '';
         const agreementText = item.agreement || '';
         const supplier = item.supplier || '';
         
-        // Проверяем, есть ли договор в таблице учёта (точное совпадение без учёта пробелов)
         const foundInAccounting = accountingData.some(accItem => 
             accItem.contract && accItem.contract.trim() === contractText.trim()
         );
@@ -7063,14 +7128,10 @@ function updateSuppliersFilterList() {
         let agreementHtml = '';
         
         if (foundInAccounting && contractText) {
-            // Ссылка для столбца "Счет"
             contractHtml = `<a href="#" class="contract-filter-link" data-contract="${encodeURIComponent(contractText)}" data-supplier="${encodeURIComponent(supplier)}" style="color: #66c0f4; text-decoration: underline; cursor: pointer;">${escapeString(contractText)}</a>`;
-            // Договор остаётся простым текстом
             agreementHtml = escapeString(agreementText);
         } else {
-            // Счет – просто текст
             contractHtml = escapeString(contractText);
-            // Для Договора создаём ссылку, если значение не "-" и не пустое
             if (agreementText && agreementText.trim() !== '-') {
                 agreementHtml = `<a href="#" class="contract-filter-link" data-contract="${encodeURIComponent(agreementText)}" data-supplier="${encodeURIComponent(supplier)}" style="color: #66c0f4; text-decoration: underline; cursor: pointer;">${escapeString(agreementText)}</a>`;
             } else {
@@ -7078,13 +7139,16 @@ function updateSuppliersFilterList() {
             }
         }
         
-        // Ссылка на внешний ресурс (иконка копирования)
         const linkHtml = item.link
             ? `<span class="link-icon" data-link="${item.link.replace(/"/g, '&quot;')}" title="Скопировать ссылку" style="cursor:pointer;">🔗</span>`
             : '';
         
+        // НОВОЕ: вставляем ячейку даты с классом overdue-date, если просрочено
+        const dateCellContent = item.date || '';
+        const dateCellClass = isOverdue ? 'class="overdue-date"' : '';
+        
         row.innerHTML = `
-            <td>${item.date || ''}</td>
+            <td ${dateCellClass}>${dateCellContent}</td>
             <td>${item.status || ''}</td>
             <td>${item.docNumber || ''}</td>
             <td>${item.supplier || ''}</td>
@@ -7114,7 +7178,6 @@ function updateSuppliersFilterList() {
                     if (recordIndex !== -1) {
                         editPaymentRow(recordIndex);
                     } else {
-                        // fallback
                         const supplier = e.currentTarget.querySelector('td:nth-child(4)').textContent;
                         const amount = e.currentTarget.querySelector('td:nth-child(5)').textContent;
                         const fallbackIndex = paymentsData.findIndex(record => 
@@ -7973,7 +8036,7 @@ function clearMailFilters() {
         }
 
         // ========== ФУНКЦИИ ДЛЯ СТРАНИЦЫ РЕЕСТР ДОВЕРЕННОСТЕЙ ==========
-        function updateProxyTable() {
+       function updateProxyTable() {
     const tableBody = document.querySelector('#proxyTable tbody');
     if (!tableBody) return;
     
@@ -7990,68 +8053,80 @@ function clearMailFilters() {
         return;
     }
     
-    // СОРТИРОВКА ПО ДАТЕ (УБЫВАНИЕ - СНАЧАЛА НОВЫЕ)
+    // Сортировка по дате (убывание)
     const sortedProxyData = [...proxyData].sort((a, b) => {
-    const dateA = parseDate(a.date);
-    const dateB = parseDate(b.date);
-    const timeA = dateA ? dateA.getTime() : 0;
-    const timeB = dateB ? dateB.getTime() : 0;
-    return timeB - timeA; // убывание (новые сверху)
-});
+        const dateA = parseDate(a.date);
+        const dateB = parseDate(b.date);
+        const timeA = dateA ? dateA.getTime() : 0;
+        const timeB = dateB ? dateB.getTime() : 0;
+        return timeB - timeA;
+    });
+    
+    // НОВОЕ: текущая дата без времени для сравнения
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
     
     sortedProxyData.forEach((item) => {
         const row = document.createElement('tr');
-        
-        // Добавляем уникальный ID записи в data-атрибут
         row.dataset.recordId = item.recordId || '';
-        
-        // Добавляем классы для подсветки в зависимости от статуса
         if (item.status === 'Выполнено') {
             row.classList.add('status-completed');
         }
+        row.classList.add('clickable-row');
+        if (!isAdmin) row.classList.add('guest-mode');
         
-        
-        row.innerHTML = `
-     <td>${item.date || ''}</td>
-     <td>${item.status || 'В работе'}</td>
-     <td>${item.docNumber || ''}</td>
-     <td>${item.supplier || ''}</td>
-     <td>${item.contract || ''}</td>
-     <td>${item.address || ''}</td>
-     <td>${item.driver || ''}</td>
-`;
-        
-// ВСЕГДА добавляем класс для подсветки
-row.classList.add('clickable-row');
-if (!isAdmin) {
-    row.classList.add('guest-mode');
-}
-
-// Только для администратора добавляем обработчик редактирования
-if (isAdmin) {
-    row.addEventListener('dblclick', function(e) {
-        if (!e.target.closest('button') && !e.target.closest('input')) {
-            const recordId = e.currentTarget.dataset.recordId;
-            
-            // Ищем запись по recordId
-            const recordIndex = proxyData.findIndex(record => record.recordId === recordId);
-            if (recordIndex !== -1) {
-                editProxyRow(recordIndex);
-            } else {
-                // Если не нашли по recordId, пробуем найти по другим параметрам
-                const date = e.currentTarget.querySelector('td:nth-child(1)').textContent;
-                const supplier = e.currentTarget.querySelector('td:nth-child(2)').textContent;
-                const fallbackIndex = proxyData.findIndex(record => 
-                    record.date === date && 
-                    record.supplier === supplier
-                );
-                if (fallbackIndex !== -1) {
-                    editProxyRow(fallbackIndex);
+        // НОВОЕ: проверка на просрочку (статус "В работе" и дата < сегодня)
+        let isOverdue = false;
+        if (item.status === 'В работе' && item.date) {
+            const proxyDate = parseDate(item.date);
+            if (proxyDate) {
+                const dateOnly = new Date(proxyDate);
+                dateOnly.setHours(0, 0, 0, 0);
+                if (dateOnly < today) {
+                    isOverdue = true;
                 }
             }
         }
-    });
-}
+        if (isOverdue) {
+            row.classList.add('overdue-row');
+        }
+        
+        // НОВОЕ: вставляем ячейку даты с классом overdue-date, если просрочено
+        const dateCellContent = item.date || '';
+        const dateCellClass = isOverdue ? 'class="overdue-date"' : '';
+        
+        row.innerHTML = `
+            <td ${dateCellClass}>${dateCellContent}</td>
+            <td>${item.status || 'В работе'}</td>
+            <td>${item.docNumber || ''}</td>
+            <td>${item.supplier || ''}</td>
+            <td>${item.contract || ''}</td>
+            <td>${item.address || ''}</td>
+            <td>${item.driver || ''}</td>
+        `;
+        
+        // Только для администратора добавляем обработчик редактирования
+        if (isAdmin) {
+            row.addEventListener('dblclick', function(e) {
+                if (!e.target.closest('button') && !e.target.closest('input')) {
+                    const recordId = e.currentTarget.dataset.recordId;
+                    const recordIndex = proxyData.findIndex(record => record.recordId === recordId);
+                    if (recordIndex !== -1) {
+                        editProxyRow(recordIndex);
+                    } else {
+                        const date = e.currentTarget.querySelector('td:nth-child(1)').textContent;
+                        const supplier = e.currentTarget.querySelector('td:nth-child(4)').textContent;
+                        const fallbackIndex = proxyData.findIndex(record => 
+                            record.date === date && 
+                            record.supplier === supplier
+                        );
+                        if (fallbackIndex !== -1) {
+                            editProxyRow(fallbackIndex);
+                        }
+                    }
+                }
+            });
+        }
         
         tableBody.appendChild(row);
     });
@@ -11474,6 +11549,10 @@ button[onclick*="exportToExcel"]:hover {
     background: linear-gradient(135deg, #be9e3c 0%, #8c2c24 100%);
     pointer-events: none;
     box-shadow: none;
+}
+.payment-plan-indicator.overdue {
+    background: #be463c !important; /* красный */
+    box-shadow: 0 0 6px rgba(190, 70, 60, 0.7);
 }
 /* Стили для раздела настроек внутри основного сайдбара */
 .settings-section {
