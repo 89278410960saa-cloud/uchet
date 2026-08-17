@@ -4772,10 +4772,10 @@ function updateAccountingTable() {
         }
         // НОВАЯ ПРОВЕРКА НА СЕГОДНЯ
         const planDate = parseDate(item.planFact);
-        if (planDate) {
-        const planDateOnly = new Date(planDate);
-        planDateOnly.setHours(0, 0, 0, 0);
-        if (planDateOnly.getTime() === today.getTime()) {
+if (planDate && item.status === 'Поставка') {
+    const planDateOnly = new Date(planDate);
+    planDateOnly.setHours(0, 0, 0, 0);
+    if (planDateOnly.getTime() === today.getTime()) {
         planFactCell.classList.add('today-plan');
     }
 }
