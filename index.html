@@ -3060,11 +3060,7 @@ button:hover{background:#222733!important}
         </div>
 
         <!-- Пункты, ранее находившиеся в настройках (всегда видны) -->
-        <div class="sidebar-cell menu-item" onclick="showGithubSettingsModal()" title="GitHub настройки">
-            <span class="menu-icon"><i class="fas fa-key"></i></span>
-            <span class="menu-text">Вход</span>
-            <div class="sidebar-badge warning" id="githubGuestBadge" style="display: none;">!</div>
-        </div>
+        
         <div class="sidebar-cell menu-item github-export-btn admin-only" onclick="forceExportToGitHub()" title="Принудительный экспорт данных">
             <span class="menu-icon"><i class="fas fa-save"></i></span>
             <span class="menu-text">Сохранить</span>
@@ -3093,6 +3089,11 @@ button:hover{background:#222733!important}
             <span class="menu-icon"><i class="fas fa-compress"></i></span>
             <span class="menu-text">Compact</span>
         </div>
+        <div class="sidebar-cell menu-item" onclick="showGithubSettingsModal()" title="GitHub настройки">
+        <span class="menu-icon"><i class="fas fa-key"></i></span>
+        <span class="menu-text">Вход</span>
+        <div class="sidebar-badge warning" id="githubGuestBadge" style="display: none;">!</div>
+    </div>
     </div>
 </div>
 
@@ -11718,6 +11719,7 @@ input:checked + .slider:before {
     line-height: normal !important;
     box-shadow: none !important;
     white-space: nowrap !important;
+    border: 1px solid var(--p-border, #53565f) !important;
 }
 
 .sidebar-cell.menu-item:hover {
