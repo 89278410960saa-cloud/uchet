@@ -423,10 +423,10 @@
             position: sticky;
             top: 0;
             z-index: 200;
-            background: rgba(27, 40, 56, 0.98);
-            backdrop-filter: blur(6.7px);
+            background: rgba(255, 255, 255, 0.06) !important;
+            backdrop-filter: none !important;
             padding: 10.05px 0 6.7px 0;
-            border-bottom: none;
+            border-bottom: none !important;
             margin: -13.4px -13.4px 10.05px -13.4px;
             padding-left: 13.4px;
             padding-right: 13.4px;
@@ -2927,7 +2927,7 @@ button:hover,
   --p-bg:#0f1115;
   --p-panel:#15181e;
   --p-panel-2:#1b1f27;
-  --p-border:#2a2f3a;
+  --p-border:#53565f;
   --p-text:#e5e7eb;
   --p-muted:#9ca3af;
   --p-accent:#3b82f6;
@@ -11835,6 +11835,7 @@ input:checked + .slider:before {
 .sidebar-cell.menu-item:not(.active):hover {
     background: rgba(255, 255, 255, 0.15);
 }
+
 </style>
 <!-- НОВЫЙ СКРИПТ ДЛЯ ПЕРЕСТАНОВКИ КНОПОК -->
 <script>
