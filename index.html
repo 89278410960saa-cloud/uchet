@@ -3856,42 +3856,16 @@ button:hover{background:#222733!important}
             </form>
         </div>
     </div>
-  <!-- Модальное окно AI чата с агрузкой файлов -->
+  <!-- Модальное окно AI чата -->
 <div id="aiChatModal" class="modal" style="display: none;">
-    <div class="modal-content chat-modal-content">
-
-        <!-- Шапка чата -->
-        <div class="chat-header">
-    <div class="chat-title">
-
-    </div>
-    <div class="api-key-container">
-        <input type="password" id="chatApiKeyInput" placeholder="API-ключ OpenRouter">
-        <button id="saveApiKeyBtn">Сохранить</button>
-    </div>
-</div>
-
-        <!-- Область сообщений -->
-        <div id="chatMessages" class="chat-messages"></div>
-
-        <!-- Блок прикреплённых файлов -->
-<div id="attachedFilesList" class="attached-files" style="max-height: 80px; overflow-y: auto; padding: 6px 16px; background: #0a0e14; border-top: 1px solid #2a2f3a; border-bottom: 1px solid #2a2f3a; display: flex; flex-wrap: wrap; gap: 6px; font-size: 12px;">
-    <!-- Сюда будут добавляться теги файлов -->
-</div>
-
-        <!-- Панель ввода -->
-        <div class="chat-input-panel">
-            <button class="attach-btn" onclick="exportDataToChatAsFile()" title="Экспорт данных JSON">🌍</button>
-            <button class="attach-btn" onclick="document.getElementById('fileInput').click()" title="Прикрепить файл">➕</button>
-            <input type="file" id="fileInput" multiple style="display: none;" accept=".txt,.md,.csv,.json" onchange="handleFilesSelected(this.files)">
-            <input type="text" id="chatUserInput" placeholder="Введите сообщение..." autocomplete="off">
-            <button id="sendChatBtn" onclick="sendChatMessage()" class="send-btn">➤</button>
-        </div>
-
-        <div class="chat-footer">
-            <span id="fileCountBadge">0 файлов</span>
-            <span class="model-info">Модель: orcarouter/free</span>
-        </div>
+    <div class="modal-content chat-modal-content" style="padding: 0; background: transparent; overflow: hidden;">
+        <iframe 
+            src="https://chat.webllm.ai/" 
+            style="width: 100%; height: 100%; border: none;"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen>
+        </iframe>
     </div>
 </div>
 <!-- Модальное окно для настройки GitHub -->
@@ -4073,7 +4047,6 @@ button:hover{background:#222733!important}
         let applicationComments = {};
         let showOverdueMode = false;
         let showWeeklyDeliveriesMode = false;
-        let attachedFiles = [];
         
         // Переменные для изменения ширины столбцов
         let resizingColumn = null;
@@ -4089,11 +4062,7 @@ button:hover{background:#222733!important}
         // Переменные для фильтрации
         let showOnlyBlacklisted = false;
 
-// Гарантируем, что attachedFiles всегда определена глобально
-if (typeof attachedFiles === 'undefined') {
-    window.attachedFiles = [];
-    attachedFiles = window.attachedFiles;
-}
+
         // ========== ФУНКЦИИ АВТОРИЗАЦИИ ==========
         
 
@@ -10879,284 +10848,7 @@ function initializeApp() {
     resetAllFilters();
 }
 
-// ----------ФУНКЦИЯ AI ЧАТ С OPENROUTER ----------
-let openRouterKey = localStorage.getItem('openrouter_api_key') || '';
-// При первом запуске сохраняем ключ в localStorage, чтобы он не запрашивался каждый раз
-function initApiKeyControl() {
-    const keyInput = document.getElementById('chatApiKeyInput');
-    const saveBtn = document.getElementById('saveApiKeyBtn');
-    if (!keyInput || !saveBtn) return;
 
-    // Загружаем сохранённый ключ в поле
-    keyInput.value = openRouterKey;
-
-    saveBtn.addEventListener('click', () => {
-        const newKey = keyInput.value.trim();
-        if (newKey) {
-            openRouterKey = newKey;
-            localStorage.setItem('openrouter_api_key', newKey);
-            keyInput.classList.add('api-key-saved');
-        } else {
-            openRouterKey = '';
-            localStorage.removeItem('openrouter_api_key');
-        }
-    });
-}
-// Загрузка ключа при старте
-document.addEventListener('DOMContentLoaded', function() {
-    const keyInput = document.getElementById('openrouterApiKey');
-    if (keyInput) keyInput.value = openRouterKey;
-initApiKeyControl();
-});
-
-
-function openAiChatModal() {
-    document.getElementById('aiChatModal').style.display = 'flex';
-    const keyInput = document.getElementById('chatApiKeyInput');
-    if (keyInput) keyInput.value = openRouterKey;
-    renderAttachedFilesList();
-}
-
-function closeAiChatModal() {
-    document.getElementById('aiChatModal').style.display = 'none';
-}
-
-
-
-
-// ---------- РАБОТА С ФАЙЛАМИ ----------
-function handleFilesSelected(files) {
-if (typeof attachedFiles === 'undefined') {
-        window.attachedFiles = [];
-        attachedFiles = window.attachedFiles;
-    }
-    if (!files || files.length === 0) return;
-    for (let file of files) {
-        if (file.size > 1024 * 1024) {
-            addSystemMessage(`⚠️ Файл ${file.name} >1 МБ, пропущен.`);
-            continue;
-        }
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            attachedFiles.push({
-                name: file.name,
-                content: e.target.result
-            });
-            renderAttachedFilesList();
-            addSystemMessage(`📎 Прикреплён: ${file.name} (${Math.round(e.target.result.length/1024)} КБ)`);
-        };
-        reader.readAsText(file, 'UTF-8');
-    }
-    document.getElementById('fileCountBadge').innerText = attachedFiles.length + ' файлов';
-}
-
-function renderAttachedFilesList() {
-if (typeof attachedFiles === 'undefined') {
-        window.attachedFiles = [];
-        attachedFiles = window.attachedFiles;
-    }
-    const container = document.getElementById('attachedFilesList');
-    if (!container) return;
-    if (attachedFiles.length === 0) {
-        container.innerHTML = '';
-        document.getElementById('fileCountBadge').innerText = '0 файлов';
-        return;
-    }
-    let html = '';
-    attachedFiles.forEach((file, idx) => {
-        html += `<div class="file-tag">
-                    📄 ${file.name}
-                    <button onclick="removeAttachedFile(${idx})">✖</button>
-                 </div>`;
-    });
-    container.innerHTML = html;
-    document.getElementById('fileCountBadge').innerText = attachedFiles.length + ' файлов';
-}
-
-function removeAttachedFile(index) {
-if (typeof attachedFiles === 'undefined') {
-        window.attachedFiles = [];
-        attachedFiles = window.attachedFiles;
-        return;
-    }
-    attachedFiles.splice(index, 1);
-    renderAttachedFilesList();
-    addSystemMessage(`🗑 Файл удалён`);
-}
-
-function addSystemMessage(text) {
-    const container = document.getElementById('chatMessages');
-    if (!container) return;
-    const div = document.createElement('div');
-    div.style.fontSize = '11px';
-    div.style.color = '#8f98a0';
-    div.style.textAlign = 'center';
-    div.style.margin = '4px 0';
-    div.innerText = text;
-    container.appendChild(div);
-    container.scrollTop = container.scrollHeight;
-}
-
-// ---------- ОТПРАВКА В OPENROUTER  ----------
-async function sendChatMessage() {
-if (typeof attachedFiles === 'undefined') {
-        window.attachedFiles = [];
-        attachedFiles = window.attachedFiles;
-    }
-    if (!openRouterKey) {
-        addSystemMessage('❌ Не задан API-ключ. Введите его в поле в шапке чата и нажмите "Сохранить".');
-        return;
-    }
-
-    const inputEl = document.getElementById('chatUserInput');
-    const message = inputEl.value.trim();
-    if (!message && attachedFiles.length === 0) return;
-
-    let userPrompt = message;
-    if (attachedFiles.length > 0) {
-        let filesContext = "\n\n[Прикреплённые файлы]:\n";
-        attachedFiles.forEach(file => {
-            filesContext += `\n--- Файл: ${file.name} ---\n${file.content}\n`;
-        });
-        userPrompt = message + filesContext;
-        attachedFiles = [];
-        renderAttachedFilesList();
-    }
-
-    addChatMessage('user', message || '(отправлены только файлы)');
-    inputEl.value = '';
-
-    addChatMessage('ai', '⏳ Анализирую...', true);
-
-    try {
-        const response = await fetch('https://api.orcarouter.ai/v1/chat/completions ', {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${openRouterKey}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                model: 'orcarouter/free', // бесплатная модель 
-                messages: [
-                    { role: 'system', content: 'Ты помощник в системе учёта закупок. Отвечай кратко, по делу.' },
-                    { role: 'user', content: userPrompt }
-                ],
-                max_tokens: 800,
-                temperature: 0.7
-            })
-        });
-
-        const data = await response.json();
-        removeLastTempMessage();
-
-        if (!response.ok) {
-            let errorText = data.error?.message || 'Ошибка API';
-            if (response.status === 401) errorText = 'Неверный API-ключ.';
-            addChatMessage('ai', `❌ Ошибка: ${errorText}`);
-            return;
-        }
-
-        const reply = data.choices?.[0]?.message?.content || 'Нет ответа.';
-        addChatMessage('ai', reply);
-    } catch (err) {
-        removeLastTempMessage();
-        addChatMessage('ai', `❌ Ошибка: ${err.message}`);
-    }
-}
-
-// Вспомогательные функции отображения сообщений
-function addChatMessage(sender, text, isTemp = false) {
-    const container = document.getElementById('chatMessages');
-    if (!container) return;
-
-    const messageDiv = document.createElement('div');
-    messageDiv.className = `message ${sender}`;
-    if (isTemp) messageDiv.id = 'tempAiMessage';
-
-    const avatar = sender === 'user' ? '👤' : '🤖';
-    const avatarBg = sender === 'user' ? '#3b82f6' : '#2a475e';
-
-    const now = new Date();
-    const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
-    messageDiv.innerHTML = `
-        <div class="message-avatar" style="background: ${avatarBg};">${avatar}</div>
-        <div class="message-bubble">
-            ${escapeHtml(text)}
-            <div class="message-time">${timeStr}</div>
-        </div>
-    `;
-
-    container.appendChild(messageDiv);
-    container.scrollTop = container.scrollHeight;
-}
-
-function removeLastTempMessage() {
-    const temp = document.getElementById('tempAiMessage');
-    if (temp) temp.remove();
-}
-
-function escapeHtml(str) {
-    if (!str) return '';
-    return str.replace(/[&<>]/g, function(m) {
-        if (m === '&') return '&amp;';
-        if (m === '<') return '&lt;';
-        if (m === '>') return '&gt;';
-        return m;
-    });
-}
-
-// Закрытие модалки по клику на фон
-window.addEventListener('click', function(event) {
-    const modal = document.getElementById('aiChatModal');
-    if (event.target === modal) closeAiChatModal();
-});
-
-// Отправка по Enter
-document.addEventListener('DOMContentLoaded', function() {
-    const inputField = document.getElementById('chatUserInput');
-    if (inputField) {
-        inputField.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') sendChatMessage();
-        });
-    }
-});
-function exportDataToChatAsFile() {
-if (typeof attachedFiles === 'undefined') {
-        window.attachedFiles = [];
-        attachedFiles = window.attachedFiles;
-    }
-    // Собираем все данные приложения
-    const fullData = {
-        accountingData: accountingData,
-        counterpartiesData: counterpartiesData,
-        paymentsData: paymentsData,
-        settlementData: settlementData,
-        mailData: mailData,
-        proxyData: proxyData,
-        applicationComments: applicationComments,
-        departmentsList: departmentsList,
-        exportDate: new Date().toISOString(),
-        version: '1.1'
-    };
-    
-    // Преобразуем в JSON
-    const jsonStr = JSON.stringify(fullData, null, 2);
-    const blob = new Blob([jsonStr], { type: 'application/json' });
-    const file = new File([blob], `system_data_${new Date().toISOString().slice(0,19).replace(/:/g, '-')}.json`, { type: 'application/json' });
-    
-    // Добавляем в список прикреплённых файлов (как при ручной загрузке)
-    const reader = new FileReader();
-    reader.onload = function(e) {
-        attachedFiles.push({
-            name: file.name,
-            content: e.target.result
-        });
-        renderAttachedFilesList();
-        addSystemMessage(`📎 Автоматически прикреплён файл с данными системы: ${file.name}`);
-    };
-    reader.readAsText(file);
-}
 // Функция для принудительного обновления таблицы учета
 function forceTableUpdate() {
     const table = document.getElementById('accountingTable');
@@ -12013,6 +11705,29 @@ document.addEventListener('click', function(e) {
     filterPaymentsByContract(contract, supplier, application);
 });
 })();
+
+// ========== УПРАВЛЕНИЕ МОДАЛЬНЫМ ОКНОМ AI ЧАТА ==========
+function openAiChatModal() {
+    const modal = document.getElementById('aiChatModal');
+    if (modal) {
+        modal.style.display = 'flex'; // или 'block', смотря что у вас в CSS
+    }
+}
+
+function closeAiChatModal() {
+    const modal = document.getElementById('aiChatModal');
+    if (modal) {
+        modal.style.display = 'none';
+    }
+}
+
+// Закрытие по клику на фон
+window.addEventListener('click', function(event) {
+    const modal = document.getElementById('aiChatModal');
+    if (event.target === modal) {
+        closeAiChatModal();
+    }
+});
 </script>
 
 <script>
