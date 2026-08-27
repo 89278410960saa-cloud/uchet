@@ -2919,6 +2919,24 @@ button:hover,
     transform: translateY(-1px);
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
+/* Стиль для кнопки "Отчет */
+#printApplicationReportBtn {
+    background: linear-gradient(135deg, #e76f068c, #d3540069) !important;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 4px 12px;
+    font-size: 12px;
+    cursor: pointer;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    justify-content: center;
+}
+#printApplicationReportBtn:hover {
+    background: linear-gradient(90deg, rgba(170, 70, 3, 0.418), transparent);
+}
 </style>
 
 
@@ -3148,6 +3166,8 @@ button:hover{background:#222733!important}
     <button onclick="exportToExcel('main')">Экспорт в Excel</button>
                     <button onclick="toggleWeeklyDeliveriesMode()" id="weeklyDeliveriesBtn" style="background: linear-gradient(135deg, rgb(255, 215, 0) 0%, rgb(255, 165, 0) 100%); color: rgb(27, 40, 56); border: 0.67px solid rgb(255, 215, 0); box-shadow: none;">Поставки на неделю (0)</button>
                     <button onclick="toggleOverdueMode()" id="overdueBtn" style="background: linear-gradient(135deg, rgba(190, 70, 60, 0.6) 0%, rgba(140, 44, 36, 0.6) 100%); color: white; border: 0.67px solid rgb(190, 70, 60); box-shadow: none;">Просроченные (0)</button>
+                    <button id="printApplicationReportBtn" style="display: none;" onclick="printApplicationReport()">
+    <i class="fas fa-print"></i>Отчет</button>
                     <button onclick="printDeliveriesAndOverdue()" style="background: linear-gradient(135deg, #6c757d 0%, #495057 100%); color: white;">Поставки 30 дней</button>
                 </div>
             </div>
@@ -4922,6 +4942,7 @@ if (matchingProxy) {
     updateWeeklyDeliveriesButton();
     updateOverdueButton();
     setTimeout(forceTableUpdate, 100);
+    updatePrintButtonVisibility();
     
 }
 function extractContractNumbers(str) {
@@ -5080,6 +5101,7 @@ function editAccountingRowByRecordId(recordId) {
     updateCommentField();
     hideQuickFiltersIfMonthSelected();
     saveColumnWidths();
+    updatePrintButtonVisibility();
 
     if (factMonthFilter) {
         const tbody = document.querySelector('#accountingTable tbody');
@@ -5168,6 +5190,7 @@ if (accountingData.length > 0) {
     refreshQuickFiltersVisibility();
     updateWeeklyDeliveriesButton();
     updateOverdueButton();
+    updatePrintButtonVisibility();
     
     // Очищаем активные кнопки быстрых фильтров
     document.querySelectorAll('.quick-filter-btn').forEach(btn => {
@@ -8527,6 +8550,7 @@ function filterByContract(contract, supplier) {
         // Применяем фильтрацию
         filterAccountingTable();
         updateCommentBlockVisibility();
+        updatePrintButtonVisibility()
     }, 300);
 }
 // Перехватываем клики по ссылкам с классом .contract-filter-link
@@ -8593,6 +8617,295 @@ function filterPaymentsByContract(contract, supplier, application) {
         // Применяем фильтрацию
         filterPaymentsTable();
     }, 300);
+}
+// ===== ПОКАЗ / СКРЫТИЕ КНОПКИ ПЕЧАТИ ОТЧЕТА =====
+function updatePrintButtonVisibility() {
+    const appFilter = document.getElementById('applicationFilter');
+    const btn = document.getElementById('printApplicationReportBtn');
+    if (!appFilter || !btn) return;
+
+    const value = appFilter.value.trim();
+    // Проверяем, существует ли заявка в данных учёта
+    const exists = accountingData.some(item => item.docNumber === value);
+    btn.style.display = (exists && value !== '') ? 'inline-flex' : 'none';
+}
+
+// Вызываем при изменении фильтра заявок
+document.addEventListener('DOMContentLoaded', function() {
+    const appFilter = document.getElementById('applicationFilter');
+    if (appFilter) {
+        appFilter.addEventListener('input', updatePrintButtonVisibility);
+        appFilter.addEventListener('change', updatePrintButtonVisibility);
+    }
+    // Также при обновлении быстрых фильтров (клик по кнопке заявки)
+    document.addEventListener('click', function(e) {
+        if (e.target.closest('.quick-filter-btn')) {
+            setTimeout(updatePrintButtonVisibility, 50);
+        }
+    });
+});
+
+// ===== ГЕНЕРАЦИЯ И ПЕЧАТЬ ОТЧЕТА =====
+function printApplicationReport() {
+    const appNumber = document.getElementById('applicationFilter').value.trim();
+    if (!appNumber) {
+        alert('Сначала выберите заявку в фильтре.');
+        return;
+    }
+
+    const positions = accountingData.filter(item => item.docNumber === appNumber);
+    if (positions.length === 0) {
+        alert('Нет позиций по заявке ' + appNumber);
+        return;
+    }
+
+    const comment = applicationComments[appNumber] || '';
+
+    // Уникальные поставщики из позиций
+    const suppliers = [...new Set(positions.map(p => p.supplier).filter(Boolean))];
+    const counterparties = suppliers.map(supplierName => 
+        counterpartiesData.find(c => c.supplier === supplierName)
+    ).filter(Boolean);
+
+    // Платежи по заявке
+    const payments = paymentsData.filter(p => p.docNumber === appNumber);
+
+    // Самовывоз (доверенности) по заявке
+    const proxies = proxyData.filter(p => p.docNumber === appNumber);
+
+    // Формируем HTML отчёта (без рекламаций)
+    const html = buildReportHTML(appNumber, positions, comment, counterparties, payments, proxies);
+    
+    const win = window.open('', '_blank', 'width=1000,height=800');
+    if (!win) {
+        alert('Пожалуйста, разрешите всплывающие окна для печати.');
+        return;
+    }
+    win.document.write(html);
+    win.document.close();
+    win.focus();
+    win.print();
+}
+
+// ===== ГЕНЕРАТОР HTML ОТЧЁТА (обновлённый) =====
+function buildReportHTML(appNumber, positions, comment, counterparties, payments, proxies) {
+    const now = new Date().toLocaleString('ru-RU');
+    const esc = (str) => {
+        if (!str) return '';
+        return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    };
+
+    // ---- Таблица позиций с colgroup ----
+    let posRows = '';
+    positions.forEach(p => {
+        posRows += `<tr>
+            <td>${esc(p.department)}</td>
+            <td>${esc(p.id)}</td>
+            <td>${esc(p.status)}</td>
+            <td>${esc(p.name)}</td>
+            <td>${esc(p.quantity)}</td>
+            <td>${esc(p.unit)}</td>
+            <td>${esc(p.purchaseName)}</td>
+            <td>${esc(p.purchaseQuantity)}</td>
+            <td>${esc(p.purchaseUnit)}</td>
+            <td>${p.amount ? formatCurrency(p.amount) : ''}</td>
+            <td>${esc(p.supplier)}</td>
+            <td>${esc(p.contract)}</td>
+            <td>${esc(p.paymentTerms)}</td>
+            <td>${esc(p.deliveryDays)}</td>
+            <td>${esc(p.deliveryTerms)}</td>
+            <td>${esc(p.date)}</td>
+            <td>${esc(p.planFact)}</td>
+            <td>${esc(p.fact)}</td>
+            <td>${esc(p.shipmentDoc)}</td>
+        </tr>`;
+    });
+
+    // ---- Контакты (без адреса и материала) ----
+    let cpRows = '';
+    counterparties.forEach(c => {
+        cpRows += `<tr>
+            <td>${esc(c.supplier)}</td>
+            <td>${esc(c.inn)}</td>
+            <td>${esc(c.phone)}</td>
+            <td>${esc(c.contact)}</td>
+            <td>${esc(c.email)}</td>
+        </tr>`;
+    });
+
+    // ---- Платежи (без ссылки) ----
+    let payRows = '';
+    payments.forEach(p => {
+        payRows += `<tr>
+            <td>${esc(p.date)}</td>
+            <td>${esc(p.status)}</td>
+            <td>${p.amount ? formatCurrency(p.amount) : ''}</td>
+            <td>${esc(p.contract)}</td>
+            <td>${esc(p.agreement)}</td>
+        </tr>`;
+    });
+
+    // ---- Самовывоз ----
+    let proxyRows = '';
+    proxies.forEach(p => {
+        proxyRows += `<tr>
+            <td>${esc(p.date)}</td>
+            <td>${esc(p.status)}</td>
+            <td>${esc(p.supplier)}</td>
+            <td>${esc(p.contract)}</td>
+            <td>${esc(p.address)}</td>
+            <td>${esc(p.driver)}</td>
+        </tr>`;
+    });
+
+    return `<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Отчёт по заявке ${esc(appNumber)}</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #fff; color: #000; padding: 10px; font-size: 11px; }
+        .report-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #333; padding-bottom: 6px; margin-bottom: 12px; }
+        .report-title { font-size: 16px; font-weight: bold; }
+        .report-date { font-size: 10px; color: #555; }
+        .section { margin-bottom: 16px; }
+        .section-title { font-size: 13px; font-weight: bold; margin-bottom: 4px; background: #f0f0f0; padding: 3px 8px; border-left: 4px solid #0066cc; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 6px; font-size: 8px; table-layout: fixed; }
+        th, td { border: 1px solid #aaa; padding: 2px 4px; text-align: left; vertical-align: top; word-wrap: break-word; overflow-wrap: break-word; }
+        th { background: #e6e6e6; font-weight: bold; }
+        .comment-block { background: #f9f9f9; padding: 6px 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 10px; }
+        .footer { margin-top: 16px; border-top: 1px solid #ccc; padding-top: 4px; font-size: 8px; color: #777; text-align: center; }
+        @media print {
+            body { padding: 8px; }
+            th { background: #e6e6e6 !important; }
+            .section-title { background: #f0f0f0 !important; }
+            table { page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="report-header">
+        <div class="report-title">Отчёт по заявке № ${esc(appNumber)}</div>
+        <div class="report-date">Дата: ${now}</div>
+    </div>
+
+    <!-- Позиции -->
+    <div class="section">
+        <div class="section-title">Позиции закупки</div>
+        <table>
+            <colgroup>
+                <col style="width: 5%;">
+                <col style="width: 4%;">
+                <col style="width: 5%;">   <!-- Статус -->
+                <col style="width: 12%;">  <!-- Наименование позиции (в 2 раза шире) -->
+                <col style="width: 3%;">   <!-- Кол-во (в 2 раза уже) -->
+                <col style="width: 3%;">   <!-- Ед. изм. (в 2 раза уже) -->
+                <col style="width: 12%;">  <!-- Наименование закупки (в 2 раза шире) -->
+                <col style="width: 3%;">   <!-- Кол-во (закуп) (в 2 раза уже) -->
+                <col style="width: 3%;">   <!-- Ед. изм. (закуп) (в 2 раза уже) -->
+                <col style="width: 5%;">
+                <col style="width: 6%;">
+                <col style="width: 5%;">
+                <col style="width: 5%;">
+                <col style="width: 4%;">
+                <col style="width: 5%;">
+                <col style="width: 5%;">
+                <col style="width: 5%;">
+                <col style="width: 5%;">
+                <col style="width: 5%;">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th>Подразделение</th>
+                    <th>ID</th>
+                    <th>Статус</th>
+                    <th>Наименование позиции</th>
+                    <th>Кол-во</th>
+                    <th>Ед.изм.</th>
+                    <th>Наименование закупки</th>
+                    <th>Кол-во</th>
+                    <th>Ед.изм.</th>
+                    <th>Сумма, НДС</th>
+                    <th>Контрагент</th>
+                    <th>Договор</th>
+                    <th>Оплата</th>
+                    <th>Срок</th>
+                    <th>Поставка</th>
+                    <th>От</th>
+                    <th>План</th>
+                    <th>Факт</th>
+                    <th>Документ</th>
+                </tr>
+            </thead>
+            <tbody>${posRows}</tbody>
+        </table>
+    </div>
+
+    <!-- Комментарий -->
+    <div class="section">
+        <div class="section-title">Комментарий к заявке</div>
+        <div class="comment-block">${esc(comment) || '(нет)'}</div>
+    </div>
+
+    <!-- Контакты контрагентов -->
+    ${counterparties.length ? `
+    <div class="section">
+        <div class="section-title">Контакты контрагентов (поставщики в позициях)</div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Контрагент</th>
+                    <th>ИНН</th>
+                    <th>Телефон</th>
+                    <th>Контактное лицо</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
+            <tbody>${cpRows}</tbody>
+        </table>
+    </div>` : ''}
+
+    <!-- Платежи -->
+    ${payments.length ? `
+    <div class="section">
+        <div class="section-title">Платежи по заявке</div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Дата</th>
+                    <th>Статус</th>
+                    <th>Сумма</th>
+                    <th>Счет</th>
+                    <th>Договор</th>
+                </tr>
+            </thead>
+            <tbody>${payRows}</tbody>
+        </table>
+    </div>` : ''}
+
+    <!-- Самовывоз -->
+    ${proxies.length ? `
+    <div class="section">
+        <div class="section-title">Данные по самовывозу (доверенности)</div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Дата</th>
+                    <th>Статус</th>
+                    <th>Контрагент</th>
+                    <th>Документ</th>
+                    <th>Адрес</th>
+                    <th>Водитель</th>
+                </tr>
+            </thead>
+            <tbody>${proxyRows}</tbody>
+        </table>
+    </div>` : ''}
+
+    <div class="footer">Отчёт сформирован автоматически • ${now}</div>
+</body>
+</html>`;
 }
 // ========== ФУНКЦИИ ДЛЯ ПЕЧАТИ ПОСТАВОК И ПРОСРОЧКИ ==========
 function printDeliveriesAndOverdue() {
@@ -10466,6 +10779,7 @@ function showPage(pageId) {
                     if (showOverdueMode) showOverdueOnly();
                     else if (showWeeklyDeliveriesMode) showWeeklyDeliveriesOnly();
                     else filterAccountingTable();
+                    updatePrintButtonVisibility();
                     updateButtonsVisibility();
                     updateCommentBlockVisibility();
                     break;
