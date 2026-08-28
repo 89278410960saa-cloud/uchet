@@ -3719,28 +3719,20 @@ button:hover{background:#222733!important}
             </tbody></table>
             
             <!-- Кнопки в одну строку -->
-            <div style="display: flex; gap: 6.7px; justify-content: center; margin-top: 13.4px;">
-                <button type="submit" style="padding: 6.7px 13.4px; background: linear-gradient(135deg, #5c7e10 0%, #4c6b22 100%); 
-                        color: rgba(122, 218, 58, 0.575); border: none; border-radius: 2.68px; cursor: pointer;">
-                    Сохранить
-                </button>
-                <button type="button" onclick="deleteAccountingRecord()" class="delete-btn" style="
-                        padding: 6.7px 13.4px;
-                        background: linear-gradient(135deg, #be463c 0%, #8c2c24 100%);
-                        color: white;
-                        border: none;
-                        border-radius: 2.68px;
-                        cursor: pointer;
-                        display: none;
-                        margin-left: 0.0px;
-                        ">
-                    Удалить запись
-                </button>
-                <button type="button" onclick="closeAccountingModal()" style="padding: 6.7px 13.4px; background: linear-gradient(135deg, #8f98a0 0%, #6d7882 100%); 
-                        color: rgba(161, 151, 151, 0.452); border: none; border-radius: 2.68px; cursor: pointer;">
-                    Отмена
-                </button>
-            </div>
+            <div style="display: flex; gap: 6.7px; justify-content: center; margin-top: 13.4px; flex-wrap: wrap;">
+    <button type="submit" style="padding: 6.7px 13.4px; background: linear-gradient(135deg, #5c7e10 0%, #4c6b22 100%); color: white; border: none; border-radius: 2.68px; cursor: pointer;">
+        Сохранить
+    </button>
+    <button type="button" id="saveAndAddBtn" onclick="saveAndAddAccountingRecord()" style="padding: 6.7px 13.4px; background: linear-gradient(135deg, #2a6b8a 0%, #1a4a6a 100%); color: white; border: none; border-radius: 2.68px; cursor: pointer; display: none;">
+        Сохранить и добавить
+    </button>
+    <button type="button" onclick="deleteAccountingRecord()" class="delete-btn" style="padding: 6.7px 13.4px; background: linear-gradient(135deg, #be463c 0%, #8c2c24 100%); color: white; border: none; border-radius: 2.68px; cursor: pointer; display: none; margin-left: 0;">
+        Удалить запись
+    </button>
+    <button type="button" onclick="closeAccountingModal()" style="padding: 6.7px 13.4px; background: linear-gradient(135deg, #8f98a0 0%, #6d7882 100%); color: white; border: none; border-radius: 2.68px; cursor: pointer;">
+        Отмена
+    </button>
+</div>
         </form>
     </div>
 </div>
@@ -9315,6 +9307,138 @@ function updateCommentFieldPermissions() {
         commentInput.placeholder = 'Комментарии (только просмотр)';
     }
 }
+// ========== НОВЫЕ ФУНКЦИИ ДЛЯ "СОХРАНИТЬ И ДОБАВИТЬ" ==========
+
+// Флаг и данные для режима "сохранить и добавить"
+let _saveAndAddMode = false;
+let _saveAndAddData = { department: '', docNumber: '' };
+
+/**
+ * Показывает модальное окно добавления записи с предзаполненными полями
+ * @param {string} department - значение поля "Подразделение"
+ * @param {string} docNumber - значение поля "Заявка"
+ */
+function showAddAccountingFormWithPreset(department, docNumber) {
+    if (!isAdmin) {
+        alert('Только администратор может добавлять записи');
+        return;
+    }
+
+    updateApplicationsList();
+
+    document.getElementById('modalAccountingTitle').textContent = 'Добавить запись';
+    document.getElementById('editAccountingIndex').value = '';
+    document.getElementById('editAccountingRecordId').value = '';
+
+    // Сброс формы, но с сохранением нужных полей
+    document.getElementById('editAccountingForm').reset();
+
+    // Предзаполняем поля
+    document.getElementById('editDepartment').value = department || '';
+    document.getElementById('editDocNumber').value = docNumber || '';
+
+    // Показываем кнопку "Сохранить и добавить", скрываем "Удалить"
+    const saveAndAddBtn = document.getElementById('saveAndAddBtn');
+    const deleteBtn = document.querySelector('#editAccountingModal .delete-btn');
+    if (saveAndAddBtn) saveAndAddBtn.style.display = 'inline-block';
+    if (deleteBtn) deleteBtn.style.display = 'none';
+
+    document.getElementById('editAccountingModal').style.display = 'flex';
+
+    // Инициализируем автозаполнение для договора
+    setTimeout(autoFillContract, 100);
+}
+function saveAndAddAccountingRecord() {
+    // Проверка прав
+    if (!isAdmin) {
+        alert('Только администратор может добавлять записи');
+        return;
+    }
+
+    // Валидация заявки
+    const docNumber = document.getElementById('editDocNumber').value.trim();
+    if (!validateApplicationFormat(docNumber)) {
+        alert('Неверный формат заявки!\nПравильный формат: "номер (от ДД.ММ.ГГГГ)"\nПример: "123 (от 31.12.2024)"');
+        document.getElementById('editDocNumber').focus();
+        return;
+    }
+
+    // Сохраняем значения полей, которые нужно перенести
+    const department = document.getElementById('editDepartment').value;
+    const docNumberValue = document.getElementById('editDocNumber').value;
+
+    // Устанавливаем флаг и данные для последующего открытия
+    _saveAndAddMode = true;
+    _saveAndAddData = { department, docNumber: docNumberValue };
+
+    // Сохраняем запись через существующую функцию
+    // Для этого создаём событие submit и диспатчим его на форму
+    const form = document.getElementById('editAccountingForm');
+    const submitEvent = new Event('submit', { bubbles: true, cancelable: true });
+    form.dispatchEvent(submitEvent);
+}
+// ПАТЧИМ ФУНКЦИЮ showAddAccountingForm, ЧТОБЫ ПОКАЗЫВАТЬ НОВУЮ КНОПКУ
+const originalShowAddAccountingForm = window.showAddAccountingForm;
+window.showAddAccountingForm = function() {
+    originalShowAddAccountingForm();
+
+    // Показываем кнопку "Сохранить и добавить", скрываем "Удалить"
+    const saveAndAddBtn = document.getElementById('saveAndAddBtn');
+    const deleteBtn = document.querySelector('#editAccountingModal .delete-btn');
+    if (saveAndAddBtn) saveAndAddBtn.style.display = 'inline-block';
+    if (deleteBtn) deleteBtn.style.display = 'none';
+
+    // Сбрасываем флаг при открытии в обычном режиме
+    _saveAndAddMode = false;
+};
+
+// ПАТЧИМ ФУНКЦИЮ editAccountingRow, ЧТОБЫ СКРЫВАТЬ НОВУЮ КНОПКУ
+const originalEditAccountingRow = window.editAccountingRow;
+window.editAccountingRow = function(index) {
+    originalEditAccountingRow(index);
+
+    // Скрываем кнопку "Сохранить и добавить", показываем "Удалить"
+    const saveAndAddBtn = document.getElementById('saveAndAddBtn');
+    const deleteBtn = document.querySelector('#editAccountingModal .delete-btn');
+    if (saveAndAddBtn) saveAndAddBtn.style.display = 'none';
+    if (deleteBtn) deleteBtn.style.display = 'inline-block';
+
+    // Сбрасываем флаг
+    _saveAndAddMode = false;
+};
+
+// ПАТЧИМ ФУНКЦИЮ closeAccountingModal, ЧТОБЫ СБРАСЫВАТЬ ФЛАГ
+const originalCloseAccountingModal = window.closeAccountingModal;
+window.closeAccountingModal = function() {
+    // Если был режим "сохранить и добавить", открываем новое окно с предзаполненными полями
+    if (_saveAndAddMode) {
+        const data = _saveAndAddData;
+        _saveAndAddMode = false;
+
+        // Закрываем текущее окно
+        document.getElementById('editAccountingModal').style.display = 'none';
+
+        // Открываем новое с теми же значениями
+        setTimeout(() => {
+            showAddAccountingFormWithPreset(data.department, data.docNumber);
+        }, 100);
+
+        return;
+    }
+
+    // Иначе обычное закрытие
+    document.getElementById('editAccountingModal').style.display = 'none';
+    _saveAndAddMode = false;
+};
+
+// ПАТЧИМ saveAccountingChanges, ЧТОБЫ ПРИ СОХРАНЕНИИ ВЫЗЫВАТЬ closeAccountingModal
+// (это уже происходит, но мы переопределяем closeAccountingModal, так что всё работает)
+
+// ДОПОЛНИТЕЛЬНО: если saveAccountingChanges вызывает closeAccountingModal,
+// мы уже перехватили этот вызов через патч выше.
+
+console.log('[SaveAndAdd] Функция "Сохранить и добавить" успешно инициализирована');
+
         // ========== ФУНКЦИИ УДАЛЕНИЯ ЗАПИСЕЙ ==========
         function deleteAccountingRecord() {
     if (!isAdmin) {
