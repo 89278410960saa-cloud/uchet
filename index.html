@@ -501,44 +501,52 @@
 #accountingTable th:nth-child(2) { width: 40.2px !important; }   /* Заявка */
 #accountingTable th:nth-child(3) { width: 38px !important; }   /* Статус */
 #accountingTable th:nth-child(4) { width: 40.2px !important; }   /* ID */
-#accountingTable th:nth-child(5) { width: 120.6px !important; }  /* Наименование позиции */
+#accountingTable th:nth-child(5) { width: 150px !important; }  /* Наименование позиции */
 #accountingTable th:nth-child(6) { width: 26.8px !important; }   /* Кол-во */
 #accountingTable th:nth-child(7) { width: 26.8px !important; }   /* Ед. изм. */
-#accountingTable th:nth-child(8) { width: 120.6px !important; }  /* Наименование закупки */
+#accountingTable th:nth-child(8) { width: 150px !important; }  /* Наименование закупки */
 #accountingTable th:nth-child(9) { width: 26.8px !important; }   /* Кол-во (закуп) */
 #accountingTable th:nth-child(10) { width: 26.8px !important; }  /* Ед.изм. (закуп) */
 #accountingTable th:nth-child(11) { width: 46.9px !important; }  /* Сумма, НДС */
 #accountingTable th:nth-child(12) { width: 80.4px !important; } /* Контрагент */
-#accountingTable th:nth-child(13) { width: 67.0px !important; } /* Договор */
-#accountingTable th:nth-child(14) { width: 67.0px !important; } /* Оплата */
-#accountingTable th:nth-child(15) { width: 26.8px !important; }  /* Срок */
-#accountingTable th:nth-child(16) { width: 40px !important; }  /* Поставка */
-#accountingTable th:nth-child(17) { width: 35px !important; }  /* Утверждено (Дата) */
-#accountingTable th:nth-child(18) { width: 40px !important; }  /* План */
-#accountingTable th:nth-child(19) { width: 35px !important; }  /* Факт */
-#accountingTable th:nth-child(20) { width: 60.3px !important; }  /* Документ */
+#accountingTable th:nth-child(13),
+#accountingTable td:nth-child(13) {
+    width: 80.4px !important;
+}
+#accountingTable th:nth-child(14),
+#accountingTable td:nth-child(14) {
+    width: 46.9px !important;
+}
+#accountingTable th:nth-child(15) { width: 35px !important; }  /* Утверждено (Дата) */
+#accountingTable th:nth-child(16) { width: 40px !important; }  /* План */
+#accountingTable th:nth-child(17) { width: 35px !important; }  /* Факт */
+#accountingTable th:nth-child(18) { width: 60.3px !important; }  /* Документ */
 
 /* Применить те же ширины к ячейкам */
 #accountingTable td:nth-child(1) { width: 53.6px !important; }
 #accountingTable td:nth-child(2) { width: 40.2px !important; }
 #accountingTable td:nth-child(3) { width: 38px !important; }
 #accountingTable td:nth-child(4) { width: 40.2px !important; }
-#accountingTable td:nth-child(5) { width: 120.6px !important; }
+#accountingTable th:nth-child(5) { width: 150px !important; }
 #accountingTable td:nth-child(6) { width: 26.8px !important; }
 #accountingTable td:nth-child(7) { width: 26.8px !important; }
-#accountingTable td:nth-child(8) { width: 120.6px !important; }
+#accountingTable th:nth-child(8) { width: 150px !important; }
 #accountingTable td:nth-child(9) { width: 26.8px !important; }
 #accountingTable td:nth-child(10) { width: 26.8px !important; }
 #accountingTable td:nth-child(11) { width: 46.9px !important; }
 #accountingTable td:nth-child(12) { width: 80.4px !important; }
-#accountingTable td:nth-child(13) { width: 67.0px !important; }
-#accountingTable td:nth-child(14) { width: 67.0px !important; }
-#accountingTable td:nth-child(15) { width: 26.8px !important; }
+#accountingTable th:nth-child(13),
+#accountingTable td:nth-child(13) {
+    width: 80.4px !important;
+}
+#accountingTable th:nth-child(14),
+#accountingTable td:nth-child(14) {
+    width: 46.9px !important;
+}
+#accountingTable td:nth-child(15) { width: 35px !important; }
 #accountingTable td:nth-child(16) { width: 40px !important; }
 #accountingTable td:nth-child(17) { width: 35px !important; }
-#accountingTable td:nth-child(18) { width: 40px !important; }
-#accountingTable td:nth-child(19) { width: 35px !important; }
-#accountingTable td:nth-child(20) { width: 60.3px !important; }
+#accountingTable td:nth-child(18) { width: 60.3px !important; }
 /* Гарантируем, что таблицы растягиваются на всю ширину */
 .table-scroll-container table {
     width: 100% !important;
@@ -2079,8 +2087,8 @@ tr.status-supply {
 
 
 /* Для статусов "Поставка" и "Приход" можно сделать рамку более яркой */
-#accountingTable tr.status-supply td:nth-child(18):not(:empty),
-#accountingTable tr.status-receipt td:nth-child(18):not(:empty) {
+#accountingTable tr.status-supply td:nth-child(16):not(:empty),
+#accountingTable tr.status-receipt td:nth-child(16):not(:empty) {
     border: 2px solid #ff8c00;          /* более насыщенный цвет */
     background-color: rgba(255, 140, 0, 0.12);
 }
@@ -3217,29 +3225,27 @@ button:hover{background:#222733!important}
                 <thead>
         <tr>
             <th style="width: 53.6px;">Служба</th>
-            <th style="width: 40.2px;">Заявка</th>
-            <th style="width: 38px;">Статус</th>
-            <th style="width: 40.2px;">ID</th>
-            <th style="width: 120.6px;">Наименование позиции</th>
-            <th style="width: 26.8px;">Кол- во</th>
-            <th style="width: 26.8px;">Ед. изм.</th>
-            <th style="width: 120.6px;">Наименование закупки</th>
-            <th style="width: 26.8px;">Кол- во</th>
-            <th style="width: 26.8px;">Ед. изм.</th>
-            <th style="width: 46.9px;">Сумма, НДС</th>
-            <th style="width: 80.4px;">Контрагент</th>
-            <th style="width: 67.0px;">Договор</th>
-            <th style="width: 67.0px;">Оплата</th>
-            <th style="width: 26.8px;">Срок</th>
-            <th style="width: 40px;">Поставка</th>
-            <th style="width: 35px;">От</th>
-            <th style="width: 40px;">План</th>
-            <th style="width: 35px;">Факт</th>
-            <th style="width: 60.3px;">Документ</th>
+    <th style="width: 40.2px;">Заявка</th>
+    <th style="width: 38px;">Статус</th>
+    <th style="width: 40.2px;">ID</th>
+    <th style="width: 120.6px;">Наименование позиции</th>
+    <th style="width: 26.8px;">Кол- во</th>
+    <th style="width: 26.8px;">Ед. изм.</th>
+    <th style="width: 120.6px;">Наименование закупки</th>
+    <th style="width: 26.8px;">Кол- во</th>
+    <th style="width: 26.8px;">Ед. изм.</th>
+    <th style="width: 46.9px;">Сумма, НДС</th>
+    <th style="width: 80.4px;">Контрагент</th>
+    <th style="width: 100px;">Договор / Оплата</th>
+    <th style="width: 80px;">Срок / Поставка</th>
+    <th style="width: 35px;">От</th>
+    <th style="width: 40px;">План</th>
+    <th style="width: 35px;">Факт</th>
+    <th style="width: 60.3px;">Документ</th>
         </tr>
     </thead>
                 <tbody id="accountingTableBody"><tr>
-            <td colspan="20" style="text-align: center; color: #8f98a0; padding: 20px;">
+            <td colspan="18" style="text-align: center; color: #8f98a0; padding: 20px;">
                 Нет данных о закупках. Добавьте первую запись.
             </td>
         </tr></tbody>
@@ -4698,7 +4704,7 @@ function updateAccountingTable() {
     if (accountingData.length === 0) {
         const emptyRow = document.createElement('tr');
         emptyRow.innerHTML = `
-            <td colspan="20" style="text-align: center; color: #8f98a0; padding: 20px;">
+            <td colspan="18" style="text-align: center; color: #8f98a0; padding: 20px;">
                 Нет данных о закупках. Добавьте первую запись.
             </td>
         `;
@@ -4799,7 +4805,7 @@ if (planDate && item.status === 'Поставка') {
         const amountCell = createCell(item.amount ? formatNumber(item.amount) : '', '148px');
         
         // ---------- НОВАЯ ЛОГИКА ДЛЯ ЯЧЕЙКИ ДОГОВОРА ----------
-        const contractText = item.contract || '';
+const contractText = item.contract || '';
 const supplier = item.supplier || '';
 const application = item.docNumber || '';
 const docNumber = item.docNumber || '';
@@ -4821,7 +4827,7 @@ const matchingPaymentPlan = paymentsData.find(p => {
     return normContract.includes(normPContract);
 });
 
-// ---- НОВОЕ: проверяем, просрочен ли найденный платёж ----
+// ---- проверяем, просрочен ли найденный платёж ----
 let isPaymentOverdue = false;
 if (matchingPaymentPlan && matchingPaymentPlan.date) {
     const paymentDate = parseDate(matchingPaymentPlan.date);
@@ -4834,7 +4840,27 @@ if (matchingPaymentPlan && matchingPaymentPlan.date) {
     }
 }
 
-// ----- Всегда ссылка, если договор не пустой и не "-" -----
+// ---------- Проверка наличия доверенности со статусом "В работе" ----------
+const matchingProxy = proxyData.find(proxy =>
+    proxy.status === 'В работе' &&
+    proxy.docNumber === item.docNumber &&
+    proxy.supplier === item.supplier
+);
+
+// ---- проверяем, просрочена ли доверенность ----
+let isProxyOverdue = false;
+if (matchingProxy && matchingProxy.date) {
+    const proxyDate = parseDate(matchingProxy.date);
+    if (proxyDate) {
+        const proxyDateOnly = new Date(proxyDate);
+        proxyDateOnly.setHours(0, 0, 0, 0);
+        if (proxyDateOnly < today) {
+            isProxyOverdue = true;
+        }
+    }
+}
+
+// ----- Ссылка для договора (если нужна) -----
 let contractHtml = '';
 if (contractText && contractText.trim() !== '-' && contractText.trim() !== '') {
     contractHtml = `<a href="#" class="contract-filter-link-payments" 
@@ -4848,59 +4874,40 @@ if (contractText && contractText.trim() !== '-' && contractText.trim() !== '') {
     contractHtml = escapeString(contractText);
 }
 
-const contractCell = document.createElement('td');
-contractCell.style.width = '114px';
-contractCell.innerHTML = contractHtml;
-
-// Индикатор только если есть платёж со статусом "План"
+// ----- Ячейка "Договор / Оплата" -----
+const contractPaymentCell = document.createElement('td');
+contractPaymentCell.style.width = '100px';
+contractPaymentCell.style.verticalAlign = 'top';
+contractPaymentCell.style.padding = '4px 2px';
+contractPaymentCell.innerHTML = `
+    <div style="margin-bottom: 2px; color: #66c0f4;">${contractHtml}</div>
+    <div style="font-size: 0.9em; color: #c7d5e0;">${escapeString(item.paymentTerms || '')}</div>
+`;
 if (matchingPaymentPlan) {
-    contractCell.style.position = 'relative';
+    contractPaymentCell.style.position = 'relative';
     const indicator = document.createElement('span');
     indicator.className = 'payment-plan-indicator';
-    if (isPaymentOverdue) {
-        indicator.classList.add('overdue');
-    }
-    contractCell.appendChild(indicator);
+    if (isPaymentOverdue) indicator.classList.add('overdue');
+    contractPaymentCell.appendChild(indicator);
 }
-        // -------------------------------------------------------
 
-        const paymentTermsCell = createCell(item.paymentTerms || '', '96px');
-        const deliveryDaysCell = createCell(item.deliveryDays || '', '148px');
-        // ---------- Проверка наличия доверенности со статусом "В работе" ----------
-const matchingProxy = proxyData.find(proxy =>
-    proxy.status === 'В работе' &&
-    proxy.docNumber === item.docNumber &&
-    proxy.supplier === item.supplier
-);
-
-// ---- НОВОЕ: проверяем, просрочена ли доверенность ----
-let isProxyOverdue = false;
-if (matchingProxy && matchingProxy.date) {
-    const proxyDate = parseDate(matchingProxy.date);
-    if (proxyDate) {
-        const proxyDateOnly = new Date(proxyDate);
-        proxyDateOnly.setHours(0, 0, 0, 0);
-        if (proxyDateOnly < today) {
-            isProxyOverdue = true;
-        }
-    }
-}
-// -----------------------------------------------------------------------
-
-// Создаём ячейку для столбца "Поставка" (индекс 15)
-const deliveryTermsCell = document.createElement('td');
-deliveryTermsCell.style.width = '81px';
-deliveryTermsCell.textContent = item.deliveryTerms || '';
-
+// ----- Ячейка "Срок / Поставка" -----
+const deliveryCell = document.createElement('td');
+deliveryCell.style.width = '80px';
+deliveryCell.style.verticalAlign = 'top';
+deliveryCell.style.padding = '4px 2px';
+deliveryCell.innerHTML = `
+    <div style="margin-bottom: 2px; font-weight: bold; color: #c7d5e0;">${escapeString(item.deliveryDays || '')}</div>
+    <div style="font-size: 0.9em; color: #c7d5e0;">${escapeString(item.deliveryTerms || '')}</div>
+`;
 if (matchingProxy) {
-    deliveryTermsCell.style.position = 'relative';
+    deliveryCell.style.position = 'relative';
     const indicator = document.createElement('span');
     indicator.className = 'payment-plan-indicator';
-    if (isProxyOverdue) {
-        indicator.classList.add('overdue');
-    }
-    deliveryTermsCell.appendChild(indicator);
+    if (isProxyOverdue) indicator.classList.add('overdue');
+    deliveryCell.appendChild(indicator);
 }
+
         const dateCell = createCell(item.date || '', '50px');
         const planCell = createCell(item.plan || '', '50px');
         const factCell = createCell(item.fact || '', '50px');
@@ -4919,14 +4926,12 @@ if (matchingProxy) {
         row.appendChild(purchaseUnitCell);
         row.appendChild(amountCell);
         row.appendChild(supplierCell);
-        row.appendChild(contractCell);
-        row.appendChild(paymentTermsCell);
-        row.appendChild(deliveryDaysCell);
-        row.appendChild(deliveryTermsCell);
-        row.appendChild(dateCell); 
-        row.appendChild(planFactCell); 
-        row.appendChild(factCell); 
-        row.appendChild(shipmentDocCell); 
+row.appendChild(contractPaymentCell);
+row.appendChild(deliveryCell);
+row.appendChild(dateCell); 
+row.appendChild(planFactCell); 
+row.appendChild(factCell); 
+row.appendChild(shipmentDocCell);
         
         // ВСЕГДА добавляем класс для подсветки (и для гостя, и для админа)
         row.classList.add('clickable-row');
@@ -5044,7 +5049,7 @@ function editAccountingRowByRecordId(recordId) {
 
         let factMonthMatch = true;
         if (factMonthFilter) {
-            const factCell = cells[18] ? cells[18].textContent.trim() : '';
+            const factCell = cells[16] ? cells[16].textContent.trim() : '';
             const factDate = parseDate(factCell);
             if (factDate) {
                 const month = factDate.getMonth() + 1;
@@ -5087,8 +5092,8 @@ function editAccountingRowByRecordId(recordId) {
         const hiddenRows = rows.filter(row => !visibleRows.includes(row));
 
         visibleRows.sort((trA, trB) => {
-            const dateA = parseDate(trA.cells[17] ? trA.cells[17].textContent.trim() : '');
-            const dateB = parseDate(trB.cells[17] ? trB.cells[17].textContent.trim() : '');
+            const dateA = parseDate(trA.cells[15] ? trA.cells[15].textContent.trim() : '');
+            const dateB = parseDate(trB.cells[15] ? trB.cells[15].textContent.trim() : '');
             const timeA = dateA ? dateA.getTime() : Infinity;
             const timeB = dateB ? dateB.getTime() : Infinity;
             return timeA - timeB;
@@ -5109,7 +5114,7 @@ function editAccountingRowByRecordId(recordId) {
         noDataRow = document.createElement('tr');
         noDataRow.setAttribute('data-no-results', 'true');
         noDataRow.innerHTML = `
-            <td colspan="20" style="text-align: center; color: #8f98a0; padding: 20px;">
+            <td colspan="18" style="text-align: center; color: #8f98a0; padding: 20px;">
                 По вашему запросу ничего не найдено. Проверьте фильтры.
             </td>
         `;
@@ -5127,8 +5132,8 @@ function editAccountingRowByRecordId(recordId) {
         const rowsArray = Array.from(tbody.querySelectorAll('tr:not([data-no-results])'));
         const validRows = rowsArray.filter(row => row.cells.length > 1 && !row.querySelector('td[colspan]'));
         validRows.sort((rowA, rowB) => {
-            const factA = rowA.cells[18] ? rowA.cells[18].textContent.trim() : '';
-            const factB = rowB.cells[18] ? rowB.cells[18].textContent.trim() : '';
+            const factA = rowA.cells[16] ? rowA.cells[16].textContent.trim() : '';
+            const factB = rowB.cells[16] ? rowB.cells[16].textContent.trim() : '';
             const dateA = parseDate(factA);
             const dateB = parseDate(factB);
             const timeA = dateA ? dateA.getTime() : 0;
@@ -5533,7 +5538,7 @@ function showOverdueOnly() {
         const noData = document.createElement('tr');
         noData.setAttribute('data-no-results', 'true');
         noData.innerHTML = `
-            <td colspan="20" style="text-align: center; color: #8f98a0; padding: 20px;">
+            <td colspan="18" style="text-align: center; color: #8f98a0; padding: 20px;">
                 Нет просроченных поставок
             </td>`;
         tbody.appendChild(noData);
@@ -5747,7 +5752,7 @@ function showWeeklyDeliveriesOnly() {
         if (cells.length < 4) return;
 
         const statusCell = cells[2] ? cells[2].textContent.trim() : '';
-        const planFactCell = cells[17] ? cells[17].textContent.trim() : ''; // 18‑й столбец → индекс 17
+        const planFactCell = cells[15] ? cells[15].textContent.trim() : ''; // 18‑й столбец → индекс 17
 
         // Проверяем, является ли запись поставкой на неделю
         const planFactDate = parseDate(planFactCell);
@@ -5785,7 +5790,7 @@ function showWeeklyDeliveriesOnly() {
         const noData = document.createElement('tr');
         noData.setAttribute('data-no-results', 'true');
         noData.innerHTML = `
-            <td colspan="20" style="text-align: center; color: #8f98a0; padding: 20px;">
+            <td colspan="18" style="text-align: center; color: #8f98a0; padding: 20px;">
                 Нет поставок на ближайшую неделю
             </td>`;
         tbody.appendChild(noData);
@@ -8956,7 +8961,7 @@ function printDeliveriesAndOverdue() {
     const headers = Array.from(document.querySelectorAll('#accountingTable thead th')).map(th => th.textContent);
 
     // Индексы столбцов, которые нужно исключить (0‑based)
-    const excludeIndices = [2, 4, 5, 6, 13, 14, 16, 18];
+    const excludeIndices = [2, 4, 5, 6, 11, 12, 14, 16];
 
     // --- РАСЧЁТ ПОЗИЦИИ СТОЛБЦА "Документ" ПОСЛЕ ФИЛЬТРАЦИИ ---
     const allIndices = Array.from({ length: headers.length }, (_, i) => i);
@@ -9011,27 +9016,25 @@ function printDeliveriesAndOverdue() {
         printContent += `<tr${rowClass}>`;
 
         const allCells = [
-            item.department || '',
-            item.docNumber || '',
-            item.status || '',
-            item.id || '',
-            item.name || '',
-            item.quantity || '',
-            item.unit || '',
-            item.purchaseName || '',
-            item.purchaseQuantity || '',
-            item.purchaseUnit || '',
-            item.amount ? formatNumber(item.amount) : '',
-            item.supplier || '',
-            item.contract || '',
-            item.paymentTerms || '',
-            item.deliveryDays || '',
-            item.deliveryTerms || '',
-            item.date || '',
-            item.planFact || '',
-            item.fact || '',
-            item.shipmentDoc || ''
-        ];
+    item.department || '',
+    item.docNumber || '',
+    item.status || '',
+    item.id || '',
+    item.name || '',
+    item.quantity || '',
+    item.unit || '',
+    item.purchaseName || '',
+    item.purchaseQuantity || '',
+    item.purchaseUnit || '',
+    item.amount ? formatNumber(item.amount) : '',
+    item.supplier || '',
+    (item.contract || '') + ' / ' + (item.paymentTerms || ''), // объединённый договор/оплата
+    (item.deliveryDays || '') + ' / ' + (item.deliveryTerms || ''), // объединённый срок/поставка
+    item.date || '',
+    item.planFact || '',
+    item.fact || '',
+    item.shipmentDoc || ''
+];
 
         const filteredCells = allCells.filter((_, index) => !excludeIndices.includes(index));
 
