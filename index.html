@@ -11813,23 +11813,23 @@ input:checked + .slider:before {
    ============================================================ */
 .sidebar {
     position: fixed !important;
-    bottom: 0 !important;
+    top: 0 !important;
+    bottom: auto !important;
     left: 0 !important;
-    top: auto !important;
     right: 0 !important;
     width: 100% !important;
     min-width: 0 !important;
     max-width: 100% !important;
     height: auto !important;
     min-height: 50px !important;
-    padding: 4px 8px !important;
+    padding: 4px 10px !important;
     margin: 0 !important;
     background: linear-gradient(180deg, #0f172a 0%, #020617 100%) !important;
-    border-top: 1px solid rgba(148, 163, 184, 0.2) !important;
-    border-right: none !important;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.2) !important;
+    border-top: none !important;
     border-left: none !important;
-    border-bottom: none !important;
-    box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.4) !important;
+    border-right: none !important;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4) !important;
     display: flex !important;
     flex-direction: column !important;
     align-items: stretch !important;
@@ -11841,7 +11841,7 @@ input:checked + .slider:before {
 .sidebar-row {
     display: flex !important;
     flex-wrap: wrap !important;
-    justify-content: flex-start !important; /* кнопки прижимаются влево, но растягиваются */
+    justify-content: flex-start !important;
     align-items: center !important;
     gap: 2px 4px !important;
     width: 100% !important;
@@ -11855,27 +11855,26 @@ input:checked + .slider:before {
     flex-direction: column !important;
     align-items: center !important;
     justify-content: center !important;
-    padding: 3px 10px !important;
-    min-height: 40px !important;
-    min-width: 70px !important;
+    padding: 2px 6px !important;          /* уменьшенные отступы */
+    min-height: 28px !important;          /* уменьшенная высота */
+    min-width: 60px !important;           /* можно немного сузить */
     height: auto !important;
     width: auto !important;
-    flex: 1 0 auto !important;          /* растягивание */
+    flex: 1 0 auto !important;
     max-width: 100% !important;
     border-radius: 6px !important;
     cursor: pointer !important;
     transition: background 0.2s, color 0.2s !important;
-    background: transparent !important;
+    background: rgba(255, 255, 255, 0.06) !important;
     color: #aeb3d6 !important;
-    border: none !important;
-    gap: 2px !important;
+    border: 1px solid var(--p-border, #53565f) !important;
+    gap: 1px !important;                  /* меньше расстояние между иконкой и текстом */
     position: relative !important;
     text-decoration: none !important;
     margin: 0 !important;
     line-height: normal !important;
     box-shadow: none !important;
     white-space: nowrap !important;
-    border: 1px solid var(--p-border, #53565f) !important;
 }
 
 .sidebar-cell.menu-item:hover {
@@ -11891,7 +11890,7 @@ input:checked + .slider:before {
 
 
 .sidebar-cell.menu-item .menu-icon {
-    font-size: 22px !important;
+    font-size: 18px !important;
     line-height: 1 !important;
     color: inherit !important;
 }
@@ -11951,25 +11950,26 @@ input:checked + .slider:before {
 /* Основной контент — теперь без левого отступа, с отступом снизу под сайдбар */
 .main-content {
     margin-left: 0 !important;
-    padding-bottom: 20px !important; /* высота сайдбара */
-    padding-top: 6px !important;
-    height: calc(100vh - 35px) !important;
+    padding-top: 55px !important;
+    padding-bottom: 6px !important;
+    height: 100vh !important;
     overflow: hidden !important;
     flex: 1 !important;
+    box-sizing: border-box !important;
 }
 
 /* Адаптив для маленьких экранов */
 @media (max-width: 600px) {
     .sidebar-cell.menu-item {
-        min-width: 50px !important;
-        padding: 3px 6px !important;
-        min-height: 38px !important;
+        min-width: 44px !important;
+        padding: 1px 4px !important;
+        min-height: 24px !important;
     }
     .sidebar-cell.menu-item .menu-text {
-        font-size: 7px !important;
+        font-size: 6px !important;
     }
     .main-content {
-        padding-bottom: 76px !important;
+        padding-top: 76px !important;
         height: calc(100vh - 76px) !important;
     }
 }
