@@ -5261,7 +5261,6 @@ if (accountingData.length > 0) {
     
     // Инициализируем автозаполнение для договора
     setTimeout(autoFillContract, 100);
-    setupAutofillPlan();
 }
 
 function editAccountingRow(index) {
@@ -5330,64 +5329,10 @@ if (editPurchaseName && editPurchaseName.tagName === 'TEXTAREA') {
     
     // Инициализируем автозаполнение для договора
     setTimeout(autoFillContract, 100);
-    setupAutofillPlan();
     
     console.log('Модальное окно открыто');
 }
-// Функция автозаполнения поля "План"
-function setupAutofillPlan() {
-    const dateInput = document.getElementById('editDate');
-    const daysInput = document.getElementById('editDeliveryDays');
-    const planInput = document.getElementById('editPlanFact');
 
-    if (!dateInput || !daysInput || !planInput) return;
-
-    function updatePlan() {
-        const dateStr = dateInput.value;
-        const daysStr = daysInput.value.trim();
-
-        if (!dateStr) {
-            planInput.value = '';
-            return;
-        }
-
-        const dateObj = new Date(dateStr);
-        if (isNaN(dateObj.getTime())) {
-            planInput.value = '';
-            return;
-        }
-
-        const days = parseInt(daysStr, 10);
-        if (isNaN(days) || days < 0) {
-            planInput.value = '';
-            return;
-        }
-
-        // Добавляем дни
-        dateObj.setDate(dateObj.getDate() + days);
-
-        // Форматируем в YYYY-MM-DD
-        const year = dateObj.getFullYear();
-        const month = String(dateObj.getMonth() + 1).padStart(2, '0');
-        const day = String(dateObj.getDate()).padStart(2, '0');
-        planInput.value = `${year}-${month}-${day}`;
-    }
-
-    // Удаляем старые обработчики, чтобы не дублировать
-    dateInput.removeEventListener('input', updatePlan);
-    daysInput.removeEventListener('input', updatePlan);
-    dateInput.removeEventListener('change', updatePlan);
-    daysInput.removeEventListener('change', updatePlan);
-
-    // Навешиваем новые
-    dateInput.addEventListener('input', updatePlan);
-    daysInput.addEventListener('input', updatePlan);
-    dateInput.addEventListener('change', updatePlan);
-    daysInput.addEventListener('change', updatePlan);
-
-    // Вызываем сразу для начального расчёта (если поля уже заполнены)
-    updatePlan();
-}
 
         function saveAccountingChanges(event) {
     event.preventDefault();
