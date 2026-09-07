@@ -497,56 +497,42 @@
 }
 
 /* Новые ширины столбцов таблицы учета после перемещения "План" */
-#accountingTable th:nth-child(1) { width: 53.6px !important; }   /* Подразделение */
+#accountingTable th:nth-child(1) { width: 53.6px !important; }   /* Служба */
 #accountingTable th:nth-child(2) { width: 40.2px !important; }   /* Заявка */
-#accountingTable th:nth-child(3) { width: 38px !important; }   /* Статус */
+#accountingTable th:nth-child(3) { width: 38px !important; }     /* Статус */
 #accountingTable th:nth-child(4) { width: 40.2px !important; }   /* ID */
-#accountingTable th:nth-child(5) { width: 150px !important; }  /* Наименование позиции */
+#accountingTable th:nth-child(5) { width: 150px !important; }    /* Наименование позиции */
 #accountingTable th:nth-child(6) { width: 26.8px !important; }   /* Кол-во */
 #accountingTable th:nth-child(7) { width: 26.8px !important; }   /* Ед. изм. */
-#accountingTable th:nth-child(8) { width: 150px !important; }  /* Наименование закупки */
+#accountingTable th:nth-child(8) { width: 150px !important; }    /* Наименование закупки */
 #accountingTable th:nth-child(9) { width: 26.8px !important; }   /* Кол-во (закуп) */
 #accountingTable th:nth-child(10) { width: 26.8px !important; }  /* Ед.изм. (закуп) */
 #accountingTable th:nth-child(11) { width: 46.9px !important; }  /* Сумма, НДС */
-#accountingTable th:nth-child(12) { width: 80.4px !important; } /* Контрагент */
-#accountingTable th:nth-child(13),
-#accountingTable td:nth-child(13) {
-    width: 80.4px !important;
-}
-#accountingTable th:nth-child(14),
-#accountingTable td:nth-child(14) {
-    width: 46.9px !important;
-}
-#accountingTable th:nth-child(15) { width: 35px !important; }  /* Утверждено (Дата) */
-#accountingTable th:nth-child(16) { width: 40px !important; }  /* План */
-#accountingTable th:nth-child(17) { width: 35px !important; }  /* Факт */
-#accountingTable th:nth-child(18) { width: 60.3px !important; }  /* Документ */
+#accountingTable th:nth-child(12) { width: 80.4px !important; }  /* Контрагент */
+#accountingTable th:nth-child(13) { width: 80.4px !important; }  /* Договор / Оплата */
+#accountingTable th:nth-child(14) { width: 60px !important; }    /* Срок / Поставка (увеличена) */
+#accountingTable th:nth-child(15) { width: 40px !important; }    /* План */
+#accountingTable th:nth-child(16) { width: 35px !important; }    /* Факт */
+#accountingTable th:nth-child(17) { width: 60.3px !important; }  /* Документ */
 
-/* Применить те же ширины к ячейкам */
+/* Аналогично для ячеек */
 #accountingTable td:nth-child(1) { width: 53.6px !important; }
 #accountingTable td:nth-child(2) { width: 40.2px !important; }
 #accountingTable td:nth-child(3) { width: 38px !important; }
 #accountingTable td:nth-child(4) { width: 40.2px !important; }
-#accountingTable th:nth-child(5) { width: 150px !important; }
+#accountingTable td:nth-child(5) { width: 150px !important; }
 #accountingTable td:nth-child(6) { width: 26.8px !important; }
 #accountingTable td:nth-child(7) { width: 26.8px !important; }
-#accountingTable th:nth-child(8) { width: 150px !important; }
+#accountingTable td:nth-child(8) { width: 150px !important; }
 #accountingTable td:nth-child(9) { width: 26.8px !important; }
 #accountingTable td:nth-child(10) { width: 26.8px !important; }
 #accountingTable td:nth-child(11) { width: 46.9px !important; }
 #accountingTable td:nth-child(12) { width: 80.4px !important; }
-#accountingTable th:nth-child(13),
-#accountingTable td:nth-child(13) {
-    width: 80.4px !important;
-}
-#accountingTable th:nth-child(14),
-#accountingTable td:nth-child(14) {
-    width: 46.9px !important;
-}
-#accountingTable td:nth-child(15) { width: 35px !important; }
-#accountingTable td:nth-child(16) { width: 40px !important; }
-#accountingTable td:nth-child(17) { width: 35px !important; }
-#accountingTable td:nth-child(18) { width: 60.3px !important; }
+#accountingTable td:nth-child(13) { width: 80.4px !important; }
+#accountingTable td:nth-child(14) { width: 60px !important; }
+#accountingTable td:nth-child(15) { width: 40px !important; }
+#accountingTable td:nth-child(16) { width: 35px !important; }
+#accountingTable td:nth-child(17) { width: 60.3px !important; }
 /* Гарантируем, что таблицы растягиваются на всю ширину */
 .table-scroll-container table {
     width: 100% !important;
@@ -858,7 +844,9 @@
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: linear-gradient(135deg, #0c1b2d 0%, #1a2b3c 100%);
+    background: linear-gradient(135deg, #0c1b2d 0%, #2a4a7f 30%, #1a2b3c 70%, #0c1b2d 100%);
+    background-size: 300% 300%;
+    animation: gradientShift 6s ease infinite, breath 4s ease-in-out infinite alternate;
     position: fixed;
     top: 0;
     left: 0;
@@ -885,12 +873,25 @@
     text-align: center;
     box-shadow: 0 10.05px 26.8px rgba(0, 0, 0, 0.5);
     border: 0.67px solid #3d4450;
-    animation: fadeIn 0.5s ease;
+    animation: fadeInUp 1.2s ease forwards;
 }
 
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(-13.4px); }
     to { opacity: 1; transform: translateY(0); }
+}
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+@keyframes fadeInUp {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+@keyframes breath {
+    0% { filter: brightness(1); }
+    100% { filter: brightness(1.15); }
 }
 
 .login-title {
@@ -927,7 +928,9 @@
     position: relative;
     overflow: hidden;
     box-shadow: 0 6.7px 20.1px rgba(26, 58, 95, 0.4);
+    animation: pulseGlow 2s ease-in-out infinite;
 }
+
 
 .start-button:hover {
     background: linear-gradient(135deg, #2a4a7f 0%, #3a3a7f 100%);
@@ -2087,8 +2090,8 @@ tr.status-supply {
 
 
 /* Для статусов "Поставка" и "Приход" можно сделать рамку более яркой */
-#accountingTable tr.status-supply td:nth-child(16):not(:empty),
-#accountingTable tr.status-receipt td:nth-child(16):not(:empty) {
+#accountingTable tr.status-supply td:nth-child(15):not(:empty),
+#accountingTable tr.status-receipt td:nth-child(15):not(:empty) {
     border: 2px solid #ff8c00;          /* более насыщенный цвет */
     background-color: rgba(255, 140, 0, 0.12);
 }
@@ -2202,25 +2205,27 @@ tr.status-supply {
         }
 
         /* Стиль для уведомления об автосохранении */
-        .autosave-notification {
-            position: fixed;
-            bottom: 13.4px;
-            right: 13.4px;
-            background: linear-gradient(135deg, #5c7e10 0%, #4c6b22 100%);
-            color: white;
-            padding: 6.7px 10.05px;
-            border-radius: 2.68px;
-            font-size: 9.38px;
-            z-index: 1002;
-            opacity: 0;
-            transition: opacity 0.3s;
-            pointer-events: none;
-            box-shadow: 0 2.68px 5.36px rgba(0,0,0,0.3);
-        }
-        
-        .autosave-notification.show {
-            opacity: 1;
-        }
+.autosave-notification {
+    position: fixed;
+    bottom: 30px;                 /* отступ от нижнего края */
+    left: 50%;                    /* центрирование по горизонтали */
+    transform: translateX(-50%);  /* точное центрирование */
+    background: rgba(92, 126, 16, 0.9);
+    color: white;
+    padding: 14px 24px;           /* увеличенные отступы */
+    border-radius: 8px;
+    font-size: 12px;              /* увеличенный шрифт */
+    z-index: 9999;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;         /* чтобы не мешать кликам */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    white-space: nowrap;          /* текст в одну строку (опционально) */
+    max-width: 90%;               /* чтобы на маленьких экранах не вылезало */
+}
+.autosave-notification.show {
+    opacity: 1;
+}
 
         /* Стили для кнопок в сайдбаре */
         .sidebar-buttons {
@@ -2337,7 +2342,7 @@ tr.status-supply {
     z-index: 9998;
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.2s ease, visibility 0.2s ease; 
+    transition: opacity 1s ease, visibility 1s ease; 
     box-shadow: inset 0 0 50px rgba(0,0,0,0.5);
 }
 
@@ -3238,14 +3243,13 @@ button:hover{background:#222733!important}
     <th style="width: 80.4px;">Контрагент</th>
     <th style="width: 100px;">Договор / Оплата</th>
     <th style="width: 80px;">Срок / Поставка</th>
-    <th style="width: 35px;">От</th>
     <th style="width: 40px;">План</th>
     <th style="width: 35px;">Факт</th>
     <th style="width: 60.3px;">Документ</th>
         </tr>
     </thead>
                 <tbody id="accountingTableBody"><tr>
-            <td colspan="18" style="text-align: center; color: #8f98a0; padding: 20px;">
+            <td colspan="17" style="text-align: center; color: #8f98a0; padding: 20px;">
                 Нет данных о закупках. Добавьте первую запись.
             </td>
         </tr></tbody>
@@ -4654,7 +4658,7 @@ function applyFixedTableLayouts() {
                 notification.classList.add('show');
                 setTimeout(() => {
                     notification.classList.remove('show');
-                }, 2000);
+                }, 4000);
             }
         }
 
@@ -4704,7 +4708,7 @@ function updateAccountingTable() {
     if (accountingData.length === 0) {
         const emptyRow = document.createElement('tr');
         emptyRow.innerHTML = `
-            <td colspan="18" style="text-align: center; color: #8f98a0; padding: 20px;">
+            <td colspan="17" style="text-align: center; color: #8f98a0; padding: 20px;">
                 Нет данных о закупках. Добавьте первую запись.
             </td>
         `;
@@ -4893,12 +4897,14 @@ if (matchingPaymentPlan) {
 
 // ----- Ячейка "Срок / Поставка" -----
 const deliveryCell = document.createElement('td');
-deliveryCell.style.width = '80px';
+deliveryCell.style.width = '60px';
 deliveryCell.style.verticalAlign = 'top';
 deliveryCell.style.padding = '4px 2px';
+const dateStr = item.date ? 'от ' + item.date : '';
 deliveryCell.innerHTML = `
     <div style="margin-bottom: 2px; font-weight: bold; color: #c7d5e0;">${escapeString(item.deliveryDays || '')}</div>
     <div style="font-size: 0.9em; color: #c7d5e0;">${escapeString(item.deliveryTerms || '')}</div>
+    <div style="font-size: 0.9em; color: #c7d5e0; margin-top: 2px;">${escapeString(dateStr)}</div>
 `;
 if (matchingProxy) {
     deliveryCell.style.position = 'relative';
@@ -4908,7 +4914,6 @@ if (matchingProxy) {
     deliveryCell.appendChild(indicator);
 }
 
-        const dateCell = createCell(item.date || '', '50px');
         const planCell = createCell(item.plan || '', '50px');
         const factCell = createCell(item.fact || '', '50px');
         const shipmentDocCell = createCell(item.shipmentDoc || '', '90px');
@@ -4927,8 +4932,7 @@ if (matchingProxy) {
         row.appendChild(amountCell);
         row.appendChild(supplierCell);
 row.appendChild(contractPaymentCell);
-row.appendChild(deliveryCell);
-row.appendChild(dateCell); 
+row.appendChild(deliveryCell); 
 row.appendChild(planFactCell); 
 row.appendChild(factCell); 
 row.appendChild(shipmentDocCell);
@@ -5049,7 +5053,7 @@ function editAccountingRowByRecordId(recordId) {
 
         let factMonthMatch = true;
         if (factMonthFilter) {
-            const factCell = cells[16] ? cells[16].textContent.trim() : '';
+            const factCell = cells[15] ? cells[15].textContent.trim() : '';
             const factDate = parseDate(factCell);
             if (factDate) {
                 const month = factDate.getMonth() + 1;
@@ -5092,8 +5096,8 @@ function editAccountingRowByRecordId(recordId) {
         const hiddenRows = rows.filter(row => !visibleRows.includes(row));
 
         visibleRows.sort((trA, trB) => {
-            const dateA = parseDate(trA.cells[15] ? trA.cells[15].textContent.trim() : '');
-            const dateB = parseDate(trB.cells[15] ? trB.cells[15].textContent.trim() : '');
+            const dateA = parseDate(trA.cells[14] ? trA.cells[14].textContent.trim() : '');
+            const dateB = parseDate(trB.cells[14] ? trB.cells[14].textContent.trim() : '');
             const timeA = dateA ? dateA.getTime() : Infinity;
             const timeB = dateB ? dateB.getTime() : Infinity;
             return timeA - timeB;
@@ -5114,7 +5118,7 @@ function editAccountingRowByRecordId(recordId) {
         noDataRow = document.createElement('tr');
         noDataRow.setAttribute('data-no-results', 'true');
         noDataRow.innerHTML = `
-            <td colspan="18" style="text-align: center; color: #8f98a0; padding: 20px;">
+            <td colspan="17" style="text-align: center; color: #8f98a0; padding: 20px;">
                 По вашему запросу ничего не найдено. Проверьте фильтры.
             </td>
         `;
@@ -5132,8 +5136,8 @@ function editAccountingRowByRecordId(recordId) {
         const rowsArray = Array.from(tbody.querySelectorAll('tr:not([data-no-results])'));
         const validRows = rowsArray.filter(row => row.cells.length > 1 && !row.querySelector('td[colspan]'));
         validRows.sort((rowA, rowB) => {
-            const factA = rowA.cells[16] ? rowA.cells[16].textContent.trim() : '';
-            const factB = rowB.cells[16] ? rowB.cells[16].textContent.trim() : '';
+            const factA = rowA.cells[15] ? rowA.cells[15].textContent.trim() : '';
+            const factB = rowB.cells[15] ? rowB.cells[15].textContent.trim() : '';
             const dateA = parseDate(factA);
             const dateB = parseDate(factB);
             const timeA = dateA ? dateA.getTime() : 0;
@@ -5257,6 +5261,7 @@ if (accountingData.length > 0) {
     
     // Инициализируем автозаполнение для договора
     setTimeout(autoFillContract, 100);
+    setupAutofillPlan();
 }
 
 function editAccountingRow(index) {
@@ -5325,8 +5330,63 @@ if (editPurchaseName && editPurchaseName.tagName === 'TEXTAREA') {
     
     // Инициализируем автозаполнение для договора
     setTimeout(autoFillContract, 100);
+    setupAutofillPlan();
     
     console.log('Модальное окно открыто');
+}
+// Функция автозаполнения поля "План"
+function setupAutofillPlan() {
+    const dateInput = document.getElementById('editDate');
+    const daysInput = document.getElementById('editDeliveryDays');
+    const planInput = document.getElementById('editPlanFact');
+
+    if (!dateInput || !daysInput || !planInput) return;
+
+    function updatePlan() {
+        const dateStr = dateInput.value;
+        const daysStr = daysInput.value.trim();
+
+        if (!dateStr) {
+            planInput.value = '';
+            return;
+        }
+
+        const dateObj = new Date(dateStr);
+        if (isNaN(dateObj.getTime())) {
+            planInput.value = '';
+            return;
+        }
+
+        const days = parseInt(daysStr, 10);
+        if (isNaN(days) || days < 0) {
+            planInput.value = '';
+            return;
+        }
+
+        // Добавляем дни
+        dateObj.setDate(dateObj.getDate() + days);
+
+        // Форматируем в YYYY-MM-DD
+        const year = dateObj.getFullYear();
+        const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+        const day = String(dateObj.getDate()).padStart(2, '0');
+        planInput.value = `${year}-${month}-${day}`;
+    }
+
+    // Удаляем старые обработчики, чтобы не дублировать
+    dateInput.removeEventListener('input', updatePlan);
+    daysInput.removeEventListener('input', updatePlan);
+    dateInput.removeEventListener('change', updatePlan);
+    daysInput.removeEventListener('change', updatePlan);
+
+    // Навешиваем новые
+    dateInput.addEventListener('input', updatePlan);
+    daysInput.addEventListener('input', updatePlan);
+    dateInput.addEventListener('change', updatePlan);
+    daysInput.addEventListener('change', updatePlan);
+
+    // Вызываем сразу для начального расчёта (если поля уже заполнены)
+    updatePlan();
 }
 
         function saveAccountingChanges(event) {
@@ -5752,7 +5812,7 @@ function showWeeklyDeliveriesOnly() {
         if (cells.length < 4) return;
 
         const statusCell = cells[2] ? cells[2].textContent.trim() : '';
-        const planFactCell = cells[15] ? cells[15].textContent.trim() : ''; // 18‑й столбец → индекс 17
+        const planFactCell = cells[14] ? cells[14].textContent.trim() : ''; // 18‑й столбец → индекс 17
 
         // Проверяем, является ли запись поставкой на неделю
         const planFactDate = parseDate(planFactCell);
@@ -8121,29 +8181,40 @@ function clearMailFilters() {
             <td>${item.address || ''}</td>
             <td>${item.driver || ''}</td>
         `;
+        // ---- Делаем столбец "Документ" кликабельным (если ещё не сделано) ----
+const docCell = row.querySelector('td:nth-child(5)');
+if (docCell) {
+    const docText = item.contract || '';
+    if (docText) {
+        docCell.innerHTML = `<a href="#" class="contract-filter-link" data-contract="${encodeURIComponent(docText)}" data-supplier="${encodeURIComponent(item.supplier || '')}" style="color: #66c0f4; text-decoration: underline; cursor: pointer;">${escapeString(docText)}</a>`;
+    }
+}
         
         // Только для администратора добавляем обработчик редактирования
         if (isAdmin) {
-            row.addEventListener('dblclick', function(e) {
-                if (!e.target.closest('button') && !e.target.closest('input')) {
-                    const recordId = e.currentTarget.dataset.recordId;
-                    const recordIndex = proxyData.findIndex(record => record.recordId === recordId);
-                    if (recordIndex !== -1) {
-                        editProxyRow(recordIndex);
-                    } else {
-                        const date = e.currentTarget.querySelector('td:nth-child(1)').textContent;
-                        const supplier = e.currentTarget.querySelector('td:nth-child(4)').textContent;
-                        const fallbackIndex = proxyData.findIndex(record => 
-                            record.date === date && 
-                            record.supplier === supplier
-                        );
-                        if (fallbackIndex !== -1) {
-                            editProxyRow(fallbackIndex);
-                        }
-                    }
+    row.addEventListener('dblclick', function(e) {
+        // Если клик был по ссылке (заявке или документу), ничего не делаем
+        if (e.target.closest('a')) return;
+        if (!e.target.closest('button') && !e.target.closest('input')) {
+            const recordId = e.currentTarget.dataset.recordId;
+            const recordIndex = proxyData.findIndex(record => record.recordId === recordId);
+            if (recordIndex !== -1) {
+                editProxyRow(recordIndex);
+            } else {
+                // fallback поиск...
+                const date = e.currentTarget.querySelector('td:nth-child(1)').textContent;
+                const supplier = e.currentTarget.querySelector('td:nth-child(4)').textContent;
+                const fallbackIndex = proxyData.findIndex(record => 
+                    record.date === date && 
+                    record.supplier === supplier
+                );
+                if (fallbackIndex !== -1) {
+                    editProxyRow(fallbackIndex);
                 }
-            });
+            }
         }
+    });
+}
         
         tableBody.appendChild(row);
     });
@@ -8520,20 +8591,20 @@ function parseDate(dateString) {
     if (!str) return '';
     return str.replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/"/g, '\\"');
 }
-function getLast30DaysDeliveries() {
+function getFutureDeliveries() {
     if (!accountingData || accountingData.length === 0) return [];
-    const now = new Date();
-    const thirtyDaysAgo = new Date();
-    thirtyDaysAgo.setDate(now.getDate() - 30);
-    // Обнуляем время для корректного сравнения
-    now.setHours(23, 59, 59, 999);
-    thirtyDaysAgo.setHours(0, 0, 0, 0);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const thirtyDaysLater = new Date();
+    thirtyDaysLater.setDate(today.getDate() + 30);
+    thirtyDaysLater.setHours(23, 59, 59, 999);
+
     return accountingData.filter(item => {
         if (item.status !== 'Поставка') return false;
         const date = parseDate(item.planFact);
         if (!date) return false;
-        const dateMs = date.getTime();
-        return dateMs >= thirtyDaysAgo.getTime() && dateMs <= now.getTime();
+        // Проверяем, что дата находится в интервале [сегодня, сегодня+30]
+        return date >= today && date <= thirtyDaysLater;
     });
 }
 function filterByContract(contract, supplier) {
@@ -8934,7 +9005,7 @@ function buildReportHTML(appNumber, positions, comment, counterparties, payments
 // ========== ФУНКЦИИ ДЛЯ ПЕЧАТИ ПОСТАВОК И ПРОСРОЧКИ ==========
 function printDeliveriesAndOverdue() {
     // Используем новую функцию для 30 дней
-    const deliveries = getLast30DaysDeliveries();
+    const deliveries = getFutureDeliveries();
     const overdue = getOverdueRecords();
 
     // Удаляем дубликаты, если запись одновременно поставка за 30 дней и просрочена
@@ -8961,7 +9032,8 @@ function printDeliveriesAndOverdue() {
     const headers = Array.from(document.querySelectorAll('#accountingTable thead th')).map(th => th.textContent);
 
     // Индексы столбцов, которые нужно исключить (0‑based)
-    const excludeIndices = [2, 4, 5, 6, 11, 12, 14, 16];
+    const excludeIndices = [2, 4, 5, 6, 11, 12, 14, 16, 17];
+    
 
     // --- РАСЧЁТ ПОЗИЦИИ СТОЛБЦА "Документ" ПОСЛЕ ФИЛЬТРАЦИИ ---
     const allIndices = Array.from({ length: headers.length }, (_, i) => i);
@@ -8969,8 +9041,13 @@ function printDeliveriesAndOverdue() {
     const docColumnIndex = filteredIndices.indexOf(19); // индекс 19 = столбец "Документ"
 
     // Фильтруем заголовки
-    const filteredHeaders = headers.filter((_, index) => !excludeIndices.includes(index));
+    let filteredHeaders = headers.filter((_, index) => !excludeIndices.includes(index));
 
+    // Переименовываем "Факт" → "План"
+    const factIndex = filteredHeaders.indexOf('Факт');
+    if (factIndex !== -1) {
+        filteredHeaders[factIndex] = 'План';
+    }
     // Формируем HTML для печати
     let printContent = `<!DOCTYPE html>
 <html>
@@ -11560,8 +11637,8 @@ function resetAllFilters() {
 
 </script>
 <!-- Блюр экрана при переключении страниц -->
-<div id="pageTransitionBlur" class="page-transition-blur"></div>
-<div id="loadingSpinnerBlur" class="loading-spinner-blur"></div>
+<div id="pageTransitionBlur" class="page-transition-blur active"></div>
+<div id="loadingSpinnerBlur" class="loading-spinner-blur active"></div>
 
 <datalist id="contractsList"></datalist>
 <datalist id="applicationsList"></datalist>
@@ -12203,7 +12280,7 @@ window.addEventListener('click', function(event) {
 
     // Конфигурация: для каждой страницы – массив индексов столбцов (0‑based)
     const COLUMNS_TO_HIDE = {
-        accounting: [2, 13, 14, 16, 19],   
+        accounting: [2, 13],   
         counterparties: [5, 6],                
         payments: [1],                         
         proxy: [1, 6],                         
@@ -12391,6 +12468,15 @@ function applyTheadHiding() {
         patchTableUpdateFunctions();
         initFiltersHighlight();
     });
+    // При загрузке страницы показываем блюр на 2 секунды
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(() => {
+        const blur = document.getElementById('pageTransitionBlur');
+        const spinner = document.getElementById('loadingSpinnerBlur');
+        if (blur) blur.classList.remove('active');
+        if (spinner) spinner.classList.remove('active');
+    }, 1000);
+});
     // Функция для обновления класса подсветки на одном элементе
 function updateFilterHighlight(element) {
     const isEmpty = element.value === null || element.value.trim() === '';
