@@ -466,6 +466,15 @@
             font-size: 8.04px;
         }
 
+    /* дизайн кнопки Избранное */
+    #favoriteToggleBtn {
+    width: 22px !important;
+    height: 22px !important;
+    font-size: 14px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border-radius: 4px !important;
+}
 /* ========== АВТОМАТИЧЕСКОЕ РАСПРЕДЕЛЕНИЕ ШИРИНЫ СТОЛБЦОВ ========== */
 
 /* Автоматическое распределение для всех таблиц */
@@ -2769,6 +2778,7 @@ tr.status-supply {
 #proxy-registry .controls {
     margin-bottom: 0px !important;
 }
+
 </style>
 
 
@@ -2805,6 +2815,7 @@ input, select, button {
   padding: 4px 8px !important;
   font-size: 11px !important;
 }
+
 
 table { font-size: 9px !important; }
 th, td { padding: 3px 4px !important; }
@@ -3200,6 +3211,10 @@ button:hover{background:#222733!important}
     <option value="11">Ноябрь</option>
     <option value="12">Декабрь</option>
 </select>
+    
+
+   
+
                 
                 <div style="display: flex; gap: 6.7px;">
     <button onclick="showAddAccountingForm()" id="addRecordBtn">Добавить запись</button>
@@ -3210,7 +3225,14 @@ button:hover{background:#222733!important}
                     <button id="printApplicationReportBtn" style="display: none;" onclick="printApplicationReport()">
     <i class="fas fa-print"></i>Отчет</button>
                     <button onclick="printDeliveriesAndOverdue()" style="background: linear-gradient(135deg, #6c757d 0%, #495057 100%); color: white;">Поставки 30 дней</button>
-                </div>
+                <button id="favoriteToggleBtn" onclick="toggleFavoriteFilter()" 
+        style="background: transparent; border: 1px solid #3d4450; border-radius: 1px; 
+               color: #ffd700; font-size: 10px; 
+               display: inline-flex; align-items: center; justify-content: center; cursor: pointer;
+               flex-shrink: 0; width: 22px; height: 18px; padding: 0; line-height: 1;">
+    <i id="favoriteToggleIcon" class="far fa-star"></i>
+</button>
+</div>
             </div>
             
             <!-- ДОБАВЛЕНО: Контейнер для заголовков таблицы -->
@@ -4111,6 +4133,8 @@ button:hover{background:#222733!important}
 
         // Переменные для фильтрации
         let showOnlyBlacklisted = false;
+        let showFavoritesOnly = false;
+        const FAVORITE_STORAGE_KEY = 'showFavoritesOnly';
 
 
         // ========== ФУНКЦИИ АВТОРИЗАЦИИ ==========
@@ -4316,6 +4340,11 @@ function updateUserInterface() {
 // ========== ИНИЦИАЛИЗАЦИЯ ПРИЛОЖЕНИЯ ==========
 function initializeApp() {
     loadAllData();               // загружает все данные и обновляет таблицы
+    // Восстановление состояния фильтра «Избранное»
+    const savedFavFilter = localStorage.getItem(FAVORITE_STORAGE_KEY);
+    if (savedFavFilter !== null) {
+        showFavoritesOnly = savedFavFilter === 'true';
+    }
     document.querySelector('.sidebar').style.display = 'block';
     document.querySelector('.main-content').style.display = 'block';
 
@@ -4351,6 +4380,25 @@ document.addEventListener('DOMContentLoaded', function() {
         githubToken = savedToken;
     }
 });
+function toggleFavoriteFilter() {
+    showFavoritesOnly = !showFavoritesOnly;
+    localStorage.setItem(FAVORITE_STORAGE_KEY, showFavoritesOnly);
+    updateFavoriteButton();
+    filterAccountingTable();
+}
+
+function updateFavoriteButton() {
+    const icon = document.getElementById('favoriteToggleIcon');
+    if (icon) {
+        icon.className = showFavoritesOnly ? 'fas fa-star' : 'far fa-star';
+        icon.style.color = showFavoritesOnly ? '#ffd700' : '#8f98a0';
+    }
+    const btn = document.getElementById('favoriteToggleBtn');
+    if (btn) {
+        btn.style.borderColor = showFavoritesOnly ? '#ffd700' : '#3d4450';
+        btn.style.background = showFavoritesOnly ? 'rgba(255,215,0,0.15)' : 'transparent';
+    }
+}
 // ========== ФУНКЦИИ ДЛЯ УНИКАЛЬНЫХ ID ==========
 function generateUniqueId() {
     // Формат: YYYYMMDDHHMMSSmmm (год, месяц, день, часы, минуты, секунды, миллисекунды)
@@ -4472,6 +4520,12 @@ function updateCommentFieldPermissions() {
     try {
         // Загружаем данные с проверкой
         accountingData = safeParseJSON(localStorage.getItem('accountingData')) || [];
+        accountingData = accountingData.map(item => {
+            if (!item.hasOwnProperty('favorite')) {
+                item.favorite = false;
+            }
+            return item;
+        });
         counterpartiesData = safeParseJSON(localStorage.getItem('counterpartiesData')) || [];
         paymentsData = safeParseJSON(localStorage.getItem('paymentsData')) || [];
         paymentsData = paymentsData.map(p => {
@@ -4918,7 +4972,49 @@ if (matchingProxy) {
 
         const planCell = createCell(item.plan || '', '50px');
         const factCell = createCell(item.fact || '', '50px');
-        const shipmentDocCell = createCell(item.shipmentDoc || '', '90px');
+const shipmentDocCell = document.createElement('td');
+shipmentDocCell.style.width = '60.3px';
+shipmentDocCell.style.verticalAlign = 'middle';
+shipmentDocCell.style.padding = '4px 2px';
+
+// Контейнер для текста и звёздочки
+const docContainer = document.createElement('div');
+docContainer.style.display = 'flex';
+docContainer.style.alignItems = 'center';
+docContainer.style.justifyContent = 'space-between';
+docContainer.style.gap = '4px';
+
+// Текст документа
+const docSpan = document.createElement('span');
+docSpan.textContent = item.shipmentDoc || '';
+docSpan.style.flex = '1';
+docSpan.style.whiteSpace = 'normal';
+docSpan.style.wordWrap = 'break-word';
+
+// Звёздочка (кнопка избранного)
+const star = document.createElement('i');
+star.className = item.favorite ? 'fas fa-star' : 'far fa-star';
+star.style.cursor = 'pointer';
+star.style.fontSize = '14px';
+star.style.color = item.favorite ? '#ffd700' : 'rgba(255,215,0,0.25)';
+star.style.flexShrink = '0';
+star.title = item.favorite ? 'Убрать из избранного' : 'Добавить в избранное';
+
+star.addEventListener('click', function(e) {
+    e.stopPropagation();
+    const recordId = row.dataset.recordId;
+    const dataItem = accountingData.find(d => d.recordId === recordId);
+    if (dataItem) {
+        dataItem.favorite = !dataItem.favorite;
+        saveAllData();
+        updateAccountingTable();
+        if (showFavoritesOnly) filterAccountingTable();
+    }
+});
+
+docContainer.appendChild(docSpan);
+docContainer.appendChild(star);
+shipmentDocCell.appendChild(docContainer);
         
         // Добавляем все ячейки в строку
         row.appendChild(departmentCell);
@@ -5071,6 +5167,16 @@ function editAccountingRowByRecordId(recordId) {
         });
         rowText = rowText.replace(/\s+/g, ' ').trim();
 
+        let favoriteMatch = true;
+        if (showFavoritesOnly) {
+        const recordId = row.dataset.recordId;
+        if (recordId) {
+            const dataItem = accountingData.find(d => d.recordId === recordId);
+            favoriteMatch = dataItem ? dataItem.favorite === true : false;
+        } else {
+            favoriteMatch = false;
+        }
+        }
         const searchMatch = !searchText || rowText.includes(searchText);
         const statusMatch = !statusFilter || statusCell === statusFilter;
         const departmentMatch = !departmentFilter ||
@@ -5079,13 +5185,14 @@ function editAccountingRowByRecordId(recordId) {
         const supplierMatch = !supplierFilter || supplierCell.includes(supplierFilter);
         const yearMatch = !yearFilter || yearFromApplication === yearFilter;
 
-        if (searchMatch && statusMatch && departmentMatch && applicationMatch && supplierMatch && yearMatch && factMonthMatch) {
-            row.style.display = '';
-            visibleCount++;
-        } else {
-            row.style.display = 'none';
-        }
-    });
+        if (searchMatch && statusMatch && departmentMatch && applicationMatch && 
+        supplierMatch && yearMatch && factMonthMatch && favoriteMatch) {
+        row.style.display = '';
+        visibleCount++;
+    } else {
+        row.style.display = 'none';
+    }
+});
 
     // ─── СОРТИРОВКА ПОСТАВОК (если выбран статус «Поставка») ───
     if (statusFilter === 'Поставка') {
@@ -5242,6 +5349,10 @@ if (accountingData.length > 0) {
     updateAccountingTable();
     updateButtonsVisibility();
     
+    showFavoritesOnly = false;
+localStorage.setItem(FAVORITE_STORAGE_KEY, 'false');
+updateFavoriteButton();
+    
     // Показываем уведомление
     showAutosaveNotification('Фильтры сброшены');
 }
@@ -5389,6 +5500,15 @@ if (editPurchaseName && editPurchaseName.tagName === 'TEXTAREA') {
         fact: formatDateForDisplay(document.getElementById('editFact').value),
         shipmentDoc: document.getElementById('editShipmentDoc').value
     };
+    // Сохраняем старое значение favorite, если редактируем
+    let favoriteValue = false;
+    if (recordId) {
+        const existing = accountingData.find(d => d.recordId === recordId);
+        if (existing) {
+            favoriteValue = existing.favorite || false;
+        }
+    }
+    item.favorite = favoriteValue;
     
     if (recordId) {
         // Ищем существующую запись
@@ -10140,7 +10260,8 @@ function deleteProxyRecord() {
             date: item.date || '',
             planFact: item.planFact || item.plan || '',
             fact: item.fact || '',
-            shipmentDoc: item.shipmentDoc || ''
+            shipmentDoc: item.shipmentDoc || '',
+            favorite: item.favorite || false,
         })),
         counterpartiesData: counterpartiesData.map(item => ({
             recordId: item.recordId || generateUniqueId(),
@@ -10268,6 +10389,9 @@ function importJSON() {
                     // Поддержка старых полей plan/planFact
                     if (item.planFact && !item.plan) item.plan = item.planFact;
                     if (item.plan && !item.planFact) item.planFact = item.plan;
+                    if (!item.hasOwnProperty('favorite')) {
+            item.favorite = false;
+        }
                     return item;
                 });
             }
@@ -11722,7 +11846,7 @@ button[onclick*="exportToExcel"]:hover {
     padding: 0 8px !important;      /* убираем лишние вертикальные отступы */
     line-height: normal !important;
     white-space: nowrap;
-    height: auto !important;
+    height: 22px !important;
 }
 #weeklyDeliveriesBtn:hover {
     background: rgba(200, 180, 50, 0.50) !important;
@@ -11738,7 +11862,7 @@ button[onclick*="exportToExcel"]:hover {
     padding: 0 8px !important;      /* убираем лишние вертикальные отступы */
     line-height: normal !important;
     white-space: nowrap;
-    height: auto !important;
+    height: 22px !important;
 }
 #overdueBtn:hover {
     background: rgba(180, 70, 60, 0.50) !important;
