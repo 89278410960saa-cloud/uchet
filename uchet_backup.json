@@ -368,21 +368,21 @@
       "name": "Воронка делительная (АИП 6.412.077) с фторопластовым краном в нижней части \n",
       "quantity": "3",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
+      "purchaseName": "ВОРОНКА ПРИБОРОВ НХА-СПБ™ делительная с краном и \nштативом, NHASPB-АИП6.412.077, [НХА-СПБ: АППАРАТ \nтипа ЛАЗ-М3]",
+      "purchaseQuantity": "3",
+      "purchaseUnit": "шт",
+      "amount": "130003.00",
       "supplier": "ООО \"Невареактив\"",
       "department": "11/0142 Участок очистных сооружений",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № 25749",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "28",
+      "deliveryTerms": "Самовывоз",
       "date": "",
       "planFact": "",
       "fact": "",
       "shipmentDoc": "",
-      "favorite": true
+      "favorite": false
     },
     {
       "recordId": "20260904155216860_e3aaunxof",
@@ -392,21 +392,21 @@
       "name": "Бутыль для экстракции (БВ-500) с завинчивающейся крышкой с резин. прокладкой\n",
       "quantity": "3",
       "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
+      "purchaseName": "БУТЫЛЬ ПРИБОРОВ НХА-СПБ™ реагентная \n500мл(ЗЕЛЕНАЯ) с крышкой, NHASPB-АИП5.889.047-01, \n[НХА-СПБ: КОНЦЕНТРАТОМЕР типа АН-2]",
+      "purchaseQuantity": "3",
+      "purchaseUnit": "шт",
+      "amount": "21374.40",
       "supplier": "ООО \"Невареактив\"",
       "department": "11/0142 Участок очистных сооружений",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
+      "contract": "СЧ № 25749",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "28",
+      "deliveryTerms": "Самовывоз",
       "date": "",
       "planFact": "",
       "fact": "",
       "shipmentDoc": "",
-      "favorite": true
+      "favorite": false
     },
     {
       "recordId": "20260904090727162_kkdpxsg7r",
@@ -2684,8 +2684,8 @@
       "deliveryTerms": "Включена",
       "date": "31.08.2026",
       "planFact": "07.09.2026",
-      "fact": "",
-      "shipmentDoc": "",
+      "fact": "10.09.2026",
+      "shipmentDoc": "4305 от 10.09.2026",
       "favorite": false
     },
     {
@@ -33339,5 +33339,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-09-09T11:40:16.230Z"
+  "exportDate": "2026-09-09T14:38:49.451Z"
 }
