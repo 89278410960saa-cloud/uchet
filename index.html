@@ -1027,7 +1027,7 @@
             display: flex;
             gap: 3.35px;
             align-items: stretch;
-            min-width: 201.0px;
+
         }
 
         #applicationComment {
@@ -1076,6 +1076,21 @@
     background: #3d4450 !important;
     cursor: not-allowed !important;
     opacity: 0.5;
+}
+#saveCommentBtn {
+    width: 22px !important;
+    height: 22px !important;
+    min-width: 0 !important;      /* убираем минимальную ширину */
+    padding: 0 !important;        /* убираем внутренние отступы */
+    font-size: 14px !important;   /* чтобы эмодзи 💾 был хорошо виден */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    /* Фон можно оставить зелёным или сделать прозрачным – по желанию */
+    background: linear-gradient(135deg, #5c7e10 0%, #4c6b22 100%) !important;
+    border: none;
+    border-radius: 2.68px;
+    cursor: pointer;
 }
         
 
@@ -5004,11 +5019,27 @@ star.addEventListener('click', function(e) {
     e.stopPropagation();
     const recordId = row.dataset.recordId;
     const dataItem = accountingData.find(d => d.recordId === recordId);
-    if (dataItem) {
-        dataItem.favorite = !dataItem.favorite;
-        saveAllData();
-        updateAccountingTable();
-        if (showFavoritesOnly) filterAccountingTable();
+    if (!dataItem) return;
+
+    // Переключаем состояние в данных
+    dataItem.favorite = !dataItem.favorite;
+    saveAllData();
+
+    // Обновляем только иконку звёздочки (без перерисовки всей таблицы)
+    if (dataItem.favorite) {
+        star.className = 'fas fa-star';
+        star.style.color = '#ffd700';
+        star.title = 'Убрать из избранного';
+    } else {
+        star.className = 'far fa-star';
+        star.style.color = 'rgba(255,215,0,0.25)';
+        star.title = 'Добавить в избранное';
+    }
+
+    // Если активен фильтр «Избранное» – применяем фильтр без перезагрузки таблицы
+    if (showFavoritesOnly) {
+        // Просто перезапускаем фильтрацию (она не перерисовывает строки)
+        filterAccountingTable();
     }
 });
 
@@ -11773,9 +11804,9 @@ function resetAllFilters() {
 <div id="login-page" class="active">
     <div class="login-container">
         <h1 class="login-title">Учет закупок</h1>
-        <p class="login-subtitle">Добро пожаловать в систему управления закупками</p>
+        <p class="login-subtitle"></p>
         
-        <button class="start-button" id="startButton" onclick="startApplication()"> ВХОД </button>
+        <button class="start-button" id="startButton" onclick="startApplication()"> ВОЙТИ </button>
         
         <div class="login-loading" id="loginLoading">
             <div class="loading-spinner"></div>
@@ -11784,8 +11815,10 @@ function resetAllFilters() {
         
        <div class="login-footer">
     <p style="font-size: 12px; margin-top: 5px;">
-        <strong>ВНИМАНИЕ:</strong> Данное приложение предназначено исключительно для демонстрации и тестирования функционала системы управления заказами. Любые совпадения с реальными данными, названиями организаций, именами, адресами или иными сведениями являются случайными и не имеющими фактического обоснования. Вся представленная информация является вымышленной и не подлежит использованию в реальной коммерческой деятельности.<br><br>
-        
+        Данный ресурс предназначен исключительно для демонстрации и тестирования функционала системы управления заказами. Любые совпадения с реальными данными, названиями организаций, именами, адресами или иными сведениями являются случайными и не имеющими фактического обоснования. 
+    </p>
+    <p style="font-size: 12px; margin-top: 5px;">
+    <strong>Вся представленная информация является вымышленной и не подлежит использованию в реальной коммерческой деятельности. Нажимая кнопку «Войти», вы подтверждаете своё согласие с данным условием.</strong>
     </p>
 </div>
 
