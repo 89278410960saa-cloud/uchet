@@ -1,9 +1,33 @@
 {
   "accountingData": [
     {
-      "recordId": "20260908150508677_jxygxiagt",
-      "docNumber": "2026-779 (от 08.09.2026)",
+      "recordId": "20260910115108646_ke8j582dd",
+      "docNumber": "2026-799 (от 08.09.2026)",
       "status": "В работе",
+      "id": "МАТ-10509",
+      "name": "гладкая арматура диаметром 12 мм",
+      "quantity": "11,7",
+      "unit": "п.м.",
+      "purchaseName": "Арматура А1 Д12 А240 дл 11.7 (11 шт 11.7 м/п)",
+      "purchaseQuantity": "11,7",
+      "purchaseUnit": "п.м.",
+      "amount": "1170.00",
+      "supplier": "ООО \"Абт-Групп\"",
+      "department": "17/0030 Строительства и ремонта",
+      "contract": "СЧ № УП-3420/11",
+      "paymentTerms": "100 % предоплата",
+      "deliveryDays": "4",
+      "deliveryTerms": "Включена",
+      "date": "",
+      "planFact": "11.09.2026",
+      "fact": "10.09.2026",
+      "shipmentDoc": "1953 от 10.09.2026",
+      "favorite": false
+    },
+    {
+      "recordId": "20260908150508677_jxygxiagt",
+      "docNumber": "2026-799 (от 08.09.2026)",
+      "status": "Поставка",
       "id": "МАТ-10509",
       "name": "гладкая арматура диаметром 12 мм",
       "quantity": "120",
@@ -18,8 +42,8 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "4",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "10.09.2026",
+      "planFact": "14.09.2026",
       "fact": "",
       "shipmentDoc": "",
       "favorite": false
@@ -27,7 +51,7 @@
     {
       "recordId": "20260908104506239_3zsklsayk",
       "docNumber": "2026-778 (от 08.09.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "МАТ-04427",
       "name": "хомут 45-60",
       "quantity": "100",
@@ -42,8 +66,8 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "14",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "10.09.2026",
+      "planFact": "24.09.2026",
       "fact": "",
       "shipmentDoc": "",
       "favorite": false
@@ -51,7 +75,7 @@
     {
       "recordId": "20260904155919584_5emxg9ir9",
       "docNumber": "2026-750 (от 04.09.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "МАТ-05723",
       "name": "Крепление гидравлических труб 16 мм\n",
       "quantity": "100",
@@ -66,8 +90,8 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "14",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "10.09.2026",
+      "planFact": "24.09.2026",
       "fact": "",
       "shipmentDoc": "",
       "favorite": false
@@ -75,7 +99,7 @@
     {
       "recordId": "20260904155909422_7r6ltd0qe",
       "docNumber": "2026-750 (от 04.09.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "МАТ-05723",
       "name": "Крепление гидравлических труб 12 мм\n",
       "quantity": "100",
@@ -90,8 +114,8 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "14",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "10.09.2026",
+      "planFact": "24.09.2026",
       "fact": "",
       "shipmentDoc": "",
       "favorite": false
@@ -99,7 +123,7 @@
     {
       "recordId": "20260904155753985_wj26ouz5g",
       "docNumber": "2026-757 (от 04.09.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "МАТ-04851",
       "name": "Выключатель 1-кл. СП Этюд 10А IP20 бел. SE BC10-001B\n",
       "quantity": "8",
@@ -114,8 +138,8 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "14",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "10.09.2026",
+      "planFact": "24.09.2026",
       "fact": "",
       "shipmentDoc": "",
       "favorite": false
@@ -123,7 +147,7 @@
     {
       "recordId": "20260904155740956_qqgagdqus",
       "docNumber": "2026-757 (от 04.09.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "МАТ-04851",
       "name": "Выключатель \tДИФФЕРЕНЦ ТОКА  (УЗО) 4П 40А 30МА ILD AC",
       "quantity": "6",
@@ -138,8 +162,8 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "14",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "10.09.2026",
+      "planFact": "24.09.2026",
       "fact": "",
       "shipmentDoc": "",
       "favorite": false
@@ -147,7 +171,7 @@
     {
       "recordId": "20260904155724460_rc8z0qffo",
       "docNumber": "2026-757 (от 04.09.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "МАТ-05558",
       "name": "Клеммная колодка 16MM 30A EKF (УПАК 10 шт)",
       "quantity": "5",
@@ -162,8 +186,8 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "14",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "10.09.2026",
+      "planFact": "24.09.2026",
       "fact": "",
       "shipmentDoc": "",
       "favorite": false
@@ -171,7 +195,7 @@
     {
       "recordId": "20260904155705132_9kqu6d7do",
       "docNumber": "2026-757 (от 04.09.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "МАТ-04932",
       "name": "Розетка 2-местн. ОУ с заз.конт. BYLECTRICA IP54, серия ПРАЛЕСКА АКВА, серый, РА16-303 03",
       "quantity": "3",
@@ -186,8 +210,8 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "14",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "10.09.2026",
+      "planFact": "24.09.2026",
       "fact": "",
       "shipmentDoc": "",
       "favorite": false
@@ -195,7 +219,7 @@
     {
       "recordId": "20260904155646700_mo6oim374",
       "docNumber": "2026-757 (от 04.09.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "МАТ-05510",
       "name": "Вилка (эл) CA290 INPIN 32A/230V/1P+N+E/IP67",
       "quantity": "3",
@@ -210,8 +234,8 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "14",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "10.09.2026",
+      "planFact": "24.09.2026",
       "fact": "",
       "shipmentDoc": "",
       "favorite": false
@@ -219,7 +243,7 @@
     {
       "recordId": "20260904155536164_zfuhv6f0u",
       "docNumber": "2026-757 (от 04.09.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "МАТ-02254",
       "name": "Фонарь налобный, 3 режима Яркий луч\tLH-300 ACCU\n",
       "quantity": "8",
@@ -234,8 +258,8 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "14",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "10.09.2026",
+      "planFact": "24.09.2026",
       "fact": "",
       "shipmentDoc": "",
       "favorite": false
@@ -243,7 +267,7 @@
     {
       "recordId": "20260904155520060_rly4m18e7",
       "docNumber": "2026-757 (от 04.09.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "МАТ-06612",
       "name": "Реле напряжения АВР-3/3  шт\n",
       "quantity": "5",
@@ -258,8 +282,8 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "14",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "10.09.2026",
+      "planFact": "24.09.2026",
       "fact": "",
       "shipmentDoc": "",
       "favorite": false
@@ -267,7 +291,7 @@
     {
       "recordId": "20260904155505220_85yqlw2rt",
       "docNumber": "2026-757 (от 04.09.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "МАТ-09602",
       "name": "Бокс IEK ЩРН-П-6 мод. навесной, пластик IP41 PRIME (МКР82-N-06-41-20)\n",
       "quantity": "4",
@@ -282,8 +306,8 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "14",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "10.09.2026",
+      "planFact": "24.09.2026",
       "fact": "",
       "shipmentDoc": "",
       "favorite": false
@@ -291,7 +315,7 @@
     {
       "recordId": "20260904155442468_ooky3r6aw",
       "docNumber": "2026-757 (от 04.09.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "МАТ-04851",
       "name": "Выключатель \tДИФФЕРЕНЦ ТОКА (УЗО) 4N 100A 30МА ВД1-63 АС\n",
       "quantity": "4",
@@ -306,8 +330,8 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "14",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "10.09.2026",
+      "planFact": "24.09.2026",
       "fact": "",
       "shipmentDoc": "",
       "favorite": false
@@ -315,7 +339,7 @@
     {
       "recordId": "20260904155420196_dox3h9sc7",
       "docNumber": "2026-757 (от 04.09.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "МАТ-09881",
       "name": "Светильник светодиодный ДПО-2х36 LED под LED-лампу Т8 IP20\n",
       "quantity": "12",
@@ -330,8 +354,8 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "14",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "10.09.2026",
+      "planFact": "24.09.2026",
       "fact": "",
       "shipmentDoc": "",
       "favorite": false
@@ -339,7 +363,7 @@
     {
       "recordId": "20260904155400636_0my69w3rt",
       "docNumber": "2026-757 (от 04.09.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "МАТ-06594",
       "name": "Конвектор EDISSON POLO, 1500W\n",
       "quantity": "6",
@@ -354,8 +378,8 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "14",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "10.09.2026",
+      "planFact": "24.09.2026",
       "fact": "",
       "shipmentDoc": "",
       "favorite": false
@@ -364,7 +388,7 @@
       "recordId": "20260904155244353_df5khcrpc",
       "docNumber": "2026-723 (от 04.09.2026)",
       "status": "В работе",
-      "id": "-",
+      "id": "МАТ-07810",
       "name": "Воронка делительная (АИП 6.412.077) с фторопластовым краном в нижней части \n",
       "quantity": "3",
       "unit": "шт",
@@ -388,7 +412,7 @@
       "recordId": "20260904155216860_e3aaunxof",
       "docNumber": "2026-723 (от 04.09.2026)",
       "status": "В работе",
-      "id": "-",
+      "id": "МАТ-07812",
       "name": "Бутыль для экстракции (БВ-500) с завинчивающейся крышкой с резин. прокладкой\n",
       "quantity": "3",
       "unit": "шт",
@@ -458,7 +482,7 @@
     },
     {
       "recordId": "20260903173249679_btux87x11",
-      "docNumber": "2026-779 (от 08.09.2026)",
+      "docNumber": "2026-799 (от 08.09.2026)",
       "status": "Поставка",
       "id": "МАТ-10509",
       "name": "гладкая арматура диаметром 22 мм по 11 метров",
@@ -675,7 +699,7 @@
     {
       "recordId": "20260901102040223_iqxv7q6wy",
       "docNumber": "2026-754 (от 25.08.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "МАТ-10659",
       "name": "Рюкзак профессиональный многофункциональный Inforce 11-25-20",
       "quantity": "1",
@@ -690,8 +714,8 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "7",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "10.09.2026",
+      "planFact": "17.09.2026",
       "fact": "",
       "shipmentDoc": "",
       "favorite": false
@@ -699,7 +723,7 @@
     {
       "recordId": "20260901102025680_9fwg87tof",
       "docNumber": "2026-754 (от 25.08.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "МАТ-05749",
       "name": "Мультиметр портативный UNI-T UT33B+ 13-0056",
       "quantity": "3",
@@ -714,8 +738,8 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "7",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "10.09.2026",
+      "planFact": "17.09.2026",
       "fact": "",
       "shipmentDoc": "",
       "favorite": false
@@ -723,7 +747,7 @@
     {
       "recordId": "20260901101934732_5qq0lpd2o",
       "docNumber": "2026-754 (от 25.08.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "МАТ-04801",
       "name": "Бокорезы изолированные 160мм КВТ 60471",
       "quantity": "3",
@@ -738,8 +762,8 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "7",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "10.09.2026",
+      "planFact": "17.09.2026",
       "fact": "",
       "shipmentDoc": "",
       "favorite": false
@@ -747,7 +771,7 @@
     {
       "recordId": "20260901101913956_15nw1acle",
       "docNumber": "2026-754 (от 25.08.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "МАТ-01045",
       "name": "Бур 6x160мм SDS+ AEG 4932478682",
       "quantity": "3",
@@ -762,8 +786,8 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "7",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "10.09.2026",
+      "planFact": "17.09.2026",
       "fact": "",
       "shipmentDoc": "",
       "favorite": false
@@ -771,7 +795,7 @@
     {
       "recordId": "20260901101851103_h0846qslj",
       "docNumber": "2026-754 (от 25.08.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "МАТ-01045",
       "name": "Бур по бетону усиленный SDS-plus 8x210мм Gigant GRD 11105",
       "quantity": "3",
@@ -786,8 +810,8 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "7",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "10.09.2026",
+      "planFact": "17.09.2026",
       "fact": "",
       "shipmentDoc": "",
       "favorite": false
@@ -795,7 +819,7 @@
     {
       "recordId": "20260901101830623_lffqet90h",
       "docNumber": "2026-754 (от 25.08.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "МАТ-01045",
       "name": "Бур по бетону усиленный SDS-plus 10x210мм Gigant GRD 11007",
       "quantity": "2",
@@ -810,8 +834,8 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "7",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "10.09.2026",
+      "planFact": "17.09.2026",
       "fact": "",
       "shipmentDoc": "",
       "favorite": false
@@ -843,7 +867,7 @@
     {
       "recordId": "20260901101755794_zd2l8fvxs",
       "docNumber": "2026-754 (от 25.08.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "МАТ-04623",
       "name": "Нож строительный Gigant металл. корпус 18мм GWK 632",
       "quantity": "6",
@@ -858,8 +882,8 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "7",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "10.09.2026",
+      "planFact": "17.09.2026",
       "fact": "",
       "shipmentDoc": "",
       "favorite": false
@@ -867,7 +891,7 @@
     {
       "recordId": "20260901101720067_aoaqd86fd",
       "docNumber": "2026-754 (от 25.08.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "МАТ-10443",
       "name": "Сабельная пила аккумуляторная Makita LXT 18В ход13мм рез50мм 2x3.0Ач ЗУ DJR185RFE",
       "quantity": "1",
@@ -882,8 +906,8 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "7",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "10.09.2026",
+      "planFact": "17.09.2026",
       "fact": "",
       "shipmentDoc": "",
       "favorite": false
@@ -891,7 +915,7 @@
     {
       "recordId": "20260901101703511_0iraetdhs",
       "docNumber": "2026-754 (от 25.08.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "МАТ-08062",
       "name": "Полотно для сабельной пилы по металлу 225мм 2шт Sturm 9019-03-S1122BF",
       "quantity": "2",
@@ -906,8 +930,8 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "7",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "10.09.2026",
+      "planFact": "17.09.2026",
       "fact": "",
       "shipmentDoc": "",
       "favorite": false
@@ -915,7 +939,7 @@
     {
       "recordId": "20260901101648639_2lb3wqu1l",
       "docNumber": "2026-754 (от 25.08.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "МАТ-07220",
       "name": "Ключ комбинированный трещоточный Дело Техники 13мм 515013",
       "quantity": "5",
@@ -930,8 +954,8 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "7",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "10.09.2026",
+      "planFact": "17.09.2026",
       "fact": "",
       "shipmentDoc": "",
       "favorite": false
@@ -939,7 +963,7 @@
     {
       "recordId": "20260901101634223_ln150t63b",
       "docNumber": "2026-754 (от 25.08.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "МАТ-05447",
       "name": "Отвертка шлицевая диэлектрическая Jonnesway SL DV13S275 2,4х75мм",
       "quantity": "10",
@@ -954,8 +978,8 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "7",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "10.09.2026",
+      "planFact": "17.09.2026",
       "fact": "",
       "shipmentDoc": "",
       "favorite": false
@@ -1035,7 +1059,7 @@
     {
       "recordId": "20260901101533463_r3olk1sll",
       "docNumber": "2026-754 (от 25.08.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "МАТ-07220",
       "name": "Ключ Т-образный Ceta Form Hex с шаром 6мм K11-060-200",
       "quantity": "4",
@@ -1050,8 +1074,8 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "7",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "10.09.2026",
+      "planFact": "17.09.2026",
       "fact": "",
       "shipmentDoc": "",
       "favorite": false
@@ -1107,7 +1131,7 @@
     {
       "recordId": "20260901101440279_114k5hxmg",
       "docNumber": "2026-754 (от 25.08.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "МАТ-07456",
       "name": "Обезжириватель Нефрас С2 80-120 канистра 20л Gigant GPS-20",
       "quantity": "2",
@@ -1122,8 +1146,8 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "7",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "10.09.2026",
+      "planFact": "17.09.2026",
       "fact": "",
       "shipmentDoc": "",
       "favorite": false
@@ -1131,7 +1155,7 @@
     {
       "recordId": "20260901101421511_v8x7lrggl",
       "docNumber": "2026-754 (от 25.08.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "МАТ-06816",
       "name": "Воронка металлическая прямая TopAuto 150мм ВМП150",
       "quantity": "1",
@@ -1146,8 +1170,8 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "7",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "10.09.2026",
+      "planFact": "17.09.2026",
       "fact": "",
       "shipmentDoc": "",
       "favorite": false
@@ -1179,7 +1203,7 @@
     {
       "recordId": "20260901101351463_5x8uirn5r",
       "docNumber": "2026-754 (от 25.08.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "МАТ-06105",
       "name": "Union Space темно-синий р.56-58 2000000112220",
       "quantity": "1",
@@ -1194,8 +1218,8 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "7",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "10.09.2026",
+      "planFact": "17.09.2026",
       "fact": "",
       "shipmentDoc": "",
       "favorite": false
@@ -1227,7 +1251,7 @@
     {
       "recordId": "20260901101322343_v9ohhnzgc",
       "docNumber": "2026-754 (от 25.08.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "МАТ-07191",
       "name": "Клещи для обжима наконечников электропроводов 0,25-8 мм2 GROSS 17724",
       "quantity": "2",
@@ -1242,8 +1266,8 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "7",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "10.09.2026",
+      "planFact": "17.09.2026",
       "fact": "",
       "shipmentDoc": "",
       "favorite": false
@@ -1251,7 +1275,7 @@
     {
       "recordId": "20260901101307047_kmromd5gx",
       "docNumber": "2026-754 (от 25.08.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "МАТ-07220",
       "name": "Торцевой шестигранный удлиненный ключ с шаром Thorvik HKLB50 H5 53094",
       "quantity": "10",
@@ -1266,8 +1290,8 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "7",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "10.09.2026",
+      "planFact": "17.09.2026",
       "fact": "",
       "shipmentDoc": "",
       "favorite": false
@@ -1275,7 +1299,7 @@
     {
       "recordId": "20260901101247767_cpu2wogtu",
       "docNumber": "2026-754 (от 25.08.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "МАТ-07220",
       "name": "Торцевой шестигранный ключ с шаром Thorvik HKB40 H4 53081",
       "quantity": "10",
@@ -1290,8 +1314,8 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "7",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "10.09.2026",
+      "planFact": "17.09.2026",
       "fact": "",
       "shipmentDoc": "",
       "favorite": false
@@ -1371,7 +1395,7 @@
     {
       "recordId": "20260901101125119_6pfnx7t31",
       "docNumber": "2026-754 (от 25.08.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "МАТ-04801",
       "name": "Бокорезы многофункциональные диэлектрические 206мм KRANZ KR-12-4652-3",
       "quantity": "10",
@@ -1386,8 +1410,8 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "7",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "10.09.2026",
+      "planFact": "17.09.2026",
       "fact": "",
       "shipmentDoc": "",
       "favorite": false
@@ -1496,13 +1520,13 @@
       "name": "Термовоздушный фен цифровой GJ-8018 LCD 450Вт 220В + 9 насадок и подставка",
       "quantity": "1",
       "unit": "шт",
-      "purchaseName": "Термовоздушный фен цифровой GJ- 8018 LCD\n450Вт 220В + 4 насадки и подставка",
+      "purchaseName": "ELEMENT 8858-I, Паяльная станция, Станция\nтермовоздушная (фен паяльный)\\ELEMENT",
       "purchaseQuantity": "1",
       "purchaseUnit": "шт",
-      "amount": "7054.00",
-      "supplier": "ООО \"Интернет Решения\"",
+      "amount": "5560.00",
+      "supplier": "АО \"ЧИП и Дип\"",
       "department": "11/0130 Служба АСУ и КИП",
-      "contract": "СЧ №  0237806506-0021",
+      "contract": "СЧ № 17878991",
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "7",
       "deliveryTerms": "Самовывоз",
@@ -1563,7 +1587,7 @@
     {
       "recordId": "20260901100906319_a6mo58mak",
       "docNumber": "2026-754 (от 25.08.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "МАТ-04925",
       "name": "НШВИ 1.5- 8 (100шт), Наконечник штыревой втулочный изолированный (8мм) черный 1.5мм² (100шт)",
       "quantity": "20",
@@ -1578,8 +1602,8 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "7",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "10.09.2026",
+      "planFact": "17.09.2026",
       "fact": "",
       "shipmentDoc": "",
       "favorite": false
@@ -1899,7 +1923,7 @@
     {
       "recordId": "20260901095944044_1v4ukv7dy",
       "docNumber": "2026-766 (от 28.08.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "МАТ-06488",
       "name": "Паяльная станция Sugon T28",
       "quantity": "1",
@@ -1914,8 +1938,8 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "14",
       "deliveryTerms": "Самовывоз",
-      "date": "",
-      "planFact": "",
+      "date": "10.09.2026",
+      "planFact": "24.09.2026",
       "fact": "",
       "shipmentDoc": "",
       "favorite": false
@@ -1923,7 +1947,7 @@
     {
       "recordId": "20260901095919488_98bbys82p",
       "docNumber": "2026-766 (от 28.08.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "МАТ-07764",
       "name": "Осциллограф OWON XDS3202E\n",
       "quantity": "1",
@@ -1938,8 +1962,8 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "70",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "10.09.2026",
+      "planFact": "19.11.2026",
       "fact": "",
       "shipmentDoc": "",
       "favorite": false
@@ -1947,7 +1971,7 @@
     {
       "recordId": "20260901095759726_4j73nyot7",
       "docNumber": "2026-769 (от 28.08.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "МАТ-07118",
       "name": "Лебедка ручная ЛР1000-УХЛ ТУ 3689-012-00217633-97",
       "quantity": "5",
@@ -1962,8 +1986,8 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "60",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "10.09.2026",
+      "planFact": "09.11.2026",
       "fact": "",
       "shipmentDoc": "",
       "favorite": false
@@ -1971,7 +1995,7 @@
     {
       "recordId": "20260901094803327_fp8zgfnu8",
       "docNumber": "2026-780 (от 31.08.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "МАТ-08062",
       "name": "Полотно ЗУБР L-210/225, Bi-Met, S1122VF к сабельной электроножовке 155700-U-21",
       "quantity": "500",
@@ -1986,8 +2010,8 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "7",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "10.09.2026",
+      "planFact": "17.09.2026",
       "fact": "",
       "shipmentDoc": "",
       "favorite": false
@@ -2019,7 +2043,7 @@
     {
       "recordId": "20260901091636920_srajhwxsf",
       "docNumber": "2026-780 (от 31.08.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "МАТ-05154",
       "name": "Круг отрезной ЗУБР Профессионал по металлу 230 x 1.6 x 22.2 мм для УШМ 36200-230-1.6_z03",
       "quantity": "500",
@@ -2034,8 +2058,8 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "7",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "10.09.2026",
+      "planFact": "17.09.2026",
       "fact": "",
       "shipmentDoc": "",
       "favorite": false
@@ -2043,7 +2067,7 @@
     {
       "recordId": "20260901091609313_nyvavv3qh",
       "docNumber": "2026-780 (от 31.08.2026)",
-      "status": "В работе",
+      "status": "Поставка",
       "id": "МАТ-06070",
       "name": "Пилки универсальные S4860DF (300 мм; BIM) для сабельной пилы ПРАКТИКА 773-576 ",
       "quantity": "500",
@@ -2058,8 +2082,8 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "7",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "10.09.2026",
+      "planFact": "17.09.2026",
       "fact": "",
       "shipmentDoc": "",
       "favorite": false
@@ -28376,8 +28400,52 @@
   ],
   "paymentsData": [
     {
-      "recordId": "20260909110228540_oq26qq5s2",
+      "recordId": "20260910153341939_4qnhgfkw5",
       "status": "План",
+      "date": "11.09.2026",
+      "amount": "151377.60",
+      "supplier": "ООО \"Невареактив\"",
+      "contract": "СЧ № 25749",
+      "agreement": "-",
+      "link": "file://share/Director/%D0%9E%D0%9E%D0%9F%D0%B8%D0%9A/%D0%97%D0%90%D0%AF%D0%92%D0%9A%D0%98-%20%D0%9E%D0%9E%D0%9F%D0%B8%D0%9A/%D0%B7.2026-%20%D0%9E%D0%9E%D0%9F%D0%B8%D0%9A/9%20-%D1%81%D0%B5%D0%BD%D1%82%D1%8F%D0%B1%D1%80%D1%8C/11.0142-2026-000723/%D0%A1%D1%87%D0%B5%D1%82%2025749%20_%20-%20anna.pdf",
+      "docNumber": "2026-723 (от 04.09.2026)"
+    },
+    {
+      "recordId": "20260910152809904_sk9k7hzyc",
+      "status": "План",
+      "date": "11.09.2026",
+      "amount": "4508.10",
+      "supplier": "ООО \"Комус\"",
+      "contract": "СЧ № 0ЕР/561465/20849063",
+      "agreement": "-",
+      "link": "file://share/Director/%D0%9E%D0%9E%D0%9F%D0%B8%D0%9A/%D0%97%D0%90%D0%AF%D0%92%D0%9A%D0%98-%20%D0%9E%D0%9E%D0%9F%D0%B8%D0%9A/%D0%B7.2026-%20%D0%9E%D0%9E%D0%9F%D0%B8%D0%9A/9%20-%D1%81%D0%B5%D0%BD%D1%82%D1%8F%D0%B1%D1%80%D1%8C/11.0130-2026-000754/%D0%A1%D1%87%D0%B5%D1%82%200EP-561465-20849063.pdf",
+      "docNumber": "2026-754 (от 25.08.2026)"
+    },
+    {
+      "recordId": "20260910152142967_4pqphhb56",
+      "status": "План",
+      "date": "11.09.2026",
+      "amount": "5560.00",
+      "supplier": "АО \"ЧИП и Дип\"",
+      "contract": "СЧ № 17878991",
+      "agreement": "-",
+      "link": "file://share/Director/%D0%9E%D0%9E%D0%9F%D0%B8%D0%9A/%D0%97%D0%90%D0%AF%D0%92%D0%9A%D0%98-%20%D0%9E%D0%9E%D0%9F%D0%B8%D0%9A/%D0%B7.2026-%20%D0%9E%D0%9E%D0%9F%D0%B8%D0%9A/9%20-%D1%81%D0%B5%D0%BD%D1%82%D1%8F%D0%B1%D1%80%D1%8C/11.0130-2026-000754/%D0%A7%D0%98%D0%9F%20%D0%B8%20%D0%94%D0%98%D0%9F%20(%D1%84%D0%B5%D0%BD).pdf",
+      "docNumber": "2026-754 (от 25.08.2026)"
+    },
+    {
+      "recordId": "20260910151451891_psdz7lflv",
+      "status": "План",
+      "date": "11.09.2026",
+      "amount": "1170.00",
+      "supplier": "ООО \"Абт-Групп\"",
+      "contract": "СЧ № УП-3420/11",
+      "agreement": "-",
+      "link": "file://share/Director/%D0%9E%D0%9E%D0%9F%D0%B8%D0%9A/%D0%97%D0%90%D0%AF%D0%92%D0%9A%D0%98-%20%D0%9E%D0%9E%D0%9F%D0%B8%D0%9A/%D0%B7.2026-%20%D0%9E%D0%9E%D0%9F%D0%B8%D0%9A/9%20-%D1%81%D0%B5%D0%BD%D1%82%D1%8F%D0%B1%D1%80%D1%8C/17.0030-2026-000799/%D0%90%D0%91%D0%A2-%D0%93%D0%A0%D0%A3%D0%9F%D0%9F%20%E2%84%96%20%D0%A3%D0%9F-3420%20%D0%BE%D1%82%2010.09.2026.pdf",
+      "docNumber": "2026-799 (от 08.09.2026)"
+    },
+    {
+      "recordId": "20260909110228540_oq26qq5s2",
+      "status": "Оплачено",
       "date": "09.09.2026",
       "amount": "11130.00",
       "supplier": "АО \"ЧИП и Дип\"",
@@ -28388,7 +28456,7 @@
     },
     {
       "recordId": "20260909110147501_o650ewbjt",
-      "status": "План",
+      "status": "Оплачено",
       "date": "09.09.2026",
       "amount": "70087.00",
       "supplier": "ВсеИнструменты.ру, ООО",
@@ -28399,7 +28467,7 @@
     },
     {
       "recordId": "20260909110100024_jkgsp81tp",
-      "status": "План",
+      "status": "Оплачено",
       "date": "09.09.2026",
       "amount": "49100.00",
       "supplier": "ООО «Техноберинг»",
@@ -28410,7 +28478,7 @@
     },
     {
       "recordId": "20260909104325544_49wzeyjl0",
-      "status": "План",
+      "status": "Оплачено",
       "date": "09.09.2026",
       "amount": "40979.80",
       "supplier": "ООО ПТК \"Калугаремпутьмаш-Сервис\"",
@@ -28421,7 +28489,7 @@
     },
     {
       "recordId": "20260909103025617_loyfb9ftc",
-      "status": "План",
+      "status": "Оплачено",
       "date": "09.09.2026",
       "amount": "127169.58",
       "supplier": "АО \"ТД \"Электротехмонтаж\"",
@@ -28431,19 +28499,8 @@
       "docNumber": "2026-757 (от 04.09.2026)"
     },
     {
-      "recordId": "20260909101036165_skkapkw5b",
-      "status": "План",
-      "date": "09.09.2026",
-      "amount": "7054.00",
-      "supplier": "ООО \"Интернет Решения\"",
-      "contract": "СЧ №  0237806506-0021",
-      "agreement": "-",
-      "link": "file://share/Director/%D0%9E%D0%9E%D0%9F%D0%B8%D0%9A/%D0%97%D0%90%D0%AF%D0%92%D0%9A%D0%98-%20%D0%9E%D0%9E%D0%9F%D0%B8%D0%9A/%D0%B7.2026-%20%D0%9E%D0%9E%D0%9F%D0%B8%D0%9A/9%20-%D1%81%D0%B5%D0%BD%D1%82%D1%8F%D0%B1%D1%80%D1%8C/11.0130-2026-000754/%D1%81%D1%87%D0%B5%D1%82%20%D0%9E%D0%97%D0%9E%D0%9D%20%D1%84%D0%B5%D0%BD.pdf",
-      "docNumber": "2026-754 (от 25.08.2026)"
-    },
-    {
       "recordId": "20260909100546245_bmmumn43z",
-      "status": "План",
+      "status": "Оплачено",
       "date": "09.09.2026",
       "amount": "445965.00",
       "supplier": "ООО по \"ВЗРК\"",
@@ -28454,7 +28511,7 @@
     },
     {
       "recordId": "20260909100211397_r6glglqkz",
-      "status": "План",
+      "status": "Оплачено",
       "date": "09.09.2026",
       "amount": "95915.51",
       "supplier": "ООО \"Базмон\"",
@@ -28465,7 +28522,7 @@
     },
     {
       "recordId": "20260908173227136_f3r4kw2gx",
-      "status": "План",
+      "status": "Оплачено",
       "date": "09.09.2026",
       "amount": "790000.00",
       "supplier": "ООО \"Базмон\"",
@@ -28476,14 +28533,14 @@
     },
     {
       "recordId": "20260908162357011_12rgyihw0",
-      "status": "План",
+      "status": "Оплачено",
       "date": "09.09.2026",
       "amount": "12870.00",
       "supplier": "ООО \"Абт Сталь\"",
       "contract": "СЧ № УП-205/11",
       "agreement": "-",
       "link": "file://share/Director/%D0%9E%D0%9E%D0%9F%D0%B8%D0%9A/%D0%97%D0%90%D0%AF%D0%92%D0%9A%D0%98-%20%D0%9E%D0%9E%D0%9F%D0%B8%D0%9A/%D0%B7.2026-%20%D0%9E%D0%9E%D0%9F%D0%B8%D0%9A/9%20-%D1%81%D0%B5%D0%BD%D1%82%D1%8F%D0%B1%D1%80%D1%8C/17.0030-2026-000776/%D1%81%D1%87%D0%B5%D1%82%20%D0%BD%D0%B0%20%D0%B4%D0%BE%D0%BF.%20%D0%B0%D1%80%D0%BC%D0%B0%D1%82%D1%83%D1%80%D1%83%20%D0%B4%20.12.pdf",
-      "docNumber": "2026-779 (от 08.09.2026)"
+      "docNumber": "2026-799 (от 08.09.2026)"
     },
     {
       "recordId": "20260904115436342_2uompj47r",
@@ -28494,7 +28551,7 @@
       "contract": "СЧ № УП-192/11",
       "agreement": "-",
       "link": "file://share/Director/%D0%9E%D0%9E%D0%9F%D0%B8%D0%9A/%D0%97%D0%90%D0%AF%D0%92%D0%9A%D0%98-%20%D0%9E%D0%9E%D0%9F%D0%B8%D0%9A/%D0%B7.2026-%20%D0%9E%D0%9E%D0%9F%D0%B8%D0%9A/9%20-%D1%81%D0%B5%D0%BD%D1%82%D1%8F%D0%B1%D1%80%D1%8C/17.0030-2026-000776/%D0%B4%D1%80%D1%83%D0%B3%D0%B8%D0%B5%20%D0%A2%D0%9C%D0%A6/%D0%A1%D1%87%D0%B5%D1%82%20%D0%BD%D0%B0%20%D0%BE%D0%BF%D0%BB%D0%B0%D1%82%D1%83%20%D0%90%D0%91%D0%A2-%D0%A1%D1%82%D0%B0%D0%BB%D1%8C%20(%D0%B1%D0%B5%D0%B7%20%D0%9D%D0%94%D0%A1%20%D0%91%D0%B0%D0%B3%D0%BD%D1%8E%D0%BA)%20%E2%84%96%20%D0%A3%D0%9F-192%20%D0%BE%D1%82%2004.09.2026.pdf",
-      "docNumber": "2026-779 (от 08.09.2026)"
+      "docNumber": "2026-799 (от 08.09.2026)"
     },
     {
       "recordId": "20260904115059261_gvahwrvtp",
@@ -33339,5 +33396,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-09-09T14:38:49.451Z"
+  "exportDate": "2026-09-10T12:38:42.816Z"
 }
