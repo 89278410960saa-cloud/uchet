@@ -7302,17 +7302,19 @@ function updateSuppliersFilterList() {
         let contractHtml = '';
         let agreementHtml = '';
         
-        if (foundInAccounting && contractText) {
-            contractHtml = `<a href="#" class="contract-filter-link" data-contract="${encodeURIComponent(contractText)}" data-supplier="${encodeURIComponent(supplier)}" style="color: #66c0f4; text-decoration: underline; cursor: pointer;">${escapeString(contractText)}</a>`;
-            agreementHtml = escapeString(agreementText);
-        } else {
-            contractHtml = escapeString(contractText);
-            if (agreementText && agreementText.trim() !== '-') {
-                agreementHtml = `<a href="#" class="contract-filter-link" data-contract="${encodeURIComponent(agreementText)}" data-supplier="${encodeURIComponent(supplier)}" style="color: #66c0f4; text-decoration: underline; cursor: pointer;">${escapeString(agreementText)}</a>`;
-            } else {
-                agreementHtml = escapeString(agreementText);
-            }
-        }
+        const applicationAttr = `data-application="${encodeURIComponent(item.docNumber || '')}"`;
+
+if (foundInAccounting && contractText) {
+    contractHtml = `<a href="#" class="contract-filter-link" data-contract="${encodeURIComponent(contractText)}" data-supplier="${encodeURIComponent(supplier)}" ${applicationAttr} style="color: #66c0f4; text-decoration: underline; cursor: pointer;">${escapeString(contractText)}</a>`;
+    agreementHtml = escapeString(agreementText);
+} else {
+    contractHtml = escapeString(contractText);
+    if (agreementText && agreementText.trim() !== '-') {
+        agreementHtml = `<a href="#" class="contract-filter-link" data-contract="${encodeURIComponent(agreementText)}" data-supplier="${encodeURIComponent(supplier)}" ${applicationAttr} style="color: #66c0f4; text-decoration: underline; cursor: pointer;">${escapeString(agreementText)}</a>`;
+    } else {
+        agreementHtml = escapeString(agreementText);
+    }
+}
         
         const linkHtml = item.link
             ? `<span class="link-icon" data-link="${item.link.replace(/"/g, '&quot;')}" title="Скопировать ссылку" style="cursor:pointer;">🔗</span>`
@@ -8284,7 +8286,7 @@ const docCell = row.querySelector('td:nth-child(5)');
 if (docCell) {
     const docText = item.contract || '';
     if (docText) {
-        docCell.innerHTML = `<a href="#" class="contract-filter-link" data-contract="${encodeURIComponent(docText)}" data-supplier="${encodeURIComponent(item.supplier || '')}" style="color: #66c0f4; text-decoration: underline; cursor: pointer;">${escapeString(docText)}</a>`;
+        docCell.innerHTML = `<a href="#" class="contract-filter-link" data-contract="${encodeURIComponent(docText)}" data-supplier="${encodeURIComponent(item.supplier || '')}" data-application="${encodeURIComponent(item.docNumber || '')}" style="color: #66c0f4; text-decoration: underline; cursor: pointer;">${escapeString(docText)}</a>`;
     }
 }
         
@@ -8705,7 +8707,7 @@ function getFutureDeliveries() {
         return date >= today && date <= thirtyDaysLater;
     });
 }
-function filterByContract(contract, supplier) {
+function filterByContract(contract, supplier, application) {
     if (!contract) return;
     showPage('accounting'); // переключаем на страницу учёта
     setTimeout(() => {
@@ -8739,6 +8741,11 @@ function filterByContract(contract, supplier) {
             supplierFilter.value = supplier;
             updateFilterHighlight(supplierFilter);
         }
+        // ← НОВОЕ: если передана заявка, устанавливаем фильтр по заявке
+        if (application && applicationFilter) {
+            applicationFilter.value = application;
+            updateFilterHighlight(applicationFilter);
+        }
 
         // Применяем фильтрацию
         filterAccountingTable();
@@ -8755,15 +8762,15 @@ document.addEventListener('click', function(e) {
     e.preventDefault(); // предотвращаем переход по ссылке (href="#")
 
     // Извлекаем закодированные данные из data-атрибутов и декодируем их
-    const contract = decodeURIComponent(link.dataset.contract);
-    const supplier = decodeURIComponent(link.dataset.supplier);
+    const contract = decodeURIComponent(link.dataset.contract || '');
+    const supplier = decodeURIComponent(link.dataset.supplier || '');
+    const application = decodeURIComponent(link.dataset.application || ''); // ← НОВОЕ
 
     // Проверяем, что функция filterByContract существует
     if (typeof filterByContract === 'function') {
-        filterByContract(contract, supplier);
+        filterByContract(contract, supplier, application); // ← передаём заявку
     } else {
         console.error('Функция filterByContract не определена!');
-        // Можно также запасной вариант – просто установить поиск через поле ввода
         const searchInput = document.getElementById('searchAccountingInput');
         if (searchInput) {
             searchInput.value = contract;
@@ -11457,6 +11464,8 @@ function showLoginPage() {
     document.getElementById('login-page').classList.add('active');
     document.querySelector('.sidebar').classList.add('hidden');
     document.querySelector('.main-content').style.display = 'none';
+    const startBtn = document.getElementById('startButton');
+if (startBtn) setTimeout(() => startBtn.focus(), 50);
 }
 
 // Скрываем страницу входа
