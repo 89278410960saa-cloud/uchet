@@ -2032,7 +2032,7 @@ tr.status-supply {
 }
 
         /* Модальное окно */
-        .modal {
+    .modal {
     display: flex;
     position: fixed;
     top: 0;
@@ -2041,12 +2041,12 @@ tr.status-supply {
     height: 100%;
     background-color: rgba(0,0,0,0.7);
     z-index: 1000;
-    /* Убираем overflow: auto, чтобы не мешать flex */
-    display: flex;                /* включаем flex */
-    justify-content: flex-end;    /* прижимаем содержимое к правому краю */
+    justify-content: flex-end;
     align-items: stretch;
-    padding: 0;                  /* убираем лишние отступы */
-    padding-right: 20px;
+    padding: 0;
+
+    /* Отступ = смещение контейнера + padding main-content + желаемый зазор */
+    padding-right: calc(max(0px, (100vw - 1630px) / 2) + 0px + 20px);
 }
 
         .modal-content {
