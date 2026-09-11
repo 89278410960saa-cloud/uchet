@@ -29,6 +29,12 @@
             transform-origin: top left;
             font-size: 13.4px;
         }
+        /* Скрываем каркас приложения до входа (анти-FOUC).
+   Как только на <body> появляется класс .app-ready — правило перестаёт действовать. */
+body:not(.app-ready) .sidebar,
+body:not(.app-ready) .main-content {
+    display: none !important;
+}
         .sidebar, .main-content {
         display: none;
         }
@@ -378,9 +384,7 @@
     line-height: 10px !important;
     padding: 5.36px 8.04px !important;   /* вертикальный + горизонтальный отступ, как у остальных таблиц */
 }
-        .sidebar, .main-content {
-            display: none;
-        }
+
 
         #login-page {
             display: flex;
@@ -2635,9 +2639,7 @@ tr.status-supply {
     padding: 5.36px !important;
     line-height: 1.2 !important;
 }
-.hidden-column {
-    display: none !important;
-}
+
     
 /* === SIDEBAR SIZE INCREASE (+10%) ONLY === */
 .sidebar {
@@ -3096,7 +3098,7 @@ button:hover{background:#222733!important}
 <body style="zoom: 100%; transform: scale(1); transform-origin: left top; width: 100%; height: 100%;">
     
     <!-- Сайдбар меню -->
-<div class="sidebar hidden">
+<div class="sidebar hidden" style="display: none;">
     <!-- ОДИН РЯД СО ВСЕМИ ПУНКТАМИ (включая бывшие настройки) -->
     <div class="sidebar-row main-row">
         <!-- Основные страницы -->
@@ -3161,10 +3163,6 @@ button:hover{background:#222733!important}
             <span class="menu-icon"><i class="fas fa-trash"></i></span>
             <span class="menu-text">Удалить</span>
         </div>
-        <div class="sidebar-cell menu-item" id="toggleHideColumnsBtn" onclick="toggleHideColumns()">
-            <span class="menu-icon"><i class="fas fa-compress"></i></span>
-            <span class="menu-text">Compact</span>
-        </div>
         <div class="sidebar-cell menu-item" onclick="showGithubSettingsModal()" title="GitHub настройки">
         <span class="menu-icon"><i class="fas fa-key"></i></span>
         <span class="menu-text">Вход</span>
@@ -3179,7 +3177,7 @@ button:hover{background:#222733!important}
 
 
     <!-- Основной контент -->
-    <div class="main-content" style="padding: 0px; height: 100vh;">
+    <div class="main-content" style="padding: 0px; height: 100vh; display: none;">
         <!-- Страница Учет -->
 <div id="accounting" class="page">
     <div class="container" style="padding-top: 2.01px;padding-left: 3.35px;padding-right: 3.35px;border-left-width: 0.0px;border-right-width: 0.0px;border-top-width: 0.0px;border-bottom-width: 0.0px;padding-bottom: 3.35px; display: flex; flex-direction: column; height: 100%;">
@@ -4144,16 +4142,19 @@ button:hover{background:#222733!important}
         // ========== ФУНКЦИИ АВТОРИЗАЦИИ ==========
         
 
-        function showMainInterface() {
-    // Показываем сайдбар и контент (если они скрыты)
-    document.querySelector('.sidebar').style.display = 'block';
-    document.querySelector('.main-content').style.display = 'block';
-    
-    // Обновляем интерфейс
+    function showMainInterface() {
+    document.body.classList.add('app-ready');
+
+    const sidebar = document.querySelector('.sidebar');
+    sidebar.classList.remove('hidden');
+    sidebar.style.display = 'flex';   // ← было ''
+
+    const main = document.querySelector('.main-content');
+    main.style.display = 'flex';      // ← было ''
+
     updateUserButton();
     updateCommentFieldPermissions();
-    
-    // Показываем или скрываем элементы для администратора
+
     document.querySelectorAll('.admin-only').forEach(el => {
         el.style.display = isAdmin ? 'flex' : 'none';
     });
@@ -6704,10 +6705,8 @@ if (emailCell) {
             }
         }
     }
-    
-    // Применяем компактный режим (скрытие заголовков)
-    applyTheadHiding();
-}
+    }
+
 
         function clearCounterpartiesFilters() {
     const searchInput = document.getElementById('searchCounterpartiesInput');
@@ -10618,10 +10617,9 @@ async function exportToExcel(type) {
     const headers = [];
 
     headerCells.forEach((th, idx) => {
-        if (th.classList.contains('hidden-column')) return; // пропускаем скрытые
-        visibleColumnIndices.push(idx);
-        headers.push(th.textContent.trim());
-    });
+    visibleColumnIndices.push(idx);
+    headers.push(th.textContent.trim());
+});
 
     if (headers.length === 0) {
         alert('Нет видимых столбцов для экспорта');
@@ -11160,7 +11158,6 @@ function showPage(pageId) {
             });
             const activeMenuItem = document.querySelector(`.sidebar-cell.menu-item[data-page="${pageId}"]`);
             if (activeMenuItem) activeMenuItem.classList.add('active');
-            if (typeof updateHideColumnsButtonState === 'function') updateHideColumnsButtonState();
             
             // Закрываем меню настроек
             document.querySelectorAll('#settingsMenu .sidebar-cell.menu-item').forEach(item => {
@@ -11476,10 +11473,16 @@ if (startBtn) setTimeout(() => startBtn.focus(), 50);
 // Скрываем страницу входа
 function hideLoginPage() {
     document.getElementById('login-page').classList.remove('active');
-    document.querySelector('.sidebar').classList.remove('hidden');
-    document.querySelector('.sidebar').style.display = ''; // сброс инлайн-стилей
-    document.querySelector('.main-content').style.display = 'block';
-    // Принудительно перерисовываем таблицы после показа
+
+    document.body.classList.add('app-ready');
+
+    const sidebar = document.querySelector('.sidebar');
+    sidebar.classList.remove('hidden');
+    sidebar.style.display = 'flex';   // ← явно flex
+
+    const main = document.querySelector('.main-content');
+    main.style.display = 'flex';      // ← явно flex
+
     setTimeout(() => {
         updateAllTables();
     }, 10);
@@ -12465,200 +12468,8 @@ window.addEventListener('click', function(event) {
 </script>
 
 <script>
-    // ========== УПРАВЛЕНИЕ СКРЫТИЕМ СТОЛБЦОВ ==========
-    let hideColumnsEnabled = false; // глобальный флаг
 
-    // Конфигурация: для каждой страницы – массив индексов столбцов (0‑based)
-    const COLUMNS_TO_HIDE = {
-        accounting: [2, 13],   
-        counterparties: [5, 6],                
-        payments: [1],                         
-        proxy: [1, 6],                         
-        settlement: [2, 6, 7]                  
-    };
-
-    // Соответствие названий страниц их HTML‑идентификаторам
-    const PAGE_ID_MAP = {
-        accounting: 'accounting',
-        counterparties: 'counterparties',
-        payments: 'payments',
-        proxy: 'proxy-registry',
-        settlement: 'settlement'
-    };
-
-    // Загружаем сохранённое состояние
-    function loadHideColumnsSetting() {
-        const saved = localStorage.getItem('hideColumnsEnabled');
-        if (saved !== null) {
-            hideColumnsEnabled = saved === 'true';
-        }
-        updateHideColumnsButtonState();
-    }
-
-    // Сохраняем состояние
-    function saveHideColumnsSetting() {
-        localStorage.setItem('hideColumnsEnabled', hideColumnsEnabled);
-    }
-
-    // Обновляем внешний вид кнопки в меню
-    function updateHideColumnsButtonState() {
-    const btn = document.getElementById('toggleHideColumnsBtn');
-    if (!btn) return;
-    if (hideColumnsEnabled) {
-        btn.classList.add('active');
-    } else {
-        btn.classList.remove('active');
-    }
-}
-
-    // Основной переключатель
-    function toggleHideColumns() {
-    hideColumnsEnabled = !hideColumnsEnabled;
-    saveHideColumnsSetting();
-    updateHideColumnsButtonState();
-
-    // Применяем скрытие ко всем таблицам
-    applyTheadHiding();          // скрываем/показываем заголовки
-    applyCurrentColumnHiding();  // скрываем столбцы по индексам
-
-    showAutosaveNotification(hideColumnsEnabled ? 'Компактный режим (заголовки и служебные столбцы скрыты)' : 'Обычный режим');
-}
-
-    // Применяет скрытие/показ для конкретной таблицы по её ID и индексам
-    function applyColumnHidingForTable(tableId, columnIndices) {
-        const table = document.getElementById(tableId);
-        if (!table) return;
-
-        // Удаляем класс hidden-column со всех ячеек и заголовков
-        const allCells = table.querySelectorAll('th, td');
-        allCells.forEach(cell => cell.classList.remove('hidden-column'));
-
-        if (!hideColumnsEnabled) return; // если режим выключен – ничего не скрываем
-
-        // Для каждого индекса столбца скрываем все ячейки в этом столбце
-        columnIndices.forEach(colIdx => {
-            // Скрываем заголовок
-            const headerRow = table.querySelector('thead tr');
-            if (headerRow && headerRow.children[colIdx]) {
-                headerRow.children[colIdx].classList.add('hidden-column');
-            }
-            // Скрываем все строки тела таблицы
-            const rows = table.querySelectorAll('tbody tr');
-            rows.forEach(row => {
-                if (row.children[colIdx]) {
-                    row.children[colIdx].classList.add('hidden-column');
-                }
-            });
-        });
-    }
-function applyTheadHiding() {
-    const allTables = document.querySelectorAll('table');
-    allTables.forEach(table => {
-        const thead = table.querySelector('thead');
-        if (thead) {
-            thead.style.display = hideColumnsEnabled ? 'none' : '';
-        }
-    });
-}
-    // Применяет настройки для страницы по её ID (accounting, counterparties, ...)
-    function applyColumnHidingForPage(pageId) {
-    applyTheadHiding(); // скрываем заголовки
-
-    const config = COLUMNS_TO_HIDE[pageId];
-    if (!config) return;
-
-    let tableId = pageId;
-    if (pageId === 'proxy') tableId = 'proxyTable';
-    else if (pageId === 'settlement') tableId = 'settlementTable';
-    else if (pageId === 'payments') tableId = 'paymentsTable';
-    else if (pageId === 'counterparties') tableId = 'counterpartiesTable';
-    else if (pageId === 'accounting') tableId = 'accountingTable';
-
-    applyColumnHidingForTable(tableId, config);
-}
-
-    // Применяет настройки для всех страниц (обычно после переключения режима)
-    function applyCurrentColumnHiding() {
-    applyTheadHiding();
-    for (const [pageId] of Object.entries(COLUMNS_TO_HIDE)) {
-        const realPageId = PAGE_ID_MAP[pageId];
-        if (realPageId) {
-            const pageElement = document.getElementById(realPageId);
-            if (pageElement) {
-                applyColumnHidingForPage(pageId);
-            }
-        }
-    }
-}
-
-    // Перехватываем showPage, чтобы применять скрытие при смене страницы
-    const originalShowPage = window.showPage;
-    if (originalShowPage) {
-        window.showPage = function(pageId) {
-            originalShowPage(pageId);
-            // Через небольшую задержку, так как таблицы могут ещё не отрисоваться
-            setTimeout(() => {
-                for (const [key, val] of Object.entries(PAGE_ID_MAP)) {
-                    if (val === pageId) {
-                        applyColumnHidingForPage(key);
-                        break;
-                    }
-                }
-            }, 150);
-        };
-    }
-
-    // Дополнительно: после обновления каждой таблицы вызываем скрытие столбцов
-    function patchTableUpdateFunctions() {
-        const originalUpdateAccounting = window.updateAccountingTable;
-        if (originalUpdateAccounting) {
-            window.updateAccountingTable = function() {
-                originalUpdateAccounting();
-                applyColumnHidingForPage('accounting');
-            };
-        }
-
-        const originalUpdateCounterparties = window.updateCounterpartiesTable;
-        if (originalUpdateCounterparties) {
-            window.updateCounterpartiesTable = function() {
-                originalUpdateCounterparties();
-                applyColumnHidingForPage('counterparties');
-            };
-        }
-
-        const originalUpdatePayments = window.updatePaymentsTable;
-        if (originalUpdatePayments) {
-            window.updatePaymentsTable = function() {
-                originalUpdatePayments();
-                applyColumnHidingForPage('payments');
-            };
-        }
-
-        const originalUpdateProxy = window.updateProxyTable;
-        if (originalUpdateProxy) {
-            window.updateProxyTable = function() {
-                originalUpdateProxy();
-                applyColumnHidingForPage('proxy');
-            };
-        }
-
-        const originalUpdateSettlement = window.updateSettlementTable;
-        if (originalUpdateSettlement) {
-            window.updateSettlementTable = function() {
-                originalUpdateSettlement();
-                applyColumnHidingForPage('settlement');
-            };
-        }
-    }
-
-    // Инициализация при загрузке
-    document.addEventListener('DOMContentLoaded', function() {
-        loadHideColumnsSetting();
-        applyCurrentColumnHiding();
-        patchTableUpdateFunctions();
-        initFiltersHighlight();
-    });
-    // При загрузке страницы показываем блюр на 2 секунды
+// При загрузке страницы показываем блюр на 2 секунды
 document.addEventListener('DOMContentLoaded', function() {
     setTimeout(() => {
         const blur = document.getElementById('pageTransitionBlur');
@@ -12666,6 +12477,8 @@ document.addEventListener('DOMContentLoaded', function() {
         if (blur) blur.classList.remove('active');
         if (spinner) spinner.classList.remove('active');
     }, 1000);
+
+    initFiltersHighlight(); // <-- оставляем подсветку фильтров
 });
     // Функция для обновления класса подсветки на одном элементе
 function updateFilterHighlight(element) {
