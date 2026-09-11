@@ -41,7 +41,6 @@
             position: fixed;
             left: 0;
             top: 0;
-            border-right: 0.67px solid #3d4450;
             box-shadow: 1.34px 0 6.7px rgba(0,0,0,0.3);
             z-index: 1000;
             overflow-y: hidden;
@@ -2026,11 +2025,11 @@ tr.status-supply {
             overflow: hidden;
         }
 
-        .page.active {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-        }
+    .page.active {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
 
         /* Модальное окно */
         .modal {
@@ -2659,7 +2658,6 @@ tr.status-supply {
 .sidebar {
     width: 100px !important;
     background: linear-gradient(180deg, #0f172a 0%, #020617 100%);
-    border-right: 1px solid rgba(148,163,184,0.15);
     box-shadow: 4px 0 24px rgba(0,0,0,0.4);
     font-size: 110%;
 }
@@ -2884,8 +2882,6 @@ button:hover,
 .sidebar {
     width: 100px;
     background: linear-gradient(180deg, #0f172a 0%, #020617 100%);
-    border-right: 1px solid rgba(148,163,184,0.15);
-    box-shadow: 4px 0 24px rgba(0,0,0,0.4);
     font-size: 110%;
 }
 
@@ -2928,7 +2924,6 @@ button:hover,
 .sidebar {
     width: 100px !important;          /* фиксированная ширина для текста */
     background: linear-gradient(180deg, #0f172a 0%, #020617 100%);
-    border-right: 1px solid rgba(148,163,184,0.2);
     padding: 10px;
     display: flex;
     flex-direction: column;
@@ -3022,7 +3017,6 @@ body{background:var(--p-bg)!important;color:var(--p-text)!important}
 /* SIDEBAR */
 .sidebar{
   background:var(--p-panel)!important;
-  border-right:1px solid var(--p-border)!important;
   box-shadow:none!important;
 }
 .main-content{margin-left:100px!important}
@@ -12070,28 +12064,16 @@ input:checked + .slider:before {
 .sidebar {
     position: fixed !important;
     top: 0 !important;
-    bottom: auto !important;
-    left: 0 !important;
-    right: 0 !important;
-    width: 100% !important;
-    min-width: 0 !important;
-    max-width: 100% !important;
-    height: auto !important;
-    min-height: 50px !important;
-    padding: 4px 10px !important;
+    left: 50% !important;
+    right: auto !important;
+    transform: translateX(-50%) !important;
+    width: calc(100% - 24px) !important;
+    max-width: 1600px !important;
     margin: 0 !important;
-    background: linear-gradient(180deg, #0f172a 0%, #020617 100%) !important;
-    border-bottom: 1px solid rgba(148, 163, 184, 0.2) !important;
-    border-top: none !important;
-    border-left: none !important;
-    border-right: none !important;
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4) !important;
-    /* display: none !important;  <-- УБРАЛИ ЭТУ СТРОКУ */
-    flex-direction: column !important;
-    align-items: stretch !important;
-    gap: 4px !important;
-    z-index: 1000 !important;
-    overflow: visible !important;
+
+    height: auto !important;        
+    min-height: 0 !important;       
+    padding: 6px 8px !important;    
 }
 
 /* Скрываем сайдбар через класс (используется на странице входа) */
@@ -12210,13 +12192,31 @@ input:checked + .slider:before {
 
 /* Основной контент — теперь без левого отступа, с отступом снизу под сайдбар */
 .main-content {
-    margin-left: 0 !important;
-    padding-top: 55px !important;
+    margin-left: 0 !important;         /* ← убиваем старые 90/100/110px */
+    margin-right: 0 !important;
+    padding-top: 60px !important;      /* ← отступ под горизонтальный сайдбар */
+    padding-left: 12px !important;
+    padding-right: 12px !important;
     padding-bottom: 6px !important;
     height: 100vh !important;
     overflow: hidden !important;
-    flex: 1 !important;
     box-sizing: border-box !important;
+    flex: 1 !important;
+}
+
+.main-content > .page > .container {
+    max-width: 1600px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+@media (max-width: 900px) {
+    .main-content {
+        padding-left: 4px !important;
+        padding-right: 4px !important;
+    }
 }
 
 /* Адаптив для маленьких экранов */
