@@ -3245,7 +3245,11 @@ button:hover{background:#222733!important}
             </div>
             
             <div id="quickApplicationFilters" class="quick-filters-container" style="display: none; flex: 3 1 0%; max-width: none; width: 100%; min-height: 46.9px;"></div>
-            
+            <!-- Быстрые фильтры по контрагентам (для режимов «Просроченные» и «Поставки на неделю») -->
+<div id="quickSupplierFilters" class="quick-filters-container" style="display: none; flex: 3 1 0%; max-width: none; width: 100%; min-height: 46.9px;">
+    <div class="quick-filters-label">Поставщики:</div>
+    <div class="quick-filters" id="quickSupplierFiltersList"></div>
+</div>
             <div class="comment-control hidden" style="margin-bottom: 6.7px; margin-top: 5.36px; display: none;">
                 <input type="text" id="applicationComment" placeholder="Комментарии (только просмотр)" onchange="saveApplicationComment()" style="background-color: rgb(42, 71, 94); color: rgb(255, 215, 0); font-weight: bold;" readonly="true" disabled="true">
                 <button onclick="saveApplicationComment()" id="saveCommentBtn" disabled="true">💾</button>
@@ -5389,7 +5393,7 @@ if (accountingData.length > 0) {
     showFavoritesOnly = false;
 localStorage.setItem(FAVORITE_STORAGE_KEY, 'false');
 updateFavoriteButton();
-    
+hideSupplierQuickFilters();    
     // Показываем уведомление
     showAutosaveNotification('Фильтры сброшены');
 }
@@ -5690,30 +5694,13 @@ function showOverdueOnly() {
         return da - db;
     });
 
-    // Управление видимостью заголовка
-    if (thead) {
-        thead.style.display = candidates.length > 0 ? '' : 'none';
-    }
+    // Сохраняем кандидатов и рендерим быстрые фильтры по поставщикам
+    _currentModeCandidates = candidates;
+    _currentModeType = 'overdue';
+    _quickSupplierFilterValue = '';
+    renderSupplierQuickFilters(candidates);
+    applyModeSupplierFilter();
 
-    // Очищаем tbody и вставляем отсортированные строки
-    tbody.innerHTML = '';
-
-    if (candidates.length === 0) {
-        const noData = document.createElement('tr');
-        noData.setAttribute('data-no-results', 'true');
-        noData.innerHTML = `
-            <td colspan="18" style="text-align: center; color: #8f98a0; padding: 20px;">
-                Нет просроченных поставок
-            </td>`;
-        tbody.appendChild(noData);
-    } else {
-        candidates.forEach(({ tr }) => {
-            tr.style.display = '';
-            tbody.appendChild(tr);
-        });
-    }
-
-    updateCommentField();
     showAutosaveNotification(`Показано ${candidates.length} просроченных поставок (отсортировано по Плану)`);
 }
 // ========== ФУНКЦИЯ ДЛЯ ПЕРЕКЛЮЧЕНИЯ РЕЖИМА ПРОСРОЧЕННЫХ ==========
@@ -5941,36 +5928,14 @@ function showWeeklyDeliveriesOnly() {
         return da - db;
     });
 
-    // ---- 6. Управляем видимостью заголовка таблицы ----
-    if (thead) {
-        thead.style.display = candidates.length > 0 ? '' : 'none';
-    }
+    // Сохраняем кандидатов и рендерим быстрые фильтры по поставщикам
+    _currentModeCandidates = candidates;
+    _currentModeType = 'weekly';
+    _quickSupplierFilterValue = '';
+    renderSupplierQuickFilters(candidates);
+    applyModeSupplierFilter();
 
-    // ---- 7. Сначала очищаем tbody, затем добавляем отсортированные строки ----
-    tbody.innerHTML = ''; // удаляем все строки
-
-    if (candidates.length === 0) {
-        // ---- 8. Если ничего не найдено – выводим сообщение ----
-        const noData = document.createElement('tr');
-        noData.setAttribute('data-no-results', 'true');
-        noData.innerHTML = `
-            <td colspan="18" style="text-align: center; color: #8f98a0; padding: 20px;">
-                Нет поставок на ближайшую неделю
-            </td>`;
-        tbody.appendChild(noData);
-    } else {
-        // Добавляем отсортированные строки в правильном порядке
-        candidates.forEach(({ tr }) => {
-            // Убираем инлайн‑display, который могли установить ранее
-            tr.removeAttribute('style');
-            tbody.appendChild(tr); // перемещаем строку в нужное место
-        });
-    }
-
-    // ---- 9. Обновляем поле комментария (оно зависит от выбранной заявки) ----
-    updateCommentField();
-
-    // ---- 10. Уведомление о результате ----
+    // Уведомление о результате
     showAutosaveNotification(
         `Показано ${candidates.length} поставок на неделю (отсортировано по Плану)`
     );
@@ -6030,6 +5995,111 @@ function updateWeeklyDeliveriesButton() {
         weeklyDeliveriesBtn.textContent = `Поставки на неделю (${count})`;
     }
 }
+
+// ========== БЫСТРЫЕ ФИЛЬТРЫ ПО ПОСТАВЩИКАМ (Просроченные / Поставки на неделю) ==========
+let _quickSupplierFilterValue = '';
+let _currentModeCandidates = [];
+let _currentModeType = '';
+
+function getSupplierFromRow(tr) {
+    const cells = tr.querySelectorAll('td');
+    return (cells[9] ? cells[9].textContent.trim() : '') || '(не указан)';
+}
+
+function renderSupplierQuickFilters(candidates) {
+    const container = document.getElementById('quickSupplierFilters');
+    const listContainer = document.getElementById('quickSupplierFiltersList');
+    if (!container || !listContainer) return;
+
+    // Собираем уникальных поставщиков (без подсчёта количества)
+    const suppliersSet = new Set();
+    candidates.forEach(({ tr }) => {
+        suppliersSet.add(getSupplierFromRow(tr));
+    });
+
+    if (suppliersSet.size === 0) {
+        container.style.display = 'none';
+        listContainer.innerHTML = '';
+        return;
+    }
+
+    listContainer.innerHTML = '';
+
+    // Кнопка "Все" — без количества
+    const allBtn = document.createElement('button');
+    allBtn.type = 'button';
+    allBtn.className = 'quick-filter-btn' + (_quickSupplierFilterValue === '' ? ' active' : '');
+    allBtn.textContent = 'Все';
+    allBtn.title = 'Показать всех поставщиков';
+    allBtn.onclick = () => {
+        _quickSupplierFilterValue = '';
+        listContainer.querySelectorAll('.quick-filter-btn').forEach(b => b.classList.remove('active'));
+        allBtn.classList.add('active');
+        applyModeSupplierFilter();
+    };
+    listContainer.appendChild(allBtn);
+
+    // Кнопки по каждому поставщику — без количества
+    Array.from(suppliersSet)
+        .sort((a, b) => a.localeCompare(b, 'ru'))
+        .forEach(supplier => {
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'quick-filter-btn' + (_quickSupplierFilterValue === supplier ? ' active' : '');
+            btn.textContent = supplier;
+            btn.title = supplier;
+            btn.onclick = () => {
+                _quickSupplierFilterValue = supplier;
+                listContainer.querySelectorAll('.quick-filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                applyModeSupplierFilter();
+            };
+            listContainer.appendChild(btn);
+        });
+
+    container.style.display = 'flex';
+}
+
+function applyModeSupplierFilter() {
+    const tbody = document.querySelector('#accountingTable tbody');
+    const thead = document.querySelector('#accountingTable thead');
+    if (!tbody) return;
+
+    const filtered = _quickSupplierFilterValue
+        ? _currentModeCandidates.filter(({ tr }) => getSupplierFromRow(tr) === _quickSupplierFilterValue)
+        : _currentModeCandidates;
+
+    tbody.innerHTML = '';
+
+    if (filtered.length === 0) {
+        if (thead) thead.style.display = 'none';
+        const noData = document.createElement('tr');
+        noData.setAttribute('data-no-results', 'true');
+        noData.innerHTML = `<td colspan="15" style="text-align: center; color: #8f98a0; padding: 20px;">Нет записей по выбранному поставщику</td>`;
+        tbody.appendChild(noData);
+    } else {
+        if (thead) thead.style.display = '';
+        filtered.forEach(({ tr }) => {
+            tr.style.display = '';
+            tbody.appendChild(tr);
+        });
+    }
+
+    updateCommentField();
+}
+
+function hideSupplierQuickFilters() {
+    const container = document.getElementById('quickSupplierFilters');
+    if (container) {
+        container.style.display = 'none';
+        const listContainer = document.getElementById('quickSupplierFiltersList');
+        if (listContainer) listContainer.innerHTML = '';
+    }
+    _quickSupplierFilterValue = '';
+    _currentModeCandidates = [];
+    _currentModeType = '';
+}
+
 // ========== ФУНКЦИИ СТАТИСТИКИ ПО СТАТУСАМ ==========
 function showStatusStatsModal() {
     // Инициализируем фильтр по годам
@@ -9324,14 +9394,16 @@ const filteredCells = allCells.filter((_, index) => !excludeIndices.includes(ind
 
     // Отображаем блок с кнопками заявок
     quickFiltersContainer.innerHTML = '';
-    const label = document.createElement('div');
+   const label = document.createElement('div');
     label.className = 'quick-filters-label';
     label.textContent = 'Заявки:';
     quickFiltersContainer.appendChild(label);
 
+    // Контейнер для кнопок
     const filtersContainer = document.createElement('div');
     filtersContainer.className = 'quick-filters';
 
+    // Сортировка заявок
     const sortedApplications = Array.from(applicationsWithStatus).sort((a, b) => {
         const numA = parseInt(a.replace(/\D/g, '')) || 0;
         const numB = parseInt(b.replace(/\D/g, '')) || 0;
@@ -9340,18 +9412,48 @@ const filteredCells = allCells.filter((_, index) => !excludeIndices.includes(ind
 
     const currentApplicationFilter = document.getElementById('applicationFilter').value.trim();
 
+    // ─── Кнопка «Все» ───
+    const allBtn = document.createElement('button');
+    allBtn.type = 'button';
+    allBtn.className = `quick-filter-btn status-${getStatusClass(statusFilter)} all-btn`;
+    allBtn.textContent = 'Все';
+    allBtn.title = 'Показать все заявки';
+    if (currentApplicationFilter === '') {
+        allBtn.classList.add('active');
+    }
+    allBtn.onclick = () => {
+        // Снимаем активные классы со всех кнопок
+        filtersContainer.querySelectorAll('.quick-filter-btn').forEach(b => b.classList.remove('active'));
+        allBtn.classList.add('active');
+        // Очищаем фильтр по заявке
+        document.getElementById('applicationFilter').value = '';
+        updateFilterHighlight(document.getElementById('applicationFilter'));
+        // Перезапускаем фильтрацию
+        filterAccountingTable();
+        updateCommentBlockVisibility();
+    };
+    filtersContainer.appendChild(allBtn);
+
+    // ─── Кнопки по каждой заявке ───
     sortedApplications.forEach(app => {
         const button = document.createElement('button');
         button.type = 'button';
         button.className = `quick-filter-btn status-${getStatusClass(statusFilter)}`;
         button.textContent = app;
         button.title = `Показать заявку ${app} (статус: ${statusFilter})`;
-        if (app === currentApplicationFilter) button.classList.add('active');
+
+        if (app === currentApplicationFilter) {
+            button.classList.add('active');
+        }
 
         button.onclick = () => {
-            document.querySelectorAll('.quick-filter-btn').forEach(btn => btn.classList.remove('active'));
+            // Убираем активный класс со всех кнопок (включая «Все»)
+            filtersContainer.querySelectorAll('.quick-filter-btn').forEach(btn => btn.classList.remove('active'));
             button.classList.add('active');
+
+            // Устанавливаем фильтр заявки и вызываем общую фильтрацию
             document.getElementById('applicationFilter').value = app;
+            updateFilterHighlight(document.getElementById('applicationFilter'));
             filterAccountingTable();
             updateCommentBlockVisibility();
         };
@@ -9362,6 +9464,7 @@ const filteredCells = allCells.filter((_, index) => !excludeIndices.includes(ind
     quickFiltersContainer.appendChild(filtersContainer);
     quickFiltersContainer.style.display = 'flex';
 }
+
 function hideQuickFiltersIfMonthSelected() {
     const factMonth = document.getElementById('factMonthFilter').value;
     const container = document.getElementById('quickApplicationFilters');
@@ -9483,7 +9586,7 @@ function updateCommentBlockVisibility() {
     }
 
     // ПРОВЕРКА 2: Нажат ли быстрый фильтр?
-    const activeQuickBtn = document.querySelector('.quick-filter-btn.active');
+    const activeQuickBtn = document.querySelector('.quick-filter-btn.active:not(.all-btn)');
     
     // Показываем ТОЛЬКО если есть совпадение со списком ИЛИ активен быстрый фильтр
     if (isValidSelection || activeQuickBtn) {
@@ -11214,126 +11317,7 @@ function showPage(pageId) {
     });
 }
 
-// В функции updateQuickFilters добавьте автоматическую активацию кнопки по текущим фильтрам
-function updateQuickFilters() {
-    const statusFilter = document.getElementById('statusFilter').value;
-    const departmentFilter = document.getElementById('departmentFilter').value.toLowerCase().trim();
-    const supplierFilter = document.getElementById('supplierFilter').value.toLowerCase().trim();
-    const yearFilter = document.getElementById('yearFilter').value;
-    const searchText = document.getElementById('searchAccountingInput').value.toLowerCase().trim();
-    const quickFiltersContainer = document.getElementById('quickApplicationFilters');
-    
-    if (!quickFiltersContainer) return;
-    
-    // Очищаем контейнер
-    quickFiltersContainer.innerHTML = '';
-    
-    // Скрываем блок, если статус не выбран или статус "Выполнено"/"Приход"
-    if (!statusFilter || statusFilter === 'Выполнено') {
-        quickFiltersContainer.style.display = 'none';
-        return;
-    }
-    
-    // Если нет данных
-    if (!accountingData || accountingData.length === 0) {
-        quickFiltersContainer.innerHTML = '<span style="color: #8f98a0; font-style: italic;">Нет данных для фильтрации</span>';
-        quickFiltersContainer.style.display = 'flex';
-        return;
-    }
-    
-    const applicationsWithStatus = new Set();
-    
-    // Проходим по всем записям и собираем заявки, соответствующие ВСЕМ текущим фильтрам (кроме applicationFilter)
-    accountingData.forEach(item => {
-        // Проверка статуса
-        if (item.status !== statusFilter) return;
-        
-        // Проверка подразделения
-        if (departmentFilter && (!item.department || !item.department.toLowerCase().includes(departmentFilter))) return;
-        
-        // Проверка поставщика
-        if (supplierFilter && (!item.supplier || !item.supplier.toLowerCase().includes(supplierFilter))) return;
-        
-        // Проверка года
-        if (yearFilter) {
-            const yearFromDoc = extractYearFromDocNumber(item.docNumber);
-            if (yearFromDoc !== yearFilter) return;
-        }
-        
-        // Проверка поискового текста по всем столбцам
-        if (searchText) {
-            const rowText = (
-                (item.docNumber || '') + ' ' +
-                (item.status || '') + ' ' +
-                (item.department || '') + ' ' +
-                (item.supplier || '') + ' ' +
-                (item.name || '') + ' ' +
-                (item.purchaseName || '') + ' ' +
-                (item.contract || '') + ' ' +
-                (item.amount || '')
-            ).toLowerCase();
-            if (!rowText.includes(searchText)) return;
-        }
-        
-        // Если запись прошла все фильтры, добавляем номер заявки
-        if (item.docNumber) {
-            applicationsWithStatus.add(item.docNumber);
-        }
-    });
-    
-    if (applicationsWithStatus.size === 0) {
-        quickFiltersContainer.innerHTML = '<span style="color: #8f98a0; font-style: italic;">Нет заявок с выбранными фильтрами</span>';
-        quickFiltersContainer.style.display = 'flex';
-        return;
-    }
-    
-    // Заголовок
-    const label = document.createElement('div');
-    label.className = 'quick-filters-label';
-    label.textContent = 'Заявки:';
-    quickFiltersContainer.appendChild(label);
-    
-    // Контейнер для кнопок
-    const filtersContainer = document.createElement('div');
-    filtersContainer.className = 'quick-filters';
-    
-    // Сортировка заявок
-    const sortedApplications = Array.from(applicationsWithStatus).sort((a, b) => {
-        const numA = parseInt(a.replace(/\D/g, '')) || 0;
-        const numB = parseInt(b.replace(/\D/g, '')) || 0;
-        return numA - numB;
-    });
-    
-    const currentApplicationFilter = document.getElementById('applicationFilter').value.trim();
-    
-    sortedApplications.forEach(app => {
-        const button = document.createElement('button');
-        button.type = 'button';
-        button.className = `quick-filter-btn status-${getStatusClass(statusFilter)}`;
-        button.textContent = app;
-        button.title = `Показать заявку ${app} (статус: ${statusFilter})`;
-        
-        if (app === currentApplicationFilter) {
-            button.classList.add('active');
-        }
-        
-        button.onclick = () => {
-            // Убираем активный класс со всех кнопок
-            document.querySelectorAll('.quick-filter-btn').forEach(btn => btn.classList.remove('active'));
-            button.classList.add('active');
-            
-            // Устанавливаем фильтр заявки и вызываем общую фильтрацию
-            document.getElementById('applicationFilter').value = app;
-            filterAccountingTable(); // используем общую функцию фильтрации, которая учитывает все фильтры
-            updateCommentBlockVisibility();
-        };
-        
-        filtersContainer.appendChild(button);
-    });
-    
-    quickFiltersContainer.appendChild(filtersContainer);
-    quickFiltersContainer.style.display = 'flex';
-}
+
 
 
 function startPageLoadCheck(pageId, blurElement, spinnerElement) {
@@ -12646,6 +12630,14 @@ select.filter-active {
     background-repeat: no-repeat !important;
     background-position: right 7px center !important;
     background-size: 9px 6px !important;
+}
+
+/* ===== Быстрые фильтры по поставщикам ===== */
+/* Ничего не переопределяем — кнопки используют общий стиль .quick-filter-btn,
+   как и быстрые фильтры по заявкам. */
+#quickSupplierFilters {
+    margin-top: 6px !important;
+    flex-wrap: wrap;
 }
 </style>
 <!-- НОВЫЙ СКРИПТ ДЛЯ ПЕРЕСТАНОВКИ КНОПОК -->
