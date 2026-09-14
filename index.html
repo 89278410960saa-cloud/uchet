@@ -12896,8 +12896,39 @@ function initFiltersHighlight() {
         '#searchSettlementInput', '#settlementSupplierFilter', '#settlementStatusFilter',
         '#searchMailInput', '#mailSupplierFilter', '#mailDateFilter',
         '#searchProxyInput', '#proxySupplierFilter', '#proxyApplicationFilter',
-        '#proxyStatusFilter', '#proxyDateFilter'
-    ];
+        '#proxyStatusFilter', '#proxyDateFilter',
+    
+     // === Учет закупок (модалка) ===
+    '#editDepartment', '#editDocNumber', '#editStatus', '#editId',
+    '#editShipmentDoc', '#editName', '#editPurchaseName', '#editAmount',
+    '#editAccountingSupplier', '#editContract', '#editQuantity',
+    '#editPurchaseQuantity', '#editDeliveryTerms', '#editDeliveryDays',
+    '#editPaymentTerms', '#editUnit', '#editPurchaseUnit',
+    '#editDate', '#editPlanFact', '#editFact',
+
+    // === Контрагенты (модалка) ===
+    '#editSupplier', '#editInn', '#editPhone', '#editContact',
+    '#editEmail', '#editAddress', '#editMaterial', '#editBlacklistComment',
+
+    // === Платежи (модалка) ===
+    '#editPaymentDate', '#editPaymentSupplier', '#editPaymentAmount',
+    '#editPaymentContract', '#editPaymentAgreement', '#editPaymentLink',
+    '#editPaymentStatus', '#editPaymentApplication',
+
+    // === Урегулирование (модалка) ===
+    '#editSettlementDate', '#editSettlementNote', '#editSettlementStatus',
+    '#editSettlementSupplier', '#editSettlementContract',
+    '#editSettlementRemark', '#editSettlementOutgoing', '#editSettlementIncoming',
+
+    // === Почта (модалка) ===
+    '#editMailDate', '#editMailSupplier', '#editMailDocument',
+    '#editMailSheets', '#editMailAddress',
+
+    // === Доверенности (модалка) ===
+    '#editProxyDate', '#editProxyApplication', '#editProxySupplier',
+    '#editProxyDocument', '#editProxyAddress', '#editProxyDriver',
+    '#editProxyStatus'
+];
 
     // Находим все элементы по этим селекторам
     const filters = filterSelectors
