@@ -12600,6 +12600,53 @@ select.filter-active {
     -webkit-box-shadow: 0 0 0 30px #1e2d3d inset !important;
     -webkit-text-fill-color: #c7d5e0 !important;
 }
+/* ============================================================
+   ВНУТРЕННЯЯ ПОДСВЕТКА АКТИВНЫХ ФИЛЬТРОВ (когда есть значение)
+   ============================================================ */
+
+/* Поиск и текстовые фильтры */
+#searchAccountingInput.filter-active,
+#supplierFilter.filter-active,
+#departmentFilter.filter-active,
+#applicationFilter.filter-active,
+#searchCounterpartiesInput.filter-active,
+#searchPaymentsInput.filter-active,
+#paymentsApplicationFilter.filter-active,
+#paymentsSupplierFilter.filter-active,
+#searchSettlementInput.filter-active,
+#settlementSupplierFilter.filter-active,
+#searchMailInput.filter-active,
+#mailSupplierFilter.filter-active,
+#searchProxyInput.filter-active,
+#proxySupplierFilter.filter-active,
+#proxyApplicationFilter.filter-active,
+
+/* Селекты статусов (дублируем для надёжности) */
+#paymentsStatusFilter.filter-active,
+#settlementStatusFilter.filter-active,
+#proxyStatusFilter.filter-active,
+
+/* Поля дат */
+#paymentDateFilter.filter-active,
+#proxyDateFilter.filter-active,
+#mailDateFilter.filter-active {
+    background-color: #35406b !important;
+    border-left: 2px solid #7ca2b8 !important;
+    color: #e5e7eb !important;
+}
+
+/* Для селектов сохраняем нашу SVG-стрелочку поверх подсветки */
+#yearFilter.filter-active,
+#statusFilter.filter-active,
+#factMonthFilter.filter-active,
+#paymentsStatusFilter.filter-active,
+#settlementStatusFilter.filter-active,
+#proxyStatusFilter.filter-active {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path fill='none' stroke='%2366c0f4' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round' d='M1 1l4 4 4-4'/></svg>") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 7px center !important;
+    background-size: 9px 6px !important;
+}
 </style>
 <!-- НОВЫЙ СКРИПТ ДЛЯ ПЕРЕСТАНОВКИ КНОПОК -->
 <script>
