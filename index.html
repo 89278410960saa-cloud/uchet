@@ -4928,24 +4928,23 @@ if (matchingPaymentPlan && matchingPaymentPlan.date) {
 }
 
 // ---------- Проверка наличия доверенности со статусом "В работе" ----------
-const matchingProxy = proxyData.find(proxy =>
-    proxy.status === 'В работе' &&
-    proxy.docNumber === item.docNumber &&
-    proxy.supplier === item.supplier
-);
+const matchingProxy = proxyData.find(proxy => {
+    if (proxy.status !== 'В работе') return false;
+    if (proxy.docNumber !== item.docNumber) return false;
+    if (proxy.supplier !== item.supplier) return false;
 
-// ---- проверяем, просрочена ли доверенность ----
-let isProxyOverdue = false;
-if (matchingProxy && matchingProxy.date) {
-    const proxyDate = parseDate(matchingProxy.date);
-    if (proxyDate) {
-        const proxyDateOnly = new Date(proxyDate);
-        proxyDateOnly.setHours(0, 0, 0, 0);
-        if (proxyDateOnly < today) {
-            isProxyOverdue = true;
-        }
+    // Дополнительно сверяем документ:
+    // если в доверенности указан договор, он должен совпадать с договором позиции
+    const proxyDoc = (proxy.contract || '').trim();
+    const itemContract = (item.contract || '').trim();
+
+    // Если в доверенности документ не указан — считаем совпадение по заявке+поставщику достаточным.
+    // Если указан — требуем точного совпадения с договором позиции.
+    if (proxyDoc && itemContract) {
+        return proxyDoc === itemContract;
     }
-}
+    return true;
+});
 
 // ----- Ссылка для договора (если нужна) -----
 let contractHtml = '';
