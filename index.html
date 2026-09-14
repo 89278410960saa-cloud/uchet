@@ -12663,15 +12663,29 @@ select.filter-active {
     // 2. Функция переноса и растягивания кнопок для одного .controls
     // --------------------------------------------------------------
     function rearrangeControls(container) {
-        if (container.offsetParent === null) return;
-        if (processedContainers.has(container)) return;
-        processedContainers.add(container);
+    // Уже обработан — выходим
+    if (processedContainers.has(container)) return;
 
-        // Собираем элементы:
-        // - фильтры и прочие не-кнопки (nonButtons)
-        // - кнопки и контейнеры с кнопками (buttons), исключая блок комментариев
-        const nonButtons = [];
-        const buttons = [];
+    // Контейнер ещё скрыт (display:none у него или у предка).
+    // Не помечаем его обработанным, а планируем повторную попытку.
+    if (container.offsetParent === null) {
+        if (!container._rearrangeRetries) container._rearrangeRetries = 0;
+        if (container._rearrangeRetries < 30) {           // максимум ~9 секунд
+            container._rearrangeRetries++;
+            setTimeout(() => rearrangeControls(container), 300);
+        }
+        return;
+    }
+
+    // Контейнер видим — обрабатываем
+    processedContainers.add(container);
+    container._rearrangeRetries = 0;
+
+    // Собираем элементы:
+    // - фильтры и прочие не-кнопки (nonButtons)
+    // - кнопки и контейнеры с кнопками (buttons), исключая блок комментариев
+    const nonButtons = [];
+    const buttons = [];
 
         Array.from(container.children).forEach(child => {
             // Блок комментариев оставляем наверху
