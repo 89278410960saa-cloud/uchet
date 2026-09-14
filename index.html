@@ -3016,6 +3016,14 @@ button:hover,
 body{background:var(--p-bg)!important;color:var(--p-text)!important}
 .container,.modal-content,.controls-container{background:var(--p-panel)!important;border-color:var(--p-border)!important}
 
+/* Активное поле в модалке — как активный фильтр */
+.modal-content input:focus,
+.modal-content select:focus,
+.modal-content textarea:focus {
+    outline: none !important;
+    border: 1px solid #66c0f4 !important;
+    box-shadow: 0 0 0 2px rgba(102, 192, 244, 0.2) !important;
+}
 /* SIDEBAR */
 .sidebar{
   background:var(--p-panel)!important;
