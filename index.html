@@ -12268,6 +12268,339 @@ input:checked + .slider:before {
 }
 
 </style>
+<style>
+/* ============================================================
+   ФИНАЛЬНАЯ ПРАВКА: SELECT, ПОДСВЕТКА ФИЛЬТРОВ, РАМКИ
+   ============================================================ */
+
+/* 1) Тёмная отрисовка нативных дропдаунов Chrome/Edge */
+:root {
+    color-scheme: dark !important;
+}
+html {
+    color-scheme: dark !important;
+}
+body {
+    color-scheme: dark !important;
+}
+select {
+    color-scheme: dark !important;
+}
+
+/* 2) Убираем системную стрелку, рисуем свою */
+select,
+select.status-filter,
+select.year-filter,
+select.month-filter,
+select#paymentsStatusFilter,
+select#settlementStatusFilter,
+select#proxyStatusFilter,
+select#factMonthFilter {
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+
+    background-color: #1e2d3d !important;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path fill='none' stroke='%2366c0f4' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round' d='M1 1l4 4 4-4'/></svg>") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 7px center !important;
+    background-size: 9px 6px !important;
+
+    color: #c7d5e0 !important;
+    border: 1px solid #3d4450 !important;
+    border-radius: 3px !important;
+    padding: 4px 22px 4px 8px !important;
+    cursor: pointer !important;
+    transition: border-color .15s, background-color .15s !important;
+}
+select:hover {
+    border-color: #66c0f4 !important;
+    background-color: #26374a !important;
+}
+select:focus {
+    outline: none !important;
+    border-color: #66c0f4 !important;
+    box-shadow: 0 0 0 2px rgba(102,192,244,0.2) !important;
+}
+
+/* Пункты списка (Chrome на Win/Linux) */
+select option {
+    background-color: #1e2d3d !important;
+    color: #c7d5e0 !important;
+}
+select option:checked {
+    background: linear-gradient(135deg, #3b82f6, #6366f1) !important;
+    color: #fff !important;
+}
+
+/* 3) Убираем жирную подсветку активного фильтра, делаем тонкую */
+input.filter-active,
+select.filter-active,
+textarea.filter-active {
+    background-color: #35406b !important;
+    border-left: 2px solid #7ca2b8 !important;
+    box-shadow: none !important;
+    outline: none !important;
+}
+/* для select нужно сохранить нашу стрелочку */
+select.filter-active {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path fill='none' stroke='%2366c0f4' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round' d='M1 1l4 4 4-4'/></svg>") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 7px center !important;
+    background-size: 9px 6px !important;
+}
+
+/* 4) Рамка для ВСЕХ полей фильтров, включая контрагентов */
+#searchAccountingInput,
+#yearFilter,
+#statusFilter,
+#supplierFilter,
+#departmentFilter,
+#applicationFilter,
+#factMonthFilter,
+#searchCounterpartiesInput,
+#searchPaymentsInput,
+#paymentsApplicationFilter,
+#paymentsSupplierFilter,
+#paymentsStatusFilter,
+#paymentDateFilter,
+#searchSettlementInput,
+#settlementSupplierFilter,
+#settlementStatusFilter,
+#searchMailInput,
+#mailSupplierFilter,
+#mailDateFilter,
+#searchProxyInput,
+#proxySupplierFilter,
+#proxyApplicationFilter,
+#proxyStatusFilter,
+#proxyDateFilter {
+    border: 1px solid #3d4450 !important;
+    border-radius: 3px !important;
+    background-color: #1e2d3d !important;
+    color: #c7d5e0 !important;
+    transition: border-color .15s, background-color .15s !important;
+}
+
+/* убираем старую жирную левую полосу */
+input.filter-active,
+select.filter-active {
+    border-left-width: 2px !important;
+    border-left-color: #7ca2b8 !important;
+}
+
+/* лёгкий ховер/фокус */
+#searchAccountingInput:hover, #supplierFilter:hover, #departmentFilter:hover,
+#applicationFilter:hover, #searchCounterpartiesInput:hover,
+#searchPaymentsInput:hover, #paymentsApplicationFilter:hover,
+#paymentsSupplierFilter:hover, #searchSettlementInput:hover,
+#settlementSupplierFilter:hover, #searchMailInput:hover,
+#mailSupplierFilter:hover, #searchProxyInput:hover,
+#proxySupplierFilter:hover, #proxyApplicationFilter:hover {
+    border-color: #66c0f4 !important;
+}
+#searchAccountingInput:focus, #supplierFilter:focus, #departmentFilter:focus,
+#applicationFilter:focus, #searchCounterpartiesInput:focus,
+#searchPaymentsInput:focus, #paymentsApplicationFilter:focus,
+#paymentsSupplierFilter:focus, #searchSettlementInput:focus,
+#settlementSupplierFilter:focus, #searchMailInput:focus,
+#mailSupplierFilter:focus, #searchProxyInput:focus,
+#proxySupplierFilter:focus, #proxyApplicationFilter:focus {
+    outline: none !important;
+    border-color: #66c0f4 !important;
+    box-shadow: 0 0 0 2px rgba(102,192,244,0.2) !important;
+}
+/* ============================================================
+   ДОБИВКА: Все года / Все статусы / Факт ALL
+   ============================================================ */
+
+/* Базовая рамка */
+#yearFilter,
+#statusFilter,
+#factMonthFilter {
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+
+    background-color: #1e2d3d !important;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path fill='none' stroke='%2366c0f4' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round' d='M1 1l4 4 4-4'/></svg>") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 7px center !important;
+    background-size: 9px 6px !important;
+
+    color: #c7d5e0 !important;
+    border: 1px solid #3d4450 !important;
+    border-radius: 3px !important;
+    padding: 4px 22px 4px 8px !important;
+    cursor: pointer !important;
+    transition: border-color .15s, background-color .15s, box-shadow .15s !important;
+}
+
+/* Ховер — синеватая рамка */
+#yearFilter:hover,
+#statusFilter:hover,
+#factMonthFilter:hover {
+    border-color: #66c0f4 !important;
+    background-color: #26374a !important;
+}
+
+/* Фокус — синеватая рамка + мягкое свечение */
+#yearFilter:focus,
+#statusFilter:focus,
+#factMonthFilter:focus {
+    outline: none !important;
+    border-color: #66c0f4 !important;
+    box-shadow: 0 0 0 2px rgba(102,192,244,0.2) !important;
+}
+
+/* Активное значение (класс filter-active навешивает ваш скрипт) */
+#yearFilter.filter-active,
+#statusFilter.filter-active,
+#factMonthFilter.filter-active {
+    background-color: #35406b !important;
+    border-left: 2px solid #7ca2b8 !important;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path fill='none' stroke='%2366c0f4' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round' d='M1 1l4 4 4-4'/></svg>") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 7px center !important;
+    background-size: 9px 6px !important;
+}
+
+/* Тёмный popup-список опций (Chrome Win/Linux) */
+#yearFilter option,
+#statusFilter option,
+#factMonthFilter option {
+    background-color: #1e2d3d !important;
+    color: #c7d5e0 !important;
+}
+#yearFilter option:checked,
+#statusFilter option:checked,
+#factMonthFilter option:checked {
+    background: linear-gradient(135deg, #3b82f6, #6366f1) !important;
+    color: #fff !important;
+}
+/* --- 1. Селекты статусов --- */
+#paymentsStatusFilter,
+#settlementStatusFilter,
+#proxyStatusFilter {
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+
+    background-color: #1e2d3d !important;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path fill='none' stroke='%2366c0f4' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round' d='M1 1l4 4 4-4'/></svg>") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 7px center !important;
+    background-size: 9px 6px !important;
+
+    color: #c7d5e0 !important;
+    border: 1px solid #3d4450 !important;
+    border-radius: 3px !important;
+    padding: 4px 22px 4px 8px !important;
+    cursor: pointer !important;
+    transition: border-color .15s, background-color .15s, box-shadow .15s !important;
+}
+#paymentsStatusFilter:hover,
+#settlementStatusFilter:hover,
+#proxyStatusFilter:hover {
+    border-color: #66c0f4 !important;
+    background-color: #26374a !important;
+}
+#paymentsStatusFilter:focus,
+#settlementStatusFilter:focus,
+#proxyStatusFilter:focus {
+    outline: none !important;
+    border-color: #66c0f4 !important;
+    box-shadow: 0 0 0 2px rgba(102,192,244,0.2) !important;
+}
+#paymentsStatusFilter.filter-active,
+#settlementStatusFilter.filter-active,
+#proxyStatusFilter.filter-active {
+    background-color: #35406b !important;
+    border-left: 2px solid #7ca2b8 !important;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path fill='none' stroke='%2366c0f4' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round' d='M1 1l4 4 4-4'/></svg>") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 7px center !important;
+    background-size: 9px 6px !important;
+}
+#paymentsStatusFilter option,
+#settlementStatusFilter option,
+#proxyStatusFilter option {
+    background-color: #1e2d3d !important;
+    color: #c7d5e0 !important;
+}
+#paymentsStatusFilter option:checked,
+#settlementStatusFilter option:checked,
+#proxyStatusFilter option:checked {
+    background: linear-gradient(135deg, #3b82f6, #6366f1) !important;
+    color: #fff !important;
+}
+
+/* --- 2. Поля дат (input type="date") --- */
+#paymentDateFilter,
+#proxyDateFilter,
+#mailDateFilter {
+    -webkit-appearance: none !important;
+    appearance: none !important;
+
+    background-color: #1e2d3d !important;
+    color: #c7d5e0 !important;
+    border: 1px solid #3d4450 !important;
+    border-radius: 3px !important;
+    padding: 4px 8px !important;
+    cursor: pointer !important;
+    transition: border-color .15s, background-color .15s, box-shadow .15s !important;
+}
+
+/* иконка календаря — делаем светлой и аккуратной */
+#paymentDateFilter::-webkit-calendar-picker-indicator,
+#proxyDateFilter::-webkit-calendar-picker-indicator,
+#mailDateFilter::-webkit-calendar-picker-indicator {
+    cursor: pointer !important;
+    /* инвертируем чёрный SVG-календарик в светло-голубой */
+    filter: invert(75%) sepia(35%) saturate(600%) hue-rotate(175deg) brightness(105%) contrast(95%) !important;
+    opacity: 0.9 !important;
+    transition: opacity .15s, filter .15s !important;
+}
+#paymentDateFilter::-webkit-calendar-picker-indicator:hover,
+#proxyDateFilter::-webkit-calendar-picker-indicator:hover,
+#mailDateFilter::-webkit-calendar-picker-indicator:hover {
+    opacity: 1 !important;
+    filter: invert(80%) sepia(45%) saturate(800%) hue-rotate(175deg) brightness(110%) contrast(100%) !important;
+}
+
+/* ховер и фокус */
+#paymentDateFilter:hover,
+#proxyDateFilter:hover,
+#mailDateFilter:hover {
+    border-color: #66c0f4 !important;
+    background-color: #26374a !important;
+}
+#paymentDateFilter:focus,
+#proxyDateFilter:focus,
+#mailDateFilter:focus {
+    outline: none !important;
+    border-color: #66c0f4 !important;
+    box-shadow: 0 0 0 2px rgba(102,192,244,0.2) !important;
+}
+
+/* активный фильтр (когда выбрана дата) */
+#paymentDateFilter.filter-active,
+#proxyDateFilter.filter-active,
+#mailDateFilter.filter-active {
+    background-color: #35406b !important;
+    border-left: 2px solid #7ca2b8 !important;
+}
+
+/* сам выпадающий календарь в Chrome тоже тёмный, т.к. :root { color-scheme: dark } */
+
+/* сброс системной жёлтой подсветки автозаполнения */
+#paymentDateFilter:-webkit-autofill,
+#proxyDateFilter:-webkit-autofill,
+#mailDateFilter:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 30px #1e2d3d inset !important;
+    -webkit-text-fill-color: #c7d5e0 !important;
+}
+</style>
 <!-- НОВЫЙ СКРИПТ ДЛЯ ПЕРЕСТАНОВКИ КНОПОК -->
 <script>
 (function() {
