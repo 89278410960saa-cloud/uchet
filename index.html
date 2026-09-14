@@ -4934,17 +4934,27 @@ const matchingProxy = proxyData.find(proxy => {
     if (proxy.supplier !== item.supplier) return false;
 
     // Дополнительно сверяем документ:
-    // если в доверенности указан договор, он должен совпадать с договором позиции
     const proxyDoc = (proxy.contract || '').trim();
     const itemContract = (item.contract || '').trim();
 
-    // Если в доверенности документ не указан — считаем совпадение по заявке+поставщику достаточным.
-    // Если указан — требуем точного совпадения с договором позиции.
     if (proxyDoc && itemContract) {
         return proxyDoc === itemContract;
     }
     return true;
 });
+
+// ---- проверяем, просрочена ли доверенность ----
+let isProxyOverdue = false;
+if (matchingProxy && matchingProxy.date) {
+    const proxyDate = parseDate(matchingProxy.date);
+    if (proxyDate) {
+        const proxyDateOnly = new Date(proxyDate);
+        proxyDateOnly.setHours(0, 0, 0, 0);
+        if (proxyDateOnly < today) {
+            isProxyOverdue = true;
+        }
+    }
+}
 
 // ----- Ссылка для договора (если нужна) -----
 let contractHtml = '';
