@@ -11462,14 +11462,20 @@ function hideLoginPage() {
 
     const sidebar = document.querySelector('.sidebar');
     sidebar.classList.remove('hidden');
-    sidebar.style.display = 'flex';   // ← явно flex
+    sidebar.style.display = 'flex';
 
     const main = document.querySelector('.main-content');
-    main.style.display = 'flex';      // ← явно flex
+    main.style.display = 'flex';
 
     setTimeout(() => {
         updateAllTables();
     }, 10);
+
+    setTimeout(() => {
+        if (typeof window.processAllControls === 'function') {
+            window.processAllControls();
+        }
+    }, 60);
 }
 
 // Основная функция запуска приложения
@@ -12657,6 +12663,7 @@ select.filter-active {
     // 2. Функция переноса и растягивания кнопок для одного .controls
     // --------------------------------------------------------------
     function rearrangeControls(container) {
+        if (container.offsetParent === null) return;
         if (processedContainers.has(container)) return;
         processedContainers.add(container);
 
@@ -12748,6 +12755,7 @@ select.filter-active {
     // --------------------------------------------------------------
     // 6. Запуск после полной загрузки страницы
     // --------------------------------------------------------------
+    window.processAllControls = processAllControls;
     window.addEventListener('load', function() {
         // Небольшая задержка, чтобы другие скрипты успели отрендерить динамический контент
         setTimeout(processAllControls, 300);
