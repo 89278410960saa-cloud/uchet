@@ -521,9 +521,9 @@ body:not(.app-ready) .main-content {
 #accountingTable th:nth-child(9) { width: 46.9px !important; }   /* Сумма, НДС */
 #accountingTable th:nth-child(10) { width: 70px !important; }    /* Контрагент — уменьшено */
 #accountingTable th:nth-child(11) { width: 70px !important; }    /* Договор / Оплата — уменьшено */
-#accountingTable th:nth-child(12) { width: 60px !important; }    /* Срок / Поставка */
-#accountingTable th:nth-child(13) { width: 40px !important; }    /* План */
-#accountingTable th:nth-child(14) { width: 40px !important; }    /* Факт — выровнено с План */
+#accountingTable th:nth-child(12) { width: 60px !important; }    /* Срок / Поставка — уменьшили */
+#accountingTable th:nth-child(13) { width: 40px !important; }    /* План — увеличили */
+#accountingTable th:nth-child(14) { width: 40px !important; }    /* Факт — увеличили */
 #accountingTable th:nth-child(15) { width: 60.3px !important; }  /* Документ */
 
 /* Аналогично для ячеек */
@@ -1205,7 +1205,7 @@ body:not(.app-ready) .main-content {
     display: flex;
     flex-direction: column;
     height: 80%;
-    width: 65% !important;
+    width: 60% !important;
     height: 100% !important;
     max-width: none !important;
     max-height: none !important;
@@ -2057,7 +2057,7 @@ tr.status-supply {
     background: linear-gradient(135deg, #1b2838 0%, #2a475e 100%);
     margin: 0 !important;                   /* убираем auto-отступы */
     padding: 13.4px;
-    width: 65% !important;
+    width: 60% !important;
     height: 100% !important;
     max-width: none !important;
     max-height: none !important;
@@ -4858,7 +4858,7 @@ function updateAccountingTable() {
         }
         const statusCell = createCell(item.status || '', '90px');
         
-        const planFactCell = createCell(item.planFact || '', '128px');
+        const planFactCell = createCell(item.planFact || '', '55px');
         if (isOverdue && item.status !== 'Выполнено' && item.status !== 'Приход') {
             planFactCell.classList.add('overdue-date');
         }
@@ -5015,7 +5015,7 @@ if (matchingProxy) {
 }
 
         const planCell = createCell(item.plan || '', '50px');
-        const factCell = createCell(item.fact || '', '50px');
+        const factCell = createCell(item.fact || '', '55px');
 const shipmentDocCell = document.createElement('td');
 shipmentDocCell.style.width = '60.3px';
 shipmentDocCell.style.verticalAlign = 'middle';
@@ -12663,10 +12663,110 @@ select.filter-active {
     flex-wrap: wrap;
 }
 .modal-content {
-    width: 65% !important;
+    width: 60% !important;
     max-width: 1100px !important;   /* единый потолок */
     min-width: 320px !important;
 }
+/* Комментарий к заявке — рамка/фон как у фильтров */
+#applicationComment,
+#applicationComment:disabled,
+#applicationComment:read-only {
+    border: 1px solid #3d4450 !important;
+    border-radius: 3px !important;
+    background-color: #1e2d3d !important;
+    color: #ffd700 !important;
+    font-weight: bold !important;
+    outline: none !important;
+}
+
+/* Ховер и фокус — как у остальных фильтров */
+#applicationComment:hover {
+    border-color: #66c0f4 !important;
+    background-color: #26374a !important;
+}
+#applicationComment:focus {
+    border-color: #66c0f4 !important;
+    box-shadow: 0 0 0 2px rgba(102,192,244,0.2) !important;
+}
+
+/* На всякий случай — плейсхолдер под общий стиль */
+#applicationComment::placeholder {
+    color: #8f98a0 !important;
+}
+/* ============================================================
+   РАМКА У КНОПОК ПАНЕЛИ УПРАВЛЕНИЯ ТОЛЬКО ПРИ НАВЕДЕНИИ
+   (цвет и стиль как у фильтров при ховере)
+   ============================================================ */
+
+/* Обычное состояние — рамки нет, но место под неё зарезервировано,
+   чтобы кнопка не «прыгала» при появлении рамки */
+.controls button,
+.buttons-wrapper button,
+.buttons-wrapper > div > button {
+    border: 1px solid transparent !important;
+    border-radius: 3px !important;
+    transition: border-color .15s, box-shadow .15s, background-color .15s !important;
+    box-sizing: border-box !important;
+}
+
+/* При наведении — рамка как у фильтров при ховере */
+.controls button:hover,
+.buttons-wrapper button:hover,
+.buttons-wrapper > div > button:hover {
+    border-color: #66c0f4 !important;
+}
+
+.controls button:focus,
+.buttons-wrapper button:focus,
+.buttons-wrapper > div > button:focus {
+    outline: none !important;
+}
+/* ID-кнопки переопределяем — у них border: none !important,
+   который сильнее класса .controls button:hover */
+#addRecordBtn,
+#addCounterpartyBtn,
+#addPaymentBtn,
+#addSettlementBtn,
+#addMailBtn,
+#addProxyBtn,
+#weeklyDeliveriesBtn,
+#overdueBtn,
+#blacklistFilterBtn,
+#printApplicationReportBtn {
+    border: 1px solid transparent !important;
+}
+#addRecordBtn:hover,
+#addCounterpartyBtn:hover,
+#addPaymentBtn:hover,
+#addSettlementBtn:hover,
+#addMailBtn:hover,
+#addProxyBtn:hover,
+#weeklyDeliveriesBtn:hover,
+#overdueBtn:hover,
+#blacklistFilterBtn:hover,
+#printApplicationReportBtn:hover {
+    border-color: #66c0f4 !important;
+}
+/* ============================================================
+   САЙДБАР: серая рамка в обычном состоянии (как раньше),
+   голубая — только при наведении (как у кнопок панели управления)
+   ============================================================ */
+
+/* Плавный переход цвета рамки, фон и цвет оставляем как есть */
+.sidebar-cell.menu-item {
+    transition: border-color .15s ease, background .2s ease, color .2s ease !important;
+}
+
+/* При наведении — только цвет рамки меняем на голубой */
+.sidebar-cell.menu-item:hover {
+    border-color: #66c0f4 !important;
+}
+
+/* Активный пункт — рамка тоже голубая, чтобы выделялся */
+.sidebar-cell.menu-item.active {
+    border-color: #66c0f4 !important;
+}
+
 </style>
 <!-- НОВЫЙ СКРИПТ ДЛЯ ПЕРЕСТАНОВКИ КНОПОК -->
 <script>
