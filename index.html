@@ -5128,6 +5128,7 @@ row.appendChild(shipmentDocCell);
     updateOverdueButton();
     setTimeout(forceTableUpdate, 100);
     updatePrintButtonVisibility();
+    updateStatusFilterCounts();
     
 }
 function extractContractNumbers(str) {
@@ -5172,6 +5173,7 @@ function editAccountingRowByRecordId(recordId) {
 }
 
    function filterAccountingTable() {
+    updateStatusFilterCounts();
     const factMonthFilter = document.getElementById('factMonthFilter').value;
     const searchText = document.getElementById('searchAccountingInput').value.toLowerCase().trim();
     const statusFilter = document.getElementById('statusFilter').value;
@@ -5321,6 +5323,95 @@ function editAccountingRowByRecordId(recordId) {
 
     setTimeout(loadColumnWidths, 100);
 }
+// ========== ПОДСЧЁТ КОЛИЧЕСТВА ПОЗИЦИЙ ПО КАЖДОМУ СТАТУСУ ==========
+function updateStatusFilterCounts() {
+    const select = document.getElementById('statusFilter');
+    if (!select) return;
+
+    // Все возможные статусы (должны совпадать со значениями option)
+    const statuses = ['В работе', 'Поставка', 'Приход', 'Выполнено', 'Иное'];
+    const counts = {};
+    statuses.forEach(s => counts[s] = 0);
+
+    // ---- читаем остальные фильтры (кроме statusFilter) ----
+    const factMonthFilter    = document.getElementById('factMonthFilter').value;
+    const searchText         = document.getElementById('searchAccountingInput').value.toLowerCase().trim();
+    const departmentFilter   = document.getElementById('departmentFilter').value;
+    const applicationFilter  = document.getElementById('applicationFilter').value.toLowerCase().trim();
+    const supplierFilter     = document.getElementById('supplierFilter').value.toLowerCase().trim();
+    const yearFilter         = document.getElementById('yearFilter').value;
+
+    const rows = document.querySelectorAll('#accountingTable tbody tr');
+
+    rows.forEach(row => {
+        // пропускаем служебные строки
+        if (row.hasAttribute('data-no-results')) return;
+        if (row.cells.length === 1 && row.cells[0].colSpan > 1) return;
+
+        const cells = row.querySelectorAll('td');
+        if (cells.length < 4) return;
+
+        const statusCell        = cells[2] ? cells[2].textContent.trim() : '';
+        const departmentCell    = cells[0] ? cells[0].textContent.trim() : '';
+        const applicationCell   = cells[1] ? cells[1].textContent.toLowerCase().trim() : '';
+        const supplierCell      = cells[9] ? cells[9].textContent.toLowerCase().replace(/\s+/g, ' ').trim() : '';
+        const yearFromApp       = extractYearFromDocNumber(applicationCell);
+
+        // ---- фильтр по месяцу факта ----
+        let factMonthMatch = true;
+        if (factMonthFilter) {
+            const factCell = cells[13] ? cells[13].textContent.trim() : '';
+            const factDate = parseDate(factCell);
+            if (factDate) {
+                factMonthMatch = (factDate.getMonth() + 1) === parseInt(factMonthFilter);
+            } else {
+                factMonthMatch = false;
+            }
+        }
+
+        // ---- общий поиск по всей строке ----
+        let rowText = '';
+        cells.forEach(cell => { rowText += cell.textContent.toLowerCase() + ' '; });
+        rowText = rowText.replace(/\s+/g, ' ').trim();
+
+        // ---- избранное ----
+        let favoriteMatch = true;
+        if (showFavoritesOnly) {
+            const recordId = row.dataset.recordId;
+            if (recordId) {
+                const dataItem = accountingData.find(d => d.recordId === recordId);
+                favoriteMatch = dataItem ? dataItem.favorite === true : false;
+            } else {
+                favoriteMatch = false;
+            }
+        }
+
+        const searchMatch      = !searchText        || rowText.includes(searchText);
+        const departmentMatch  = !departmentFilter  || departmentCell.toLowerCase().includes(departmentFilter.toLowerCase());
+        const applicationMatch = !applicationFilter || applicationCell === applicationFilter;
+        const supplierMatch    = !supplierFilter    || supplierCell.includes(supplierFilter);
+        const yearMatch        = !yearFilter        || yearFromApp === yearFilter;
+
+        // статус НЕ учитываем — считаем по всем статусам сразу
+        if (searchMatch && departmentMatch && applicationMatch &&
+            supplierMatch && yearMatch && factMonthMatch && favoriteMatch) {
+            if (Object.prototype.hasOwnProperty.call(counts, statusCell)) {
+                counts[statusCell]++;
+            }
+        }
+    });
+
+    // ---- обновляем текст опций ----
+    Array.from(select.options).forEach(opt => {
+        if (!opt.value) {
+            // "Все статусы" — показываем общее число
+            const total = Object.values(counts).reduce((a, b) => a + b, 0);
+            opt.textContent = `Все статусы (${total})`;
+        } else if (Object.prototype.hasOwnProperty.call(counts, opt.value)) {
+            opt.textContent = `${opt.value} (${counts[opt.value]})`;
+        }
+    });
+}
 
         function clearAccountingFilters() {
     // Сбрасываем режим просроченных
@@ -5412,6 +5503,7 @@ if (accountingData.length > 0) {
     showFavoritesOnly = false;
 localStorage.setItem(FAVORITE_STORAGE_KEY, 'false');
 updateFavoriteButton();
+updateStatusFilterCounts();
 hideSupplierQuickFilters();    
     // Показываем уведомление
     showAutosaveNotification('Фильтры сброшены');
