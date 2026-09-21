@@ -5183,7 +5183,7 @@ function editAccountingRowByRecordId(recordId) {
     const yearFilter = document.getElementById('yearFilter').value;
 
     // ─── ОПРЕДЕЛЯЕМ, ЕСТЬ ЛИ АКТИВНЫЕ ФИЛЬТРЫ ───
-    const hasFilters = !!(searchText || statusFilter || departmentFilter || applicationFilter || supplierFilter || yearFilter || factMonthFilter);
+    const hasFilters = !!(searchText || statusFilter || departmentFilter || applicationFilter || supplierFilter || yearFilter || factMonthFilter || showFavoritesOnly);
 
     const rows = document.querySelectorAll('#accountingTable tbody tr');
     let visibleCount = 0;
