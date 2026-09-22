@@ -2120,7 +2120,160 @@ tr.status-supply {
     background-color: rgba(255, 140, 0, 0.12);
 }
 
+/* ===== Полноэкранное окно "Нет данных" ===== */
+.empty-data-modal {
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
 
+    display: none !important;              /* по умолчанию скрыто */
+    justify-content: center !important;
+    align-items: center !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+
+    background: rgba(2, 6, 23, 0.94) !important;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    z-index: 9999999 !important;
+}
+
+/* Показ окна через класс */
+.empty-data-modal.show {
+    display: flex !important;
+}
+
+.empty-data-modal .empty-data-content {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    gap: 28px !important;
+    padding: 40px 30px !important;
+    max-width: 720px !important;
+    width: 92% !important;
+    animation: emptyDataFadeIn 0.35s ease-out;
+}
+
+@keyframes emptyDataFadeIn {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.empty-data-title {
+    color: #ffffff !important;
+    font-size: 42px !important;
+    font-weight: 800 !important;
+    line-height: 1.15 !important;
+    margin: 0 !important;
+    text-align: center !important;
+}
+
+.empty-data-subtitle {
+    color: #c7d5e0 !important;
+    font-size: 20px !important;
+    font-weight: 400 !important;
+    line-height: 1.55 !important;
+    margin: 0 !important;
+    max-width: 620px !important;
+    text-align: center !important;
+}
+
+.empty-data-actions {
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 14px !important;
+    justify-content: center !important;
+    flex-wrap: wrap !important;
+    width: 100% !important;
+    margin-top: 8px !important;
+}
+
+/* ★ КНОПКИ — уменьшенный размер */
+.empty-data-modal .empty-data-btn,
+.empty-data-btn {
+    display: inline-flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 10px !important;
+
+    padding: 0 28px !important;
+    min-width: 220px !important;
+    height: 56px !important;
+    min-height: 56px !important;
+    max-height: 56px !important;
+
+    font-family: inherit !important;
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.3px !important;
+    line-height: 1 !important;
+    color: #e5e7eb !important;
+
+    border: 1px solid #53565f !important;
+    border-radius: 10px !important;
+    background: rgba(255, 255, 255, 0.06) !important;
+    cursor: pointer !important;
+    box-sizing: border-box !important;
+    transition: background 0.2s ease, color 0.2s ease,
+                border-color 0.2s ease, transform 0.15s ease,
+                box-shadow 0.2s ease !important;
+}
+
+.empty-data-btn i,
+.empty-data-btn .fa,
+.empty-data-btn .fas {
+    font-size: 16px !important;
+    line-height: 1 !important;
+}
+
+.empty-data-btn span {
+    white-space: nowrap !important;
+}
+
+.empty-data-btn.primary {
+    background: rgba(59, 130, 246, 0.22) !important;
+    border-color: #3b82f6 !important;
+    color: #ffffff !important;
+}
+
+.empty-data-btn.primary:hover {
+    background: rgba(59, 130, 246, 0.4) !important;
+    border-color: #60a5fa !important;
+    box-shadow: 0 0 18px rgba(59, 130, 246, 0.5) !important;
+    transform: translateY(-2px) !important;
+}
+
+.empty-data-btn.secondary:hover {
+    background: rgba(99, 102, 241, 0.2) !important;
+    border-color: #66c0f4 !important;
+    color: #ffffff !important;
+    box-shadow: 0 0 16px rgba(102, 192, 244, 0.4) !important;
+    transform: translateY(-2px) !important;
+}
+
+.empty-data-btn:active {
+    transform: translateY(0) !important;
+}
+
+/* Адаптив */
+@media (max-width: 900px) {
+    .empty-data-actions { flex-direction: column !important; }
+    .empty-data-btn {
+        width: 100% !important;
+        min-width: 0 !important;
+        height: 50px !important;
+        min-height: 50px !important;
+        max-height: 50px !important;
+        font-size: 14px !important;
+        padding: 0 20px !important;
+    }
+    .empty-data-btn i { font-size: 15px !important; }
+}
 
 
         /* Стили для модального окна пароля администратора */
@@ -2929,7 +3082,7 @@ button:hover,
     padding: 10px;
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 6px;
 }
 
 .sidebar .menu-item {
@@ -3107,75 +3260,81 @@ button:hover{background:#222733!important}
     
     <!-- Сайдбар меню -->
 <div class="sidebar hidden" style="display: none;">
-    <!-- ОДИН РЯД СО ВСЕМИ ПУНКТАМИ (включая бывшие настройки) -->
+
+    <!-- УРОВЕНЬ 1: страницы + Сохранить + Ещё -->
     <div class="sidebar-row main-row">
-        <!-- Основные страницы -->
         <div class="sidebar-cell menu-item active" data-page="accounting" onclick="showPage('accounting')" title="Учет закупок">
             <span class="menu-icon"><i class="fas fa-list"></i></span>
             <span class="menu-text">Позиции</span>
-            <div class="sidebar-tooltip">Учет закупок</div>
             <div class="sidebar-badge" id="accountingBadge" style="display: none;">0</div>
         </div>
         <div class="sidebar-cell menu-item" data-page="counterparties" onclick="showPage('counterparties')" title="Контрагенты">
             <span class="menu-icon"><i class="fas fa-users"></i></span>
             <span class="menu-text">Контрагенты</span>
-            <div class="sidebar-tooltip">Контрагенты</div>
         </div>
         <div class="sidebar-cell menu-item" data-page="payments" onclick="showPage('payments')" title="Платежи">
             <span class="menu-icon"><i class="fas fa-credit-card"></i></span>
             <span class="menu-text">Платежи</span>
-            <div class="sidebar-tooltip">Платежи</div>
             <div class="sidebar-badge" id="paymentsBadge" style="display: none;">0</div>
         </div>
         <div class="sidebar-cell menu-item" data-page="proxy-registry" onclick="showPage('proxy-registry')" title="Реестр доверенностей">
             <span class="menu-icon"><i class="fas fa-truck"></i></span>
             <span class="menu-text">Самовывоз</span>
-            <div class="sidebar-tooltip">Реестр доверенностей</div>
             <div class="sidebar-badge" id="proxyBadge" style="display: none;">0</div>
         </div>
         <div class="sidebar-cell menu-item" data-page="settlement" onclick="showPage('settlement')" title="Урегулирование">
             <span class="menu-icon"><i class="fas fa-balance-scale"></i></span>
             <span class="menu-text">Рекламации</span>
-            <div class="sidebar-tooltip">Рекламации</div>
             <div class="sidebar-badge" id="settlementBadge" style="display: none;">0</div>
         </div>
         <div class="sidebar-cell menu-item" data-page="mail-registry" onclick="showPage('mail-registry')" title="Почтовый реестр">
             <span class="menu-icon"><i class="fas fa-envelope"></i></span>
             <span class="menu-text">Отправления</span>
-            <div class="sidebar-tooltip">Почтовый реестр</div>
         </div>
 
-        <!-- Пункты, ранее находившиеся в настройках (всегда видны) -->
-        
+        <!-- Кнопка «Сохранить» -->
         <div class="sidebar-cell menu-item github-export-btn admin-only" onclick="forceExportToGitHub()" title="Принудительный экспорт данных">
             <span class="menu-icon"><i class="fas fa-save"></i></span>
             <span class="menu-text">Сохранить</span>
         </div>
-        <div class="sidebar-cell menu-item import-btn" onclick="importJSON()" title="Импорт данных">
-    <span class="menu-icon"><i class="fas fa-upload"></i></span>
-    <span class="menu-text">Обновить</span>
-</div>
-        <div class="sidebar-cell menu-item" id="aiChatButton" onclick="openAiChatModal()" title="AI Чат">
-            <span class="menu-icon"><i class="fas fa-robot"></i></span>
-            <span class="menu-text">AI Чат</span>
+
+        <!-- Кнопка «Ещё» (последняя в ряду) -->
+        <div class="sidebar-cell menu-item more-menu-btn" id="moreMenuBtn" onclick="toggleMoreMenu(event)" title="Ещё">
+            <span class="menu-icon"><i class="fas fa-ellipsis-h"></i></span>
+            <span class="menu-text">Ещё</span>
         </div>
-        <div class="sidebar-cell menu-item" onclick="showStatusStatsModal()" title="Аналитика">
-            <span class="menu-icon"><i class="fas fa-chart-bar"></i></span>
-            <span class="menu-text">Аналитика</span>
-        </div>
-        <div class="sidebar-cell menu-item admin-only export-btn" onclick="exportJSON()" title="Экспорт данных" style="display: none;">
-            <span class="menu-icon"><i class="fas fa-download"></i></span>
-            <span class="menu-text">Экспорт</span>
-        </div>
-        <div class="sidebar-cell menu-item danger clear-btn" onclick="confirmClearAllData()" title="Очистить все данные">
-            <span class="menu-icon"><i class="fas fa-trash"></i></span>
-            <span class="menu-text">Удалить</span>
-        </div>
-        <div class="sidebar-cell menu-item" onclick="showGithubSettingsModal()" title="GitHub настройки">
+    </div>
+
+</div><!-- /sidebar -->
+
+<!-- ================= ВЫПАДАЮЩЕЕ МЕНЮ «ЕЩЁ» — ВНЕ САЙДБАРА ================= -->
+<!-- Важно: этот блок вынесен ЗА пределы .sidebar, иначе он обрезается
+     из-за transform: translateX(-50%) и overflow: hidden у сайдбара. -->
+<div id="moreMenuDropdown">
+    <div class="sidebar-cell menu-item import-btn" onclick="importJSON()" title="Импорт данных">
+        <span class="menu-icon"><i class="fas fa-upload"></i></span>
+        <span class="menu-text">Обновить</span>
+    </div>
+    <div class="sidebar-cell menu-item" id="aiChatButton" onclick="openAiChatModal()" title="AI Чат">
+        <span class="menu-icon"><i class="fas fa-robot"></i></span>
+        <span class="menu-text">AI Чат</span>
+    </div>
+    <div class="sidebar-cell menu-item" onclick="showStatusStatsModal()" title="Аналитика">
+        <span class="menu-icon"><i class="fas fa-chart-bar"></i></span>
+        <span class="menu-text">Аналитика</span>
+    </div>
+    <div class="sidebar-cell menu-item admin-only export-btn" onclick="exportJSON()" title="Экспорт данных" style="display: none;">
+        <span class="menu-icon"><i class="fas fa-download"></i></span>
+        <span class="menu-text">Экспорт</span>
+    </div>
+    <div class="sidebar-cell menu-item danger clear-btn" onclick="confirmClearAllData()" title="Очистить все данные">
+        <span class="menu-icon"><i class="fas fa-trash"></i></span>
+        <span class="menu-text">Удалить</span>
+    </div>
+    <div class="sidebar-cell menu-item" onclick="showGithubSettingsModal()" title="GitHub настройки">
         <span class="menu-icon"><i class="fas fa-key"></i></span>
         <span class="menu-text">Вход</span>
         <div class="sidebar-badge warning" id="githubGuestBadge" style="display: none;">!</div>
-    </div>
     </div>
 </div>
 
@@ -3942,6 +4101,34 @@ button:hover{background:#222733!important}
             </form>
         </div>
     </div>
+
+<!-- Модальное окно: нет данных (полноэкранное) -->
+<div id="emptyDataModal" class="modal empty-data-modal">
+    <div class="empty-data-content">
+        <h1 class="empty-data-title">Данные не найдены</h1>
+
+        <p class="empty-data-subtitle">
+            В приложении отсутствуют какие-либо записи.<br>
+            Хотите загрузить последнюю резервную копию из GitHub?
+        </p>
+
+        <div class="empty-data-actions">
+            <button type="button" class="empty-data-btn primary" onclick="loadDataFromEmptyModal()">
+                <i class="fas fa-download"></i>
+                <span>Обновить данные</span>
+            </button>
+
+            <button type="button" class="empty-data-btn secondary" onclick="closeEmptyDataModal()">
+                <i class="fas fa-arrow-right"></i>
+                <span>Продолжить без данных</span>
+            </button>
+        </div>
+
+        <p class="empty-data-hint">
+            Вы всегда сможете обновить данные позже через меню «Ещё» → «Обновить»
+        </p>
+    </div>
+</div>
   <!-- Модальное окно AI чата -->
 <div id="aiChatModal" class="modal" style="display: none;">
     <div class="modal-content chat-modal-content" style="padding: 0; background: transparent; overflow: hidden;">
@@ -10767,7 +10954,15 @@ function updateImportButtonDate() {
     const btn = document.querySelector('.import-btn .menu-text');
     if (!btn) return;
     const saved = localStorage.getItem('lastGitHubUpdateDate');
-    btn.textContent = saved ? `Обновить (${saved})` : 'Обновить';
+    if (saved) {
+        btn.innerHTML =
+            'Обновить<br>' +
+            '<span style="color:#8f98a0;font-size:10px;font-weight:normal;">' +
+                saved +
+            '</span>';
+    } else {
+        btn.textContent = 'Обновить';
+    }
 }
 
 // 3. Запрос даты и сохранение в localStorage
@@ -10785,7 +10980,48 @@ async function refreshGitHubDate() {
         updateImportButtonDate();
     }
 }
+// ========== ПРОВЕРКА ПУСТОГО ХРАНИЛИЩА ПОСЛЕ ВХОДА ==========
+function isAppDataEmpty() {
+    const isEmpty = (arr) => !arr || arr.length === 0;
+    return (
+        isEmpty(accountingData) &&
+        isEmpty(counterpartiesData) &&
+        isEmpty(paymentsData) &&
+        isEmpty(settlementData) &&
+        isEmpty(mailData) &&
+        isEmpty(proxyData)
+    );
+}
 
+function checkAndSuggestDataImport() {
+    if (sessionStorage.getItem('emptyDataPromptShown') === 'true') return;
+
+    if (isAppDataEmpty()) {
+        setTimeout(() => {
+            const modal = document.getElementById('emptyDataModal');
+            if (modal) {
+                modal.classList.add('show');        // ← было style.display = 'flex'
+                sessionStorage.setItem('emptyDataPromptShown', 'true');
+            }
+        }, 800);
+    }
+}
+
+function closeEmptyDataModal() {
+    const modal = document.getElementById('emptyDataModal');
+    if (modal) {
+        modal.classList.remove('show');             // ← было style.display = 'none'
+    }
+}
+
+function loadDataFromEmptyModal() {
+    closeEmptyDataModal();
+    if (typeof importJSON === 'function') {
+        importJSON();
+    } else {
+        console.error('Функция importJSON не найдена');
+    }
+}
         // ========== ФУНКЦИИ ЭКСПОРТА В EXCEL ==========
 async function exportToExcel(type) {
     // Определяем таблицу и имя файла
@@ -11636,6 +11872,7 @@ function startApplication() {
         updateUserInterface();   // применяет права и перерисовывает таблицы
         resetAllFilters();
         updateAllBadges();
+        checkAndSuggestDataImport();
         
         // 6. Принудительно перерисовываем таблицы (на всякий случай)
         setTimeout(() => {
@@ -12048,9 +12285,9 @@ button[onclick*="exportToExcel"]:hover {
 /* Исправление высоты и отступов в сайдбаре */
 .sidebar .sidebar-cell.menu-item {
     height: auto !important;          /* убираем фиксированную высоту */
-    min-height: 45px !important;      /* оставляем минимальную, чтобы кнопка не сжималась */
+    min-height: 26px !important;      /* оставляем минимальную, чтобы кнопка не сжималась */
     line-height: normal !important;   /* убираем line-height, чтобы не влиять на flex */
-    padding: 4px 4px !important;      /* уменьшаем вертикальные отступы, если нужно */
+    padding: 2px 6px !important;      /* уменьшаем вертикальные отступы, если нужно */
     justify-content: center !important;
     align-items: center !important;
     gap: 4px !important;
@@ -12209,7 +12446,7 @@ input:checked + .slider:before {
     align-items: center !important;
     justify-content: center !important;
     padding: 2px 6px !important;          /* уменьшенные отступы */
-    min-height: 28px !important;          /* уменьшенная высота */
+    min-height: 30px !important;          /* уменьшенная высота */
     min-width: 60px !important;           /* можно немного сузить */
     height: auto !important;
     width: auto !important;
@@ -12243,7 +12480,7 @@ input:checked + .slider:before {
 
 
 .sidebar-cell.menu-item .menu-icon {
-    font-size: 18px !important;
+    font-size: 20px !important;
     line-height: 1 !important;
     color: inherit !important;
 }
@@ -12304,7 +12541,7 @@ input:checked + .slider:before {
 .main-content {
     margin-left: 0 !important;         /* ← убиваем старые 90/100/110px */
     margin-right: 0 !important;
-    padding-top: 60px !important;      /* ← отступ под горизонтальный сайдбар */
+    padding-top: 50px !important;      /* ← отступ под горизонтальный сайдбар */
     padding-left: 12px !important;
     padding-right: 12px !important;
     padding-bottom: 6px !important;
@@ -12333,14 +12570,14 @@ input:checked + .slider:before {
 @media (max-width: 600px) {
     .sidebar-cell.menu-item {
         min-width: 44px !important;
-        padding: 1px 4px !important;
-        min-height: 24px !important;
+        padding: 2px 6px !important;
+        min-height: 26px !important;
     }
     .sidebar-cell.menu-item .menu-text {
         font-size: 6px !important;
     }
     .main-content {
-        padding-top: 76px !important;
+        padding-top: 50px !important;
         height: calc(100vh - 76px) !important;
     }
 }
@@ -12365,13 +12602,119 @@ input:checked + .slider:before {
     background: rgba(255, 255, 255, 0.15);
 }
 
-/* Узкая кнопка "Обновить" */
-.sidebar-cell.menu-item.import-btn {
-    flex: 0 0 auto !important;      /* не растягиваться */
-    min-width: 0 !important;         /* убрать минимальную ширину */
-    width: auto !important;          /* ширина по содержимому */
-    padding-left: 6px !important;    /* уменьшить отступы (по желанию) */
-    padding-right: 6px !important;
+/* ===== Кнопка «Ещё» и её выпадающий список ===== */
+.more-menu-btn { cursor: pointer; }
+.more-menu-btn.open .menu-icon {
+    transform: rotate(90deg);
+    transition: transform 0.2s ease;
+}
+
+/* Скрыт по умолчанию. Фон — НЕПРОЗРАЧНЫЙ, приближенный к виду
+   кнопки сайдбара (#15181e + rgba(255,255,255,0.06) ≈ #232630).
+   Ширину и позицию задаёт JS. */
+#moreMenuDropdown {
+    display: none !important;
+    position: fixed !important;
+    top: 70px;
+    left: auto;
+    right: 12px;
+    z-index: 999999 !important;
+
+    background: #232630;                 /* ← НЕПРОЗРАЧНЫЙ, как у кнопки */
+    border: 1px solid #53565f;
+    border-radius: 6px;
+    padding: 6px 0;
+    min-width: 0;
+
+    flex-direction: column !important;
+    flex-wrap: nowrap !important;
+    align-items: stretch !important;
+    gap: 4px;
+
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.7);
+    font-size: 12px;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+#moreMenuDropdown.show {
+    display: flex !important;
+}
+
+body:not(.app-ready) #moreMenuDropdown {
+    display: none !important;
+}
+
+/* Каждый пункт — строка: иконка слева, текст справа */
+#moreMenuDropdown .sidebar-cell.menu-item {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 10px !important;
+
+    width: 100% !important;
+    min-width: 0 !important;
+    height: auto !important;
+    min-height: 30px !important;
+    margin: 0 !important;
+    padding: 0 12px !important;
+
+    background: transparent !important;   /* строка — фон родителя виден */
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    color: #aeb3d6 !important;
+    white-space: normal !important;
+    text-align: left !important;
+    box-sizing: border-box !important;
+}
+
+#moreMenuDropdown .sidebar-cell.menu-item .menu-icon {
+    font-size: 13px !important;
+    width: 16px !important;
+    text-align: center !important;
+    color: #aeb3d6 !important;
+    flex-shrink: 0 !important;
+}
+
+#moreMenuDropdown .sidebar-cell.menu-item .menu-text {
+    font-size: 12px !important;
+    color: inherit !important;
+    letter-spacing: 0 !important;
+}
+
+/* Ховер — тоже полностью непрозрачный */
+#moreMenuDropdown .sidebar-cell.menu-item:hover {
+    background: #2f3542 !important;      /* ← сплошной цвет */
+    color: #ffffff !important;
+}
+#moreMenuDropdown .sidebar-cell.menu-item:hover .menu-icon {
+    color: #ffffff !important;
+}
+
+/* "Удалить" — красный акцент */
+#moreMenuDropdown .sidebar-cell.menu-item.danger .menu-icon {
+    color: #be463c !important;
+}
+#moreMenuDropdown .sidebar-cell.menu-item.danger:hover {
+    background: #4a2420 !important;      /* ← тоже сплошной */
+}
+#moreMenuDropdown .sidebar-cell.menu-item.danger:hover .menu-icon {
+    color: #ff7b70 !important;
+}
+
+#moreMenuDropdown .sidebar-cell.menu-item .sidebar-tooltip {
+    display: none !important;
+}
+
+#moreMenuDropdown .sidebar-badge {
+    position: static !important;
+    margin-left: auto !important;
+    width: 14px !important;
+    height: 14px !important;
+    font-size: 9px !important;
+    animation: none !important;
 }
 
 </style>
@@ -12707,6 +13050,32 @@ select.filter-active {
     -webkit-box-shadow: 0 0 0 30px #1e2d3d inset !important;
     -webkit-text-fill-color: #c7d5e0 !important;
 }
+/* === Подсветка контура у кнопок сайдбара (как у остальных кнопок и фильтров) === */
+
+/* Базовая рамка — прозрачная, чтобы не «прыгала» при появлении */
+.sidebar-cell.menu-item {
+    border: 1px solid #53565f !important;
+    transition: border-color .15s ease, box-shadow .15s ease,
+                background-color .15s ease !important;
+}
+.sidebar-cell.menu-item:hover {
+    border-color: #66c0f4 !important;
+}
+.sidebar-cell.menu-item.active {
+    border-color: #66c0f4 !important;
+    box-shadow: 0 0 8px rgba(59, 130, 246, 0.45) !important;
+}
+
+/* 2. Пункты внутри «Ещё» — БЕЗ серого контура, только ховер */
+#moreMenuDropdown .sidebar-cell.menu-item {
+    border: 1px solid transparent !important;
+}
+#moreMenuDropdown .sidebar-cell.menu-item:hover {
+    border-color: #66c0f4 !important;
+}
+#moreMenuDropdown .sidebar-cell.menu-item.danger:hover {
+    border-color: #be463c !important;
+}
 /* ============================================================
    ВНУТРЕННЯЯ ПОДСВЕТКА АКТИВНЫХ ФИЛЬТРОВ (когда есть значение)
    ============================================================ */
@@ -12847,27 +13216,78 @@ select.filter-active {
 #printApplicationReportBtn:hover {
     border-color: #66c0f4 !important;
 }
-/* ============================================================
-   САЙДБАР: серая рамка в обычном состоянии (как раньше),
-   голубая — только при наведении (как у кнопок панели управления)
-   ============================================================ */
 
-/* Плавный переход цвета рамки, фон и цвет оставляем как есть */
-.sidebar-cell.menu-item {
-    transition: border-color .15s ease, background .2s ease, color .2s ease !important;
-}
-
-/* При наведении — только цвет рамки меняем на голубой */
-.sidebar-cell.menu-item:hover {
-    border-color: #66c0f4 !important;
-}
-
-/* Активный пункт — рамка тоже голубая, чтобы выделялся */
-.sidebar-cell.menu-item.active {
-    border-color: #66c0f4 !important;
-}
 
 </style>
+
+<script>
+/* ===== Выпадающее меню «Ещё» в сайдбаре ===== */
+function toggleMoreMenu(event) {
+    if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+    }
+    const dropdown = document.getElementById('moreMenuDropdown');
+    const btn = document.getElementById('moreMenuBtn');
+    if (!dropdown || !btn) return;
+
+    const willOpen = !dropdown.classList.contains('show');
+
+    if (willOpen) {
+        const rect = btn.getBoundingClientRect();
+        const viewportW = window.innerWidth;
+
+        // Ширина и позиция — ровно по кнопке «Ещё»
+        let left  = rect.left;
+        let width = rect.width;
+
+        // Страховка от выхода за правый край экрана
+        if (left + width > viewportW - 4) {
+            left = viewportW - 4 - width;
+        }
+        // Страховка от выхода за левый край
+        if (left < 4) left = 4;
+
+        dropdown.style.top   = (rect.bottom + 4) + 'px';
+        dropdown.style.left  = left + 'px';
+        dropdown.style.width = width + 'px';
+    }
+
+    dropdown.classList.toggle('show', willOpen);
+    btn.classList.toggle('open', willOpen);
+}
+
+function closeMoreMenu() {
+    const dropdown = document.getElementById('moreMenuDropdown');
+    const btn = document.getElementById('moreMenuBtn');
+    if (dropdown) dropdown.classList.remove('show');
+    if (btn) btn.classList.remove('open');
+}
+
+document.addEventListener('click', function (e) {
+    const dropdown = document.getElementById('moreMenuDropdown');
+    const btn = document.getElementById('moreMenuBtn');
+    if (!dropdown || !btn) return;
+    if (!dropdown.contains(e.target) && !btn.contains(e.target)) closeMoreMenu();
+});
+
+document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') closeMoreMenu();
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    const dropdown = document.getElementById('moreMenuDropdown');
+    if (!dropdown) return;
+    dropdown.addEventListener('click', function (e) {
+        if (e.target.closest('.sidebar-cell.menu-item')) {
+            setTimeout(closeMoreMenu, 50);
+        }
+    });
+
+    window.addEventListener('resize', closeMoreMenu);
+});
+</script>
+
 <!-- НОВЫЙ СКРИПТ ДЛЯ ПЕРЕСТАНОВКИ КНОПОК -->
 <script>
 (function() {
