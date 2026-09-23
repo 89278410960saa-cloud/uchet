@@ -3097,7 +3097,7 @@ button:hover{background:#222733!important}
                 <input list="departmentsListFilter" id="departmentFilter" class="department-filter" placeholder="Все подразделения" oninput="filterAccountingTable()" style="min-width: 93.8px; flex: 1;">
                 <datalist id="departmentsListFilter"><option value="">Все подразделения</option></datalist>
                 <input list="applicationsListFilter" id="applicationFilter" class="application-filter" placeholder="Фильтр по заявкам..." oninput="filterAccountingTable()" style="min-width: 93.8px; flex: 1;">
-                <select id="factMonthFilter" class="month-filter" onchange="filterAccountingTable(); hideQuickFiltersIfMonthSelected();" style="min-width: 80px;">
+                <select id="factMonthFilter" class="month-filter" onchange="handleFactMonthChange();" style="min-width: 80px;">
     <option value="">Факт ALL</option>
     <option value="1">Январь</option>
     <option value="2">Февраль</option>
@@ -3146,6 +3146,11 @@ button:hover{background:#222733!important}
 <div id="quickSupplierFilters" class="quick-filters-container" style="display: none; flex: 3 1 0%; max-width: none; width: 100%; min-height: 46.9px;">
     <div class="quick-filters-label">Поставщики:</div>
     <div class="quick-filters" id="quickSupplierFiltersList"></div>
+</div>
+<!-- Быстрые фильтры по датам Факта (появляются только при выборе месяца) -->
+<div id="quickFactDateFilters" class="quick-filters-container" style="display: none; flex: 3 1 0%; max-width: none; width: 100%; min-height: 46.9px;">
+    <div class="quick-filters-label">Даты факта:</div>
+    <div class="quick-filters" id="quickFactDateFiltersList"></div>
 </div>
             <div class="comment-control hidden" style="margin-bottom: 6.7px; margin-top: 5.36px; display: none;">
                 <input type="text" id="applicationComment" placeholder="Комментарии (только просмотр)" onchange="saveApplicationComment()" style="background-color: rgb(42, 71, 94); color: rgb(255, 215, 0); font-weight: bold;" readonly="true" disabled="true">
@@ -4055,6 +4060,7 @@ button:hover{background:#222733!important}
         let showOnlyBlacklisted = false;
         let showFavoritesOnly = false;
         const FAVORITE_STORAGE_KEY = 'showFavoritesOnly';
+        let selectedFactDate = '';
 
 
         // ========== ФУНКЦИИ АВТОРИЗАЦИИ ==========
@@ -5130,6 +5136,11 @@ function editAccountingRowByRecordId(recordId) {
                 factMonthMatch = false;
             }
         }
+        let factDateMatch = true;
+if (selectedFactDate) {
+    const factCell = cells[13] ? cells[13].textContent.trim() : '';
+    factDateMatch = factCell === selectedFactDate;
+}
 
         let rowText = '';
         cells.forEach(cell => {
@@ -5156,7 +5167,7 @@ function editAccountingRowByRecordId(recordId) {
         const yearMatch = !yearFilter || yearFromApplication === yearFilter;
 
         if (searchMatch && statusMatch && departmentMatch && applicationMatch && 
-        supplierMatch && yearMatch && factMonthMatch && favoriteMatch) {
+    supplierMatch && yearMatch && factMonthMatch && factDateMatch && favoriteMatch) {
         row.style.display = '';
         visibleCount++;
     } else {
@@ -5227,6 +5238,7 @@ function editAccountingRowByRecordId(recordId) {
     }
 
     refreshQuickFiltersVisibility();
+    updateQuickFactDateFilters();
     updateCommentBlockVisibility();
 
     setTimeout(loadColumnWidths, 100);
@@ -5366,6 +5378,15 @@ function updateStatusFilterCounts() {
     document.getElementById('yearFilter').value = '';
     document.getElementById('applicationComment').value = '';
     document.getElementById('factMonthFilter').value = '';
+    
+    // Сброс фильтра по дате факта
+selectedFactDate = '';
+const factDateContainer = document.getElementById('quickFactDateFilters');
+if (factDateContainer) {
+    factDateContainer.style.display = 'none';
+    const list = document.getElementById('quickFactDateFiltersList');
+    if (list) list.innerHTML = '';
+}
     const accountingFilters = ['#searchAccountingInput', '#statusFilter', '#departmentFilter', '#applicationFilter', '#supplierFilter', '#yearFilter', '#factMonthFilter'];
 accountingFilters.forEach(sel => {
     const el = document.querySelector(sel);
@@ -9587,6 +9608,123 @@ const filteredCells = allCells.filter((_, index) => !excludeIndices.includes(ind
 
     quickFiltersContainer.appendChild(filtersContainer);
     quickFiltersContainer.style.display = 'flex';
+}
+// ========== БЫСТРЫЕ ФИЛЬТРЫ ПО ДАТАМ ФАКТА ==========
+function handleFactMonthChange() {
+    // При смене месяца сбрасываем выбранную дату
+    selectedFactDate = '';
+    filterAccountingTable();
+    hideQuickFiltersIfMonthSelected();
+    updateQuickFactDateFilters();
+}
+
+function updateQuickFactDateFilters() {
+    const container = document.getElementById('quickFactDateFilters');
+    const listContainer = document.getElementById('quickFactDateFiltersList');
+    if (!container || !listContainer) return;
+
+    const monthFilter = document.getElementById('factMonthFilter').value;
+
+    // Показываем блок ТОЛЬКО если выбран месяц
+    if (!monthFilter) {
+        container.style.display = 'none';
+        listContainer.innerHTML = '';
+        return;
+    }
+
+    const monthNum = parseInt(monthFilter);
+
+    // Считываем остальные активные фильтры
+    const searchText       = document.getElementById('searchAccountingInput').value.toLowerCase().trim();
+    const statusFilter     = document.getElementById('statusFilter').value;
+    const departmentFilter = document.getElementById('departmentFilter').value.toLowerCase().trim();
+    const applicationFilter= document.getElementById('applicationFilter').value.toLowerCase().trim();
+    const supplierFilter   = document.getElementById('supplierFilter').value.toLowerCase().trim();
+    const yearFilter       = document.getElementById('yearFilter').value;
+
+    // Собираем уникальные даты факта (в выбранном месяце + с учётом остальных фильтров)
+    const datesSet = new Set();
+
+    accountingData.forEach(item => {
+        const factDate = parseDate(item.fact);
+        if (!factDate) return;
+        if ((factDate.getMonth() + 1) !== monthNum) return;
+
+        if (statusFilter && item.status !== statusFilter) return;
+        if (departmentFilter && (!item.department || !item.department.toLowerCase().includes(departmentFilter))) return;
+        if (applicationFilter && (item.docNumber || '').toLowerCase() !== applicationFilter) return;
+        if (supplierFilter && (!item.supplier || !item.supplier.toLowerCase().includes(supplierFilter))) return;
+        if (yearFilter) {
+            const yearFromDoc = extractYearFromDocNumber(item.docNumber);
+            if (yearFromDoc !== yearFilter) return;
+        }
+        if (searchText) {
+            const rowText = (
+                (item.docNumber || '') + ' ' +
+                (item.status || '') + ' ' +
+                (item.department || '') + ' ' +
+                (item.supplier || '') + ' ' +
+                (item.name || '') + ' ' +
+                (item.purchaseName || '') + ' ' +
+                (item.contract || '') + ' ' +
+                (item.amount || '') + ' ' +
+                (item.fact || '')
+            ).toLowerCase();
+            if (!rowText.includes(searchText)) return;
+        }
+
+        datesSet.add(item.fact);
+    });
+
+    // Если нет дат — скрываем блок
+    if (datesSet.size === 0) {
+        container.style.display = 'none';
+        listContainer.innerHTML = '';
+        return;
+    }
+
+    // Сортировка дат по возрастанию
+    const sortedDates = Array.from(datesSet).sort((a, b) => {
+        const da = parseDate(a);
+        const db = parseDate(b);
+        const ta = da ? da.getTime() : 0;
+        const tb = db ? db.getTime() : 0;
+        return ta - tb;
+    });
+
+    listContainer.innerHTML = '';
+
+    // ── Кнопка «Все» ──
+    const allBtn = document.createElement('button');
+    allBtn.type = 'button';
+    allBtn.className = 'quick-filter-btn' + (selectedFactDate === '' ? ' active' : '');
+    allBtn.textContent = 'Все';
+    allBtn.title = 'Показать все даты месяца';
+    allBtn.onclick = () => {
+        selectedFactDate = '';
+        listContainer.querySelectorAll('.quick-filter-btn').forEach(b => b.classList.remove('active'));
+        allBtn.classList.add('active');
+        filterAccountingTable();
+    };
+    listContainer.appendChild(allBtn);
+
+    // ── Кнопки по каждой дате ──
+    sortedDates.forEach(date => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'quick-filter-btn' + (selectedFactDate === date ? ' active' : '');
+        btn.textContent = date;
+        btn.title = 'Показать только эту дату';
+        btn.onclick = () => {
+            selectedFactDate = date;
+            listContainer.querySelectorAll('.quick-filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            filterAccountingTable();
+        };
+        listContainer.appendChild(btn);
+    });
+
+    container.style.display = 'flex';
 }
 
 function hideQuickFiltersIfMonthSelected() {
