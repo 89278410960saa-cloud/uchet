@@ -547,6 +547,19 @@ body:not(.app-ready) .main-content {
     width: 100% !important;
     table-layout: auto !important;
 }
+/* ===== Номер строки в столбце "ID" — вторым ярусом под значением ===== */
+#accountingTable td.id-cell .row-number {
+    display: none;
+    color: #66c0f4;
+    font-weight: bold;
+    font-size: 10px;
+    line-height: 1;
+    text-align: center;
+    pointer-events: none;
+}
+#accountingTable td.id-cell.has-row-number .row-number {
+    display: block;
+}
 /* ========== АВТОМАТИЧЕСКАЯ РАСПРЕДЕЛЕНИЕ ШИРИНЫ СТОЛБЦОВ ========== */
 
 /* Убираем фиксированные ширины и делаем адаптивными */
@@ -581,23 +594,46 @@ body:not(.app-ready) .main-content {
     text-overflow: ellipsis;
 }
 #proxyTable th:nth-child(7) { width: 15%; }
+/* ===== Самовывоз: Статус по ширине как Дата, разницу — Адресу ===== */
+#proxyTable th:nth-child(1),
+#proxyTable td:nth-child(1),
+#proxyTable th:nth-child(2),
+#proxyTable td:nth-child(2) {
+    width: 80.4px !important;
+    min-width: 80.4px !important;
+    max-width: 80.4px !important;
+}
 
+#proxyTable th:nth-child(6),
+#proxyTable td:nth-child(6) {
+    width: 187.1px !important; /* 167.5px + (100px − 80.4px) = 187.1px */
+    min-width: 187.1px !important;
+    max-width: 187.1px !important;
+}
 /* ===== ФИКСИРОВАННАЯ ШИРИНА ДЛЯ ПОЧТОВОГО РЕЕСТРА (Отправления) ===== */
 #mailTable {
     table-layout: fixed !important;
     width: 100% !important;
 }
-#mailTable th:nth-child(1), #mailTable td:nth-child(1) { width: 70px !important; }   /* Дата */
-#mailTable th:nth-child(2), #mailTable td:nth-child(2) { width: 120px !important; }  /* Контрагент */
-#mailTable th:nth-child(3), #mailTable td:nth-child(3) { width: 100px !important; }  /* Документ */
-#mailTable th:nth-child(4), #mailTable td:nth-child(4) { 
-    width: 20px !important; 
-    max-width: 20px !important; 
+
+/* Дата = Контрагент (равные доли) */
+#mailTable th:nth-child(1), #mailTable td:nth-child(1) { width: 15% !important; }  /* Дата */
+#mailTable th:nth-child(2), #mailTable td:nth-child(2) { width: 15% !important; }  /* Контрагент */
+
+/* Документ = Адрес (равные доли) */
+#mailTable th:nth-child(3), #mailTable td:nth-child(3) { width: 32% !important; }  /* Документ */
+#mailTable th:nth-child(5), #mailTable td:nth-child(5) { width: 32% !important; }  /* Адрес организации */
+
+/* Кол-во листов — узкий, содержимое по центру */
+#mailTable th:nth-child(4), #mailTable td:nth-child(4) {
+    width: 6% !important;
+    max-width: 6% !important;
+    text-align: center !important;
+    vertical-align: middle !important;
     overflow: hidden !important;
     white-space: nowrap !important;
     text-overflow: ellipsis !important;
-}  /* Кол-во листов */
-#mailTable th:nth-child(5), #mailTable td:nth-child(5) { width: 180px !important; }  /* Адрес организации */
+}
 
 /* ===== ФИКСИРОВАННАЯ ШИРИНА ДЛЯ ТАБЛИЦЫ УРЕГУЛИРОВАНИЯ (Рекламации) ===== */
 #settlementTable {
@@ -606,14 +642,14 @@ body:not(.app-ready) .main-content {
 }
 
 /* Новые ширины столбцов (8 столбцов) */
-#settlementTable th:nth-child(1), #settlementTable td:nth-child(1) { width: 90px !important; }  /* Дата */
-#settlementTable th:nth-child(2), #settlementTable td:nth-child(2) { width: 120px !important; } /* Примечание */
-#settlementTable th:nth-child(3), #settlementTable td:nth-child(3) { width: 70px !important; }  /* Статус */
-#settlementTable th:nth-child(4), #settlementTable td:nth-child(4) { width: 150px !important; } /* Контрагент */
-#settlementTable th:nth-child(5), #settlementTable td:nth-child(5) { width: 100px !important; } /* Договор */
-#settlementTable th:nth-child(6), #settlementTable td:nth-child(6) { width: 150px !important; } /* Замечание */
-#settlementTable th:nth-child(7), #settlementTable td:nth-child(7) { width: 100px !important; } /* № Исходящее */
-#settlementTable th:nth-child(8), #settlementTable td:nth-child(8) { width: 100px !important; } /* № Входящее */
+#settlementTable th:nth-child(1), #settlementTable td:nth-child(1) { width: 70px !important; }  /* Дата = Статус */
+#settlementTable th:nth-child(2), #settlementTable td:nth-child(2) { width: 70px !important; }  /* Статус = Дата */
+#settlementTable th:nth-child(3), #settlementTable td:nth-child(3) { width: 100px !important; } /* Контрагент = Договор */
+#settlementTable th:nth-child(4), #settlementTable td:nth-child(4) { width: 100px !important; } /* Договор = Контрагент */
+#settlementTable th:nth-child(5), #settlementTable td:nth-child(5) { width: 150px !important; } /* Замечание = Примечание */
+#settlementTable th:nth-child(6), #settlementTable td:nth-child(6) { width: 100px !important; } /* № Исходящее */
+#settlementTable th:nth-child(7), #settlementTable td:nth-child(7) { width: 100px !important; } /* № Входящее */
+#settlementTable th:nth-child(8), #settlementTable td:nth-child(8) { width: 150px !important; } /* Примечание = Замечание */
 /* Для таблицы учета - более сложное распределение */
 #accountingTable th {
     width: auto !important;
@@ -2021,7 +2057,25 @@ tr.status-supply {
         .drag-over {
             background-color: rgba(102, 192, 244, 0.2) !important;
         }
-/* Стили для комментариев по заявкам в аналитике */
+
+.email-copy-link {
+    color: #66c0f4;
+    text-decoration: underline;
+    cursor: pointer;
+    transition: color 0.15s ease, text-shadow 0.15s ease;
+    user-select: none;
+}
+
+.email-copy-link:hover {
+    color: #75c9ff;
+    text-shadow: 0 0 6px rgba(117, 201, 255, 0.5);
+}
+
+.email-copy-link:active {
+    color: #ffd700;
+}
+
+        /* Стили для комментариев по заявкам в аналитике */
 
 /* Дополнительные стили для лучшей читаемости */
 #commentsAnalyticsTable {
@@ -3308,18 +3362,18 @@ button:hover{background:#222733!important}
         
         <div class="table-scroll-container" style="height: auto; margin-top: 6.7px;">
             <table id="settlementTable" style="table-layout: fixed;">
-                <thead>
-        <tr>
-            <th style="width: 90px;">Дата</th>
-            <th style="width: 120px;">Примечание</th>
-      <th style="width: 70px;">Статус</th>
-      <th style="width: 150px;">Контрагент</th>
-      <th style="width: 100px;">Договор</th>
-      <th style="width: 150px;">Замечание</th>
-      <th style="width: 100px;">№ Исходящее</th>
-      <th style="width: 100px;">№ Входящее</th>
-        </tr>
-    </thead>
+<thead>
+    <tr>
+        <th style="width: 70px;">Дата</th>
+        <th style="width: 70px;">Статус</th>
+        <th style="width: 100px;">Контрагент</th>
+        <th style="width: 100px;">Договор</th>
+        <th style="width: 150px;">Замечание</th>
+        <th style="width: 100px;">№ Исходящее</th>
+        <th style="width: 100px;">№ Входящее</th>
+        <th style="width: 150px;">Примечание</th>
+    </tr>
+</thead>
                 <tbody id="settlementTableBody"><tr>
                     <td colspan="8" style="text-align: center; color: rgb(143, 152, 160); padding: 20px; width: 134px;">
                         Нет данных об урегулировании. Добавьте первую запись.
@@ -4786,7 +4840,22 @@ if (planDate && item.status === 'Поставка') {
     }
 }
         
-        const idCell = createCell(item.id || '', '52px');
+const idCell = document.createElement('td');
+idCell.style.width = '52px';
+idCell.className = 'id-cell';
+
+// Сначала — номер строки (верхний ярус, показывается только при выборе заявки)
+const rowNumSpan = document.createElement('span');
+rowNumSpan.className = 'row-number';
+idCell.appendChild(rowNumSpan);
+
+// Затем — значение ID (нижний ярус)
+const idTextSpan = document.createElement('span');
+idTextSpan.textContent = item.id || '';
+idTextSpan.style.display = 'block';
+idCell.appendChild(idTextSpan);
+
+
         const nameCell = createCell(item.name || '', '200px', 'multiline-cell');
         const quantityCell = document.createElement('td');
 quantityCell.style.width = '26.8px';
@@ -5242,6 +5311,56 @@ if (selectedFactDate) {
     updateCommentBlockVisibility();
 
     setTimeout(loadColumnWidths, 100);
+    updateRowNumbers();
+}
+// ========== НУМЕРАЦИЯ СТРОК В СТОЛБЦЕ "СЛУЖБА" ==========
+function updateRowNumbers() {
+    const appFilterInput = document.getElementById('applicationFilter');
+    const datalist = document.getElementById('applicationsListFilter');
+    if (!appFilterInput) return;
+
+    const appFilterValue = (appFilterInput.value || '').trim();
+
+    // Проверяем: значение совпадает с какой-либо заявкой из datalist?
+    let isAppSelected = false;
+    if (appFilterValue !== '' && datalist) {
+        for (let i = 0; i < datalist.options.length; i++) {
+            if (datalist.options[i].value === appFilterValue) {
+                isAppSelected = true;
+                break;
+            }
+        }
+    }
+
+    // Также номер показывается, если активен быстрый фильтр по заявке
+    // (кнопка «Все» имеет класс all-btn — её исключаем)
+    const activeQuickBtn = document.querySelector(
+        '#quickApplicationFilters .quick-filter-btn.active:not(.all-btn)'
+    );
+    if (activeQuickBtn) isAppSelected = true;
+
+    let counter = 0;
+
+    document.querySelectorAll('#accountingTable tbody tr').forEach(row => {
+        // Пропускаем служебные строки
+        if (row.hasAttribute('data-no-results')) return;
+        if (row.cells.length === 1 && row.cells[0].colSpan > 1) return;
+
+        const idCell = row.querySelector('td.id-cell');
+if (!idCell) return;
+const numEl = idCell.querySelector('.row-number');
+if (!numEl) return;
+
+// Скрытые строки не нумеруем
+if (isAppSelected && row.style.display !== 'none') {
+    counter++;
+    numEl.textContent = counter;
+    idCell.classList.add('has-row-number');
+} else {
+    numEl.textContent = '';
+    idCell.classList.remove('has-row-number');
+}
+    });
 }
 // ========== ПОДСЧЁТ КОЛИЧЕСТВА ПОЗИЦИЙ ПО КАЖДОМУ СТАТУСУ ==========
 function updateStatusFilterCounts() {
@@ -7963,15 +8082,15 @@ function formatCurrency(value) {
         const displayDate = item.date ? item.date : '';
         
         row.innerHTML = `
-            <td>${displayDate}</td>
-            <td>${escapeString(item.note || '')}</td>
-            <td>${escapeString(item.status || '')}</td>
-            <td>${escapeString(item.supplier || '')}</td>
-            <td>${escapeString(item.contract || '')}</td>
-            <td>${escapeString(item.remark || '')}</td>
-            <td>${escapeString(item.outgoing || '')}</td>
-            <td>${escapeString(item.incoming || '')}</td>
-        `;
+    <td>${displayDate}</td>
+    <td>${escapeString(item.status || '')}</td>
+    <td>${escapeString(item.supplier || '')}</td>
+    <td>${escapeString(item.contract || '')}</td>
+    <td>${escapeString(item.remark || '')}</td>
+    <td>${escapeString(item.outgoing || '')}</td>
+    <td>${escapeString(item.incoming || '')}</td>
+    <td>${escapeString(item.note || '')}</td>
+`;
 
         if (isAdmin) {
             row.addEventListener('dblclick', function(e) {
@@ -8010,8 +8129,8 @@ function formatCurrency(value) {
         });
         
         // ✅ Исправленные индексы
-        const statusCell = row.querySelector('td:nth-child(3)')?.textContent.trim() || '';
-        const supplierCell = row.querySelector('td:nth-child(4)')?.textContent.toLowerCase().trim() || '';
+        const statusCell = row.querySelector('td:nth-child(2)')?.textContent.trim() || '';
+        const supplierCell = row.querySelector('td:nth-child(3)')?.textContent.toLowerCase().trim() || '';
         
         const statusMatch = !statusFilter || statusCell === statusFilter;
         const searchMatch = !searchText || rowText.includes(searchText);
@@ -9616,6 +9735,7 @@ function handleFactMonthChange() {
     filterAccountingTable();
     hideQuickFiltersIfMonthSelected();
     updateQuickFactDateFilters();
+    updateCommentBlockVisibility();
 }
 
 function updateQuickFactDateFilters() {
@@ -9828,10 +9948,20 @@ function refreshQuickFiltersVisibility() {
 function updateCommentBlockVisibility() {
     const commentBlock = document.querySelector('.comment-control');
     const applicationFilter = document.getElementById('applicationFilter');
+    const factMonthFilter = document.getElementById('factMonthFilter');
     // Получаем список всех возможных заявок (он находится в datalist)
     const datalist = document.getElementById('applicationsListFilter');
     
     if (!commentBlock || !applicationFilter) return;
+    
+    // === СКРЫВАЕМ БЛОК КОММЕНТАРИЕВ ПРИ АКТИВНОМ ФИЛЬТРЕ "ФАКТ ALL" ===
+    // "Факт ALL" — это опция с пустым значением в #factMonthFilter
+    if (factMonthFilter && factMonthFilter.value !== '') {
+        commentBlock.classList.add('hidden');
+        commentBlock.style.display = 'none';
+        return;
+    }
+    // ================================================================
     
     const currentValue = applicationFilter.value.trim();
     let isValidSelection = false;
@@ -11181,15 +11311,34 @@ function showCounterpartyInfo(supplierName) {
     ];
     
     fields.forEach(field => {
-        if (counterparty[field.key]) {
+    if (counterparty[field.key]) {
+        const value = escapeString(counterparty[field.key]);
+
+        // Email — делаем кликабельным с копированием
+        if (field.key === 'email') {
+            const safeEmail = escapeJsString(counterparty[field.key]);
             html += `
                 <div class="info-row">
                     <div class="info-label">${field.label}</div>
-                    <div class="info-value">${escapeString(counterparty[field.key])}</div>
+                    <div class="info-value">
+                        <span class="email-copy-link"
+                              title="Нажмите, чтобы скопировать email"
+                              onclick="copyToClipboard('${safeEmail}')">
+                            ${value}
+                        </span>
+                    </div>
+                </div>
+            `;
+        } else {
+            html += `
+                <div class="info-row">
+                    <div class="info-label">${field.label}</div>
+                    <div class="info-value">${value}</div>
                 </div>
             `;
         }
-    });
+    }
+});
     
     // Черный список
     if (counterparty.blacklisted) {
