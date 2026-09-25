@@ -5896,7 +5896,8 @@ function toggleOverdueMode() {
             overdueBtn.textContent = `Просроченные (${count})`;
             clearAccountingFilters();
         }
-        updateButtonsVisibility();   // <-- ДОБАВИТЬ ЭТУ СТРОКУ
+        updateButtonsVisibility();
+        updateCommentBlockVisibility();
 }
     }
 function restoreAccountingTable() {
@@ -6139,6 +6140,7 @@ function toggleWeeklyDeliveriesMode() {
             clearAccountingFilters();
 }
 updateButtonsVisibility();
+updateCommentBlockVisibility();
     }
 }
 function updateWeeklyDeliveriesButton() {
@@ -9953,7 +9955,12 @@ function updateCommentBlockVisibility() {
     const datalist = document.getElementById('applicationsListFilter');
     
     if (!commentBlock || !applicationFilter) return;
-    
+
+    if (showOverdueMode || showWeeklyDeliveriesMode) {
+        commentBlock.classList.add('hidden');
+        commentBlock.style.display = 'none';
+        return;
+    }
     // === СКРЫВАЕМ БЛОК КОММЕНТАРИЕВ ПРИ АКТИВНОМ ФИЛЬТРЕ "ФАКТ ALL" ===
     // "Факт ALL" — это опция с пустым значением в #factMonthFilter
     if (factMonthFilter && factMonthFilter.value !== '') {
