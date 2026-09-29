@@ -2,6 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover">
     <title>Учет закупки</title>
     <link rel="icon" href="https://cdn.jsdelivr.net/gh/twitter/twemoji/assets/svg/1f6d2.svg" type="image/svg+xml">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -399,10 +400,6 @@ body:not(.app-ready) .main-content {
             z-index: 2000;
         }
 
-        #login-page:not(.active) {
-            display: none;
-        }
-
         .page.active {
             display: block;
         }
@@ -666,11 +663,6 @@ body:not(.app-ready) .main-content {
     overflow: hidden !important;
     text-overflow: ellipsis !important;
     white-space: normal !important;
-}
-/* Убедитесь, что таблицы занимают всю ширину */
-.table-scroll-container table {
-    width: 100% !important;
-    table-layout: auto !important;
 }
 /* Центрирование текста в таблице Доверенностей (Самовывоз) */
 #proxyTable th,
@@ -2812,52 +2804,6 @@ button:hover,
   box-shadow: none !important;
 }
 
-/* === SIDEBAR SIZE INCREASE (+10%) ONLY === */
-.sidebar {
-    width: 110%;
-    font-size: 110%;
-}
-
-
-
-/* === MODERN SIDEBAR REDESIGN === */
-.sidebar {
-    width: 100px;
-    background: linear-gradient(180deg, #0f172a 0%, #020617 100%);
-    font-size: 110%;
-}
-
-.sidebar button {
-    background: transparent;
-    border-radius: 10px;
-    padding: 10px 12px;
-    color: #e5e7eb;
-    transition: all 0.25s ease;
-}
-
-.sidebar button:hover {
-    background: rgba(99,102,241,0.15);
-    color: #ffffff;
-}
-
-.sidebar button.active {
-    background: linear-gradient(135deg, #6366f1, #3b82f6);
-    color: #ffffff;
-    box-shadow: 0 6px 18px rgba(59,130,246,0.35);
-}
-
-.sidebar-icon {
-    filter: drop-shadow(0 0 4px rgba(99,102,241,0.6));
-}
-
-.sidebar-tooltip {
-    background: #020617;
-    color: #e5e7eb;
-    border-radius: 8px;
-    padding: 6px 10px;
-    font-size: 12px;
-}
-
 </style>
 
 
@@ -4299,27 +4245,6 @@ function updateGitHubGuestBadge() {
 }
 
 
-
-// Функция для обновления интерфейса после смены режима
-function updateUserInterface() {
-    updateUserButton();
-    updateCommentFieldPermissions();
-    
-    // Показываем или скрываем элементы для администратора
-    document.querySelectorAll('.admin-only').forEach(el => {
-        el.style.display = isAdmin ? 'flex' : 'none';
-    });
-    
-    // Обновляем все таблицы
-    updateAllTables();
-    
-    // СОХРАНИТЬ ТЕКУЩЕЕ СОСТОЯНИЕ В LOCALSTORAGE
-    localStorage.setItem('userAuth', JSON.stringify({ 
-        isAdmin, 
-        currentUser 
-    }));
-}
-
 // ========== ИНИЦИАЛИЗАЦИЯ ПРИЛОЖЕНИЯ ==========
 function initializeApp() {
     loadAllData();               // загружает все данные и обновляет таблицы
@@ -4453,20 +4378,6 @@ function initializeRecordIds() {
     addIdsToArray(settlementData);
     addIdsToArray(mailData);
     addIdsToArray(proxyData);
-}
-function getTimeFromRecordId(recordId) {
-    if (!recordId) return 0;
-    try {
-        // Формат: timestamp_randomStr
-        const parts = recordId.split('_');
-        if (parts.length >= 1) {
-            const timestamp = parseInt(parts[0], 10);
-            return isNaN(timestamp) ? 0 : timestamp;
-        }
-    } catch (e) {
-        console.error('Ошибка извлечения времени из recordId:', e);
-    }
-    return 0;
 }
 // ========== ОБНОВЛЕНИЕ ДОСТУПА К КОММЕНТАРИЯМ ==========
 function updateCommentFieldPermissions() {
@@ -9998,33 +9909,6 @@ function updateCommentBlockVisibility() {
 }
   
 
-
-// ========== ФУНКЦИЯ ОБНОВЛЕНИЯ ДОСТУПА К КОММЕНТАРИЯМ ==========
-function updateCommentFieldPermissions() {
-    const commentInput = document.getElementById('applicationComment');
-    const commentButton = document.getElementById('saveCommentBtn');
-    
-    if (!commentInput || !commentButton) return;
-    
-    if (isAdmin) {
-        commentInput.removeAttribute('readonly');
-        commentInput.removeAttribute('disabled');
-        commentButton.removeAttribute('disabled');
-        commentInput.style.backgroundColor = '#2a475e';
-        commentInput.style.color = '#ffd700';
-        commentInput.style.fontWeight = 'bold';
-        commentInput.placeholder = 'Комментарий к заявке...';
-    } else {
-        // Для гостя: те же цвета, но недоступно для редактирования
-        commentInput.setAttribute('readonly', 'true');
-        commentInput.setAttribute('disabled', 'true');
-        commentButton.setAttribute('disabled', 'true');
-        commentInput.style.backgroundColor = '#2a475e'; // Тот же фон что и у админа
-        commentInput.style.color = '#ffd700'; // Тот же жёлтый цвет что и у админа
-        commentInput.style.fontWeight = 'bold'; // Та же жирность шрифта
-        commentInput.placeholder = 'Комментарии (только просмотр)';
-    }
-}
 // ========== НОВЫЕ ФУНКЦИИ ДЛЯ "СОХРАНИТЬ И ДОБАВИТЬ" ==========
 
 // Флаг и данные для режима "сохранить и добавить"
@@ -12006,26 +11890,6 @@ function startApplication() {
 }
 
 
-// Модифицируем функцию initializeApp для проверки страницы входа
-function initializeApp() {
-    // Загружаем все данные
-    loadAllData();
-    
-    // Показываем основной интерфейс (уже показан в hideLoginPage)
-    document.querySelector('.sidebar').style.display = 'block';
-    document.querySelector('.main-content').style.display = 'block';
-    
-    if (!currentUser) {
-        isAdmin = false;
-        currentUser = 'guest';
-    }
-    
-    // Обновляем интерфейс
-    updateUserInterface();
-    resetAllFilters();
-}
-
-
 // Функция для принудительного обновления таблицы учета
 function forceTableUpdate() {
     const table = document.getElementById('accountingTable');
@@ -12269,8 +12133,6 @@ function resetAllFilters() {
 <div id="pageTransitionBlur" class="page-transition-blur active"></div>
 <div id="loadingSpinnerBlur" class="loading-spinner-blur active"></div>
 
-<datalist id="contractsList"></datalist>
-<datalist id="applicationsList"></datalist>
 <datalist id="applicationsListFilter"></datalist>
 <datalist id="paymentTermsList">
     <option value="100 % предоплата">
@@ -13330,6 +13192,65 @@ select.filter-active {
 #printApplicationReportBtn:hover {
     border-color: #66c0f4 !important;
 }
+
+/* ============================================================
+   АДАПТАЦИЯ ДЛЯ МАЛЕНЬКИХ ЭКРАНОВ (ПЛАНШЕТЫ И ТЕЛЕФОНЫ)
+   ============================================================ */
+@media (max-width: 768px) {
+    /* Модальные окна занимают весь экран, а не боковую панель 320-1100px */
+    .modal {
+        padding-right: 0 !important;
+        padding: 8px !important;
+        justify-content: center !important;
+        align-items: center !important;
+    }
+    .modal-content {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        height: 100% !important;
+        max-height: 100% !important;
+        border-radius: 6px !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Таблица 4x5 в форме "Учёт закупки" превращается в одну колонку полей */
+    #editAccountingModal table,
+    #editAccountingModal table tbody,
+    #editAccountingModal table tr,
+    #editAccountingModal table td {
+        display: block !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+    #editAccountingModal table tr {
+        height: auto !important;
+        margin-bottom: 4px !important;
+    }
+
+    /* Данные-таблицы уже скроллятся горизонтально через .table-scroll-container —
+       просто не даём странице целиком уезжать вбок */
+    .container {
+        padding-left: 6px !important;
+        padding-right: 6px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    /* Прячем подписи пунктов меню, оставляя иконки — экономим место в один ряд */
+    .sidebar-cell.menu-item .menu-text {
+        display: none !important;
+    }
+    .sidebar-cell.menu-item {
+        min-width: 38px !important;
+        padding: 4px !important;
+    }
+    .main-content {
+        padding-top: 44px !important;
+        height: calc(100vh - 50px) !important;
+    }
+}
+
 
 
 </style>
