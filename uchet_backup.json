@@ -23792,7 +23792,7 @@
       "contract": "",
       "paymentTerms": "",
       "deliveryDays": "",
-      "deliveryTerms": "Самовывоз",
+      "deliveryTerms": "",
       "date": "",
       "planFact": "",
       "fact": "",
@@ -35810,5 +35810,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-09-29T14:32:31.910Z"
+  "exportDate": "2026-09-29T14:36:26.096Z"
 }
