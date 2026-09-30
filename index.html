@@ -3025,11 +3025,6 @@ button:hover{background:#222733!important}
             <span class="menu-text">Отправления</span>
         </div>
 
-        <!-- Кнопка «Сохранить» -->
-        <div class="sidebar-cell menu-item github-export-btn admin-only" onclick="forceExportToGitHub()" title="Принудительный экспорт данных">
-            <span class="menu-icon"><i class="fas fa-save"></i></span>
-            <span class="menu-text">Сохранить</span>
-        </div>
 
         <!-- Кнопка «Ещё» (последняя в ряду) -->
         <div class="sidebar-cell menu-item more-menu-btn" id="moreMenuBtn" onclick="toggleMoreMenu(event)" title="Ещё">
@@ -3044,6 +3039,12 @@ button:hover{background:#222733!important}
 <!-- Важно: этот блок вынесен ЗА пределы .sidebar, иначе он обрезается
      из-за transform: translateX(-50%) и overflow: hidden у сайдбара. -->
 <div id="moreMenuDropdown">
+    <div class="sidebar-cell menu-item github-export-btn admin-only"
+         onclick="forceExportToGitHub()"
+         title="Принудительный экспорт данных">
+        <span class="menu-icon"><i class="fas fa-save"></i></span>
+        <span class="menu-text">Сохранить</span>
+    </div>
     <div class="sidebar-cell menu-item import-btn" onclick="importJSON()" title="Импорт данных">
         <span class="menu-icon"><i class="fas fa-upload"></i></span>
         <span class="menu-text">Обновить</span>
@@ -4719,22 +4720,30 @@ function updateAccountingTable() {
         
         // Создаем все ячейки строки
         const departmentCell = createCell(item.department || '', '150px');
-        const docNumberCell = document.createElement('td');
-        docNumberCell.style.width = '109px';
+const docNumberCell = document.createElement('td');
+docNumberCell.style.width = '109px';
 
-        const docText = item.docNumber || '';
-        const openParenIndex = docText.indexOf('(');
+const docText = item.docNumber || '';
+const openParenIndex = docText.indexOf('(');
 
-        if (openParenIndex !== -1) {
+const escape = (str) => str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+
+let innerHtml = '';
+if (openParenIndex !== -1) {
     const before = docText.substring(0, openParenIndex);
-    const after = docText.substring(openParenIndex);
-    const escape = (str) => str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
-    docNumberCell.innerHTML =
+    const after  = docText.substring(openParenIndex);
+    innerHtml =
         `<span style="font-weight: bold; color: #66c0f4; display: block;">${escape(before)}</span>` +
-        `<span style="display: block; font-size: 0.9em; white-space: normal;">${escape(after)}</span>`;
+        `<span style="display: block; font-size: 0.9em; white-space: normal; color: #c7d5e0;">${escape(after)}</span>`;
 } else {
-    docNumberCell.textContent = docText;
+    innerHtml = `<span style="color: #66c0f4;">${escape(docText)}</span>`;
 }
+
+docNumberCell.innerHTML =
+    `<a href="#" class="application-filter-link" ` +
+    `data-application="${encodeURIComponent(docText)}" ` +
+    `title="Показать только эту заявку" ` +
+    `style="text-decoration: underline; cursor: pointer; display: block; color: inherit;">${innerHtml}</a>`;
         const statusCell = createCell(item.status || '', '90px');
         
         const planFactCell = createCell(item.planFact || '', '55px');
@@ -9030,6 +9039,60 @@ document.addEventListener('click', function (e) {
     const supplier = decodeURIComponent(link.dataset.supplier || '');
     filterAccountingBySupplier(supplier);
 });
+
+// ===== Клик по номеру заявки в таблице «Позиции» =====
+document.addEventListener('click', function (e) {
+    const link = e.target.closest('.application-filter-link');
+    if (!link) return;
+
+    e.preventDefault();
+    e.stopPropagation();
+
+    const application = decodeURIComponent(link.dataset.application || '');
+    if (!application) return;
+
+    // Убедимся, что мы на странице «Позиции»
+    if (typeof showPage === 'function') {
+        const currentPage = document.querySelector('.page.active');
+        if (!currentPage || currentPage.id !== 'accounting') {
+            showPage('accounting');
+        }
+    }
+
+    // Сбрасываем остальные фильтры
+    const searchInput      = document.getElementById('searchAccountingInput');
+    const statusFilter     = document.getElementById('statusFilter');
+    const departmentFilter = document.getElementById('departmentFilter');
+    const supplierFilter   = document.getElementById('supplierFilter');
+    const yearFilter       = document.getElementById('yearFilter');
+    const factMonthFilter  = document.getElementById('factMonthFilter');
+    const appFilter        = document.getElementById('applicationFilter');
+
+    if (searchInput)      { searchInput.value = '';      updateFilterHighlight(searchInput); }
+    if (statusFilter)     { statusFilter.value = '';     updateFilterHighlight(statusFilter); }
+    if (departmentFilter) { departmentFilter.value = ''; updateFilterHighlight(departmentFilter); }
+    if (supplierFilter)   { supplierFilter.value = '';   updateFilterHighlight(supplierFilter); }
+    if (yearFilter)       { yearFilter.value = '';       updateFilterHighlight(yearFilter); }
+    if (factMonthFilter)  { factMonthFilter.value = '';  updateFilterHighlight(factMonthFilter); }
+
+    // Сбрасываем активные быстрые фильтры
+    document.querySelectorAll('.quick-filter-btn').forEach(b => b.classList.remove('active'));
+
+    // Сбрасываем выбранную дату факта
+    if (typeof selectedFactDate !== 'undefined') selectedFactDate = '';
+
+    // Устанавливаем фильтр по заявке
+    if (appFilter) {
+        appFilter.value = application;
+        updateFilterHighlight(appFilter);
+    }
+
+    // Применяем фильтрацию
+    if (typeof filterAccountingTable === 'function') filterAccountingTable();
+    if (typeof updateCommentBlockVisibility === 'function') updateCommentBlockVisibility();
+    if (typeof updatePrintButtonVisibility === 'function') updatePrintButtonVisibility();
+});
+
 function filterPaymentsByContract(contract, supplier, application) {
     if (!contract) return;
     showPage('payments');
@@ -13600,6 +13663,210 @@ function initFiltersHighlight() {
         updateFilterHighlight(input);
     });
 }
+</script>
+<!-- === Крестик вместо стрелочки в фильтрах (с сохранением flex-раскладки) === -->
+<script>
+(function () {
+    // ── 0. Чистим обёртки старой версии ──
+    document.querySelectorAll('.filter-clear-wrapper').forEach(function (wrapper) {
+        const input = wrapper.querySelector('input, select');
+        if (!input) { wrapper.remove(); return; }
+        wrapper.parentNode.insertBefore(input, wrapper);
+        wrapper.remove();
+        delete input.dataset.clearAdded;
+    });
+
+    // ── 1. Стили ──
+    const oldStyle = document.getElementById('filter-clear-styles');
+    if (oldStyle) oldStyle.remove();
+
+    const style = document.createElement('style');
+    style.id = 'filter-clear-styles';
+    style.textContent = `
+        .filter-clear-wrapper {
+            position: relative;
+            display: flex;                /* как flex-элемент .controls */
+            align-items: center;
+            box-sizing: border-box;
+            min-width: 0;
+            padding: 0;
+            margin: 0;
+        }
+        .filter-clear-wrapper > input,
+        .filter-clear-wrapper > select {
+            width: 100% !important;
+            box-sizing: border-box !important;
+        }
+
+        .filter-clear-btn {
+            position: absolute;
+            right: 6px;
+            top: 50%;
+            transform: translateY(-50%) !important;
+            width: 14px;
+            height: 14px;
+            padding: 0 !important;
+            margin: 0 !important;
+            background: transparent !important;
+            color: #9ca3af;
+            border: none !important;
+            border-radius: 0 !important;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            line-height: 1;
+            font-weight: 400;
+            font-family: inherit;
+            text-align: center;
+            box-shadow: none !important;
+            outline: none !important;
+            z-index: 5;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        .filter-clear-wrapper.has-value .filter-clear-btn {
+            display: inline-flex;
+        }
+        .filter-clear-btn:hover  { color: #ff6b5b; }
+        .filter-clear-btn:active { color: #ff3b2b; }
+
+        /* Скрываем календарик у date-полей, когда есть значение */
+        .filter-clear-wrapper.has-value > #paymentDateFilter::-webkit-calendar-picker-indicator,
+        .filter-clear-wrapper.has-value > #proxyDateFilter::-webkit-calendar-picker-indicator,
+        .filter-clear-wrapper.has-value > #mailDateFilter::-webkit-calendar-picker-indicator {
+            opacity: 0 !important;
+            pointer-events: none !important;
+        }
+    `;
+    document.head.appendChild(style);
+
+    // ── 2. Селекторы ──
+    const filterSelectors = [
+        '#searchAccountingInput', '#yearFilter', '#statusFilter',
+        '#supplierFilter', '#departmentFilter', '#applicationFilter', '#factMonthFilter',
+        '#searchCounterpartiesInput',
+        '#searchPaymentsInput', '#paymentsApplicationFilter',
+        '#paymentsSupplierFilter', '#paymentsStatusFilter', '#paymentDateFilter',
+        '#searchSettlementInput', '#settlementSupplierFilter', '#settlementStatusFilter',
+        '#searchMailInput', '#mailSupplierFilter', '#mailDateFilter',
+        '#searchProxyInput', '#proxySupplierFilter', '#proxyApplicationFilter',
+        '#proxyStatusFilter', '#proxyDateFilter'
+    ];
+
+    // ── 3. Установка одного крестика ──
+    function setupClearButton(input) {
+        if (!input) return;
+        if (input.parentNode && input.parentNode.classList &&
+            input.parentNode.classList.contains('filter-clear-wrapper')) return;
+        if (input.dataset.clearAdded === 'true') return;
+
+        // ★ Читаем ВЫЧИСЛЕННЫЕ flex-свойства инпута ДО перестановки DOM.
+        //   Так мы ловим flex, заданный где угодно: в CSS или inline.
+        const cs = window.getComputedStyle(input);
+        const flexGrow   = cs.flexGrow;
+        const flexShrink = cs.flexShrink;
+        const flexBasis  = cs.flexBasis;
+        const minWidth   = cs.minWidth;
+        const maxWidth   = cs.maxWidth;
+
+        const wrapper = document.createElement('div');
+        wrapper.className = 'filter-clear-wrapper';
+
+        // ★ Переносим flex-раскладку на обёртку: она теперь играет роль
+        //   прежнего input во flex-контейнере .controls
+        wrapper.style.flexGrow   = flexGrow;
+        wrapper.style.flexShrink = flexShrink;
+        wrapper.style.flexBasis  = flexBasis;
+        if (minWidth && minWidth !== 'auto') wrapper.style.minWidth = minWidth;
+        if (maxWidth && maxWidth !== 'none') wrapper.style.maxWidth = maxWidth;
+
+        // Переносим input в обёртку
+        input.parentNode.insertBefore(wrapper, input);
+        wrapper.appendChild(input);
+
+        // ★ Инпут внутри всегда заполняет обёртку полностью
+        input.style.flex     = '1 1 0';
+        input.style.minWidth = '0';
+        input.style.maxWidth = '100%';
+        input.style.width    = '100%';
+
+        // Крестик — SPAN, чтобы скрипт-перестановщик не унёс обёртку в блок кнопок
+        const btn = document.createElement('span');
+        btn.className = 'filter-clear-btn';
+        btn.textContent = '×';
+        btn.title = 'Очистить значение';
+        btn.setAttribute('role', 'button');
+        btn.setAttribute('aria-label', 'Очистить значение');
+        wrapper.appendChild(btn);
+
+        input.dataset.clearAdded = 'true';
+
+        function updateVisibility() {
+            const hasValue = (input.value || '').trim() !== '';
+            wrapper.classList.toggle('has-value', hasValue);
+
+            if (hasValue) {
+                input.style.setProperty('background-image', 'none', 'important');
+                input.style.setProperty('padding-right', '22px', 'important');
+            } else {
+                input.style.removeProperty('background-image');
+                input.style.removeProperty('padding-right');
+            }
+        }
+
+        btn.addEventListener('mousedown', e => e.preventDefault());
+        btn.addEventListener('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            input.value = '';
+            if (input.tagName === 'SELECT' && input.options.length > 0) {
+                input.selectedIndex = 0;
+            }
+            input.dispatchEvent(new Event('input',  { bubbles: true }));
+            input.dispatchEvent(new Event('change', { bubbles: true }));
+            updateVisibility();
+            input.focus();
+        });
+
+        input.addEventListener('input',  updateVisibility);
+        input.addEventListener('change', updateVisibility);
+
+        updateVisibility();
+        wrapper._updateClearVisibility = updateVisibility;
+    }
+
+    // ── 4. Прогон по всем ──
+    function setupAllFilters() {
+        filterSelectors.forEach(sel => {
+            const input = document.querySelector(sel);
+            if (input) setupClearButton(input);
+        });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => setTimeout(setupAllFilters, 800));
+    } else {
+        setTimeout(setupAllFilters, 800);
+    }
+
+    document.addEventListener('click', function (e) {
+        if (e.target.closest('.sidebar-cell.menu-item[data-page]')) {
+            setTimeout(setupAllFilters, 400);
+        }
+    });
+
+    setInterval(function () {
+        document.querySelectorAll('.filter-clear-wrapper').forEach(function (w) {
+            if (typeof w._updateClearVisibility === 'function') {
+                w._updateClearVisibility();
+            }
+        });
+    }, 400);
+
+    window.setupFilterClearButtons = setupAllFilters;
+})();
 </script>
 </body>
 </html>
