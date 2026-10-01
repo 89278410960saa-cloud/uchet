@@ -611,25 +611,38 @@ body:not(.app-ready) .main-content {
 #mailTable {
     table-layout: fixed !important;
     width: 100% !important;
+    min-width: 0 !important;          /* снимаем min-width: max-content у общего table */
 }
 
-/* Дата = Контрагент (равные доли) */
-#mailTable th:nth-child(1), #mailTable td:nth-child(1) { width: 15% !important; }  /* Дата */
-#mailTable th:nth-child(2), #mailTable td:nth-child(2) { width: 15% !important; }  /* Контрагент */
+/* Дата */
+#mailTable th:nth-child(1), #mailTable td:nth-child(1) { width: 10% !important; }
 
-/* Документ = Адрес (равные доли) */
-#mailTable th:nth-child(3), #mailTable td:nth-child(3) { width: 32% !important; }  /* Документ */
-#mailTable th:nth-child(5), #mailTable td:nth-child(5) { width: 32% !important; }  /* Адрес организации */
+/* Контрагент */
+#mailTable th:nth-child(2), #mailTable td:nth-child(2) { width: 20% !important; }
 
-/* Кол-во листов — узкий, содержимое по центру */
+/* Документ (+2,5% от Кол-ва листов) */
+#mailTable th:nth-child(3), #mailTable td:nth-child(3) { width: 32.5% !important; }
+
+/* Кол-во листов — уменьшено в 2 раза */
 #mailTable th:nth-child(4), #mailTable td:nth-child(4) {
-    width: 6% !important;
-    max-width: 6% !important;
+    width: 5% !important;
+    max-width: 5% !important;
     text-align: center !important;
     vertical-align: middle !important;
     overflow: hidden !important;
     white-space: nowrap !important;
     text-overflow: ellipsis !important;
+}
+
+/* Адрес организации (+2,5% от Кол-ва листов) */
+#mailTable th:nth-child(5), #mailTable td:nth-child(5) { width: 32.5% !important; }
+
+/* Обрезка длинных значений во всех ячейках */
+#mailTable td {
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
 }
 
 /* ===== ФИКСИРОВАННАЯ ШИРИНА ДЛЯ ТАБЛИЦЫ УРЕГУЛИРОВАНИЯ (Рекламации) ===== */
@@ -3358,7 +3371,7 @@ button:hover{background:#222733!important}
     <th style="width: 80.4px;">Дата</th>
     <th style="width: 120.6px;">Контрагент</th>
     <th style="width: 134px;">Документ</th>
-    <th style="width: 67px;">Кол-во листов</th>
+    <th style="width: 67px;">Кол-во</th>
     <th style="width: 167.5px;">Адрес организации</th>
 </tr>
     </thead>
@@ -3776,7 +3789,7 @@ button:hover{background:#222733!important}
                     <input type="text" id="editMailDocument" style="width: 100%;">
                 </div>
                 <div style="margin-bottom: 10.05px;">
-                    <label>Кол-во листов:</label>
+                    <label>Кол-во:</label>
                     <input type="number" id="editMailSheets" style="width: 100%;">
                 </div>
                 <div style="margin-bottom: 10.05px;">
