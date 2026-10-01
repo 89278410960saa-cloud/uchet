@@ -506,39 +506,35 @@ body:not(.app-ready) .main-content {
     table-layout: fixed !important;
 }
 
-/* Новые ширины столбцов таблицы учета после перемещения "План" */
 #accountingTable th:nth-child(1) { width: 53.6px !important; }   /* Служба */
 #accountingTable th:nth-child(2) { width: 40.2px !important; }   /* Заявка */
 #accountingTable th:nth-child(3) { width: 38px !important; }     /* Статус */
 #accountingTable th:nth-child(4) { width: 40.2px !important; }   /* ID */
-#accountingTable th:nth-child(5) { width: 165px !important; }    /* Наименование позиции — увеличено */
-#accountingTable th:nth-child(6) { width: 26.8px !important; }   /* Кол-во + Ед.изм. */
-#accountingTable th:nth-child(7) { width: 165px !important; }    /* Наименование закупки — увеличено */
-#accountingTable th:nth-child(8) { width: 26.8px !important; }   /* Кол-во + Ед.изм. (закуп) */
+#accountingTable th:nth-child(5) { width: 185px !important; }    /* Наименование позиции +20px */
+#accountingTable th:nth-child(6) { width: 26.8px !important; }   /* Кол-во */
+#accountingTable th:nth-child(7) { width: 185px !important; }    /* Наименование закупки +20px */
+#accountingTable th:nth-child(8) { width: 26.8px !important; }   /* Кол-во (закуп) */
 #accountingTable th:nth-child(9) { width: 46.9px !important; }   /* Сумма, НДС */
-#accountingTable th:nth-child(10) { width: 70px !important; }    /* Контрагент — уменьшено */
-#accountingTable th:nth-child(11) { width: 70px !important; }    /* Договор / Оплата — уменьшено */
-#accountingTable th:nth-child(12) { width: 60px !important; }    /* Срок / Поставка — уменьшили */
-#accountingTable th:nth-child(13) { width: 40px !important; }    /* План — увеличили */
-#accountingTable th:nth-child(14) { width: 40px !important; }    /* Факт — увеличили */
-#accountingTable th:nth-child(15) { width: 60.3px !important; }  /* Документ */
+#accountingTable th:nth-child(10) { width: 70px !important; }    /* Контрагент */
+#accountingTable th:nth-child(11) { width: 70px !important; }    /* Договор / Оплата */
+#accountingTable th:nth-child(12) { width: 60px !important; }    /* Срок / Поставка */
+#accountingTable th:nth-child(13) { width: 40px !important; }    /* План / Факт */
+#accountingTable th:nth-child(14) { width: 60.3px !important; }  /* Документ */
 
-/* Аналогично для ячеек */
 #accountingTable td:nth-child(1) { width: 53.6px !important; }
 #accountingTable td:nth-child(2) { width: 40.2px !important; }
 #accountingTable td:nth-child(3) { width: 38px !important; }
 #accountingTable td:nth-child(4) { width: 40.2px !important; }
-#accountingTable td:nth-child(5) { width: 165px !important; }
+#accountingTable td:nth-child(5) { width: 185px !important; }
 #accountingTable td:nth-child(6) { width: 26.8px !important; }
-#accountingTable td:nth-child(7) { width: 165px !important; }
+#accountingTable td:nth-child(7) { width: 185px !important; }
 #accountingTable td:nth-child(8) { width: 26.8px !important; }
 #accountingTable td:nth-child(9) { width: 46.9px !important; }
 #accountingTable td:nth-child(10) { width: 70px !important; }
 #accountingTable td:nth-child(11) { width: 70px !important; }
 #accountingTable td:nth-child(12) { width: 60px !important; }
 #accountingTable td:nth-child(13) { width: 40px !important; }
-#accountingTable td:nth-child(14) { width: 40px !important; }
-#accountingTable td:nth-child(15) { width: 60.3px !important; }
+#accountingTable td:nth-child(14) { width: 60.3px !important; }
 /* Гарантируем, что таблицы растягиваются на всю ширину */
 .table-scroll-container table {
     width: 100% !important;
@@ -3175,26 +3171,25 @@ button:hover{background:#222733!important}
         <div class="table-scroll-container" style="border-top-width: 6.7px; margin-top: 0.0px; height: auto;">
             <table id="accountingTable" style="table-layout: fixed;">
                 <thead>
-        <tr>
+    <tr>
     <th style="width: 53.6px;">Служба</th>
     <th style="width: 40.2px;">Заявка</th>
     <th style="width: 38px;">Статус</th>
     <th style="width: 40.2px;">ID</th>
-    <th style="width: 165px;">Наименование позиции</th>
+    <th style="width: 185px;">Наименование позиции</th>
     <th style="width: 26.8px;">Кол-во</th>
-    <th style="width: 165px;">Наименование закупки</th>
+    <th style="width: 185px;">Наименование закупки</th>
     <th style="width: 26.8px;">Кол-во</th>
     <th style="width: 46.9px;">Сумма, НДС</th>
     <th style="width: 70px;">Контрагент</th>
     <th style="width: 70px;">Договор / Оплата</th>
     <th style="width: 60px;">Срок / Поставка</th>
-    <th style="width: 40px;">План</th>
-    <th style="width: 40px;">Факт</th>
+    <th style="width: 40px;">План / Факт</th>
     <th style="width: 60.3px;">Документ</th>
 </tr>
     </thead>
                 <tbody id="accountingTableBody"><tr>
-            <td colspan="15" style="text-align: center; color: #8f98a0; padding: 20px;">
+            <td colspan="14" style="text-align: center; color: #8f98a0; padding: 20px;">
                 Нет данных о закупках. Добавьте первую запись.
             </td>
         </tr></tbody>
@@ -4672,7 +4667,7 @@ function updateAccountingTable() {
     if (accountingData.length === 0) {
         const emptyRow = document.createElement('tr');
         emptyRow.innerHTML = `
-            <td colspan="15" style="text-align: center; color: #8f98a0; padding: 20px;">
+            <td colspan="14" style="text-align: center; color: #8f98a0; padding: 20px;">
                 Нет данных о закупках. Добавьте первую запись.
             </td>
         `;
@@ -4758,20 +4753,7 @@ docNumberCell.innerHTML =
     `title="Показать только эту заявку" ` +
     `style="text-decoration: underline; cursor: pointer; display: block; color: inherit;">${innerHtml}</a>`;
         const statusCell = createCell(item.status || '', '90px');
-        
-        const planFactCell = createCell(item.planFact || '', '55px');
-        if (isOverdue && item.status !== 'Выполнено' && item.status !== 'Приход') {
-            planFactCell.classList.add('overdue-date');
-        }
-        // НОВАЯ ПРОВЕРКА НА СЕГОДНЯ
-        const planDate = parseDate(item.planFact);
-if (planDate && item.status === 'Поставка') {
-    const planDateOnly = new Date(planDate);
-    planDateOnly.setHours(0, 0, 0, 0);
-    if (planDateOnly.getTime() === today.getTime()) {
-        planFactCell.classList.add('today-plan');
-    }
-}
+
         
 const idCell = document.createElement('td');
 idCell.style.width = '52px';
@@ -4930,8 +4912,38 @@ if (matchingProxy) {
     deliveryCell.appendChild(indicator);
 }
 
-        const planCell = createCell(item.plan || '', '50px');
-        const factCell = createCell(item.fact || '', '55px');
+// ===== Объединённая ячейка «План / Факт» =====
+        const planFactCombined = document.createElement('td');
+        planFactCombined.style.width = '40px';
+        planFactCombined.style.textAlign = 'center';
+        planFactCombined.style.verticalAlign = 'middle';
+        planFactCombined.style.padding = '4px 2px';
+
+        // Сохраняем чистые значения в data-атрибуты для фильтрации
+        planFactCombined.dataset.plan = item.planFact || '';
+        planFactCombined.dataset.fact = item.fact || '';
+
+        const planValue = escapeString(item.planFact || '');
+        const factValue = escapeString(item.fact || '');
+
+        planFactCombined.innerHTML =
+            (planValue ? `<div>${planValue}</div>` : '') +
+            (factValue
+                ? `<div style="color:#8bc34a; margin-top:2px;">${factValue}</div>`
+                : '')
+
+        if (isOverdue && item.status !== 'Выполнено' && item.status !== 'Приход') {
+            planFactCombined.classList.add('overdue-date');
+        }
+        const planDateCombined = parseDate(item.planFact);
+        if (planDateCombined && item.status === 'Поставка') {
+            const planDateOnly = new Date(planDateCombined);
+            planDateOnly.setHours(0, 0, 0, 0);
+            if (planDateOnly.getTime() === today.getTime()) {
+                planFactCombined.classList.add('today-plan');
+            }
+        }
+
 const shipmentDocCell = document.createElement('td');
 shipmentDocCell.style.width = '60.3px';
 shipmentDocCell.style.verticalAlign = 'middle';
@@ -5006,8 +5018,7 @@ shipmentDocCell.appendChild(docContainer);
         row.appendChild(supplierCell);
 row.appendChild(contractPaymentCell);
 row.appendChild(deliveryCell); 
-row.appendChild(planFactCell); 
-row.appendChild(factCell); 
+row.appendChild(planFactCombined); 
 row.appendChild(shipmentDocCell);
         
         // ВСЕГДА добавляем класс для подсветки (и для гостя, и для админа)
@@ -5127,10 +5138,12 @@ function editAccountingRowByRecordId(recordId) {
 
         const yearFromApplication = extractYearFromDocNumber(applicationCell);
 
+        const planFactCellEl = cells[12];
+        const factValue = (planFactCellEl && planFactCellEl.dataset.fact) ? planFactCellEl.dataset.fact : '';
+
         let factMonthMatch = true;
         if (factMonthFilter) {
-            const factCell = cells[13] ? cells[13].textContent.trim() : '';
-            const factDate = parseDate(factCell);
+            const factDate = parseDate(factValue);
             if (factDate) {
                 const month = factDate.getMonth() + 1;
                 factMonthMatch = month === parseInt(factMonthFilter);
@@ -5139,10 +5152,9 @@ function editAccountingRowByRecordId(recordId) {
             }
         }
         let factDateMatch = true;
-if (selectedFactDate) {
-    const factCell = cells[13] ? cells[13].textContent.trim() : '';
-    factDateMatch = factCell === selectedFactDate;
-}
+        if (selectedFactDate) {
+            factDateMatch = factValue === selectedFactDate;
+        }
 
         let rowText = '';
         cells.forEach(cell => {
@@ -5188,8 +5200,12 @@ if (selectedFactDate) {
         const hiddenRows = rows.filter(row => !visibleRows.includes(row));
 
         visibleRows.sort((trA, trB) => {
-            const dateA = parseDate(trA.cells[12] ? trA.cells[12].textContent.trim() : '');
-            const dateB = parseDate(trB.cells[12] ? trB.cells[12].textContent.trim() : '');
+            const cellA = trA.cells[12];
+            const cellB = trB.cells[12];
+            const planA = (cellA && cellA.dataset.plan) ? cellA.dataset.plan : '';
+            const planB = (cellB && cellB.dataset.plan) ? cellB.dataset.plan : '';
+            const dateA = parseDate(planA);
+            const dateB = parseDate(planB);
             const timeA = dateA ? dateA.getTime() : Infinity;
             const timeB = dateB ? dateB.getTime() : Infinity;
             return timeA - timeB;
@@ -5210,7 +5226,7 @@ if (selectedFactDate) {
         noDataRow = document.createElement('tr');
         noDataRow.setAttribute('data-no-results', 'true');
         noDataRow.innerHTML = `
-            <td colspan="15" style="text-align: center; color: #8f98a0; padding: 20px;">
+            <td colspan="14" style="text-align: center; color: #8f98a0; padding: 20px;">
                 По вашему запросу ничего не найдено. Проверьте фильтры.
             </td>
         `;
@@ -5228,8 +5244,10 @@ if (selectedFactDate) {
         const rowsArray = Array.from(tbody.querySelectorAll('tr:not([data-no-results])'));
         const validRows = rowsArray.filter(row => row.cells.length > 1 && !row.querySelector('td[colspan]'));
         validRows.sort((rowA, rowB) => {
-            const factA = rowA.cells[13] ? rowA.cells[13].textContent.trim() : '';
-            const factB = rowB.cells[13] ? rowB.cells[13].textContent.trim() : '';
+            const cellA = rowA.cells[12];
+            const cellB = rowB.cells[12];
+            const factA = (cellA && cellA.dataset.fact) ? cellA.dataset.fact : '';
+            const factB = (cellB && cellB.dataset.fact) ? cellB.dataset.fact : '';
             const dateA = parseDate(factA);
             const dateB = parseDate(factB);
             const timeA = dateA ? dateA.getTime() : 0;
@@ -5332,8 +5350,9 @@ function updateStatusFilterCounts() {
         // ---- фильтр по месяцу факта ----
         let factMonthMatch = true;
         if (factMonthFilter) {
-            const factCell = cells[13] ? cells[13].textContent.trim() : '';
-            const factDate = parseDate(factCell);
+            const pfCell = cells[12];
+            const factValue = (pfCell && pfCell.dataset.fact) ? pfCell.dataset.fact : '';
+            const factDate = parseDate(factValue);
             if (factDate) {
                 factMonthMatch = (factDate.getMonth() + 1) === parseInt(factMonthFilter);
             } else {
@@ -5740,19 +5759,21 @@ function showOverdueOnly() {
         !(row.cells.length === 1 && row.cells[0].colSpan > 1)
     );
 
-    // Находим индекс столбца "План" по тексту заголовка
+    // Находим индекс столбца "План / Факт" по тексту заголовка.
+    // Учитываем и старое название "План", и новое "План / Факт".
     const headerCells = thead.querySelectorAll('th');
     let planColumnIndex = -1;
     for (let i = 0; i < headerCells.length; i++) {
-        if (headerCells[i].textContent.trim() === 'План') {
+        const text = headerCells[i].textContent.trim();
+        if (text === 'План / Факт' || text === 'План' || text.indexOf('План') === 0) {
             planColumnIndex = i;
             break;
         }
     }
 
     if (planColumnIndex === -1) {
-        console.error('❌ Столбец "План" не найден в заголовках таблицы');
-        showAutosaveNotification('Ошибка: столбец "План" не найден', true);
+        console.error('❌ Столбец "План / Факт" не найден в заголовках таблицы');
+        showAutosaveNotification('Ошибка: столбец "План / Факт" не найден', true);
         return;
     }
 
@@ -5766,9 +5787,15 @@ function showOverdueOnly() {
         if (cells.length <= planColumnIndex) return;
 
         const statusCell = cells[2] ? cells[2].textContent.trim() : '';
-        const planFactCell = cells[planColumnIndex] ? cells[planColumnIndex].textContent.trim() : '';
 
-        const planFactDate = parseDate(planFactCell);
+        // ★ Читаем План из data-атрибута объединённой ячейки.
+        //   textContent здесь уже не подходит: ячейка содержит и План, и Факт.
+        const planCellEl = cells[planColumnIndex];
+        const planValue = (planCellEl && planCellEl.dataset && planCellEl.dataset.plan)
+            ? planCellEl.dataset.plan
+            : '';
+
+        const planFactDate = parseDate(planValue);
         const isOverdue = planFactDate &&
             new Date(planFactDate).setHours(0, 0, 0, 0) < today &&
             statusCell !== 'Выполнено' &&
@@ -5987,6 +6014,7 @@ function showWeeklyDeliveriesOnly() {
     nextWeek.setHours(23,59,59,999);
 
     // ---- 4. Собираем все подходящие строки вместе с датой План ----
+    // ---- 4. Собираем все подходящие строки вместе с датой План ----
     const candidates = []; // массив {tr, planDate: Date|null}
     rows.forEach(tr => {
         // Пропускаем служебную строку «Нет данных…»
@@ -5996,10 +6024,16 @@ function showWeeklyDeliveriesOnly() {
         if (cells.length < 4) return;
 
         const statusCell = cells[2] ? cells[2].textContent.trim() : '';
-        const planFactCell = cells[12] ? cells[12].textContent.trim() : ''; // 18‑й столбец → индекс 17
+
+        // ★ Читаем План из data-атрибута объединённой ячейки (столбец 13, индекс 12)
+        const planCellEl = cells[12];
+        const planValue = (planCellEl && planCellEl.dataset && planCellEl.dataset.plan)
+            ? planCellEl.dataset.plan
+            : '';
 
         // Проверяем, является ли запись поставкой на неделю
-        const planFactDate = parseDate(planFactCell);
+        const planFactDate = parseDate(planValue);
+       
         const isWeeklyDelivery =
             planFactDate &&
             planFactDate >= today &&
@@ -6169,7 +6203,7 @@ function applyModeSupplierFilter() {
         if (thead) thead.style.display = 'none';
         const noData = document.createElement('tr');
         noData.setAttribute('data-no-results', 'true');
-        noData.innerHTML = `<td colspan="15" style="text-align: center; color: #8f98a0; padding: 20px;">Нет записей по выбранному поставщику</td>`;
+        noData.innerHTML = `<td colspan="14" style="text-align: center; color: #8f98a0; padding: 20px;">Нет записей по выбранному поставщику</td>`;
         tbody.appendChild(noData);
     } else {
         if (thead) thead.style.display = '';
@@ -9464,21 +9498,23 @@ function printDeliveriesAndOverdue() {
     const headers = Array.from(document.querySelectorAll('#accountingTable thead th')).map(th => th.textContent);
 
     // Индексы столбцов, которые нужно исключить (0‑based)
-    const excludeIndices = [2, 4, 5, 9, 10, 11, 13, 14];
+    const excludeIndices = [2, 4, 5, 9, 10, 11, 13];
     
 
     // --- РАСЧЁТ ПОЗИЦИИ СТОЛБЦА "Документ" ПОСЛЕ ФИЛЬТРАЦИИ ---
     const allIndices = Array.from({ length: headers.length }, (_, i) => i);
     const filteredIndices = allIndices.filter(i => !excludeIndices.includes(i));
-    const docColumnIndex = filteredIndices.indexOf(19); // индекс 19 = столбец "Документ"
+    const docColumnIndex = filteredIndices.indexOf(-1); // индекс 19 = столбец "Документ"
 
     // Фильтруем заголовки
     let filteredHeaders = headers.filter((_, index) => !excludeIndices.includes(index));
 
-    // Переименовываем "Факт" → "План"
-    const factIndex = filteredHeaders.indexOf('Факт');
-    if (factIndex !== -1) {
-        filteredHeaders[factIndex] = 'План';
+     // Переименовываем объединённый заголовок в "План"
+    const planFactIndex = filteredHeaders.findIndex(h =>
+        h === 'План / Факт' || h === 'План' || h.indexOf('План') === 0
+    );
+    if (planFactIndex !== -1) {
+        filteredHeaders[planFactIndex] = 'План';
     }
     // Формируем HTML для печати
     let printContent = `<!DOCTYPE html>
@@ -9530,7 +9566,6 @@ function printDeliveriesAndOverdue() {
     item.status || '',
     item.id || '',
     item.name || '',
-    // ↓ количество + единица строкой ниже
     (item.quantity || '') +
         (item.unit ? '<br><span style="font-size:0.85em;color:#555;">' + item.unit + '</span>' : ''),
     item.purchaseName || '',
@@ -9540,8 +9575,9 @@ function printDeliveriesAndOverdue() {
     item.supplier || '',
     (item.contract || '') + ' / ' + (item.paymentTerms || ''),
     (item.deliveryDays || '') + ' / ' + (item.deliveryTerms || '') + (item.date ? ' / ' + item.date : ''),
-    item.planFact || '',
-    item.fact || '',
+    // ▼ План / Факт — двумя строками в одной ячейке
+    (item.planFact || '') +
+        (item.fact ? '<br><span style="color:#2e7d32;">' + item.fact + '</span>' : ''),
     item.shipmentDoc || ''
 ];
 
