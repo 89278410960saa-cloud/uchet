@@ -507,33 +507,33 @@ body:not(.app-ready) .main-content {
 }
 
 #accountingTable th:nth-child(1) { width: 53.6px !important; }   /* Служба */
-#accountingTable th:nth-child(2) { width: 40.2px !important; }   /* Заявка */
-#accountingTable th:nth-child(3) { width: 38px !important; }     /* Статус */
+#accountingTable th:nth-child(2) { width: 44.2px !important; }   /* Заявка +10% */
+#accountingTable th:nth-child(3) { width: 43.7px !important; }   /* Статус +15% */
 #accountingTable th:nth-child(4) { width: 40.2px !important; }   /* ID */
-#accountingTable th:nth-child(5) { width: 185px !important; }    /* Наименование позиции +20px */
+#accountingTable th:nth-child(5) { width: 185px !important; }    /* Наименование позиции */
 #accountingTable th:nth-child(6) { width: 26.8px !important; }   /* Кол-во */
-#accountingTable th:nth-child(7) { width: 185px !important; }    /* Наименование закупки +20px */
+#accountingTable th:nth-child(7) { width: 185px !important; }    /* Наименование закупки */
 #accountingTable th:nth-child(8) { width: 26.8px !important; }   /* Кол-во (закуп) */
 #accountingTable th:nth-child(9) { width: 46.9px !important; }   /* Сумма, НДС */
-#accountingTable th:nth-child(10) { width: 70px !important; }    /* Контрагент */
-#accountingTable th:nth-child(11) { width: 70px !important; }    /* Договор / Оплата */
-#accountingTable th:nth-child(12) { width: 60px !important; }    /* Срок / Поставка */
-#accountingTable th:nth-child(13) { width: 40px !important; }    /* План / Факт */
+#accountingTable th:nth-child(10) { width: 63px !important; }    /* Контрагент −10% */
+#accountingTable th:nth-child(11) { width: 59.5px !important; }  /* Договор / Оплата −15% */
+#accountingTable th:nth-child(12) { width: 51px !important; }    /* Срок / Поставка −15% */
+#accountingTable th:nth-child(13) { width: 46px !important; }    /* План / Факт +15% */
 #accountingTable th:nth-child(14) { width: 60.3px !important; }  /* Документ */
 
 #accountingTable td:nth-child(1) { width: 53.6px !important; }
-#accountingTable td:nth-child(2) { width: 40.2px !important; }
-#accountingTable td:nth-child(3) { width: 38px !important; }
+#accountingTable td:nth-child(2) { width: 44.2px !important; }
+#accountingTable td:nth-child(3) { width: 43.7px !important; }
 #accountingTable td:nth-child(4) { width: 40.2px !important; }
 #accountingTable td:nth-child(5) { width: 185px !important; }
 #accountingTable td:nth-child(6) { width: 26.8px !important; }
 #accountingTable td:nth-child(7) { width: 185px !important; }
 #accountingTable td:nth-child(8) { width: 26.8px !important; }
 #accountingTable td:nth-child(9) { width: 46.9px !important; }
-#accountingTable td:nth-child(10) { width: 70px !important; }
-#accountingTable td:nth-child(11) { width: 70px !important; }
-#accountingTable td:nth-child(12) { width: 60px !important; }
-#accountingTable td:nth-child(13) { width: 40px !important; }
+#accountingTable td:nth-child(10) { width: 63px !important; }
+#accountingTable td:nth-child(11) { width: 59.5px !important; }
+#accountingTable td:nth-child(12) { width: 51px !important; }
+#accountingTable td:nth-child(13) { width: 46px !important; }
 #accountingTable td:nth-child(14) { width: 60.3px !important; }
 /* Гарантируем, что таблицы растягиваются на всю ширину */
 .table-scroll-container table {
@@ -2630,7 +2630,7 @@ tr.status-supply {
     align-items: center;               /* выравнивание по центру по вертикали */
     gap: 8px;                          /* расстояние между элементами внутри блока */
     white-space: nowrap;               /* предотвращаем перенос */
-    color: #ffd700;                     /* цвет текста (можно изменить или удалить) */
+    color: #c1c4ca;                     /* цвет текста (можно изменить или удалить) */
     font-weight: bold;                  /* жирность текста */
 }
 /* Общая сумма на странице Платежи — ссылочный вид */
@@ -3173,18 +3173,18 @@ button:hover{background:#222733!important}
                 <thead>
     <tr>
     <th style="width: 53.6px;">Служба</th>
-    <th style="width: 40.2px;">Заявка</th>
-    <th style="width: 38px;">Статус</th>
+    <th style="width: 44.2px;">Заявка</th>
+    <th style="width: 43.7px;">Статус</th>
     <th style="width: 40.2px;">ID</th>
     <th style="width: 185px;">Наименование позиции</th>
     <th style="width: 26.8px;">Кол-во</th>
     <th style="width: 185px;">Наименование закупки</th>
     <th style="width: 26.8px;">Кол-во</th>
     <th style="width: 46.9px;">Сумма, НДС</th>
-    <th style="width: 70px;">Контрагент</th>
-    <th style="width: 70px;">Договор / Оплата</th>
-    <th style="width: 60px;">Срок / Поставка</th>
-    <th style="width: 40px;">План / Факт</th>
+    <th style="width: 63px;">Контрагент</th>
+    <th style="width: 59.5px;">Договор/Оплата</th>
+    <th style="width: 51px;">Срок/Поставка</th>
+    <th style="width: 46px;">План/Факт</th>
     <th style="width: 60.3px;">Документ</th>
 </tr>
     </thead>
@@ -3247,9 +3247,9 @@ button:hover{background:#222733!important}
     <input type="text" id="searchPaymentsInput" placeholder="Поиск по всем столбцам..." oninput="filterPaymentsTable()">
     <input list="applicationsListFilter" id="paymentsApplicationFilter" class="application-filter" placeholder="Фильтр по заявкам..." oninput="filterPaymentsTable()">
     <input list="suppliersListFilter" id="paymentsSupplierFilter" class="supplier-filter" placeholder="Фильтр по контрагентам..." oninput="filterPaymentsTable()">
-    <div class="total-sum-block" style="margin-left: auto;">
-    <span style="color: #ffd700;">Общая сумма:</span>
-    <span id="paymentsTotalAmount" style="color: #66c0f4;">0 руб.</span>
+    <div class="total-sum-block" id="paymentsTotalBlock" style="margin-left: auto; display: none;">
+    <span>Общая сумма:</span>
+    <span id="paymentsTotalAmount">0 руб.</span>
 </div>
     <select id="paymentsStatusFilter" class="status-filter" onchange="filterPaymentsTable()">
         <option value="">Все статусы</option>
@@ -7632,6 +7632,19 @@ function updatePaymentsTotal() {
         }
     };
 }
+function updatePaymentsTotalVisibility() {
+    const block = document.getElementById('paymentsTotalBlock');
+    if (!block) return;
+
+    const hasFilter =
+        (document.getElementById('searchPaymentsInput')?.value || '').trim() !== '' ||
+        (document.getElementById('paymentsApplicationFilter')?.value || '').trim() !== '' ||
+        (document.getElementById('paymentsSupplierFilter')?.value || '').trim() !== '' ||
+        (document.getElementById('paymentsStatusFilter')?.value || '').trim() !== '' ||
+        (document.getElementById('paymentDateFilter')?.value || '').trim() !== '';
+
+    block.style.display = hasFilter ? 'inline-flex' : 'none';
+}
 // Резервный способ копирования для старых браузеров
 function fallbackCopyAmount(text) {
     const ta = document.createElement('textarea');
@@ -7702,6 +7715,7 @@ function fallbackCopyAmount(text) {
 
     // !!! ВАЖНО: пересчитываем общую сумму после фильтрации
     updatePaymentsTotal();
+    updatePaymentsTotalVisibility();
 
     // ─── Управление строкой "ничего не найдено" ───
     const tableBody = document.querySelector('#paymentsTable tbody');
@@ -7741,6 +7755,7 @@ function fallbackCopyAmount(text) {
     updateFilterHighlight(date);
 
     filterPaymentsTable();
+    updatePaymentsTotalVisibility();
 }
 
         function showAddPaymentForm() {
