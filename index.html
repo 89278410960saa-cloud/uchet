@@ -3107,8 +3107,9 @@ button:hover{background:#222733!important}
                 <input list="departmentsListFilter" id="departmentFilter" class="department-filter" placeholder="Все подразделения" oninput="filterAccountingTable()" style="min-width: 93.8px; flex: 1;">
                 <datalist id="departmentsListFilter"><option value="">Все подразделения</option></datalist>
                 <input list="applicationsListFilter" id="applicationFilter" class="application-filter" placeholder="Фильтр по заявкам..." oninput="filterAccountingTable()" style="min-width: 93.8px; flex: 1;">
-                <select id="factMonthFilter" class="month-filter" onchange="handleFactMonthChange();" style="min-width: 80px;">
-    <option value="">Факт ALL</option>
+            <select id="factMonthFilter" class="month-filter" onchange="handleFactMonthChange();" style="min-width: 80px;">
+    <option value="">Факт</option>
+    <option value="all">ВСЕ</option>
     <option value="1">Январь</option>
     <option value="2">Февраль</option>
     <option value="3">Март</option>
@@ -5142,15 +5143,20 @@ function editAccountingRowByRecordId(recordId) {
         const factValue = (planFactCellEl && planFactCellEl.dataset.fact) ? planFactCellEl.dataset.fact : '';
 
         let factMonthMatch = true;
-        if (factMonthFilter) {
-            const factDate = parseDate(factValue);
-            if (factDate) {
-                const month = factDate.getMonth() + 1;
-                factMonthMatch = month === parseInt(factMonthFilter);
-            } else {
-                factMonthMatch = false;
-            }
+if (factMonthFilter) {
+    if (factMonthFilter === 'all') {
+        // Режим ВСЕ — показываем только записи, где вообще есть дата факта
+        factMonthMatch = !!(factValue && factValue.trim() !== '');
+    } else {
+        const factDate = parseDate(factValue);
+        if (factDate) {
+            const month = factDate.getMonth() + 1;
+            factMonthMatch = month === parseInt(factMonthFilter);
+        } else {
+            factMonthMatch = false;
         }
+    }
+}
         let factDateMatch = true;
         if (selectedFactDate) {
             factDateMatch = factValue === selectedFactDate;
@@ -5239,23 +5245,49 @@ function editAccountingRowByRecordId(recordId) {
     saveColumnWidths();
     updatePrintButtonVisibility();
 
-    if (factMonthFilter) {
-        const tbody = document.querySelector('#accountingTable tbody');
-        const rowsArray = Array.from(tbody.querySelectorAll('tr:not([data-no-results])'));
-        const validRows = rowsArray.filter(row => row.cells.length > 1 && !row.querySelector('td[colspan]'));
-        validRows.sort((rowA, rowB) => {
-            const cellA = rowA.cells[12];
-            const cellB = rowB.cells[12];
-            const factA = (cellA && cellA.dataset.fact) ? cellA.dataset.fact : '';
-            const factB = (cellB && cellB.dataset.fact) ? cellB.dataset.fact : '';
-            const dateA = parseDate(factA);
-            const dateB = parseDate(factB);
-            const timeA = dateA ? dateA.getTime() : 0;
-            const timeB = dateB ? dateB.getTime() : 0;
-            return timeB - timeA;
-        });
-        validRows.forEach(row => tbody.appendChild(row));
-    }
+    const tbody = document.querySelector('#accountingTable tbody');
+const rowsArray = Array.from(tbody.querySelectorAll('tr:not([data-no-results])'));
+const validRows = rowsArray.filter(row => row.cells.length > 1 && !row.querySelector('td[colspan]'));
+
+if (factMonthFilter && factMonthFilter !== '') {
+    // Сортировка по дате факта
+    validRows.sort((rowA, rowB) => {
+        const cellA = rowA.cells[12];
+        const cellB = rowB.cells[12];
+        const factA = (cellA && cellA.dataset.fact) ? cellA.dataset.fact : '';
+        const factB = (cellB && cellB.dataset.fact) ? cellB.dataset.fact : '';
+        const dateA = parseDate(factA);
+        const dateB = parseDate(factB);
+        const timeA = dateA ? dateA.getTime() : 0;
+        const timeB = dateB ? dateB.getTime() : 0;
+        return timeB - timeA;
+    });
+} else if (statusFilter !== 'Поставка') {
+    // Натуральный порядок: по дате заявки, убывание; при равенстве — по строке номера
+    const orderMap = new Map();
+    [...accountingData]
+        .sort((a, b) => {
+            const dA = extractDateFromDocNumber(a.docNumber);
+            const dB = extractDateFromDocNumber(b.docNumber);
+            const tA = dA ? dA.getTime() : 0;
+            const tB = dB ? dB.getTime() : 0;
+            if (tB !== tA) return tB - tA;
+            const sA = a.docNumber || '';
+            const sB = b.docNumber || '';
+            if (sA < sB) return -1;
+            if (sA > sB) return 1;
+            return 0;
+        })
+        .forEach((item, idx) => orderMap.set(item.recordId, idx));
+
+    validRows.sort((rowA, rowB) => {
+        const a = orderMap.get(rowA.dataset.recordId);
+        const b = orderMap.get(rowB.dataset.recordId);
+        return (a ?? 999999) - (b ?? 999999);
+    });
+}
+
+validRows.forEach(row => tbody.appendChild(row));
 
     refreshQuickFiltersVisibility();
     updateQuickFactDateFilters();
@@ -5349,16 +5381,20 @@ function updateStatusFilterCounts() {
 
         // ---- фильтр по месяцу факта ----
         let factMonthMatch = true;
-        if (factMonthFilter) {
-            const pfCell = cells[12];
-            const factValue = (pfCell && pfCell.dataset.fact) ? pfCell.dataset.fact : '';
-            const factDate = parseDate(factValue);
-            if (factDate) {
-                factMonthMatch = (factDate.getMonth() + 1) === parseInt(factMonthFilter);
-            } else {
-                factMonthMatch = false;
-            }
+if (factMonthFilter) {
+    const pfCell = cells[12];
+    const factValue = (pfCell && pfCell.dataset.fact) ? pfCell.dataset.fact : '';
+    if (factMonthFilter === 'all') {
+        factMonthMatch = !!(factValue && factValue.trim() !== '');
+    } else {
+        const factDate = parseDate(factValue);
+        if (factDate) {
+            factMonthMatch = (factDate.getMonth() + 1) === parseInt(factMonthFilter);
+        } else {
+            factMonthMatch = false;
         }
+    }
+}
 
         // ---- общий поиск по всей строке ----
         let rowText = '';
@@ -9022,20 +9058,28 @@ function filterByContract(contract, supplier, application) {
 }
 // Перехватываем клики по ссылкам с классом .contract-filter-link
 document.addEventListener('click', function(e) {
-    // Ищем ближайший родительский элемент с классом .contract-filter-link
-    const link = e.target.closest('.contract-filter-link');
-    if (!link) return; // если ссылка не найдена – выходим
+    const link = e.target.closest('.contract-filter-link, .contract-filter-link-payments');
+    if (!link) return;
 
-    e.preventDefault(); // предотвращаем переход по ссылке (href="#")
+    e.preventDefault();
 
-    // Извлекаем закодированные данные из data-атрибутов и декодируем их
-    const contract = decodeURIComponent(link.dataset.contract || '');
-    const supplier = decodeURIComponent(link.dataset.supplier || '');
-    const application = decodeURIComponent(link.dataset.application || ''); // ← НОВОЕ
+    const contract    = decodeURIComponent(link.dataset.contract    || '');
+    const supplier    = decodeURIComponent(link.dataset.supplier    || '');
+    const application = decodeURIComponent(link.dataset.application || '');
 
-    // Проверяем, что функция filterByContract существует
+    // Ссылка из ячейки «Договор / Оплата» — уходим в Платежи
+    if (link.classList.contains('contract-filter-link-payments')) {
+        if (typeof filterPaymentsByContract === 'function') {
+            filterPaymentsByContract(contract, supplier, application);
+        } else {
+            console.error('Функция filterPaymentsByContract не определена!');
+        }
+        return;
+    }
+
+    // Обычная ссылка по договору — фильтруем Учёт
     if (typeof filterByContract === 'function') {
-        filterByContract(contract, supplier, application); // ← передаём заявку
+        filterByContract(contract, supplier, application);
     } else {
         console.error('Функция filterByContract не определена!');
         const searchInput = document.getElementById('searchAccountingInput');
@@ -9785,14 +9829,15 @@ function updateQuickFactDateFilters() {
 
     const monthFilter = document.getElementById('factMonthFilter').value;
 
-    // Показываем блок ТОЛЬКО если выбран месяц
-    if (!monthFilter) {
-        container.style.display = 'none';
-        listContainer.innerHTML = '';
-        return;
-    }
+// Показываем блок ТОЛЬКО если выбран конкретный месяц
+// (для значения "" — Факт, и для "all" — ВСЕ, блок скрыт)
+if (!monthFilter || monthFilter === 'all') {
+    container.style.display = 'none';
+    listContainer.innerHTML = '';
+    return;
+}
 
-    const monthNum = parseInt(monthFilter);
+const monthNum = parseInt(monthFilter);
 
     // Считываем остальные активные фильтры
     const searchText       = document.getElementById('searchAccountingInput').value.toLowerCase().trim();
@@ -10567,6 +10612,7 @@ function deleteProxyRecord() {
     
     return mostActiveMonth || 'Нет данных';
 }
+
 
         function renderMonthlyChart(monthlyStats) {
             const ctx = document.getElementById('monthlyChart');
@@ -13319,7 +13365,98 @@ select.filter-active {
 #printApplicationReportBtn:hover {
     border-color: #66c0f4 !important;
 }
+/* === Панель управления: кнопки в выпадающем блоке под фильтрами === */
 
+.controls-filters-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6.7px;
+    width: 100%;
+}
+
+/* Кнопка «⋮» — прижата к правому краю строки фильтров */
+.controls-dots-btn {
+    width: 30px !important;
+    height: 22px !important;
+    min-width: 30px !important;
+    padding: 0 !important;
+    margin-left: auto;
+    flex-shrink: 0;
+    background: rgba(255,255,255,0.06) !important;
+    border: 1px solid #3d4450 !important;
+    border-radius: 3px !important;
+    color: #c7d5e0 !important;
+    cursor: pointer;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    transition: border-color .15s, color .15s, background-color .15s;
+}
+.controls-dots-btn:hover {
+    border-color: #66c0f4 !important;
+    color: #66c0f4 !important;
+    background: rgba(102,192,244,0.08) !important;
+}
+.controls-dots-btn.active {
+    border-color: #66c0f4 !important;
+    color: #66c0f4 !important;
+    background: rgba(102,192,244,0.15) !important;
+    box-shadow: 0 0 0 2px rgba(102,192,244,0.15);
+}
+
+/* Раскрывающийся блок с кнопками — один ряд, кнопки растянуты на всю ширину */
+.controls-dropdown {
+    display: none;
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: nowrap;          /* ★ строго один ряд */
+    align-items: stretch;
+    gap: 6px;
+    margin-top: 6px;
+    padding: 8px;
+    background: #1e2d3d;
+    border: 1px solid #3d4450;
+    border-radius: 4px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    animation: fadeIn .15s ease-out;
+    box-sizing: border-box;
+}
+.controls-dropdown.open { display: flex; }
+
+/* Кнопки: каждая занимает равную долю ширины */
+.controls-dropdown button {
+    flex: 1 1 0;                /* ★ равная доля + заполнение всей ширины */
+    min-width: 0;               /* позволяет сжиматься */
+    width: auto !important;
+    height: 22px !important;
+    padding: 0 6px !important;
+    border: 1px solid transparent !important;
+    box-sizing: border-box;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 11px;
+}
+.controls-dropdown button:hover {
+    transform: none !important;
+    border-color: #66c0f4 !important;
+}
+
+/* На узких экранах — перенос строк, чтобы кнопки были читаемы */
+@media (max-width: 900px) {
+    .controls-dropdown { flex-wrap: wrap; }
+    .controls-dropdown button { flex: 1 1 calc(33.33% - 6px); }
+}
+
+@media (max-width: 600px) {
+    .controls-dots-btn { margin-left: 0; }
+    .controls-dropdown button { flex: 1 1 calc(50% - 6px); }
+}
 /* ============================================================
    АДАПТАЦИЯ ДЛЯ МАЛЕНЬКИХ ЭКРАНОВ (ПЛАНШЕТЫ И ТЕЛЕФОНЫ)
    ============================================================ */
@@ -13450,198 +13587,205 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 </script>
 
-<!-- НОВЫЙ СКРИПТ ДЛЯ ПЕРЕСТАНОВКИ КНОПОК -->
 <script>
-(function() {
-    // --------------------------------------------------------------
-    // 1. Настройки
-    // --------------------------------------------------------------
-    const SELECTOR = '.controls';          // блоки с фильтрами и кнопками
-    const BUTTONS_WRAPPER_CLASS = 'buttons-wrapper';
-    const COMMENT_BLOCK_CLASS = 'comment-control'; // блок комментариев не трогаем
+/* ===== Кнопки управления в выпадающем блоке под фильтрами ===== */
+(function () {
+    const SELECTOR = '.controls';
+    const processed = new WeakSet();
 
-    // Хранилище уже обработанных контейнеров (чтобы не дублировать)
-    const processedContainers = new WeakSet();
-
-    // --------------------------------------------------------------
-    // 2. Функция переноса и растягивания кнопок для одного .controls
-    // --------------------------------------------------------------
-    function rearrangeControls(container) {
-    // Уже обработан — выходим
-    if (processedContainers.has(container)) return;
-
-    // Контейнер ещё скрыт (display:none у него или у предка).
-    // Не помечаем его обработанным, а планируем повторную попытку.
-    if (container.offsetParent === null) {
-        if (!container._rearrangeRetries) container._rearrangeRetries = 0;
-        if (container._rearrangeRetries < 30) {           // максимум ~9 секунд
-            container._rearrangeRetries++;
-            setTimeout(() => rearrangeControls(container), 300);
-        }
-        return;
+    // Проверка: активен ли один из «залипающих» режимов
+    function isStickyModeActive() {
+        try {
+            // Поставки на неделю
+            if (typeof showWeeklyDeliveriesMode !== 'undefined' && showWeeklyDeliveriesMode) return true;
+            // Просроченные
+            if (typeof showOverdueMode !== 'undefined' && showOverdueMode) return true;
+            // Избранное
+            if (typeof showFavoritesOnly !== 'undefined' && showFavoritesOnly) return true;
+            // Чёрный список
+            if (typeof showOnlyBlacklisted !== 'undefined' && showOnlyBlacklisted) return true;
+        } catch (_) {}
+        return false;
     }
 
-    // Контейнер видим — обрабатываем
-    processedContainers.add(container);
-    container._rearrangeRetries = 0;
+    // Закрыть все дропдауны, если не активен «залипающий» режим
+    function closeAllDropdowns(force = false) {
+        if (!force && isStickyModeActive()) return;
+        document.querySelectorAll('.controls-dropdown.open')
+            .forEach(d => d.classList.remove('open'));
+        document.querySelectorAll('.controls-dots-btn.active')
+            .forEach(b => b.classList.remove('active'));
+    }
 
-    // Собираем элементы:
-    // - фильтры и прочие не-кнопки (nonButtons)
-    // - кнопки и контейнеры с кнопками (buttons), исключая блок комментариев
-    const nonButtons = [];
-    const buttons = [];
+    function setupCollapsible(container) {
+        if (processed.has(container)) return;
 
-        Array.from(container.children).forEach(child => {
-            // Блок комментариев оставляем наверху
-            if (child.classList && child.classList.contains(COMMENT_BLOCK_CLASS)) {
-                nonButtons.push(child);
+        // Контейнер пока скрыт — пробуем позже
+        if (container.offsetParent === null) {
+            container._retries = (container._retries || 0) + 1;
+            if (container._retries < 30) {
+                setTimeout(() => setupCollapsible(container), 300);
+            }
+            return;
+        }
+
+        processed.add(container);
+        container._retries = 0;
+
+        if (container.querySelector(':scope > .controls-filters-row')) return;
+
+        const children = Array.from(container.children);
+        const filtersRow = document.createElement('div');
+        filtersRow.className = 'controls-filters-row';
+
+        const buttons = [];
+
+        children.forEach(child => {
+            if (child.classList && child.classList.contains('comment-control')) {
+                filtersRow.appendChild(child);
                 return;
             }
-
-            // Обычная кнопка
+            if (child.id === 'paymentsTotalBlock') {
+                filtersRow.appendChild(child);
+                return;
+            }
             if (child.tagName === 'BUTTON') {
                 buttons.push(child);
                 return;
             }
-
-            // DIV, внутри которого есть кнопки (но не comment-control)
-            if (child.tagName === 'DIV' && child.querySelector('button')) {
-                buttons.push(child);
-                return;
-            }
-
-            // Всё остальное (поля ввода, селекты, даталисты, блок суммы) – оставляем наверху
-            nonButtons.push(child);
-        });
-
-        if (buttons.length === 0) return;
-
-        // Очищаем контейнер
-        container.innerHTML = '';
-
-        // Вставляем все поля фильтров (они остаются на своих местах)
-        nonButtons.forEach(el => container.appendChild(el));
-
-        // --------------------------------------------------------------
-        // 3. Создаём обёртку для кнопок
-        //    Используем CSS Grid, чтобы кнопки растягивались равномерно
-        // --------------------------------------------------------------
-        const wrapper = document.createElement('div');
-        wrapper.className = BUTTONS_WRAPPER_CLASS;
-        wrapper.style.display = 'grid';
-        wrapper.style.gridTemplateColumns = 'repeat(auto-fit, minmax(100px, 1fr))';
-        wrapper.style.gap = '5px';
-        wrapper.style.marginTop = '3px';
-        wrapper.style.width = '100%';
-        wrapper.style.flex = '0 0 100%';   // принудительный перенос строки внутри flex-родителя
-
-        // --------------------------------------------------------------
-        // 4. Добавляем кнопки в обёртку и заставляем их растягиваться
-        // --------------------------------------------------------------
-        buttons.forEach(btn => {
-            // Принудительно растягиваем сам элемент (кнопку или контейнер)
-            btn.style.width = '100%';
-            btn.style.minWidth = '0';
-            btn.style.maxWidth = '100%';
-            btn.style.boxSizing = 'border-box';
-
-            // Если это контейнер (например, div с группой кнопок), то и все внутренние кнопки растягиваем
-            if (btn.tagName === 'DIV') {
-                const innerButtons = btn.querySelectorAll('button');
-                innerButtons.forEach(inner => {
-                    inner.style.width = '100%';
-                    inner.style.minWidth = '0';
-                    inner.style.maxWidth = '100%';
-                    inner.style.boxSizing = 'border-box';
-                });
-            }
-
-            wrapper.appendChild(btn);
-        });
-
-        container.appendChild(wrapper);
-        console.log('[Rearrange] Кнопки перенесены и растянуты в', container);
-    }
-
-    // --------------------------------------------------------------
-    // 5. Функция обработки всех .controls на странице
-    // --------------------------------------------------------------
-    function processAllControls() {
-        document.querySelectorAll(SELECTOR).forEach(rearrangeControls);
-    }
-
-    // --------------------------------------------------------------
-    // 6. Запуск после полной загрузки страницы
-    // --------------------------------------------------------------
-    window.processAllControls = processAllControls;
-    window.addEventListener('load', function() {
-        // Небольшая задержка, чтобы другие скрипты успели отрендерить динамический контент
-        setTimeout(processAllControls, 300);
-    });
-
-    // --------------------------------------------------------------
-    // 7. Дополнительно: отслеживаем изменения DOM (MutationObserver)
-    //    – если какой-то скрипт позже перерисовывает .controls, мы снова применим перенос
-    // --------------------------------------------------------------
-    const observer = new MutationObserver(function(mutations) {
-        let shouldUpdate = false;
-        for (const mutation of mutations) {
-            if (mutation.type === 'childList' && mutation.target.matches && mutation.target.matches(SELECTOR)) {
-                shouldUpdate = true;
-                break;
-            }
-            if (mutation.addedNodes.length) {
-                for (const node of mutation.addedNodes) {
-                    if (node.nodeType === Node.ELEMENT_NODE && node.matches && node.matches(SELECTOR)) {
-                        shouldUpdate = true;
-                        break;
-                    }
+            if (child.tagName === 'DIV') {
+                const innerButtons = child.querySelectorAll('button');
+                const nonButtonKids = Array.from(child.children)
+                    .filter(c => c.tagName !== 'BUTTON' && c.tagName !== 'DATALIST');
+                if (innerButtons.length > 0 && nonButtonKids.length === 0) {
+                    innerButtons.forEach(b => buttons.push(b));
+                    return;
                 }
             }
-        }
-        if (shouldUpdate) {
-            setTimeout(processAllControls, 100);
-        }
-    });
+            filtersRow.appendChild(child);
+        });
 
-    observer.observe(document.body, {
-        childList: true,
-        subtree: true
-    });
+        if (buttons.length === 0) {
+            container.innerHTML = '';
+            container.appendChild(filtersRow);
+            return;
+        }
 
-    // Небольшой багфикс: при ручном переключении страниц (например, через showPage)
-    // таблицы могут перерисовываться, но .controls при этом не пересоздаётся.
-    // Поэтому дополнительно обрабатываем клики по пунктам меню.
-    document.addEventListener('click', function(e) {
-        const menuItem = e.target.closest('.sidebar-cell.menu-item[data-page]');
-        if (menuItem) {
-            setTimeout(processAllControls, 200);
-        }
-    });
-    document.addEventListener('click', function(e) {
-    const settingsButton = document.getElementById('settingsButton');
-    const settingsSection = document.getElementById('settingsSection');
-    if (settingsSection && settingsSection.style.display !== 'none') {
-        const isClickOnSettingsButton = settingsButton && settingsButton.contains(e.target);
-        const isClickInsideSettings = settingsSection.contains(e.target);
-        if (!isClickOnSettingsButton && !isClickInsideSettings) {
-            settingsSection.style.display = 'none'; // скрываем секцию при клике вне
-        }
+        // Кнопка «⋮»
+        const dotsBtn = document.createElement('button');
+        dotsBtn.type = 'button';
+        dotsBtn.className = 'controls-dots-btn';
+        dotsBtn.title = 'Показать кнопки управления';
+        dotsBtn.setAttribute('aria-label', 'Показать кнопки управления');
+        dotsBtn.innerHTML = '<i class="fas fa-ellipsis-h"></i>';
+
+        // Дропдаун с кнопками
+        const dropdown = document.createElement('div');
+        dropdown.className = 'controls-dropdown';
+        buttons.forEach(b => dropdown.appendChild(b));
+
+        dotsBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const willOpen = !dropdown.classList.contains('open');
+
+            // Закрываем все остальные
+            document.querySelectorAll('.controls-dropdown.open')
+                .forEach(d => d.classList.remove('open'));
+            document.querySelectorAll('.controls-dots-btn.active')
+                .forEach(b => b.classList.remove('active'));
+
+            if (willOpen) {
+                dropdown.classList.add('open');
+                dotsBtn.classList.add('active');
+            }
+        });
+
+        // Клик по любой кнопке внутри дропдауна
+        dropdown.addEventListener('click', function (e) {
+            const btn = e.target.closest('button');
+            if (!btn) return;
+
+            // Даём оригинальному onclick отработать и изменить состояние
+            setTimeout(() => {
+                // Если активен «залипающий» режим (поставки/просрочка) — оставляем открытым
+                if (isStickyModeActive()) return;
+
+                // Иначе — закрываем
+                dropdown.classList.remove('open');
+                dotsBtn.classList.remove('active');
+            }, 80);
+        });
+
+        filtersRow.appendChild(dotsBtn);
+
+        container.innerHTML = '';
+        container.appendChild(filtersRow);
+        container.appendChild(dropdown);
+
+        // Синхронизация при переключении страницы: если режим активен — раскрыть
+        const syncOnShow = () => {
+            if (isStickyModeActive()) {
+                dropdown.classList.add('open');
+                dotsBtn.classList.add('active');
+            }
+        };
+        container._syncDropdown = syncOnShow;
     }
-});
 
-document.addEventListener('click', function(e) {
-    const link = e.target.closest('.contract-filter-link-payments');
-    if (!link) return;
-    e.preventDefault();
-    const contract = decodeURIComponent(link.dataset.contract || '');
-    const supplier = decodeURIComponent(link.dataset.supplier || '');
-    const application = decodeURIComponent(link.dataset.application || '');
-    filterPaymentsByContract(contract, supplier, application);
-});
+    function processAllControls() {
+        document.querySelectorAll(SELECTOR).forEach(setupCollapsible);
+    }
+    window.processAllControls = processAllControls;
+
+    window.addEventListener('load', () => setTimeout(processAllControls, 300));
+
+    // Подстраховка от перерисовок
+    const observer = new MutationObserver(mutations => {
+        let need = false;
+        for (const m of mutations) {
+            if (m.type !== 'childList') continue;
+            for (const node of m.addedNodes) {
+                if (node.nodeType !== 1) continue;
+                if ((node.matches && node.matches(SELECTOR)) ||
+                    (node.querySelector && node.querySelector(SELECTOR))) {
+                    need = true; break;
+                }
+            }
+            if (need) break;
+        }
+        if (need) setTimeout(processAllControls, 100);
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    // ── Клик вне дропдауна / кнопки «⋮» → закрыть (если не «залипающий» режим)
+    document.addEventListener('click', function (e) {
+        if (e.target.closest('.controls-dots-btn')) return;
+        if (e.target.closest('.controls-dropdown')) return;
+        closeAllDropdowns(false);
+    });
+
+    // Esc — закрыть (если не «залипающий» режим)
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') closeAllDropdowns(false);
+    });
+
+    // При переключении страницы сайдбара — синхронизируем состояние
+    document.addEventListener('click', function (e) {
+        if (e.target.closest('.sidebar-cell.menu-item[data-page]')) {
+            setTimeout(() => {
+                processAllControls();
+                // если режим активен — раскрыть дропдаун на активной странице
+                document.querySelectorAll(SELECTOR).forEach(c => {
+                    if (typeof c._syncDropdown === 'function') c._syncDropdown();
+                });
+            }, 250);
+        }
+    });
+
+    // Экспорт, чтобы при желании можно было синхронизировать извне
+    window.closeControlsDropdowns = () => closeAllDropdowns(true);
 })();
-
-
 </script>
 
 <script>
