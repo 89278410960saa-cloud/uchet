@@ -108,6 +108,10 @@ body:not(.app-ready) .main-content {
     width: 100% !important;
     margin: 2px 0 !important;
 }
+.sidebar-row.main-row > .sidebar-cell.menu-item {
+    flex: 1 1 0 !important;
+    min-width: 0 !important;
+}
 .menu-icon {
     font-size: 22px !important;
     line-height: 1 !important;
@@ -482,7 +486,7 @@ body:not(.app-ready) .main-content {
 #settlementTable,
 #mailTable,
 #proxyTable {
-    table-layout: fixed !important;
+    table-layout: auto !important;
     width: 100% !important;
 }
 
@@ -570,38 +574,41 @@ body:not(.app-ready) .main-content {
 }
     /* ===== ФИКСИРОВАННАЯ ШИРИНА ДЛЯ ТАБЛИЦЫ ДОВЕРЕННОСТЕЙ (Самовывоз) ===== */
 #proxyTable {
-    table-layout: auto !important;
+    table-layout: fixed !important;   /* ← ключевое */
     width: 100% !important;
 }
 
-/* Новые ширины столбцов */
-#proxyTable th:nth-child(1) { width: 10%; }
-#proxyTable th:nth-child(2) { width: 8%; }
-#proxyTable th:nth-child(3) { width: 12%; }
-#proxyTable th:nth-child(4) { width: 15%; }
-#proxyTable th:nth-child(5) { width: 12%; }
-#proxyTable th:nth-child(6) { width: 20%; }  /* Адрес */
-#proxyTable th:nth-child(6) {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-#proxyTable th:nth-child(7) { width: 15%; }
-/* ===== Самовывоз: Статус по ширине как Дата, разницу — Адресу ===== */
-#proxyTable th:nth-child(1),
-#proxyTable td:nth-child(1),
-#proxyTable th:nth-child(2),
-#proxyTable td:nth-child(2) {
-    width: 80.4px !important;
-    min-width: 80.4px !important;
-    max-width: 80.4px !important;
+/* Сначала обнуляем все конфликтующие правила */
+#proxyTable th,
+#proxyTable td {
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    vertical-align: middle !important;
 }
 
-#proxyTable th:nth-child(6),
-#proxyTable td:nth-child(6) {
-    width: 187.1px !important; /* 167.5px + (100px − 80.4px) = 187.1px */
-    min-width: 187.1px !important;
-    max-width: 187.1px !important;
+/* Теперь задаём единственный набор ширин — только через th.
+   С table-layout:fixed все td автоматически унаследуют эти ширины. */
+#proxyTable th:nth-child(1) { width:  90px !important; }  /* Дата */
+#proxyTable th:nth-child(2) { width:  90px !important; }  /* Статус */
+#proxyTable th:nth-child(3) { width: 130px !important; }  /* Заявка */
+#proxyTable th:nth-child(4) { width: 170px !important; }  /* Контрагент */
+#proxyTable th:nth-child(5) { width: 130px !important; }  /* Документ */
+#proxyTable th:nth-child(6) { width: 210px !important; }  /* Адрес */
+#proxyTable th:nth-child(7) { width: 130px !important; }  /* Водитель */
+
+/* Разрешаем перенос только в длинных текстовых колонках */
+#proxyTable td:nth-child(3),
+#proxyTable td:nth-child(4),
+#proxyTable td:nth-child(5),
+#proxyTable td:nth-child(6),
+#proxyTable td:nth-child(7) {
+    white-space: normal !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
 }
 /* ===== ФИКСИРОВАННАЯ ШИРИНА ДЛЯ ПОЧТОВОГО РЕЕСТРА (Отправления) ===== */
 #mailTable {
@@ -3037,7 +3044,7 @@ button:hover{background:#222733!important}
 
         <!-- Кнопка «Ещё» (последняя в ряду) -->
         <div class="sidebar-cell menu-item more-menu-btn" id="moreMenuBtn" onclick="toggleMoreMenu(event)" title="Ещё">
-            <span class="menu-icon"><i class="fas fa-ellipsis-h"></i></span>
+            <span class="menu-icon"><i class="fas fa-power-off"></i></span>
             <span class="menu-text">Ещё</span>
         </div>
     </div>
@@ -3089,63 +3096,61 @@ button:hover{background:#222733!important}
 <div id="accounting" class="page">
     <div class="container" style="padding-top: 2.01px;padding-left: 3.35px;padding-right: 3.35px;border-left-width: 0.0px;border-right-width: 0.0px;border-top-width: 0.0px;border-bottom-width: 0.0px;padding-bottom: 3.35px; display: flex; flex-direction: column; height: 100%;">
         <div class="controls-container" style="padding-top: 0.0px;margin-top: 0px;margin-bottom: 6px;padding-bottom: 0.0px;border-bottom-width: 1px;">
-            <div class="controls" style="margin-bottom: 3.35px; display: flex; flex-wrap: wrap; align-items: center; gap: 6.7px;">
-                <input type="text" id="searchAccountingInput" placeholder="Поиск по всем столбцам..." oninput="filterAccountingTable()" style="min-width: 93.8px; flex: 1;">
-                <select id="yearFilter" class="year-filter" onchange="filterAccountingTable()" style="min-width: 67.0px; flex: 1;" autocomplete="off">
-                    <option value="">Все года</option>
-                </select>
-                <select id="statusFilter" class="status-filter" onchange="handleStatusChange()" style="min-width: 67.0px; flex: 1;">
-                    <option value="">Все статусы</option>
-                    <option value="В работе">В работе</option>
-                    <option value="Поставка">Поставка</option>
-                    <option value="Приход">Приход</option>
-                    <option value="Выполнено">Выполнено</option>
-                    <option value="Иное">Иное</option>
-                </select>
-                <input list="suppliersListFilter" id="supplierFilter" class="supplier-filter" placeholder="Фильтр по поставщикам..." oninput="filterAccountingTable()" style="min-width: 93.8px; flex: 1;">
-                <datalist id="suppliersListFilter"></datalist>
-                <input list="departmentsListFilter" id="departmentFilter" class="department-filter" placeholder="Все подразделения" oninput="filterAccountingTable()" style="min-width: 93.8px; flex: 1;">
-                <datalist id="departmentsListFilter"><option value="">Все подразделения</option></datalist>
-                <input list="applicationsListFilter" id="applicationFilter" class="application-filter" placeholder="Фильтр по заявкам..." oninput="filterAccountingTable()" style="min-width: 93.8px; flex: 1;">
+    <div class="controls controls-ready" style="margin-bottom: 3.35px;">
+        <div class="controls-filters-row">
+            <input type="text" id="searchAccountingInput" placeholder="Поиск по всем столбцам..." oninput="filterAccountingTable()" style="min-width: 93.8px; flex: 1;">
+            <select id="yearFilter" class="year-filter" onchange="filterAccountingTable()" style="min-width: 67.0px; flex: 1;" autocomplete="off">
+                <option value="">Все года</option>
+            </select>
+            <select id="statusFilter" class="status-filter" onchange="handleStatusChange()" style="min-width: 67.0px; flex: 1;">
+                <option value="">Все статусы</option>
+                <option value="В работе">В работе</option>
+                <option value="Поставка">Поставка</option>
+                <option value="Приход">Приход</option>
+                <option value="Выполнено">Выполнено</option>
+                <option value="Иное">Иное</option>
+            </select>
+            <input list="suppliersListFilter" id="supplierFilter" class="supplier-filter" placeholder="Фильтр по поставщикам..." oninput="filterAccountingTable()" style="min-width: 93.8px; flex: 1;">
+            <datalist id="suppliersListFilter"></datalist>
+            <input list="departmentsListFilter" id="departmentFilter" class="department-filter" placeholder="Все подразделения" oninput="filterAccountingTable()" style="min-width: 93.8px; flex: 1;">
+            <datalist id="departmentsListFilter"><option value="">Все подразделения</option></datalist>
+            <input list="applicationsListFilter" id="applicationFilter" class="application-filter" placeholder="Фильтр по заявкам..." oninput="filterAccountingTable()" style="min-width: 93.8px; flex: 1;">
             <select id="factMonthFilter" class="month-filter" onchange="handleFactMonthChange();" style="min-width: 80px;">
-    <option value="">Факт</option>
-    <option value="all">ВСЕ</option>
-    <option value="1">Январь</option>
-    <option value="2">Февраль</option>
-    <option value="3">Март</option>
-    <option value="4">Апрель</option>
-    <option value="5">Май</option>
-    <option value="6">Июнь</option>
-    <option value="7">Июль</option>
-    <option value="8">Август</option>
-    <option value="9">Сентябрь</option>
-    <option value="10">Октябрь</option>
-    <option value="11">Ноябрь</option>
-    <option value="12">Декабрь</option>
-</select>
-    
+                <option value="">Факт</option>
+                <option value="all">ВСЕ</option>
+                <option value="1">Январь</option>
+                <option value="2">Февраль</option>
+                <option value="3">Март</option>
+                <option value="4">Апрель</option>
+                <option value="5">Май</option>
+                <option value="6">Июнь</option>
+                <option value="7">Июль</option>
+                <option value="8">Август</option>
+                <option value="9">Сентябрь</option>
+                <option value="10">Октябрь</option>
+                <option value="11">Ноябрь</option>
+                <option value="12">Декабрь</option>
+            </select>
 
-   
+            <button type="button" class="controls-dots-btn" title="Показать кнопки управления" aria-label="Показать кнопки управления">
+                <i class="fas fa-ellipsis-h"></i>
+            </button>
+        </div>
 
-                
-                <div style="display: flex; gap: 6.7px;">
-    <button onclick="showAddAccountingForm()" id="addRecordBtn">Добавить запись</button>
-    <button onclick="clearAccountingFilters()" class="reset-filter-btn">Сбросить фильтры</button>
-    <button onclick="exportToExcel('main')">Экспорт в Excel</button>
-                    <button onclick="toggleWeeklyDeliveriesMode()" id="weeklyDeliveriesBtn" style="background: linear-gradient(135deg, rgb(255, 215, 0) 0%, rgb(255, 165, 0) 100%); color: rgb(27, 40, 56); border: 0.67px solid rgb(255, 215, 0); box-shadow: none;">Поставки на неделю (0)</button>
-                    <button onclick="toggleOverdueMode()" id="overdueBtn" style="background: linear-gradient(135deg, rgba(190, 70, 60, 0.6) 0%, rgba(140, 44, 36, 0.6) 100%); color: white; border: 0.67px solid rgb(190, 70, 60); box-shadow: none;">Просроченные (0)</button>
-                    <button id="printApplicationReportBtn" style="display: none;" onclick="printApplicationReport()">
-    <i class="fas fa-print"></i>Отчет</button>
-                    <button onclick="printDeliveriesAndOverdue()" style="background: linear-gradient(135deg, #6c757d 0%, #495057 100%); color: white;">Поставки 30 дней</button>
-                <button id="favoriteToggleBtn" onclick="toggleFavoriteFilter()" 
-        style="background: transparent; border: 1px solid #3d4450; border-radius: 1px; 
-               color: #ffd700; font-size: 10px; 
-               display: inline-flex; align-items: center; justify-content: center; cursor: pointer;
-               flex-shrink: 0; width: 22px; height: 18px; padding: 0; line-height: 1;">
-    <i id="favoriteToggleIcon" class="far fa-star"></i>
-</button>
-</div>
-            </div>
+        <div class="controls-dropdown">
+            <button onclick="showAddAccountingForm()" id="addRecordBtn">Добавить запись</button>
+            <button onclick="clearAccountingFilters()" class="reset-filter-btn">Сбросить фильтры</button>
+            <button onclick="exportToExcel('main')">Экспорт в Excel</button>
+            <button onclick="toggleWeeklyDeliveriesMode()" id="weeklyDeliveriesBtn" style="background: linear-gradient(135deg, rgb(255, 215, 0) 0%, rgb(255, 165, 0) 100%); color: rgb(27, 40, 56); border: 0.67px solid rgb(255, 215, 0); box-shadow: none;">Поставки на неделю (0)</button>
+            <button onclick="toggleOverdueMode()" id="overdueBtn" style="background: linear-gradient(135deg, rgba(190, 70, 60, 0.6) 0%, rgba(140, 44, 36, 0.6) 100%); color: white; border: 0.67px solid rgb(190, 70, 60); box-shadow: none;">Просроченные (0)</button>
+            <button id="printApplicationReportBtn" style="display: none;" onclick="printApplicationReport()"><i class="fas fa-print"></i>Отчет</button>
+            <button onclick="printDeliveriesAndOverdue()" style="background: linear-gradient(135deg, #6c757d 0%, #495057 100%); color: white;">Поставки 30 дней</button>
+            <button id="favoriteToggleBtn" onclick="toggleFavoriteFilter()"
+                    style="background: transparent; border: 1px solid #3d4450; border-radius: 1px; color: #ffd700; font-size: 10px; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; width: 22px; height: 18px; padding: 0; line-height: 1;">
+                <i id="favoriteToggleIcon" class="far fa-star"></i>
+            </button>
+        </div>
+    </div>
             
             <!-- ДОБАВЛЕНО: Контейнер для заголовков таблицы -->
             <div class="table-headers-container" id="accountingHeaders" style="width: 100%; overflow-x: hidden; margin-top: 6.7px; display: none;">
@@ -3203,13 +3208,22 @@ button:hover{background:#222733!important}
 <div id="counterparties" class="page">
     <div class="container" style="padding-top: 3.35px;border-top-width: 0.0px;border-left-width: 0.0px;border-bottom-width: 0.0px;border-right-width: 0.0px;padding-left: 3.35px;padding-right: 3.35px;padding-bottom: 3.35px;">
         <div class="controls-container" style="margin-top: -13.4px;padding-bottom: 0px;padding-top: 0px;margin-bottom: 6.7px;">
-            <div class="controls" style="margin-bottom: 0.0px;">
-    <input type="text" id="searchCounterpartiesInput" placeholder="Поиск по всем столбцам..." oninput="filterCounterpartiesTable()">
-    <button onclick="showAddCounterpartyForm()" id="addCounterpartyBtn">Добавить контрагента</button>
-    <button onclick="clearCounterpartiesFilters()" class="reset-filter-btn">Сбросить фильтры</button>
-    <button onclick="toggleBlacklistFilter()" id="blacklistFilterBtn">Показать черный список</button>
-    <button onclick="exportToExcel('counterparties')">Экспорт в Excel</button>
-</div>
+    <div class="controls controls-ready" style="margin-bottom: 0.0px;">
+        <div class="controls-filters-row">
+            <input type="text" id="searchCounterpartiesInput" placeholder="Поиск по всем столбцам..." oninput="filterCounterpartiesTable()">
+
+            <button type="button" class="controls-dots-btn" title="Показать кнопки управления" aria-label="Показать кнопки управления">
+                <i class="fas fa-ellipsis-h"></i>
+            </button>
+        </div>
+
+        <div class="controls-dropdown">
+            <button onclick="showAddCounterpartyForm()" id="addCounterpartyBtn">Добавить контрагента</button>
+            <button onclick="clearCounterpartiesFilters()" class="reset-filter-btn">Сбросить фильтры</button>
+            <button onclick="toggleBlacklistFilter()" id="blacklistFilterBtn">Показать черный список</button>
+            <button onclick="exportToExcel('counterparties')">Экспорт в Excel</button>
+        </div>
+    </div>
             
             <!-- ДОБАВЛЕНО: Контейнер для заголовков таблицы контрагентов -->
             <div class="table-headers-container" id="counterpartiesHeaders" style="width: 100%; overflow-x: hidden; margin-top: 6.7px; display: none;">
@@ -3244,24 +3258,33 @@ button:hover{background:#222733!important}
 <div id="payments" class="page">
     <div class="container" style="padding-top: 3.35px;border-top-width: 0.0px;border-bottom-width: 0.0px;border-right-width: 0.0px;border-left-width: 0.0px;padding-left: 3.35px;padding-right: 3.35px;padding-bottom: 3.35px;">
         <div class="controls-container" style="margin-top: 0px;padding-bottom: 0px;padding-top: 0px;">
-            <div class="controls" style="margin-bottom: 0px;">
-    <input type="text" id="searchPaymentsInput" placeholder="Поиск по всем столбцам..." oninput="filterPaymentsTable()">
-    <input list="applicationsListFilter" id="paymentsApplicationFilter" class="application-filter" placeholder="Фильтр по заявкам..." oninput="filterPaymentsTable()">
-    <input list="suppliersListFilter" id="paymentsSupplierFilter" class="supplier-filter" placeholder="Фильтр по контрагентам..." oninput="filterPaymentsTable()">
-    <div class="total-sum-block" id="paymentsTotalBlock" style="margin-left: auto; display: none;">
-    <span>Общая сумма:</span>
-    <span id="paymentsTotalAmount">0 руб.</span>
-</div>
-    <select id="paymentsStatusFilter" class="status-filter" onchange="filterPaymentsTable()">
-        <option value="">Все статусы</option>
-        <option value="План">План</option>
-        <option value="Оплачено">Оплачено</option>
-    </select>
-    <input type="date" id="paymentDateFilter" onchange="filterPaymentsTable()" title="Фильтр по дате платежа">
-    <button onclick="showAddPaymentForm()" id="addPaymentBtn">Добавить платеж</button>
-    <button onclick="clearPaymentsFilters()" class="reset-filter-btn">Сбросить фильтры</button>
-    <button onclick="exportToExcel('payments')">Экспорт в Excel</button>
-</div>
+    <div class="controls controls-ready" style="margin-bottom: 0px;">
+        <div class="controls-filters-row">
+            <input type="text" id="searchPaymentsInput" placeholder="Поиск по всем столбцам..." oninput="filterPaymentsTable()">
+            <input list="applicationsListFilter" id="paymentsApplicationFilter" class="application-filter" placeholder="Фильтр по заявкам..." oninput="filterPaymentsTable()">
+            <input list="suppliersListFilter" id="paymentsSupplierFilter" class="supplier-filter" placeholder="Фильтр по контрагентам..." oninput="filterPaymentsTable()">
+            <div class="total-sum-block" id="paymentsTotalBlock" style="margin-left: auto; display: none;">
+                <span>Общая сумма:</span>
+                <span id="paymentsTotalAmount">0 руб.</span>
+            </div>
+            <select id="paymentsStatusFilter" class="status-filter" onchange="filterPaymentsTable()">
+                <option value="">Все статусы</option>
+                <option value="План">План</option>
+                <option value="Оплачено">Оплачено</option>
+            </select>
+            <input type="date" id="paymentDateFilter" onchange="filterPaymentsTable()" title="Фильтр по дате платежа">
+
+            <button type="button" class="controls-dots-btn" title="Показать кнопки управления" aria-label="Показать кнопки управления">
+                <i class="fas fa-ellipsis-h"></i>
+            </button>
+        </div>
+
+        <div class="controls-dropdown">
+            <button onclick="showAddPaymentForm()" id="addPaymentBtn">Добавить платеж</button>
+            <button onclick="clearPaymentsFilters()" class="reset-filter-btn">Сбросить фильтры</button>
+            <button onclick="exportToExcel('payments')">Экспорт в Excel</button>
+        </div>
+    </div>
             
             <!-- ДОБАВЛЕНО: Контейнер для заголовков таблицы платежей -->
             <div class="table-headers-container" id="paymentsHeaders" style="width: 100%; overflow-x: hidden; margin-top: 6.7px; display: none;">
@@ -3297,18 +3320,27 @@ button:hover{background:#222733!important}
 <div id="settlement" class="page">
     <div class="container" style="padding-top: 3.35px;border-top-width: 0.0px;border-right-width: 0.0px;border-bottom-width: 0.0px;border-left-width: 0.0px;padding-left: 3.35px;padding-right: 3.35px;padding-bottom: 3.35px;">
         <div class="controls-container" style="margin-bottom: 7px;padding-bottom: 0.0px;padding-top: 0px;">
-            <div class="controls">
-                <input type="text" id="searchSettlementInput" placeholder="Поиск по всем столбцам..." oninput="filterSettlementTable()">
-                <input list="suppliersListFilter" id="settlementSupplierFilter" class="supplier-filter" placeholder="Фильтр по контрагентам..." oninput="filterSettlementTable()">
-                <select id="settlementStatusFilter" class="status-filter" onchange="filterSettlementTable()">
-                    <option value="">Все статусы</option>
-                    <option value="В работе">В работе</option>
-                    <option value="Выполнено">Выполнено</option>
-                </select>
-                <button onclick="showAddSettlementForm()" id="addSettlementBtn">Добавить запись</button>
-                <button onclick="clearSettlementFilters()" class="reset-filter-btn">Сбросить фильтры</button>
-                <button onclick="exportToExcel('settlement')">Экспорт в Excel</button>
-            </div>
+    <div class="controls controls-ready" style="margin-bottom: 0;">
+        <div class="controls-filters-row">
+            <input type="text" id="searchSettlementInput" placeholder="Поиск по всем столбцам..." oninput="filterSettlementTable()">
+            <input list="suppliersListFilter" id="settlementSupplierFilter" class="supplier-filter" placeholder="Фильтр по контрагентам..." oninput="filterSettlementTable()">
+            <select id="settlementStatusFilter" class="status-filter" onchange="filterSettlementTable()">
+                <option value="">Все статусы</option>
+                <option value="В работе">В работе</option>
+                <option value="Выполнено">Выполнено</option>
+            </select>
+
+            <button type="button" class="controls-dots-btn" title="Показать кнопки управления" aria-label="Показать кнопки управления">
+                <i class="fas fa-ellipsis-h"></i>
+            </button>
+        </div>
+
+        <div class="controls-dropdown">
+            <button onclick="showAddSettlementForm()" id="addSettlementBtn">Добавить запись</button>
+            <button onclick="clearSettlementFilters()" class="reset-filter-btn">Сбросить фильтры</button>
+            <button onclick="exportToExcel('settlement')">Экспорт в Excel</button>
+        </div>
+    </div>
             
             <!-- ДОБАВЛЕНО: Контейнер для заголовков таблицы урегулирования -->
             <div class="table-headers-container" id="settlementHeaders" style="width: 100%; overflow-x: hidden; margin-top: 6.7px; display: none;">
@@ -3344,15 +3376,24 @@ button:hover{background:#222733!important}
 <div id="mail-registry" class="page">
     <div class="container" style="padding-top: 3.35px;border-top-width: 0.0px;border-bottom-width: 0.0px;border-right-width: 0.0px;border-left-width: 0.0px;padding-left: 3.35px;padding-right: 3.35px;padding-bottom: 3.35px;">
         <div class="controls-container" style="padding-top: 0px;padding-bottom: 0.0px;margin-bottom: 0px;">
-            <div class="controls">
-    <input type="text" id="searchMailInput" placeholder="Поиск по всем столбцам..." oninput="filterMailTable()">
-    <input list="suppliersListFilter" id="mailSupplierFilter" class="supplier-filter" placeholder="Фильтр по контрагентам..." oninput="filterMailTable()">
-    <input type="date" id="mailDateFilter" onchange="filterMailTable()">
-    <button onclick="showAddMailForm()" id="addMailBtn">Добавить запись</button>
-    <button onclick="clearMailFilters()" class="reset-filter-btn">Сбросить фильтры</button>
-    <button onclick="printMailTable()">Печать</button>
-    <button onclick="exportToExcel('mail')">Экспорт в Excel</button>
-</div>
+    <div class="controls controls-ready" style="margin-bottom: 0;">
+        <div class="controls-filters-row">
+            <input type="text" id="searchMailInput" placeholder="Поиск по всем столбцам..." oninput="filterMailTable()">
+            <input list="suppliersListFilter" id="mailSupplierFilter" class="supplier-filter" placeholder="Фильтр по контрагентам..." oninput="filterMailTable()">
+            <input type="date" id="mailDateFilter" onchange="filterMailTable()">
+
+            <button type="button" class="controls-dots-btn" title="Показать кнопки управления" aria-label="Показать кнопки управления">
+                <i class="fas fa-ellipsis-h"></i>
+            </button>
+        </div>
+
+        <div class="controls-dropdown">
+            <button onclick="showAddMailForm()" id="addMailBtn">Добавить запись</button>
+            <button onclick="clearMailFilters()" class="reset-filter-btn">Сбросить фильтры</button>
+            <button onclick="printMailTable()">Печать</button>
+            <button onclick="exportToExcel('mail')">Экспорт в Excel</button>
+        </div>
+    </div>
             
             <!-- ДОБАВЛЕНО: Контейнер для заголовков таблицы почтового реестра -->
             <div class="table-headers-container" id="mailHeaders" style="width: 100%; overflow-x: hidden; margin-top: 6.7px; display: none;">
@@ -3385,20 +3426,29 @@ button:hover{background:#222733!important}
 <div id="proxy-registry" class="page">
     <div class="container" style="padding-top: 3.35px;border-top-width: 0.0px;border-right-width: 0.0px;border-bottom-width: 0.0px;border-left-width: 0.0px;padding-left: 3.35px;padding-right: 3.35px;padding-bottom: 3.35px;">
         <div class="controls-container" style="padding-bottom: 0.0px;padding-top: 0px;">
-            <div class="controls">
-    <input type="text" id="searchProxyInput" placeholder="Поиск по всем столбцам..." oninput="filterProxyTable()">
-    <input list="suppliersListFilter" id="proxySupplierFilter" class="supplier-filter" placeholder="Фильтр по контрагентам..." oninput="filterProxyTable()">
-    <input list="applicationsListFilter" id="proxyApplicationFilter" class="application-filter" placeholder="Фильтр по заявкам..." oninput="filterProxyTable()">
-    <select id="proxyStatusFilter" class="status-filter" onchange="filterProxyTable()">
-    <option value="">Все статусы</option>
-    <option value="В работе">В работе</option>
-    <option value="Выполнено">Выполнено</option>
-</select>
-<input type="date" id="proxyDateFilter" onchange="filterProxyTable()" title="Фильтр по дате доверенности">
-    <button onclick="showAddProxyForm()" id="addProxyBtn">Добавить доверенность</button>
-    <button onclick="clearProxyFilters()" class="reset-filter-btn">Сбросить фильтры</button>
-    <button onclick="exportToExcel('proxy')">Экспорт в Excel</button>
-</div>
+    <div class="controls controls-ready" style="margin-bottom: 0;">
+        <div class="controls-filters-row">
+            <input type="text" id="searchProxyInput" placeholder="Поиск по всем столбцам..." oninput="filterProxyTable()">
+            <input list="suppliersListFilter" id="proxySupplierFilter" class="supplier-filter" placeholder="Фильтр по контрагентам..." oninput="filterProxyTable()">
+            <input list="applicationsListFilter" id="proxyApplicationFilter" class="application-filter" placeholder="Фильтр по заявкам..." oninput="filterProxyTable()">
+            <select id="proxyStatusFilter" class="status-filter" onchange="filterProxyTable()">
+                <option value="">Все статусы</option>
+                <option value="В работе">В работе</option>
+                <option value="Выполнено">Выполнено</option>
+            </select>
+            <input type="date" id="proxyDateFilter" onchange="filterProxyTable()" title="Фильтр по дате доверенности">
+
+            <button type="button" class="controls-dots-btn" title="Показать кнопки управления" aria-label="Показать кнопки управления">
+                <i class="fas fa-ellipsis-h"></i>
+            </button>
+        </div>
+
+        <div class="controls-dropdown">
+            <button onclick="showAddProxyForm()" id="addProxyBtn">Добавить доверенность</button>
+            <button onclick="clearProxyFilters()" class="reset-filter-btn">Сбросить фильтры</button>
+            <button onclick="exportToExcel('proxy')">Экспорт в Excel</button>
+        </div>
+    </div>
             
             <!-- ДОБАВЛЕНО: Контейнер для заголовков таблицы доверенностей -->
             <div class="table-headers-container" id="proxyHeaders" style="width: 100%; overflow-x: hidden; margin-top: 6.7px; display: none;">
@@ -8525,7 +8575,7 @@ function clearMailFilters() {
     if (proxyData.length === 0) {
         const emptyRow = document.createElement('tr');
         emptyRow.innerHTML = `
-            <td colspan="8" style="text-align: center; color: #8f98a0; padding: 20px;">
+            <td colspan="7" style="text-align: center; color: #8f98a0; padding: 20px;">
                 Нет данных о доверенностях. Добавьте первую доверенность.
             </td>
         `;
@@ -8690,7 +8740,7 @@ const supplierCell = row.querySelector('td:nth-child(4)')?.textContent.toLowerCa
         noDataRow = document.createElement('tr');
         noDataRow.setAttribute('data-no-results', 'true');
         noDataRow.innerHTML = `
-            <td colspan="9" style="text-align: center; color: #8f98a0; padding: 20px;">
+            <td colspan="7" style="text-align: center; color: #8f98a0; padding: 20px;">
                 По вашему запросу ничего не найдено
             </td>
         `;
@@ -13515,10 +13565,593 @@ select.filter-active {
     }
 }
 
+.controls:not(.controls-ready) {
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
 
+/* ============================================================
+   Выравнивание фильтров страницы «Позиции» по сайдбару
+   ============================================================ */
+
+/* 1. Убираем внутренние отступы контейнера страницы учёта —
+      его внешняя ширина уже совпадает с шириной сайдбара */
+#accounting .container {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+/* 2. Панель фильтров: никаких отрицательных margin,
+      горизонтальные отступы такие же, как padding у .sidebar (8px) */
+#accounting .controls-container {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+    box-sizing: border-box !important;
+}
+
+/* 3. Таблицу под фильтрами возвращаем внутрь на те же 8px,
+      чтобы она не прилипала к краям (по вкусу можно убрать) */
+#accounting .table-scroll-container {
+    padding-left: 8px;
+    padding-right: 8px;
+    box-sizing: border-box;
+}
+/* ============================================================
+   РАСПРЕДЕЛЕНИЕ ФИЛЬТРОВ «ПОЗИЦИИ» ПО 7 СТОЛБЦАМ САЙДБАРА
+   ============================================================ */
+
+/* 1. Строка фильтров — сетка из 7 равных колонок,
+      gap 4px как у .sidebar-row, ширина — вся .controls-container */
+#accounting .controls-filters-row {
+    display: grid !important;
+    grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
+    gap: 4px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    align-items: center !important;
+}
+
+/* 2. Все прямые дети ячейки сетки — без flex-настроек,
+      всегда на всю ширину своей колонки */
+#accounting .controls-filters-row > * {
+    min-width: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+}
+
+/* 3. Обёртки фильтров (создаются скриптом крестика) — тоже на всю ячейку */
+#accounting .controls-filters-row > .filter-clear-wrapper {
+    display: flex !important;
+    width: 100% !important;
+    min-width: 0 !important;
+}
+#accounting .controls-filters-row > .filter-clear-wrapper > input,
+#accounting .controls-filters-row > .filter-clear-wrapper > select {
+    width: 100% !important;
+    min-width: 0 !important;
+}
+
+/* 4. Группа «Факт + кнопка ⋮» — занимает 7-й столбец (под «Ещё») */
+#accounting .controls-filters-row > .fact-dots-group {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 4px !important;
+    width: 100% !important;
+    min-width: 0 !important;
+}
+#accounting .controls-filters-row > .fact-dots-group > .filter-clear-wrapper {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+}
+#accounting .controls-filters-row > .fact-dots-group > .controls-dots-btn {
+    flex: 0 0 28px !important;
+    width: 28px !important;
+    min-width: 28px !important;
+    margin-left: 0 !important;
+}
 
 </style>
 
+<style>
+/* ============================================================
+   РАСПРЕДЕЛЕНИЕ ФИЛЬТРОВ «ПЛАТЕЖИ» ПО 7 СТОЛБЦАМ САЙДБАРА
+   ============================================================ */
+
+/* Обнуляем паддинги контейнера — выравниваем по сайдбару */
+#payments .container {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+#payments .controls-container {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+    box-sizing: border-box !important;
+}
+#payments .table-scroll-container {
+    padding-left: 8px;
+    padding-right: 8px;
+    box-sizing: border-box;
+}
+
+/* Строка фильтров — сетка из 7 колонок с gap 4px (как .sidebar-row) */
+#payments .controls-filters-row {
+    display: grid !important;
+    grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
+    gap: 4px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    align-items: center !important;
+}
+
+/* Все прямые дети ячейки сетки — на всю ширину своей колонки */
+#payments .controls-filters-row > * {
+    min-width: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+}
+
+/* ── Столбцы 1–2: Поиск по всем столбцам (под «Позиции» + «Контрагенты») ── */
+#payments .controls-filters-row > .filter-clear-wrapper:has(#searchPaymentsInput),
+#payments .controls-filters-row > #searchPaymentsInput {
+    grid-column: 1 / span 2 !important;
+    grid-row: 1 !important;
+}
+
+/* ── Столбцы 3–4: Фильтр по заявкам (под «Платежи» + «Самовывоз») ── */
+#payments .controls-filters-row > .filter-clear-wrapper:has(#paymentsApplicationFilter),
+#payments .controls-filters-row > #paymentsApplicationFilter {
+    grid-column: 3 / span 2 !important;
+    grid-row: 1 !important;
+}
+
+/* ── Столбцы 5–6: Фильтр по контрагентам (под «Рекламации» + «Отправления») ── */
+#payments .controls-filters-row > .filter-clear-wrapper:has(#paymentsSupplierFilter),
+#payments .controls-filters-row > #paymentsSupplierFilter {
+    grid-column: 5 / span 2 !important;
+    grid-row: 1 !important;
+}
+
+/* ── Столбец 7: Группа «Статус + Дата + ⋮» (под «Ещё») ── */
+#payments .controls-filters-row > .status-date-dots-group {
+    grid-column: 7 !important;
+    grid-row: 1 !important;
+    display: flex !important;
+    flex-direction: row !important;      /* ← горизонтально */
+    flex-wrap: nowrap !important;
+    gap: 3px !important;
+    align-items: center !important;
+    width: 100% !important;
+    min-width: 0 !important;
+}
+
+/* Каждый из трёх элементов — сжимаемый */
+#payments .controls-filters-row > .status-date-dots-group > .filter-clear-wrapper {
+    flex: 1 1 0 !important;
+    min-width: 0 !important;
+    width: auto !important;
+}
+
+/* Селект «Все статусы» и дата — разрешаем сжиматься */
+#payments .controls-filters-row > .status-date-dots-group > .filter-clear-wrapper > #paymentsStatusFilter,
+#payments .controls-filters-row > .status-date-dots-group > .filter-clear-wrapper > #paymentDateFilter {
+    min-width: 0 !important;
+    width: 100% !important;
+    padding-left: 4px !important;
+    padding-right: 14px !important;
+    font-size: 10px !important;
+    background-size: 8px 5px !important;
+    background-position: right 3px center !important;
+}
+
+/* Иконка календарика у даты — компактнее */
+#payments .controls-filters-row > .status-date-dots-group > .filter-clear-wrapper > #paymentDateFilter::-webkit-calendar-picker-indicator {
+    margin-left: 0 !important;
+    padding: 0 !important;
+    width: 10px !important;
+}
+
+/* Кнопка «⋮» — фиксированная, узкая */
+#payments .controls-filters-row > .status-date-dots-group > .controls-dots-btn {
+    flex: 0 0 22px !important;
+    width: 22px !important;
+    min-width: 22px !important;
+    height: 22px !important;
+    margin-left: 0 !important;
+    padding: 0 !important;
+    font-size: 12px !important;
+}
+
+/* Убираем возможный внутренний ряд — он больше не нужен */
+#payments .controls-filters-row > .status-date-dots-group > .date-dots-row {
+    display: contents !important;
+}
+</style>
+<style>
+/* ============================================================
+   РАСПРЕДЕЛЕНИЕ ФИЛЬТРОВ «САМОВЫВОЗ» ПО 7 СТОЛБЦАМ САЙДБАРА
+   ============================================================ */
+
+/* Обнуляем паддинги контейнера — выравниваем по сайдбару */
+#proxy-registry .container {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+#proxy-registry .controls-container {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+    box-sizing: border-box !important;
+}
+#proxy-registry .table-scroll-container {
+    padding-left: 8px;
+    padding-right: 8px;
+    box-sizing: border-box;
+}
+
+/* Строка фильтров — сетка из 7 колонок с gap 4px (как .sidebar-row) */
+#proxy-registry .controls-filters-row {
+    display: grid !important;
+    grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
+    gap: 4px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    align-items: center !important;
+}
+
+/* Все прямые дети ячейки сетки — на всю ширину своей колонки */
+#proxy-registry .controls-filters-row > * {
+    min-width: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+}
+
+/* ── Столбцы 1–2: Поиск по всем столбцам (под «Позиции» + «Контрагенты») ── */
+#proxy-registry .controls-filters-row > .filter-clear-wrapper:has(#searchProxyInput),
+#proxy-registry .controls-filters-row > #searchProxyInput {
+    grid-column: 1 / span 2 !important;
+    grid-row: 1 !important;
+}
+
+/* ── Столбцы 3–4: Фильтр по контрагентам (под «Платежи» + «Самовывоз») ── */
+#proxy-registry .controls-filters-row > .filter-clear-wrapper:has(#proxySupplierFilter),
+#proxy-registry .controls-filters-row > #proxySupplierFilter {
+    grid-column: 3 / span 2 !important;
+    grid-row: 1 !important;
+}
+
+/* ── Столбцы 5–6: Фильтр по заявкам (под «Рекламации» + «Отправления») ── */
+#proxy-registry .controls-filters-row > .filter-clear-wrapper:has(#proxyApplicationFilter),
+#proxy-registry .controls-filters-row > #proxyApplicationFilter {
+    grid-column: 5 / span 2 !important;
+    grid-row: 1 !important;
+}
+
+/* ── Столбец 7: Группа «Статус + Дата + ⋮» (под «Ещё») ── */
+#proxy-registry .controls-filters-row > .status-date-dots-group {
+    grid-column: 7 !important;
+    grid-row: 1 !important;
+    display: flex !important;
+    flex-direction: row !important;      /* горизонтально */
+    flex-wrap: nowrap !important;
+    gap: 3px !important;
+    align-items: center !important;
+    width: 100% !important;
+    min-width: 0 !important;
+}
+
+/* Каждый из трёх элементов — сжимаемый */
+#proxy-registry .controls-filters-row > .status-date-dots-group > .filter-clear-wrapper {
+    flex: 1 1 0 !important;
+    min-width: 0 !important;
+    width: auto !important;
+}
+
+/* Селект «Все статусы» и дата — разрешаем сжиматься */
+#proxy-registry .controls-filters-row > .status-date-dots-group > .filter-clear-wrapper > #proxyStatusFilter,
+#proxy-registry .controls-filters-row > .status-date-dots-group > .filter-clear-wrapper > #proxyDateFilter {
+    min-width: 0 !important;
+    width: 100% !important;
+    padding-left: 4px !important;
+    padding-right: 14px !important;
+    font-size: 10px !important;
+    background-size: 8px 5px !important;
+    background-position: right 3px center !important;
+}
+
+/* Иконка календарика у даты — компактнее */
+#proxy-registry .controls-filters-row > .status-date-dots-group > .filter-clear-wrapper > #proxyDateFilter::-webkit-calendar-picker-indicator {
+    margin-left: 0 !important;
+    padding: 0 !important;
+    width: 10px !important;
+}
+
+/* Кнопка «⋮» — фиксированная, узкая */
+#proxy-registry .controls-filters-row > .status-date-dots-group > .controls-dots-btn {
+    flex: 0 0 22px !important;
+    width: 22px !important;
+    min-width: 22px !important;
+    height: 22px !important;
+    margin-left: 0 !important;
+    padding: 0 !important;
+    font-size: 12px !important;
+}
+
+/* Старое правило `.controls-dots-btn { margin-left: auto }` внутри сетки не нужно */
+#proxy-registry .controls-filters-row > .status-date-dots-group > .controls-dots-btn {
+    margin-left: 0 !important;
+}
+</style>
+<style>
+/* ============================================================
+   РАСПРЕДЕЛЕНИЕ ФИЛЬТРОВ «РЕКЛАМАЦИИ» ПО 7 СТОЛБЦАМ САЙДБАРА
+   ============================================================ */
+
+/* Обнуляем паддинги контейнера — выравниваем по сайдбару */
+#settlement .container {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+#settlement .controls-container {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+    box-sizing: border-box !important;
+}
+#settlement .table-scroll-container {
+    padding-left: 8px;
+    padding-right: 8px;
+    box-sizing: border-box;
+}
+
+/* Строка фильтров — сетка из 7 колонок с gap 4px (как .sidebar-row) */
+#settlement .controls-filters-row {
+    display: grid !important;
+    grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
+    gap: 4px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    align-items: center !important;
+}
+
+/* Все прямые дети ячейки сетки — на всю ширину своей колонки */
+#settlement .controls-filters-row > * {
+    min-width: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+}
+
+/* ── Столбцы 1–3: Поиск по всем столбцам
+      (под «Позиции» + «Контрагенты» + «Платежи») ── */
+#settlement .controls-filters-row > .filter-clear-wrapper:has(#searchSettlementInput),
+#settlement .controls-filters-row > #searchSettlementInput {
+    grid-column: 1 / span 3 !important;
+    grid-row: 1 !important;
+}
+
+/* ── Столбцы 4–6: Фильтр по контрагентам
+      (под «Самовывоз» + «Рекламации» + «Отправления») ── */
+#settlement .controls-filters-row > .filter-clear-wrapper:has(#settlementSupplierFilter),
+#settlement .controls-filters-row > #settlementSupplierFilter {
+    grid-column: 4 / span 3 !important;
+    grid-row: 1 !important;
+}
+
+/* ── Столбец 7: Группа «Статус + ⋮» (под «Ещё») ── */
+#settlement .controls-filters-row > .status-dots-group {
+    grid-column: 7 !important;
+    grid-row: 1 !important;
+    display: flex !important;
+    flex-direction: row !important;      /* горизонтально */
+    flex-wrap: nowrap !important;
+    gap: 3px !important;
+    align-items: center !important;
+    width: 100% !important;
+    min-width: 0 !important;
+}
+
+/* Обёртка селекта — сжимаемая */
+#settlement .controls-filters-row > .status-dots-group > .filter-clear-wrapper {
+    flex: 1 1 0 !important;
+    min-width: 0 !important;
+    width: auto !important;
+}
+
+/* Селект «Все статусы» — разрешаем сжиматься */
+#settlement .controls-filters-row > .status-dots-group > .filter-clear-wrapper > #settlementStatusFilter {
+    min-width: 0 !important;
+    width: 100% !important;
+    padding-left: 4px !important;
+    padding-right: 14px !important;
+    font-size: 10px !important;
+    background-size: 8px 5px !important;
+    background-position: right 3px center !important;
+}
+
+/* Кнопка «⋮» — фиксированная, узкая */
+#settlement .controls-filters-row > .status-dots-group > .controls-dots-btn {
+    flex: 0 0 22px !important;
+    width: 22px !important;
+    min-width: 22px !important;
+    height: 22px !important;
+    margin-left: 0 !important;
+    padding: 0 !important;
+    font-size: 12px !important;
+}
+</style>
+<style>
+/* ============================================================
+   РАСПРЕДЕЛЕНИЕ ФИЛЬТРОВ «ОТПРАВЛЕНИЯ» ПО 7 СТОЛБЦАМ САЙДБАРА
+   ============================================================ */
+
+/* Обнуляем паддинги контейнера — выравниваем по сайдбару */
+#mail-registry .container {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+#mail-registry .controls-container {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+    box-sizing: border-box !important;
+}
+#mail-registry .table-scroll-container {
+    padding-left: 8px;
+    padding-right: 8px;
+    box-sizing: border-box;
+}
+
+/* Строка фильтров — сетка из 7 колонок с gap 4px (как .sidebar-row) */
+#mail-registry .controls-filters-row {
+    display: grid !important;
+    grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
+    gap: 4px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    align-items: center !important;
+}
+
+/* Все прямые дети ячейки сетки — на всю ширину своей колонки */
+#mail-registry .controls-filters-row > * {
+    min-width: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+}
+
+/* ── Столбцы 1–3: Поиск по всем столбцам
+      (под «Позиции» + «Контрагенты» + «Платежи») ── */
+#mail-registry .controls-filters-row > .filter-clear-wrapper:has(#searchMailInput),
+#mail-registry .controls-filters-row > #searchMailInput {
+    grid-column: 1 / span 3 !important;
+    grid-row: 1 !important;
+}
+
+/* ── Столбцы 4–6: Фильтр по контрагентам
+      (под «Самовывоз» + «Рекламации» + «Отправления») ── */
+#mail-registry .controls-filters-row > .filter-clear-wrapper:has(#mailSupplierFilter),
+#mail-registry .controls-filters-row > #mailSupplierFilter {
+    grid-column: 4 / span 3 !important;
+    grid-row: 1 !important;
+}
+
+/* ── Столбец 7: Группа «Дата + ⋮» (под «Ещё») ── */
+#mail-registry .controls-filters-row > .date-dots-group {
+    grid-column: 7 !important;
+    grid-row: 1 !important;
+    display: flex !important;
+    flex-direction: row !important;      /* горизонтально */
+    flex-wrap: nowrap !important;
+    gap: 3px !important;
+    align-items: center !important;
+    width: 100% !important;
+    min-width: 0 !important;
+}
+
+/* Обёртка даты — сжимаемая */
+#mail-registry .controls-filters-row > .date-dots-group > .filter-clear-wrapper {
+    flex: 1 1 0 !important;
+    min-width: 0 !important;
+    width: auto !important;
+}
+
+/* Поле даты — компактнее, чтобы уместилось в узкой колонке */
+#mail-registry .controls-filters-row > .date-dots-group > .filter-clear-wrapper > #mailDateFilter {
+    min-width: 0 !important;
+    width: 100% !important;
+    padding-left: 4px !important;
+    padding-right: 4px !important;
+    font-size: 10px !important;
+}
+
+/* Иконка календарика — компактнее */
+#mail-registry .controls-filters-row > .date-dots-group > .filter-clear-wrapper > #mailDateFilter::-webkit-calendar-picker-indicator {
+    margin-left: 0 !important;
+    padding: 0 !important;
+    width: 10px !important;
+}
+
+/* Кнопка «⋮» — фиксированная, узкая */
+#mail-registry .controls-filters-row > .date-dots-group > .controls-dots-btn {
+    flex: 0 0 22px !important;
+    width: 22px !important;
+    min-width: 22px !important;
+    height: 22px !important;
+    margin-left: 0 !important;
+    padding: 0 !important;
+    font-size: 12px !important;
+}
+
+/* Убираем старую фиксацию ширины у поля даты (шла из общего CSS `80px`) */
+#mail-registry .controls-filters-row #mailDateFilter {
+    width: 100% !important;
+    flex: 1 1 0 !important;
+}
+</style>
+<style>
+/* ============================================================
+   Панель комментария — выравнивание 1:1 с селектом «Факт» и «⋮»
+   ============================================================ */
+
+/* Контейнер: обычный flex, без собственных padding
+   (родитель .controls-container уже даёт 8px по бокам) */
+#accounting .comment-control:not(.hidden) {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 4px !important;                 /* как gap у .controls-filters-row */
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 6px 0 !important;
+    box-sizing: border-box !important;
+}
+
+/* Поле комментария занимает всю ширину МИНУС кнопка и gap.
+   За счёт этого его правый край совпадёт с правым краем «Факт» */
+#accounting .comment-control > #applicationComment {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;             /* сбрасываем старое 134px */
+    max-width: none !important;
+    width: auto !important;
+    height: 22px !important;             /* как у фильтров */
+    padding: 4px 8px !important;
+    box-sizing: border-box !important;
+    font-size: 11px !important;
+}
+
+/* Кнопка 💾 — ровно та же ширина и высота, что у .controls-dots-btn */
+#accounting .comment-control > #saveCommentBtn {
+    flex: 0 0 28px !important;           /* фиксированная ширина */
+    width: 28px !important;
+    min-width: 28px !important;
+    max-width: 28px !important;
+    height: 22px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+    font-size: 14px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+</style>
 <script>
 /* ===== Выпадающее меню «Ещё» в сайдбаре ===== */
 function toggleMoreMenu(event) {
@@ -13632,7 +14265,49 @@ document.addEventListener('DOMContentLoaded', function () {
         processed.add(container);
         container._retries = 0;
 
-        if (container.querySelector(':scope > .controls-filters-row')) return;
+        if (container.querySelector(':scope > .controls-filters-row')) {
+    const dotsBtn = container.querySelector('.controls-dots-btn');
+    const dropdown = container.querySelector('.controls-dropdown');
+    if (dotsBtn && dropdown && !dotsBtn._wired) {
+        dotsBtn._wired = true;
+
+        dotsBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const willOpen = !dropdown.classList.contains('open');
+
+            document.querySelectorAll('.controls-dropdown.open')
+                .forEach(d => d.classList.remove('open'));
+            document.querySelectorAll('.controls-dots-btn.active')
+                .forEach(b => b.classList.remove('active'));
+
+            if (willOpen) {
+                dropdown.classList.add('open');
+                dotsBtn.classList.add('active');
+            }
+        });
+
+        dropdown.addEventListener('click', function (e) {
+            const btn = e.target.closest('button');
+            if (!btn) return;
+            setTimeout(() => {
+                if (isStickyModeActive()) return;
+                dropdown.classList.remove('open');
+                dotsBtn.classList.remove('active');
+            }, 80);
+        });
+
+        const syncOnShow = () => {
+            if (isStickyModeActive()) {
+                dropdown.classList.add('open');
+                dotsBtn.classList.add('active');
+            }
+        };
+        container._syncDropdown = syncOnShow;
+    }
+    container.classList.add('controls-ready');
+    return;
+}
 
         const children = Array.from(container.children);
         const filtersRow = document.createElement('div');
@@ -13668,6 +14343,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (buttons.length === 0) {
             container.innerHTML = '';
             container.appendChild(filtersRow);
+            container.classList.add('controls-ready');
             return;
         }
 
@@ -13722,6 +14398,7 @@ document.addEventListener('DOMContentLoaded', function () {
         container.innerHTML = '';
         container.appendChild(filtersRow);
         container.appendChild(dropdown);
+        container.classList.add('controls-ready');
 
         // Синхронизация при переключении страницы: если режим активен — раскрыть
         const syncOnShow = () => {
@@ -13738,7 +14415,12 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     window.processAllControls = processAllControls;
 
-    window.addEventListener('load', () => setTimeout(processAllControls, 300));
+    window.addEventListener('load', () => setTimeout(processAllControls, 50));
+
+    setTimeout(() => {
+    document.querySelectorAll('.controls:not(.controls-ready)')
+        .forEach(c => c.classList.add('controls-ready'));
+}, 2000);
 
     // Подстраховка от перерисовок
     const observer = new MutationObserver(mutations => {
@@ -13773,14 +14455,21 @@ document.addEventListener('DOMContentLoaded', function () {
     // При переключении страницы сайдбара — синхронизируем состояние
     document.addEventListener('click', function (e) {
         if (e.target.closest('.sidebar-cell.menu-item[data-page]')) {
-            setTimeout(() => {
-                processAllControls();
-                // если режим активен — раскрыть дропдаун на активной странице
-                document.querySelectorAll(SELECTOR).forEach(c => {
-                    if (typeof c._syncDropdown === 'function') c._syncDropdown();
-                });
-            }, 250);
-        }
+        // первый заход — почти сразу после переключения
+        setTimeout(() => {
+            processAllControls();
+            document.querySelectorAll(SELECTOR).forEach(c => {
+                if (typeof c._syncDropdown === 'function') c._syncDropdown();
+            });
+        }, 100);
+        // второй заход — когда блюр точно закончился
+        setTimeout(() => {
+            processAllControls();
+            document.querySelectorAll(SELECTOR).forEach(c => {
+                if (typeof c._syncDropdown === 'function') c._syncDropdown();
+            });
+        }, 600);
+    }
     });
 
     // Экспорт, чтобы при желании можно было синхронизировать извне
@@ -13871,7 +14560,52 @@ function initFiltersHighlight() {
         updateFilterHighlight(input);
     });
 }
+
 </script>
+
+<script>
+/* ===== Объединяем Факт + кнопку «⋮» в одну колонку сетки ===== */
+(function () {
+    function wrapFactAndDots() {
+        const row = document.querySelector('#accounting .controls-filters-row');
+        if (!row) return;
+
+        const factInput = row.querySelector('#factMonthFilter');
+        if (!factInput) return;
+
+        const factWrapper = factInput.closest('.filter-clear-wrapper') || factInput;
+        const dotsBtn = row.querySelector('.controls-dots-btn');
+        if (!dotsBtn) return;
+
+        // Уже обёрнуто — выходим
+        if (factWrapper.parentElement &&
+            factWrapper.parentElement.classList.contains('fact-dots-group')) {
+            return;
+        }
+
+        const group = document.createElement('div');
+        group.className = 'fact-dots-group';
+
+        factWrapper.parentNode.insertBefore(group, factWrapper);
+        group.appendChild(factWrapper);
+        group.appendChild(dotsBtn);
+    }
+
+    // Скрипт крестика создаёт обёртки ~800 мс → пробуем несколько раз
+    [900, 1300, 1800, 2500].forEach(t => setTimeout(wrapFactAndDots, t));
+
+    // И при каждом переключении обратно на страницу «Позиции»
+    document.addEventListener('click', function (e) {
+        if (e.target.closest('.sidebar-cell.menu-item[data-page="accounting"]')) {
+            [200, 500, 900].forEach(t => setTimeout(wrapFactAndDots, t));
+        }
+    });
+
+    window.wrapAccountingFilters = wrapFactAndDots;
+})();
+</script>
+
+
 <!-- === Крестик вместо стрелочки в фильтрах (с сохранением flex-раскладки) === -->
 <script>
 (function () {
@@ -14074,6 +14808,192 @@ function initFiltersHighlight() {
     }, 400);
 
     window.setupFilterClearButtons = setupAllFilters;
+})();
+</script>
+<script>
+/* ===== Объединяем Статус + Дату + «⋮» в одну колонку сетки ===== */
+(function () {
+   function wrapPaymentsGroup() {
+        const row = document.querySelector('#payments .controls-filters-row');
+        if (!row) return;
+
+        const statusInput = row.querySelector('#paymentsStatusFilter');
+        const dateInput   = row.querySelector('#paymentDateFilter');
+        const dotsBtn     = row.querySelector('.controls-dots-btn');
+
+        if (!statusInput || !dateInput || !dotsBtn) return;
+
+        const statusWrapper = statusInput.closest('.filter-clear-wrapper') || statusInput;
+        const dateWrapper   = dateInput.closest('.filter-clear-wrapper')   || dateInput;
+
+        // Уже обёрнуто — выходим
+        if (statusWrapper.parentElement &&
+            statusWrapper.parentElement.classList.contains('status-date-dots-group')) {
+            return;
+        }
+
+        // Создаём контейнер-группу (все три элемента станут прямыми детьми)
+        const group = document.createElement('div');
+        group.className = 'status-date-dots-group';
+
+        // Вставляем группу туда, где лежал статус
+        statusWrapper.parentNode.insertBefore(group, statusWrapper);
+
+        // Переносим все три элемента прямо в группу — БЕЗ вложенного ряда
+        group.appendChild(statusWrapper);
+        group.appendChild(dateWrapper);
+        group.appendChild(dotsBtn);
+    }
+
+    // Скрипт крестика создаёт обёртки с задержкой — пробуем несколько раз
+    [900, 1300, 1800, 2500].forEach(t => setTimeout(wrapPaymentsGroup, t));
+
+    // При каждом переключении на страницу «Платежи»
+    document.addEventListener('click', function (e) {
+        if (e.target.closest('.sidebar-cell.menu-item[data-page="payments"]')) {
+            [200, 500, 900].forEach(t => setTimeout(wrapPaymentsGroup, t));
+        }
+    });
+
+    window.wrapPaymentsFilters = wrapPaymentsGroup;
+})();
+</script>
+<script>
+/* ===== Самовывоз: Статус + Дата + «⋮» в одну колонку сетки (в ряд) ===== */
+(function () {
+    function wrapProxyGroup() {
+        const row = document.querySelector('#proxy-registry .controls-filters-row');
+        if (!row) return;
+
+        const statusInput = row.querySelector('#proxyStatusFilter');
+        const dateInput   = row.querySelector('#proxyDateFilter');
+        const dotsBtn     = row.querySelector('.controls-dots-btn');
+
+        if (!statusInput || !dateInput || !dotsBtn) return;
+
+        const statusWrapper = statusInput.closest('.filter-clear-wrapper') || statusInput;
+        const dateWrapper   = dateInput.closest('.filter-clear-wrapper')   || dateInput;
+
+        // Уже обёрнуто — выходим
+        if (statusWrapper.parentElement &&
+            statusWrapper.parentElement.classList.contains('status-date-dots-group')) {
+            return;
+        }
+
+        // Создаём контейнер-группу (все три элемента станут прямыми детьми)
+        const group = document.createElement('div');
+        group.className = 'status-date-dots-group';
+
+        // Вставляем группу туда, где лежал статус
+        statusWrapper.parentNode.insertBefore(group, statusWrapper);
+
+        // Переносим все три элемента прямо в группу
+        group.appendChild(statusWrapper);
+        group.appendChild(dateWrapper);
+        group.appendChild(dotsBtn);
+    }
+
+    // Скрипт крестика создаёт обёртки с задержкой — пробуем несколько раз
+    [900, 1300, 1800, 2500].forEach(t => setTimeout(wrapProxyGroup, t));
+
+    // При каждом переключении на страницу «Самовывоз»
+    document.addEventListener('click', function (e) {
+        if (e.target.closest('.sidebar-cell.menu-item[data-page="proxy-registry"]')) {
+            [200, 500, 900].forEach(t => setTimeout(wrapProxyGroup, t));
+        }
+    });
+
+    window.wrapProxyFilters = wrapProxyGroup;
+})();
+</script>
+<script>
+/* ===== Рекламации: Статус + «⋮» в одну колонку сетки (в ряд) ===== */
+(function () {
+    function wrapSettlementGroup() {
+        const row = document.querySelector('#settlement .controls-filters-row');
+        if (!row) return;
+
+        const statusInput = row.querySelector('#settlementStatusFilter');
+        const dotsBtn     = row.querySelector('.controls-dots-btn');
+
+        if (!statusInput || !dotsBtn) return;
+
+        const statusWrapper = statusInput.closest('.filter-clear-wrapper') || statusInput;
+
+        // Уже обёрнуто — выходим
+        if (statusWrapper.parentElement &&
+            statusWrapper.parentElement.classList.contains('status-dots-group')) {
+            return;
+        }
+
+        // Создаём контейнер-группу
+        const group = document.createElement('div');
+        group.className = 'status-dots-group';
+
+        // Вставляем группу туда, где лежал статус
+        statusWrapper.parentNode.insertBefore(group, statusWrapper);
+
+        // Переносим оба элемента в группу
+        group.appendChild(statusWrapper);
+        group.appendChild(dotsBtn);
+    }
+
+    // Скрипт крестика создаёт обёртки с задержкой — пробуем несколько раз
+    [900, 1300, 1800, 2500].forEach(t => setTimeout(wrapSettlementGroup, t));
+
+    // При каждом переключении на страницу «Рекламации»
+    document.addEventListener('click', function (e) {
+        if (e.target.closest('.sidebar-cell.menu-item[data-page="settlement"]')) {
+            [200, 500, 900].forEach(t => setTimeout(wrapSettlementGroup, t));
+        }
+    });
+
+    window.wrapSettlementFilters = wrapSettlementGroup;
+})();
+</script>
+<script>
+/* ===== Отправления: Дата + «⋮» в одну колонку сетки (в ряд) ===== */
+(function () {
+    function wrapMailGroup() {
+        const row = document.querySelector('#mail-registry .controls-filters-row');
+        if (!row) return;
+
+        const dateInput = row.querySelector('#mailDateFilter');
+        const dotsBtn   = row.querySelector('.controls-dots-btn');
+
+        if (!dateInput || !dotsBtn) return;
+
+        const dateWrapper = dateInput.closest('.filter-clear-wrapper') || dateInput;
+
+        // Уже обёрнуто — выходим
+        if (dateWrapper.parentElement &&
+            dateWrapper.parentElement.classList.contains('date-dots-group')) {
+            return;
+        }
+
+        // Создаём контейнер-группу
+        const group = document.createElement('div');
+        group.className = 'date-dots-group';
+
+        // Вставляем группу туда, где лежала дата
+        dateWrapper.parentNode.insertBefore(group, dateWrapper);
+
+        // Переносим оба элемента в группу
+        group.appendChild(dateWrapper);
+        group.appendChild(dotsBtn);
+    }
+
+    // Скрипт крестика создаёт обёртки с задержкой — пробуем несколько раз
+    [900, 1300, 1800, 2500].forEach(t => setTimeout(wrapMailGroup, t));
+
+    // При каждом переключении на страницу «Отправления»
+    document.addEventListener('click', function (e) {
+        if (e.target.closest('.sidebar-cell.menu-item[data-page="mail-registry"]')) {
+            [200, 500, 900].forEach(t => setTimeout(wrapMailGroup, t));
+        }
+    });
+
+    window.wrapMailFilters = wrapMailGroup;
 })();
 </script>
 </body>
