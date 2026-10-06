@@ -1,6 +1,30 @@
 {
   "accountingData": [
     {
+      "recordId": "20261006113728539_ttmh4tj06",
+      "docNumber": "2026-877 (от 06.10.2026)",
+      "status": "В работе",
+      "id": "-",
+      "name": "Труба гидравлическая бесшовная 12х1,5мм, L=3000 мм,  Сталь AISI316, EN 10305-4",
+      "quantity": "15",
+      "unit": "шт",
+      "purchaseName": "",
+      "purchaseQuantity": "",
+      "purchaseUnit": "",
+      "amount": "",
+      "supplier": "",
+      "department": "11/0110 Служба главного механика",
+      "contract": "",
+      "paymentTerms": "",
+      "deliveryDays": "",
+      "deliveryTerms": "",
+      "date": "",
+      "planFact": "",
+      "fact": "",
+      "shipmentDoc": "",
+      "favorite": false
+    },
+    {
       "recordId": "20261005091023279_ay6q3avmi",
       "docNumber": "2026-847 (от 29.09.2026)",
       "status": "В работе",
@@ -24134,30 +24158,6 @@
       "shipmentDoc": "70019 от 09.12.25",
       "plan": "11.12.2025",
       "favorite": false
-    },
-    {
-      "recordId": "20261006113728539_ttmh4tj06",
-      "docNumber": "2026-877 (от 06.10.2026)",
-      "status": "В работе",
-      "id": "-",
-      "name": "Труба гидравлическая бесшовная 12х1,5мм, L=3000 мм,  Сталь AISI316, EN 10305-4",
-      "quantity": "15",
-      "unit": "шт",
-      "purchaseName": "",
-      "purchaseQuantity": "",
-      "purchaseUnit": "",
-      "amount": "",
-      "supplier": "",
-      "department": "11/0110 Служба главного механика",
-      "contract": "",
-      "paymentTerms": "",
-      "deliveryDays": "",
-      "deliveryTerms": "",
-      "date": "",
-      "planFact": "",
-      "fact": "",
-      "shipmentDoc": "",
-      "favorite": false
     }
   ],
   "counterpartiesData": [
@@ -36005,5 +36005,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-10-06T11:32:13.873Z"
+  "exportDate": "2026-10-06T14:20:05.253Z"
 }
