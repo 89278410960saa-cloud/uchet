@@ -3000,6 +3000,50 @@ button:hover{background:#222733!important}
     font-size: 8px !important;
     padding: 2px 6px !important;
 }
+
+/* ===== Общая сумма внутри заголовка столбца «Сумма» на странице Платежи ===== */
+
+/* Перебиваем старые стили .total-sum-block, рассчитанные на отдельный блок */
+#paymentsTable thead th .total-sum-block {
+    height: auto !important;
+    min-height: 0 !important;
+    padding: 0 !important;
+    margin: 2px 0 0 0 !important;
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    gap: 4px !important;
+    font-size: 10px !important;
+    font-weight: bold !important;
+    color: #66c0f4 !important;
+    justify-content: center !important;
+    align-items: center !important;
+    white-space: nowrap !important;
+}
+
+/* Стили для самой суммы (ссылочный вид с ховером) */
+#paymentsTable thead th #paymentsTotalAmount {
+    cursor: pointer;
+    color: #66c0f4;
+    text-decoration: none;
+    transition: color .15s ease, text-shadow .15s ease;
+}
+
+#paymentsTable thead th #paymentsTotalAmount:hover {
+    color: #75c9ff !important;
+    text-shadow: 0 0 6px rgba(117, 201, 255, 0.5);
+}
+
+#paymentsTable thead th #paymentsTotalAmount:active {
+    color: #ffd700 !important;
+}
+
+/* Убираем старую жирную подсветку заголовка от «:hover» из общих правил,
+   чтобы сумма не «прыгала» при наведении */
+#paymentsTable thead th:hover {
+    transform: none !important;
+}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.4.0/exceljs.min.js"></script>
@@ -3263,10 +3307,7 @@ button:hover{background:#222733!important}
             <input type="text" id="searchPaymentsInput" placeholder="Поиск по всем столбцам..." oninput="filterPaymentsTable()">
             <input list="applicationsListFilter" id="paymentsApplicationFilter" class="application-filter" placeholder="Фильтр по заявкам..." oninput="filterPaymentsTable()">
             <input list="suppliersListFilter" id="paymentsSupplierFilter" class="supplier-filter" placeholder="Фильтр по контрагентам..." oninput="filterPaymentsTable()">
-            <div class="total-sum-block" id="paymentsTotalBlock" style="margin-left: auto; display: none;">
-                <span>Общая сумма:</span>
-                <span id="paymentsTotalAmount">0 руб.</span>
-            </div>
+            
             <select id="paymentsStatusFilter" class="status-filter" onchange="filterPaymentsTable()">
                 <option value="">Все статусы</option>
                 <option value="План">План</option>
@@ -3300,7 +3341,11 @@ button:hover{background:#222733!important}
         <th style="width: 120px;">Статус</th>
         <th style="width: 130px;">Заявка</th>
         <th style="width: 60px;">Контрагент</th>
-        <th style="width: 120px;">Сумма</th>
+        <th style="width: 120px;">Сумма
+    <div class="total-sum-block" id="paymentsTotalBlock" style="display: none;">
+        <span id="paymentsTotalAmount">0 руб.</span>
+    </div>
+</th>
         <th style="width: 60px;">Счет</th>
         <th style="width: 60px;">Договор</th>
         <th style="width: 10px;">Ссылка</th>
@@ -9643,6 +9688,7 @@ function printDeliveriesAndOverdue() {
     .overdue-row { outline: 3px solid black; outline-offset: -1px; }
     .print-footer { margin-top: 20px; font-size: 10px; text-align: right; }
 </style>
+
 </head>
 <body>
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
@@ -15040,19 +15086,52 @@ function initFiltersHighlight() {
                 display: none !important;
             }
 
-            /* Модальное окно массового редактирования */
+            /* ===== Модальное окно массового редактирования ===== */
             #bulkEditModal .modal-content { max-width: 640px !important; width: 60% !important; }
-            #bulkEditModal table { border-collapse: collapse; background: transparent !important; width: 100%; }
+
+            #bulkEditModal table {
+                border-collapse: collapse;
+                background: transparent !important;
+                width: 100%;
+            }
+
+            /* ★ Убираем пустоты вокруг галочек: маленькие отступы */
             #bulkEditModal table td {
                 background: transparent !important;
                 border: none !important;
-                padding: 4px !important;
+                padding: 3px 4px !important;
                 vertical-align: middle !important;
             }
-            #bulkEditModal input[type="checkbox"].bulk-field-check {
-                width: 16px; height: 16px; cursor: pointer; accent-color: #66c0f4;
+            /* Колонка с галочкой — узкая, без боковых пустот */
+            #bulkEditModal table td:nth-child(1) {
+                width: 18px !important;
+                min-width: 18px !important;
+                max-width: 18px !important;
+                padding: 3px 0 !important;
+                text-align: center !important;
             }
-            #bulkEditModal label { color: #c7d5e0; font-size: 11px; cursor: pointer; user-select: none; }
+            /* Колонка с label — небольшой отступ слева */
+            #bulkEditModal table td:nth-child(2) {
+                padding-left: 6px !important;
+            }
+
+            #bulkEditModal input[type="checkbox"].bulk-field-check {
+                width: 16px; height: 16px;
+                cursor: pointer;
+                accent-color: #66c0f4;
+                margin: 0;
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            #bulkEditModal label {
+                color: #c7d5e0;
+                font-size: 11px;
+                cursor: pointer;
+                user-select: none;
+            }
+
             #bulkEditModal input.bulk-input,
             #bulkEditModal select.bulk-input {
                 width: 100%; height: 24px; padding: 2px 6px; font-size: 11px;
@@ -15069,11 +15148,22 @@ function initFiltersHighlight() {
             #bulkEditModal tr.bulk-row-active select.bulk-input {
                 border-color: #66c0f4; background: #26374a;
             }
+
+            /* Подсказка в шапке */
             #bulkEditModal .bulk-hint {
-                text-align: center; color: #8f98a0; font-size: 11px;
-                margin-bottom: 14px; line-height: 1.4;
+                text-align: center;
+                color: #8f98a0;
+                font-size: 11px;
+                margin-bottom: 14px;
+                line-height: 1.4;
             }
             #bulkEditModal .bulk-hint strong { color: #66c0f4; font-size: 14px; }
+
+            /* Отступ между иконкой и текстом на кнопке Group edit */
+            #bulkEditBtn > i.fas,
+            #bulkEditBtn > i.fa {
+                margin-right: 5px !important;
+            }
         `;
         const style = document.createElement('style');
         style.id = 'bulkEditStyles';
@@ -15094,7 +15184,6 @@ function initFiltersHighlight() {
         const val = (input.value || '').trim();
         if (val === '') return false;
 
-        // Значение должно быть выбрано из datalist (или активен быстрый фильтр)
         const datalist = document.getElementById('applicationsListFilter');
         if (datalist) {
             for (let i = 0; i < datalist.options.length; i++) {
@@ -15171,44 +15260,45 @@ function initFiltersHighlight() {
 
     /* ---------- 6. Обновление UI (кнопка + счётчик) ---------- */
     function updateBulkUI() {
-    const btn = document.getElementById('bulkEditBtn');
-    if (!btn) return;
+        const btn = document.getElementById('bulkEditBtn');
+        if (!btn) return;
 
-    const admin     = typeof isAdmin !== 'undefined' && isAdmin;
-    const appActive = isApplicationFilterActive();
+        const admin     = typeof isAdmin !== 'undefined' && isAdmin;
+        const appActive = isApplicationFilterActive();
 
-    /* ★ Универсальный помощник: ставит display с !important */
-    const setDisplay = (val) => btn.style.setProperty('display', val, 'important');
+        const setDisplay = (val) => btn.style.setProperty('display', val, 'important');
 
-    if (!admin || !appActive) {
-        setDisplay('none');
-        return;
+        if (!admin || !appActive) {
+            setDisplay('none');
+            return;
+        }
+
+        const tbody = document.querySelector('#accountingTable tbody');
+        const visibleRows = tbody
+            ? Array.from(tbody.querySelectorAll('tr')).filter(row =>
+                row.style.display !== 'none' &&
+                !row.hasAttribute('data-no-results') &&
+                row.cells.length > 1 &&
+                row.querySelector('td.id-cell.has-row-number .bulk-row-checkbox')
+              )
+            : [];
+
+        if (visibleRows.length === 0) {
+            setDisplay('none');
+            return;
+        }
+
+        const selectedCount = visibleRows.filter(r =>
+            r.querySelector('.bulk-row-checkbox').checked
+        ).length;
+
+        setDisplay('inline-flex');
+
+        // ★ Отступ через inline-стиль на иконке, чтобы не сливались
+        btn.innerHTML = selectedCount > 0
+            ? `<i class="fas fa-layer-group" style="margin-right:5px;"></i>Group edit (${selectedCount})`
+            : `<i class="fas fa-layer-group" style="margin-right:5px;"></i>Group edit`;
     }
-
-    const tbody = document.querySelector('#accountingTable tbody');
-    const visibleRows = tbody
-        ? Array.from(tbody.querySelectorAll('tr')).filter(row =>
-            row.style.display !== 'none' &&
-            !row.hasAttribute('data-no-results') &&
-            row.cells.length > 1 &&
-            row.querySelector('td.id-cell.has-row-number .bulk-row-checkbox')
-          )
-        : [];
-
-    if (visibleRows.length === 0) {
-        setDisplay('none');
-        return;
-    }
-
-    const selectedCount = visibleRows.filter(r =>
-        r.querySelector('.bulk-row-checkbox').checked
-    ).length;
-
-    setDisplay('inline-flex');   // ← тоже с !important
-    btn.innerHTML = selectedCount > 0
-        ? `<i class="fas fa-layer-group"></i> Group edit (${selectedCount})`
-        : `<i class="fas fa-layer-group"></i> Group edit`;
-}
 
     /* ---------- 7. Планировщик ---------- */
     let syncTimer = null;
@@ -15234,39 +15324,41 @@ function initFiltersHighlight() {
         window[name]._bulkHooked = true;
     }
 
-    /* ---------- 9. Кнопка в выпадающем блоке ---------- */
+    /* ---------- 9. Кнопка в выпадающем блоке — после «Поставки 30 дней» ---------- */
     function injectButton() {
         if (document.getElementById('bulkEditBtn')) return;
         const dropdown = document.querySelector('#accounting .controls-dropdown');
         if (!dropdown) return;
 
         const btn = document.createElement('button');
-btn.id = 'bulkEditBtn';
-btn.type = 'button';
-btn.style.setProperty('display', 'none', 'important');   // ← было btn.style.display = 'none';
-btn.style.background = 'linear-gradient(135deg, #7b4ab8 0%, #5b3699 100%)';
-btn.title = 'Массово изменить выбранные позиции';
-btn.innerHTML = '<i class="fas fa-layer-group"></i> Group edit';
-btn.onclick = function (e) { e.preventDefault(); window.showBulkEditModal(); };
-dropdown.appendChild(btn);
+        btn.id = 'bulkEditBtn';
+        btn.type = 'button';
+        btn.style.setProperty('display', 'none', 'important');
+        btn.style.background = 'linear-gradient(135deg, #7b4ab8 0%, #5b3699 100%)';
+        btn.title = 'Массово изменить выбранные позиции';
+        btn.innerHTML = '<i class="fas fa-layer-group" style="margin-right:5px;"></i>Group edit';
+        btn.onclick = function (e) { e.preventDefault(); window.showBulkEditModal(); };
+
+        // ★ Вставляем сразу ПОСЛЕ кнопки «Поставки 30 дней»
+        const anchor = dropdown.querySelector('button[onclick*="printDeliveriesAndOverdue"]');
+        if (anchor && anchor.parentNode === dropdown) {
+            anchor.parentNode.insertBefore(btn, anchor.nextSibling);
+        } else {
+            dropdown.appendChild(btn);
+        }
     }
 
-    /* ---------- 10. Модальное окно (без «Подразделения» и без кнопок выбора) ---------- */
+    /* ---------- 10. Модальное окно ---------- */
     function injectModal() {
         if (document.getElementById('bulkEditModal')) return;
 
         const fields = [
-            { field: 'status',        label: 'Статус:',               type: 'select',   options: ['В работе','Поставка','Приход','Выполнено','Иное'] },
-            { field: 'supplier',      label: 'Контрагент:',           type: 'datalist', list: 'suppliersList' },
-            { field: 'contract',      label: 'Договор:',              type: 'datalist', list: 'contractsList' },
-            { field: 'paymentTerms',  label: 'Условие оплаты:',       type: 'datalist', list: 'paymentTermsList' },
-            { field: 'deliveryTerms', label: 'Условие поставки:',     type: 'select',   options: ['', 'Включена','Самовывоз','Терминал'] },
-            { field: 'deliveryDays',  label: 'Срок поставки (дней):', type: 'number' },
-            { field: 'date',          label: 'Дата утверждения:',     type: 'date' },
-            { field: 'planFact',      label: 'План:',                 type: 'date' },
-            { field: 'fact',          label: 'Факт:',                 type: 'date' },
-            { field: 'shipmentDoc',   label: 'Документ:',             type: 'datalist', list: 'shipmentDocsList' }
-        ];
+    { field: 'status',        label: 'Статус:',               type: 'select',   options: ['В работе','Поставка','Приход','Выполнено','Иное'] },
+    { field: 'date',          label: 'Дата утверждения:',     type: 'date' },
+    { field: 'planFact',      label: 'План:',                 type: 'date' },
+    { field: 'fact',          label: 'Факт:',                 type: 'date' },
+    { field: 'shipmentDoc',   label: 'Документ:',             type: 'datalist', list: 'shipmentDocsList' }
+];
 
         let rowsHTML = '';
         fields.forEach(r => {
@@ -15290,11 +15382,11 @@ dropdown.appendChild(btn);
 
             rowsHTML += `
                 <tr>
-                    <td style="width:24px;">
+                    <td>
                         <input type="checkbox" class="bulk-field-check"
                                data-field="${r.field}" data-input="${inputId}">
                     </td>
-                    <td style="width:180px;"><label>${r.label}</label></td>
+                    <td><label>${r.label}</label></td>
                     <td>${inputHTML}</td>
                 </tr>`;
         });
@@ -15306,7 +15398,7 @@ dropdown.appendChild(btn);
     <h2 style="text-align:center; margin-bottom:6px;">Group edit</h2>
     <p class="bulk-hint">
       Выбрано строк: <strong id="bulkEditCount">0</strong><br>
-      Отметьте галочками <strong>только те поля</strong>, которые нужно обновить.
+      отметьте поля, которые нужно обновить
     </p>
     <form id="bulkEditForm" onsubmit="applyBulkEdit(event)">
       <table><tbody>${rowsHTML}</tbody></table>
@@ -15377,15 +15469,10 @@ dropdown.appendChild(btn);
         const fmt = (v) => (typeof formatDateForInput === 'function' ? formatDateForInput(v) : v || '');
 
         set('bulk_status',        first.status        || 'В работе');
-        set('bulk_supplier',      first.supplier      || '');
-        set('bulk_contract',      first.contract      || '');
-        set('bulk_paymentTerms',  first.paymentTerms  || '');
-        set('bulk_deliveryTerms', first.deliveryTerms || '');
-        set('bulk_deliveryDays',  first.deliveryDays  || '');
-        set('bulk_date',          fmt(first.date));
-        set('bulk_planFact',      fmt(first.planFact));
-        set('bulk_fact',          fmt(first.fact));
-        set('bulk_shipmentDoc',   first.shipmentDoc   || '');
+set('bulk_date',          fmt(first.date));
+set('bulk_planFact',      fmt(first.planFact));
+set('bulk_fact',          fmt(first.fact));
+set('bulk_shipmentDoc',   first.shipmentDoc   || '');
 
         document.getElementById('bulkEditCount').textContent = ids.length;
         document.getElementById('bulkEditModal').style.display = 'flex';
@@ -15471,14 +15558,12 @@ dropdown.appendChild(btn);
         injectModal();
         syncAdminClass();
 
-        // Синхронизация после ключевых функций
         hookAfter('filterAccountingTable');
         hookAfter('updateAccountingTable');
         hookAfter('clearAccountingFilters');
         hookAfter('showPage');
         hookAfter('updateUserInterface');
 
-        // Реакция на изменение фильтра по заявкам (в т.ч. через datalist)
         document.addEventListener('input', function (e) {
             if (e.target && e.target.id === 'applicationFilter') scheduleSync();
         });
@@ -15486,7 +15571,6 @@ dropdown.appendChild(btn);
             if (e.target && e.target.id === 'applicationFilter') scheduleSync();
         });
 
-        // Фоновый контроль (страховка от перерисовок и не перехваченных вызовов)
         setInterval(() => {
             syncAdminClass();
             const table = document.getElementById('accountingTable');
