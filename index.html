@@ -14996,5 +14996,531 @@ function initFiltersHighlight() {
     window.wrapMailFilters = wrapMailGroup;
 })();
 </script>
+<script>
+/* ========== МАССОВОЕ РЕДАКТИРОВАНИЕ С ВЫБОРОМ СТРОК ========== */
+(function () {
+
+    /* ---------- 1. Стили ---------- */
+    function injectStyles() {
+        if (document.getElementById('bulkEditStyles')) return;
+        const css = `
+            /* Чекбокс-колонка в таблице «Позиции» */
+            #accountingTable th.bulk-select-th,
+            #accountingTable td.bulk-select-td {
+                width: 26px !important;
+                min-width: 26px !important;
+                max-width: 26px !important;
+                padding: 2px !important;
+                text-align: center !important;
+                vertical-align: middle !important;
+            }
+            #accountingTable .bulk-row-checkbox,
+            #accountingTable #bulkSelectAllHeader {
+                width: 13px; height: 13px;
+                cursor: pointer; accent-color: #66c0f4;
+                margin: 0; display: inline-block; vertical-align: middle;
+            }
+            #accountingTable tr.bulk-row-selected > td {
+                background-color: rgba(102,192,244,0.14) !important;
+            }
+            #accountingTable tr.bulk-row-selected:hover > td {
+                background-color: rgba(102,192,244,0.22) !important;
+            }
+            /* Скрыть чекбокс-колонку у гостя */
+            body:not(.is-admin-mode) #accountingTable th.bulk-select-th,
+            body:not(.is-admin-mode) #accountingTable td.bulk-select-td {
+                display: none !important;
+            }
+
+            /* Модальное окно массового редактирования */
+            #bulkEditModal .modal-content { max-width: 640px !important; width: 60% !important; }
+            #bulkEditModal table { border-collapse: collapse; background: transparent !important; width: 100%; }
+            #bulkEditModal table td {
+                background: transparent !important;
+                border: none !important;
+                padding: 4px !important;
+                vertical-align: middle !important;
+            }
+            #bulkEditModal input[type="checkbox"].bulk-field-check {
+                width: 16px; height: 16px; cursor: pointer; accent-color: #66c0f4;
+            }
+            #bulkEditModal label { color: #c7d5e0; font-size: 11px; cursor: pointer; user-select: none; }
+            #bulkEditModal input.bulk-input,
+            #bulkEditModal select.bulk-input {
+                width: 100%; height: 24px; padding: 2px 6px; font-size: 11px;
+                background: #1e2d3d; color: #c7d5e0;
+                border: 1px solid #3d4450; border-radius: 3px; box-sizing: border-box;
+            }
+            #bulkEditModal input.bulk-input:focus,
+            #bulkEditModal select.bulk-input:focus {
+                outline: none; border-color: #66c0f4;
+                box-shadow: 0 0 0 2px rgba(102,192,244,0.2);
+            }
+            #bulkEditModal tr.bulk-row-active label { color: #66c0f4; font-weight: bold; }
+            #bulkEditModal tr.bulk-row-active input.bulk-input,
+            #bulkEditModal tr.bulk-row-active select.bulk-input {
+                border-color: #66c0f4; background: #26374a;
+            }
+            #bulkEditModal .bulk-hint {
+                text-align: center; color: #8f98a0; font-size: 11px;
+                margin-bottom: 14px; line-height: 1.4;
+            }
+            #bulkEditModal .bulk-hint strong { color: #66c0f4; font-size: 14px; }
+            #bulkEditModal .bulk-toolbar {
+                display: flex; gap: 8px; justify-content: center;
+                margin-bottom: 12px; flex-wrap: wrap;
+            }
+            #bulkEditModal .bulk-toolbar button {
+                padding: 4px 12px; font-size: 11px; cursor: pointer;
+                background: rgba(102,192,244,0.12);
+                border: 1px solid #3d4450; border-radius: 3px;
+                color: #c7d5e0; transition: all .15s;
+            }
+            #bulkEditModal .bulk-toolbar button:hover {
+                background: rgba(102,192,244,0.2);
+                border-color: #66c0f4; color: #fff;
+            }
+        `;
+        const style = document.createElement('style');
+        style.id = 'bulkEditStyles';
+        style.textContent = css;
+        document.head.appendChild(style);
+    }
+
+    /* ---------- 2. Синхронизация admin-класса ---------- */
+    function syncAdminClass() {
+        const admin = typeof isAdmin !== 'undefined' && isAdmin;
+        document.body.classList.toggle('is-admin-mode', admin);
+    }
+
+    /* ---------- 3. Хук функции (после вызова — синхронизируем колонку) ---------- */
+    function hookAfter(name) {
+        const fn = window[name];
+        if (typeof fn !== 'function' || fn._bulkHooked) return;
+        window[name] = function () {
+            const result = fn.apply(this, arguments);
+            setTimeout(scheduleCheckboxSync, 40);
+            return result;
+        };
+        window[name]._bulkHooked = true;
+    }
+
+    /* ---------- 4. Добавление чекбокс-колонки ---------- */
+    function ensureCheckboxColumn() {
+        const table = document.getElementById('accountingTable');
+        if (!table) return;
+        const thead = table.querySelector('thead tr');
+        const tbody = table.querySelector('tbody');
+        if (!thead || !tbody) return;
+
+        const admin = typeof isAdmin !== 'undefined' && isAdmin;
+
+        /* Если не админ — удаляем чекбоксы и восстанавливаем colspan */
+        if (!admin) {
+            thead.querySelectorAll('.bulk-select-th').forEach(el => el.remove());
+            tbody.querySelectorAll('.bulk-select-td').forEach(el => el.remove());
+            tbody.querySelectorAll('tr[data-bulk-colspan]').forEach(row => {
+                const cell = row.cells[0];
+                if (cell) cell.setAttribute('colspan', '14');
+                delete row.dataset.bulkColspan;
+            });
+            updateBulkUI();
+            return;
+        }
+
+        /* Заголовок с чекбоксом «Выделить всё видимое» */
+        if (!thead.querySelector('.bulk-select-th')) {
+            const th = document.createElement('th');
+            th.className = 'bulk-select-th';
+            th.innerHTML = '<input type="checkbox" id="bulkSelectAllHeader" title="Выделить все видимые строки">';
+            thead.appendChild(th);
+
+            th.querySelector('#bulkSelectAllHeader').addEventListener('change', function () {
+                const checked = this.checked;
+                tbody.querySelectorAll('tr').forEach(row => {
+                    if (row.style.display === 'none') return;
+                    const cb = row.querySelector('.bulk-row-checkbox');
+                    if (cb) {
+                        cb.checked = checked;
+                        row.classList.toggle('bulk-row-selected', checked);
+                    }
+                });
+                updateBulkUI();
+            });
+        }
+
+        /* Строки */
+        tbody.querySelectorAll('tr').forEach(row => {
+            /* Строка-заглушка «Нет данных» */
+            if (row.cells.length === 1 && row.cells[0].colSpan > 1) {
+                if (!row.dataset.bulkColspan) {
+                    row.cells[0].setAttribute('colspan', '15');
+                    row.dataset.bulkColspan = '1';
+                }
+                return;
+            }
+            /* Уже с чекбоксом */
+            if (row.querySelector('.bulk-select-td')) return;
+
+            const td = document.createElement('td');
+            td.className = 'bulk-select-td';
+            const cb = document.createElement('input');
+            cb.type = 'checkbox';
+            cb.className = 'bulk-row-checkbox';
+            td.appendChild(cb);
+            row.appendChild(td);
+
+            /* Клик по чекбоксу не должен открывать карточку/редактор строки */
+            td.addEventListener('click',  e => e.stopPropagation());
+            td.addEventListener('dblclick', e => e.stopPropagation());
+
+            cb.addEventListener('change', function (e) {
+                e.stopPropagation();
+                row.classList.toggle('bulk-row-selected', this.checked);
+                updateBulkUI();
+            });
+        });
+
+        updateBulkUI();
+    }
+
+    /* ---------- 5. Планировщик ---------- */
+    let syncTimer = null;
+    function scheduleCheckboxSync() {
+        if (syncTimer) clearTimeout(syncTimer);
+        syncTimer = setTimeout(() => {
+            syncAdminClass();
+            ensureCheckboxColumn();
+        }, 50);
+    }
+
+    /* ---------- 6. Обновление UI (кнопка + header-checkbox) ---------- */
+    function updateBulkUI() {
+        const tbody = document.querySelector('#accountingTable tbody');
+        if (!tbody) return;
+
+        /* Снимаем галочки со скрытых строк */
+        tbody.querySelectorAll('tr').forEach(row => {
+            if (row.style.display === 'none') {
+                const cb = row.querySelector('.bulk-row-checkbox');
+                if (cb && cb.checked) {
+                    cb.checked = false;
+                    row.classList.remove('bulk-row-selected');
+                }
+            }
+        });
+
+        const visibleRows = Array.from(tbody.querySelectorAll('tr')).filter(row =>
+            row.style.display !== 'none' &&
+            row.cells.length > 1 &&
+            !row.hasAttribute('data-no-results') &&
+            row.querySelector('.bulk-row-checkbox')
+        );
+
+        const selectedCount = visibleRows.filter(r =>
+            r.querySelector('.bulk-row-checkbox').checked
+        ).length;
+
+        /* Галочка в шапке */
+        const headerCb = document.getElementById('bulkSelectAllHeader');
+        if (headerCb) {
+            headerCb.checked = visibleRows.length > 0 && selectedCount === visibleRows.length;
+            headerCb.indeterminate = selectedCount > 0 && selectedCount < visibleRows.length;
+            headerCb.disabled = visibleRows.length === 0;
+        }
+
+        /* Кнопка в панели управления */
+        const btn = document.getElementById('bulkEditBtn');
+        if (btn) {
+            const admin = typeof isAdmin !== 'undefined' && isAdmin;
+            btn.style.display = (admin && visibleRows.length > 0) ? 'inline-flex' : 'none';
+            btn.innerHTML = selectedCount > 0
+                ? `<i class="fas fa-layer-group"></i> Group edit (${selectedCount})`
+                : `<i class="fas fa-layer-group"></i> Group edit`;
+        }
+    }
+
+    /* ---------- 7. Кнопка в панели управления ---------- */
+    function injectButton() {
+        if (document.getElementById('bulkEditBtn')) return;
+        const dropdown = document.querySelector('#accounting .controls-dropdown');
+        if (!dropdown) return;
+
+        const btn = document.createElement('button');
+        btn.id = 'bulkEditBtn';
+        btn.type = 'button';
+        btn.style.display = 'none';
+        btn.style.background = 'linear-gradient(135deg, #7b4ab8 0%, #5b3699 100%)';
+        btn.title = 'Массово изменить выбранные позиции';
+        btn.innerHTML = '<i class="fas fa-layer-group"></i> Group edit';
+        btn.onclick = function (e) { e.preventDefault(); window.showBulkEditModal(); };
+        dropdown.appendChild(btn);
+    }
+
+    /* ---------- 8. Модальное окно ---------- */
+    function injectModal() {
+        if (document.getElementById('bulkEditModal')) return;
+
+        const fields = [
+            { field: 'department',    label: 'Подразделение:',        type: 'datalist', list: 'departmentsList' },
+            { field: 'status',        label: 'Статус:',               type: 'select',   options: ['В работе','Поставка','Приход','Выполнено','Иное'] },
+            { field: 'supplier',      label: 'Контрагент:',           type: 'datalist', list: 'suppliersList' },
+            { field: 'contract',      label: 'Договор:',              type: 'datalist', list: 'contractsList' },
+            { field: 'paymentTerms',  label: 'Условие оплаты:',       type: 'datalist', list: 'paymentTermsList' },
+            { field: 'deliveryTerms', label: 'Условие поставки:',     type: 'select',   options: ['', 'Включена','Самовывоз','Терминал'] },
+            { field: 'deliveryDays',  label: 'Срок поставки (дней):', type: 'number' },
+            { field: 'date',          label: 'Дата утверждения:',     type: 'date' },
+            { field: 'planFact',      label: 'План:',                 type: 'date' },
+            { field: 'fact',          label: 'Факт:',                 type: 'date' },
+            { field: 'shipmentDoc',   label: 'Документ:',             type: 'datalist', list: 'shipmentDocsList' }
+        ];
+
+        let rowsHTML = '';
+        fields.forEach(r => {
+            const inputId = 'bulk_' + r.field;
+            let inputHTML = '';
+
+            if (r.type === 'datalist') {
+                inputHTML = `<input list="${r.list}" id="${inputId}" class="bulk-input datalist-input" autocomplete="off">`;
+            } else if (r.type === 'select') {
+                const opts = r.options.map(o =>
+                    `<option value="${o}">${o === '' ? '-- Не указано --' : o}</option>`
+                ).join('');
+                inputHTML = `<select id="${inputId}" class="bulk-input">${opts}</select>`;
+            } else if (r.type === 'date') {
+                inputHTML = `<input type="date" id="${inputId}" class="bulk-input">`;
+            } else if (r.type === 'number') {
+                inputHTML = `<input type="number" id="${inputId}" class="bulk-input">`;
+            } else {
+                inputHTML = `<input type="text" id="${inputId}" class="bulk-input">`;
+            }
+
+            rowsHTML += `
+                <tr>
+                    <td style="width:24px;">
+                        <input type="checkbox" class="bulk-field-check"
+                               data-field="${r.field}" data-input="${inputId}">
+                    </td>
+                    <td style="width:180px;"><label>${r.label}</label></td>
+                    <td>${inputHTML}</td>
+                </tr>`;
+        });
+
+        const html = `
+<div id="bulkEditModal" class="modal" style="display:none;">
+  <div class="modal-content">
+    <span class="close" onclick="closeBulkEditModal()">×</span>
+    <h2 style="text-align:center; margin-bottom:6px;">Group edit</h2>
+    <p class="bulk-hint">
+      Выбрано строк: <strong id="bulkEditCount">0</strong><br>
+      Отметьте галочками <strong>только те поля</strong>, которые нужно обновить.
+    </p>
+    <div class="bulk-toolbar">
+      <button type="button" onclick="bulkSelectAllVisible(true)">Выбрать все видимые</button>
+      <button type="button" onclick="bulkSelectAllVisible(false)">Снять выделение</button>
+    </div>
+    <form id="bulkEditForm" onsubmit="applyBulkEdit(event)">
+      <table><tbody>${rowsHTML}</tbody></table>
+      <div style="display:flex; gap:8px; justify-content:center; margin-top:18px;">
+        <button type="submit" style="padding:8px 22px; background:linear-gradient(135deg,#5c7e10 0%,#4c6b22 100%); color:#fff; border:none; border-radius:3px; cursor:pointer;">
+          Применить к выбранным
+        </button>
+        <button type="button" onclick="closeBulkEditModal()" style="padding:8px 22px; background:linear-gradient(135deg,#8f98a0 0%,#6d7882 100%); color:#fff; border:none; border-radius:3px; cursor:pointer;">
+          Отмена
+        </button>
+      </div>
+    </form>
+  </div>
+</div>`;
+
+        document.body.insertAdjacentHTML('beforeend', html);
+
+        document.querySelectorAll('#bulkEditForm .bulk-field-check').forEach(cb => {
+            cb.addEventListener('change', function () {
+                this.closest('tr').classList.toggle('bulk-row-active', this.checked);
+            });
+        });
+    }
+
+    /* ---------- 9. Получить выбранные recordId (только видимые) ---------- */
+    function getSelectedRecordIds() {
+        const tbody = document.querySelector('#accountingTable tbody');
+        if (!tbody) return [];
+        const ids = [];
+        tbody.querySelectorAll('tr').forEach(row => {
+            if (row.style.display === 'none') return;
+            const cb = row.querySelector('.bulk-row-checkbox');
+            if (cb && cb.checked && row.dataset.recordId) {
+                ids.push(row.dataset.recordId);
+            }
+        });
+        return ids;
+    }
+
+    /* ---------- 10. Открытие модалки ---------- */
+    window.showBulkEditModal = function () {
+        if (typeof isAdmin !== 'undefined' && !isAdmin) {
+            alert('Только администратор может редактировать записи');
+            return;
+        }
+
+        const ids = getSelectedRecordIds();
+        if (ids.length === 0) {
+            alert('Сначала отметьте галочками строки, которые нужно изменить.\n\nПодсказка: можно выделить всё видимое одним кликом по галочке в заголовке таблицы.');
+            return;
+        }
+
+        const first = accountingData.find(d => d.recordId === ids[0]);
+        if (!first) return;
+
+        /* Сброс чекбоксов полей */
+        document.querySelectorAll('#bulkEditForm .bulk-field-check').forEach(cb => {
+            cb.checked = false;
+            cb.closest('tr').classList.remove('bulk-row-active');
+        });
+
+        /* Предзаполнение по первой выбранной записи */
+        const set = (id, val) => { const el = document.getElementById(id); if (el) el.value = val; };
+        const fmt = (v) => (typeof formatDateForInput === 'function' ? formatDateForInput(v) : v || '');
+
+        set('bulk_department',    first.department    || '');
+        set('bulk_status',        first.status        || 'В работе');
+        set('bulk_supplier',      first.supplier      || '');
+        set('bulk_contract',      first.contract      || '');
+        set('bulk_paymentTerms',  first.paymentTerms  || '');
+        set('bulk_deliveryTerms', first.deliveryTerms || '');
+        set('bulk_deliveryDays',  first.deliveryDays  || '');
+        set('bulk_date',          fmt(first.date));
+        set('bulk_planFact',      fmt(first.planFact));
+        set('bulk_fact',          fmt(first.fact));
+        set('bulk_shipmentDoc',   first.shipmentDoc   || '');
+
+        document.getElementById('bulkEditCount').textContent = ids.length;
+        document.getElementById('bulkEditModal').style.display = 'flex';
+    };
+
+    window.closeBulkEditModal = function () {
+        document.getElementById('bulkEditModal').style.display = 'none';
+    };
+
+    /* ---------- 11. Кнопки «Выбрать все видимые» / «Снять выделение» ---------- */
+    window.bulkSelectAllVisible = function (select) {
+        const tbody = document.querySelector('#accountingTable tbody');
+        if (!tbody) return;
+        tbody.querySelectorAll('tr').forEach(row => {
+            if (row.style.display === 'none') return;
+            const cb = row.querySelector('.bulk-row-checkbox');
+            if (cb) {
+                cb.checked = select;
+                row.classList.toggle('bulk-row-selected', select);
+            }
+        });
+        updateBulkUI();
+        const countEl = document.getElementById('bulkEditCount');
+        if (countEl) countEl.textContent = getSelectedRecordIds().length;
+    };
+
+    /* ---------- 12. Применение ---------- */
+    window.applyBulkEdit = function (event) {
+        event.preventDefault();
+
+        const ids = getSelectedRecordIds();
+        if (ids.length === 0) {
+            alert('Не выбрано ни одной строки');
+            return;
+        }
+
+        /* Собираем отмеченные поля */
+        const updates = {};
+        document.querySelectorAll('#bulkEditForm .bulk-field-check:checked').forEach(cb => {
+            const field = cb.dataset.field;
+            const input = document.getElementById(cb.dataset.input);
+            if (!input) return;
+            let value = input.value;
+            if (input.type === 'date') {
+                value = value && typeof formatDateForDisplay === 'function'
+                    ? formatDateForDisplay(value)
+                    : value;
+            }
+            updates[field] = value;
+        });
+
+        if (Object.keys(updates).length === 0) {
+            alert('Не выбрано ни одного поля. Поставьте галочку слева от нужного поля.');
+            return;
+        }
+
+        /* Применяем только к выбранным */
+        let updated = 0;
+        accountingData.forEach(item => {
+            if (ids.includes(item.recordId)) {
+                Object.keys(updates).forEach(k => { item[k] = updates[k]; });
+                updated++;
+            }
+        });
+
+        /* Сохранение и обновление интерфейса */
+        if (typeof saveAllData              === 'function') saveAllData();
+        if (typeof updateAccountingTable    === 'function') updateAccountingTable();
+        if (typeof filterAccountingTable    === 'function') filterAccountingTable();
+        if (typeof updateDepartmentsFilter  === 'function') updateDepartmentsFilter();
+        if (typeof updateContractsList      === 'function') updateContractsList();
+        if (typeof updateShipmentDocsList   === 'function') updateShipmentDocsList();
+        if (typeof updateSuppliersFilterList=== 'function') updateSuppliersFilterList();
+        if (typeof updateApplicationsList   === 'function') updateApplicationsList();
+        if (typeof updateQuickFilters       === 'function') updateQuickFilters();
+        if (typeof updateAllBadges          === 'function') updateAllBadges();
+        if (typeof updateOverdueButton      === 'function') updateOverdueButton();
+        if (typeof updateWeeklyDeliveriesButton === 'function') updateWeeklyDeliveriesButton();
+        if (typeof refreshStatusStatsIfOpen === 'function') refreshStatusStatsIfOpen();
+
+        window.closeBulkEditModal();
+        if (typeof markChangesMade        === 'function') markChangesMade();
+        if (typeof showAutosaveNotification === 'function')
+            showAutosaveNotification(`Массово обновлено: ${updated} строк`);
+
+        /* Снимаем выделение после применения */
+        setTimeout(() => {
+            const tbody = document.querySelector('#accountingTable tbody');
+            if (tbody) {
+                tbody.querySelectorAll('tr').forEach(row => {
+                    const cb = row.querySelector('.bulk-row-checkbox');
+                    if (cb) cb.checked = false;
+                    row.classList.remove('bulk-row-selected');
+                });
+            }
+            updateBulkUI();
+        }, 100);
+    };
+
+    /* ---------- 13. Инициализация ---------- */
+    function init() {
+        injectStyles();
+        injectButton();
+        injectModal();
+        syncAdminClass();
+
+        hookAfter('filterAccountingTable');
+        hookAfter('updateAccountingTable');
+        hookAfter('clearAccountingFilters');
+        hookAfter('showPage');
+
+        /* Лёгкий фоновый контроль на случай обхода хуков */
+        setInterval(() => {
+            syncAdminClass();
+            const table = document.getElementById('accountingTable');
+            if (table && table.offsetParent !== null) ensureCheckboxColumn();
+        }, 1500);
+
+        setTimeout(() => { syncAdminClass(); ensureCheckboxColumn(); }, 800);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => setTimeout(init, 800));
+    } else {
+        setTimeout(init, 800);
+    }
+})();
+</script>
 </body>
 </html>
