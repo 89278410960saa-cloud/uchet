@@ -15624,6 +15624,154 @@ function initFiltersHighlight() {
 })();
 </script>
 <script>
+/* ========== Валидация дат «План» и «Факт» в групповом редактировании ========== */
+(function () {
+
+    /* ---- Хелпер: показать модалку-предупреждение ---- */
+    function showBulkWarning(message) {
+        const modal = document.getElementById('validationWarningModal');
+        const txt   = document.getElementById('validationWarningText');
+        const ok    = document.getElementById('validationWarningOkBtn');
+
+        if (modal && txt && ok) {
+            txt.textContent = message;
+            ok.onclick = function () { modal.style.display = 'none'; };
+            modal.style.display = 'flex';
+        } else {
+            // На случай, если основная модалка ещё не создана
+            alert(message);
+        }
+    }
+
+    /* ---- Ждём, пока bulk edit определит window.applyBulkEdit ---- */
+    function waitForBulkEdit(cb, tries) {
+        tries = (typeof tries === 'number') ? tries : 60; // ~6 секунд
+        if (typeof window.applyBulkEdit === 'function'
+            && !window.applyBulkEdit._planFactWrapped) {
+            cb();
+            return;
+        }
+        if (tries <= 0) return;
+        setTimeout(() => waitForBulkEdit(cb, tries - 1), 100);
+    }
+
+    waitForBulkEdit(function () {
+        const original = window.applyBulkEdit;
+
+        const wrapped = function (event) {
+            if (event && typeof event.preventDefault === 'function') {
+                event.preventDefault();
+            }
+
+            /* --- 1. Собираем выбранные recordId (только видимые строки с номером) --- */
+            const ids = (function () {
+                const tbody = document.querySelector('#accountingTable tbody');
+                if (!tbody) return [];
+                const res = [];
+                tbody.querySelectorAll('tr').forEach(row => {
+                    if (row.style.display === 'none') return;
+                    const idCell = row.querySelector('td.id-cell');
+                    if (!idCell || !idCell.classList.contains('has-row-number')) return;
+                    if (row.classList.contains('bulk-row-selected') && row.dataset.recordId) {
+                        res.push(row.dataset.recordId);
+                    }
+                });
+                return res;
+            })();
+
+            if (ids.length === 0) {
+                // Пусть оригинал сам покажет своё сообщение
+                return original.call(this, event);
+            }
+
+            /* --- 2. Собираем активные поля --- */
+            const activeRows = document.querySelectorAll('#bulkEditForm tr.bulk-row-active');
+            if (activeRows.length === 0) {
+                // Пусть оригинал сам покажет «не выбрано ни одного поля»
+                return original.call(this, event);
+            }
+
+            const updates = {};
+            activeRows.forEach(tr => {
+                const field = tr.dataset.field;
+                const input = document.getElementById(tr.dataset.input);
+                if (!input) return;
+                let value = input.value;
+                if (input.type === 'date') {
+                    value = value && typeof formatDateForDisplay === 'function'
+                        ? formatDateForDisplay(value)
+                        : value;
+                }
+                updates[field] = value;
+            });
+
+            /* --- 3. Проверяем итоговое состояние каждой выбранной записи --- */
+            const problems = [];
+
+            accountingData.forEach(item => {
+                if (!ids.includes(item.recordId)) return;
+
+                // Итоговый статус после применения
+                const finalStatus = Object.prototype.hasOwnProperty.call(updates, 'status')
+                    ? updates.status
+                    : (item.status || '');
+
+                if (finalStatus !== 'Выполнено' && finalStatus !== 'Приход') return;
+
+                // Итоговые План / Факт
+                const finalPlanFact = Object.prototype.hasOwnProperty.call(updates, 'planFact')
+                    ? updates.planFact
+                    : (item.planFact || '');
+                const finalFact = Object.prototype.hasOwnProperty.call(updates, 'fact')
+                    ? updates.fact
+                    : (item.fact || '');
+
+                const missing = [];
+                if (!finalPlanFact) missing.push('«План»');
+                if (!finalFact)     missing.push('«Факт»');
+
+                if (missing.length > 0) {
+                    problems.push({
+                        id: item.id || item.docNumber || '(без ID)',
+                        status: finalStatus,
+                        missing: missing
+                    });
+                }
+            });
+
+            /* --- 4. Если есть проблемы — предупреждаем и НЕ применяем --- */
+            if (problems.length > 0) {
+                let msg =
+                    'Для статуса «Выполнено» или «Приход» обязательно должны быть заполнены даты «План» и «Факт».\n\n';
+
+                // Показываем первые 5 проблемных позиций
+                const shown = problems.slice(0, 5);
+                msg += 'Проблемные позиции:\n';
+                shown.forEach(r => {
+                    msg += `• ID ${r.id} (статус: ${r.status}) — не заполнено: ${r.missing.join(', ')}\n`;
+                });
+                if (problems.length > 5) {
+                    msg += `…и ещё ${problems.length - 5} позиц.\n`;
+                }
+
+                msg += '\nЧто делать:\n';
+                msg += '• включите поля «План» и «Факт» (клик по названию) и укажите даты, ЛИБО\n';
+                msg += '• измените статус на «В работе» / «Поставка» / «Иное».';
+
+                showBulkWarning(msg);
+                return; // НЕ вызываем оригинал — данные не меняются
+            }
+
+            /* --- 5. Всё в порядке — применяем изменения --- */
+            return original.call(this, event);
+        };
+
+        wrapped._planFactWrapped = true;
+        window.applyBulkEdit = wrapped;
+    });
+})();
+</script>
+<script>
 /* ========== Проверка заполнения дат «План» и «Факт» ========== */
 (function () {
 
