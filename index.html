@@ -14038,6 +14038,12 @@ select.filter-active {
     padding: 0 !important;
     font-size: 12px !important;
 }
+
+/* ===== Модалка GitHub — та же ширина, что и Group edit ===== */
+#githubSettingsModal .modal-content {
+    max-width: 640px !important;
+    width: 60% !important;
+}
 </style>
 <style>
 /* ============================================================
@@ -15050,44 +15056,58 @@ function initFiltersHighlight() {
     function injectStyles() {
         if (document.getElementById('bulkEditStyles')) return;
         const css = `
-            /* Номер строки — inline-block, чтобы чекбокс встал рядом */
+            /* ===== Номер строки — кликабельный ===== */
             #accountingTable td.id-cell .row-number {
-                display: none !important;
+                display: none;
+                color: #66c0f4;
+                font-weight: bold;
+                font-size: 10px;
+                line-height: 1;
+                text-align: center;
+                pointer-events: none;
+                transition: color 0.15s, text-shadow 0.15s;
             }
             #accountingTable td.id-cell.has-row-number .row-number {
-                display: inline-block !important;
-                vertical-align: middle !important;
+                display: inline-block;
+                pointer-events: auto;
+                cursor: pointer;
+                user-select: none;
+                -webkit-user-select: none;
+                padding: 2px 6px;
+                border-radius: 3px;
+                border: 1px solid transparent;
             }
-            /* Чекбокс рядом с номером позиции (без отдельного столбца) */
-            #accountingTable td.id-cell .bulk-row-checkbox {
-                display: none !important;
-                width: 12px !important;
-                height: 12px !important;
-                min-width: 12px !important;
-                max-width: 12px !important;
-                margin: 0 0 0 5px !important;
-                padding: 0 !important;
-                vertical-align: middle !important;
-                cursor: pointer !important;
-                accent-color: #66c0f4 !important;
+            #accountingTable td.id-cell.has-row-number .row-number:hover {
+                color: #ffffff;
+                text-shadow: 0 0 6px rgba(102,192,244,0.6);
+                background: rgba(102,192,244,0.12);
+                border-color: rgba(102,192,244,0.35);
             }
-            #accountingTable td.id-cell.has-row-number .bulk-row-checkbox {
-                display: inline-block !important;
+            /* Выбранная строка — зелёная цифра */
+            #accountingTable td.id-cell .row-number.bulk-selected {
+                color: #4caf50 !important;
+                text-shadow: 0 0 8px rgba(76,175,80,0.7);
+                background: rgba(76,175,80,0.15);
+                border-color: rgba(76,175,80,0.5);
             }
             /* Подсветка выбранной строки */
             #accountingTable tr.bulk-row-selected > td {
-                background-color: rgba(102,192,244,0.14) !important;
+                background-color: rgba(76,175,80,0.10) !important;
             }
             #accountingTable tr.bulk-row-selected:hover > td {
-                background-color: rgba(102,192,244,0.22) !important;
+                background-color: rgba(76,175,80,0.18) !important;
             }
-            /* Скрыть чекбоксы у гостя */
-            body:not(.is-admin-mode) #accountingTable td.id-cell .bulk-row-checkbox {
-                display: none !important;
+            /* Для гостя номер не кликабельный */
+            body:not(.is-admin-mode) #accountingTable td.id-cell.has-row-number .row-number {
+                pointer-events: none !important;
+                cursor: default !important;
             }
 
             /* ===== Модальное окно массового редактирования ===== */
-            #bulkEditModal .modal-content { max-width: 640px !important; width: 60% !important; }
+            #bulkEditModal .modal-content {
+                max-width: 640px !important;
+                width: 60% !important;
+            }
 
             #bulkEditModal table {
                 border-collapse: collapse;
@@ -15095,41 +15115,51 @@ function initFiltersHighlight() {
                 width: 100%;
             }
 
-            /* ★ Убираем пустоты вокруг галочек: маленькие отступы */
             #bulkEditModal table td {
                 background: transparent !important;
                 border: none !important;
-                padding: 3px 4px !important;
+                padding: 4px 6px !important;
                 vertical-align: middle !important;
             }
-            /* Колонка с галочкой — узкая, без боковых пустот */
-            #bulkEditModal table td:nth-child(1) {
-                width: 18px !important;
-                min-width: 18px !important;
-                max-width: 18px !important;
-                padding: 3px 0 !important;
-                text-align: center !important;
-            }
-            /* Колонка с label — небольшой отступ слева */
-            #bulkEditModal table td:nth-child(2) {
-                padding-left: 6px !important;
-            }
 
-            #bulkEditModal input[type="checkbox"].bulk-field-check {
-                width: 16px; height: 16px;
+            /* Первая колонка — кликабельный ярлык */
+            #bulkEditModal table td.bulk-field-label-cell {
+                width: 42% !important;
                 cursor: pointer;
-                accent-color: #66c0f4;
-                margin: 0;
-                display: block;
-                margin-left: auto;
-                margin-right: auto;
             }
 
-            #bulkEditModal label {
+            #bulkEditModal .bulk-field-label {
+                display: inline-block;
                 color: #c7d5e0;
-                font-size: 11px;
+                font-size: 12px;
                 cursor: pointer;
                 user-select: none;
+                padding: 4px 10px;
+                border-radius: 4px;
+                border: 1px solid transparent;
+                transition: background 0.15s, color 0.15s, border-color 0.15s, box-shadow 0.15s;
+            }
+
+            #bulkEditModal .bulk-field-label:hover {
+                background: rgba(102,192,244,0.10);
+                border-color: rgba(102,192,244,0.35);
+                color: #ffffff;
+            }
+
+            /* Выбранное поле — активный ярлык */
+            #bulkEditModal tr.bulk-row-active .bulk-field-label {
+                background: rgba(102,192,244,0.20);
+                border-color: #66c0f4;
+                color: #ffffff;
+                font-weight: bold;
+                box-shadow: 0 0 0 2px rgba(102,192,244,0.15);
+            }
+
+            /* Небольшая галочка-индикатор перед выбранным ярлыком */
+            #bulkEditModal tr.bulk-row-active .bulk-field-label::before {
+                content: '✓ ';
+                color: #66c0f4;
+                font-weight: bold;
             }
 
             #bulkEditModal input.bulk-input,
@@ -15143,10 +15173,10 @@ function initFiltersHighlight() {
                 outline: none; border-color: #66c0f4;
                 box-shadow: 0 0 0 2px rgba(102,192,244,0.2);
             }
-            #bulkEditModal tr.bulk-row-active label { color: #66c0f4; font-weight: bold; }
             #bulkEditModal tr.bulk-row-active input.bulk-input,
             #bulkEditModal tr.bulk-row-active select.bulk-input {
-                border-color: #66c0f4; background: #26374a;
+                border-color: #66c0f4;
+                background: #26374a;
             }
 
             /* Подсказка в шапке */
@@ -15157,7 +15187,7 @@ function initFiltersHighlight() {
                 margin-bottom: 14px;
                 line-height: 1.4;
             }
-            #bulkEditModal .bulk-hint strong { color: #66c0f4; font-size: 14px; }
+            #bulkEditModal .bulk-hint strong { color: #4caf50; font-size: 14px; }
 
             /* Отступ между иконкой и текстом на кнопке Group edit */
             #bulkEditBtn > i.fas,
@@ -15196,16 +15226,19 @@ function initFiltersHighlight() {
         return !!activeQuickBtn;
     }
 
-    /* ---------- 4. Добавление чекбоксов в ячейку ID ---------- */
-    function ensureCheckboxes() {
+    /* ---------- 4. Привязка обработчика к номеру строки ---------- */
+    function ensureRowNumbersClickable() {
         const tbody = document.querySelector('#accountingTable tbody');
         if (!tbody) return;
 
         const admin = typeof isAdmin !== 'undefined' && isAdmin;
 
         if (!admin) {
-            tbody.querySelectorAll('.bulk-row-checkbox').forEach(cb => cb.remove());
-            tbody.querySelectorAll('tr.bulk-row-selected').forEach(r => r.classList.remove('bulk-row-selected'));
+            tbody.querySelectorAll('tr.bulk-row-selected').forEach(r => {
+                r.classList.remove('bulk-row-selected');
+                const num = r.querySelector('td.id-cell .row-number');
+                if (num) num.classList.remove('bulk-selected');
+            });
             return;
         }
 
@@ -15215,29 +15248,27 @@ function initFiltersHighlight() {
 
             const idCell = row.querySelector('td.id-cell');
             if (!idCell) return;
-            if (idCell.querySelector('.bulk-row-checkbox')) return;
+            const numEl = idCell.querySelector('.row-number');
+            if (!numEl) return;
+            if (numEl._bulkWired) return;
+            numEl._bulkWired = true;
 
-            const cb = document.createElement('input');
-            cb.type = 'checkbox';
-            cb.className = 'bulk-row-checkbox';
-            cb.title = 'Выбрать позицию для группового редактирования';
+            numEl.title = 'Нажмите, чтобы выбрать / снять выбор позиции';
 
-            const rowNum = idCell.querySelector('.row-number');
-            if (rowNum && rowNum.nextSibling) {
-                idCell.insertBefore(cb, rowNum.nextSibling);
-            } else if (rowNum) {
-                idCell.appendChild(cb);
-            } else {
-                idCell.insertBefore(cb, idCell.firstChild);
-            }
-
-            cb.addEventListener('click',    e => e.stopPropagation());
-            cb.addEventListener('dblclick', e => e.stopPropagation());
-            cb.addEventListener('change', function (e) {
+            numEl.addEventListener('click', function (e) {
                 e.stopPropagation();
-                row.classList.toggle('bulk-row-selected', this.checked);
+                e.preventDefault();
+
+                // Работаем только если строка реально показана с номером
+                if (!idCell.classList.contains('has-row-number')) return;
+
+                const isSelected = row.classList.toggle('bulk-row-selected');
+                numEl.classList.toggle('bulk-selected', isSelected);
                 updateBulkUI();
             });
+
+            numEl.addEventListener('dblclick', e => e.stopPropagation());
+            numEl.addEventListener('mousedown', e => e.stopPropagation());
         });
     }
 
@@ -15247,13 +15278,13 @@ function initFiltersHighlight() {
         if (!tbody) return;
         tbody.querySelectorAll('tr').forEach(row => {
             const idCell = row.querySelector('td.id-cell');
-            const cb = idCell ? idCell.querySelector('.bulk-row-checkbox') : null;
-            if (!cb) return;
+            if (!idCell) return;
             const visible = row.style.display !== 'none' &&
                 idCell.classList.contains('has-row-number');
-            if (!visible && cb.checked) {
-                cb.checked = false;
+            if (!visible && row.classList.contains('bulk-row-selected')) {
                 row.classList.remove('bulk-row-selected');
+                const numEl = idCell.querySelector('.row-number');
+                if (numEl) numEl.classList.remove('bulk-selected');
             }
         });
     }
@@ -15279,7 +15310,7 @@ function initFiltersHighlight() {
                 row.style.display !== 'none' &&
                 !row.hasAttribute('data-no-results') &&
                 row.cells.length > 1 &&
-                row.querySelector('td.id-cell.has-row-number .bulk-row-checkbox')
+                row.querySelector('td.id-cell.has-row-number')
               )
             : [];
 
@@ -15289,12 +15320,11 @@ function initFiltersHighlight() {
         }
 
         const selectedCount = visibleRows.filter(r =>
-            r.querySelector('.bulk-row-checkbox').checked
+            r.classList.contains('bulk-row-selected')
         ).length;
 
         setDisplay('inline-flex');
 
-        // ★ Отступ через inline-стиль на иконке, чтобы не сливались
         btn.innerHTML = selectedCount > 0
             ? `<i class="fas fa-layer-group" style="margin-right:5px;"></i>Group edit (${selectedCount})`
             : `<i class="fas fa-layer-group" style="margin-right:5px;"></i>Group edit`;
@@ -15306,7 +15336,7 @@ function initFiltersHighlight() {
         if (syncTimer) clearTimeout(syncTimer);
         syncTimer = setTimeout(() => {
             syncAdminClass();
-            ensureCheckboxes();
+            ensureRowNumbersClickable();
             clearHiddenSelection();
             updateBulkUI();
         }, 50);
@@ -15339,7 +15369,6 @@ function initFiltersHighlight() {
         btn.innerHTML = '<i class="fas fa-layer-group" style="margin-right:5px;"></i>Group edit';
         btn.onclick = function (e) { e.preventDefault(); window.showBulkEditModal(); };
 
-        // ★ Вставляем сразу ПОСЛЕ кнопки «Поставки 30 дней»
         const anchor = dropdown.querySelector('button[onclick*="printDeliveriesAndOverdue"]');
         if (anchor && anchor.parentNode === dropdown) {
             anchor.parentNode.insertBefore(btn, anchor.nextSibling);
@@ -15348,17 +15377,17 @@ function initFiltersHighlight() {
         }
     }
 
-    /* ---------- 10. Модальное окно ---------- */
+    /* ---------- 10. Модальное окно (без чекбоксов — ярлык кликабельный) ---------- */
     function injectModal() {
         if (document.getElementById('bulkEditModal')) return;
 
         const fields = [
-    { field: 'status',        label: 'Статус:',               type: 'select',   options: ['В работе','Поставка','Приход','Выполнено','Иное'] },
-    { field: 'date',          label: 'Дата утверждения:',     type: 'date' },
-    { field: 'planFact',      label: 'План:',                 type: 'date' },
-    { field: 'fact',          label: 'Факт:',                 type: 'date' },
-    { field: 'shipmentDoc',   label: 'Документ:',             type: 'datalist', list: 'shipmentDocsList' }
-];
+            { field: 'status',      label: 'Статус:',           type: 'select', options: ['В работе','Поставка','Приход','Выполнено','Иное'] },
+            { field: 'date',        label: 'Дата утверждения:', type: 'date' },
+            { field: 'planFact',    label: 'План:',             type: 'date' },
+            { field: 'fact',        label: 'Факт:',             type: 'date' },
+            { field: 'shipmentDoc', label: 'Документ:',         type: 'datalist', list: 'shipmentDocsList' }
+        ];
 
         let rowsHTML = '';
         fields.forEach(r => {
@@ -15381,12 +15410,10 @@ function initFiltersHighlight() {
             }
 
             rowsHTML += `
-                <tr>
-                    <td>
-                        <input type="checkbox" class="bulk-field-check"
-                               data-field="${r.field}" data-input="${inputId}">
+                <tr data-field="${r.field}" data-input="${inputId}">
+                    <td class="bulk-field-label-cell">
+                        <label class="bulk-field-label" for="${inputId}">${r.label}</label>
                     </td>
-                    <td><label>${r.label}</label></td>
                     <td>${inputHTML}</td>
                 </tr>`;
         });
@@ -15398,7 +15425,7 @@ function initFiltersHighlight() {
     <h2 style="text-align:center; margin-bottom:6px;">Group edit</h2>
     <p class="bulk-hint">
       Выбрано строк: <strong id="bulkEditCount">0</strong><br>
-      отметьте поля, которые нужно обновить
+      нажмите на <b>название поля</b>, чтобы включить его обновление
     </p>
     <form id="bulkEditForm" onsubmit="applyBulkEdit(event)">
       <table><tbody>${rowsHTML}</tbody></table>
@@ -15416,9 +15443,14 @@ function initFiltersHighlight() {
 
         document.body.insertAdjacentHTML('beforeend', html);
 
-        document.querySelectorAll('#bulkEditForm .bulk-field-check').forEach(cb => {
-            cb.addEventListener('change', function () {
-                this.closest('tr').classList.toggle('bulk-row-active', this.checked);
+        // Клик по ярлыку — переключение активности поля
+        document.querySelectorAll('#bulkEditForm .bulk-field-label').forEach(label => {
+            label.addEventListener('click', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                const tr = this.closest('tr');
+                if (!tr) return;
+                tr.classList.toggle('bulk-row-active');
             });
         });
     }
@@ -15432,8 +15464,7 @@ function initFiltersHighlight() {
             if (row.style.display === 'none') return;
             const idCell = row.querySelector('td.id-cell');
             if (!idCell || !idCell.classList.contains('has-row-number')) return;
-            const cb = idCell.querySelector('.bulk-row-checkbox');
-            if (cb && cb.checked && row.dataset.recordId) {
+            if (row.classList.contains('bulk-row-selected') && row.dataset.recordId) {
                 ids.push(row.dataset.recordId);
             }
         });
@@ -15453,26 +15484,24 @@ function initFiltersHighlight() {
 
         const ids = getSelectedRecordIds();
         if (ids.length === 0) {
-            alert('Сначала отметьте галочками строки, которые нужно изменить.\n\nГалочки находятся рядом с номерами позиций в столбце ID.');
+            alert('Сначала нажмите на номера позиций (в столбце ID), чтобы выбрать строки.\n\nНомер выбранной строки станет зелёным.');
             return;
         }
 
         const first = accountingData.find(d => d.recordId === ids[0]);
         if (!first) return;
 
-        document.querySelectorAll('#bulkEditForm .bulk-field-check').forEach(cb => {
-            cb.checked = false;
-            cb.closest('tr').classList.remove('bulk-row-active');
-        });
+        // Сбрасываем активные поля
+        document.querySelectorAll('#bulkEditForm tr').forEach(tr => tr.classList.remove('bulk-row-active'));
 
         const set = (id, val) => { const el = document.getElementById(id); if (el) el.value = val; };
         const fmt = (v) => (typeof formatDateForInput === 'function' ? formatDateForInput(v) : v || '');
 
-        set('bulk_status',        first.status        || 'В работе');
-set('bulk_date',          fmt(first.date));
-set('bulk_planFact',      fmt(first.planFact));
-set('bulk_fact',          fmt(first.fact));
-set('bulk_shipmentDoc',   first.shipmentDoc   || '');
+        set('bulk_status',      first.status       || 'В работе');
+        set('bulk_date',        fmt(first.date));
+        set('bulk_planFact',    fmt(first.planFact));
+        set('bulk_fact',        fmt(first.fact));
+        set('bulk_shipmentDoc', first.shipmentDoc  || '');
 
         document.getElementById('bulkEditCount').textContent = ids.length;
         document.getElementById('bulkEditModal').style.display = 'flex';
@@ -15492,10 +15521,16 @@ set('bulk_shipmentDoc',   first.shipmentDoc   || '');
             return;
         }
 
+        const activeRows = document.querySelectorAll('#bulkEditForm tr.bulk-row-active');
+        if (activeRows.length === 0) {
+            alert('Не выбрано ни одного поля.\nНажмите на название поля, которое хотите обновить.');
+            return;
+        }
+
         const updates = {};
-        document.querySelectorAll('#bulkEditForm .bulk-field-check:checked').forEach(cb => {
-            const field = cb.dataset.field;
-            const input = document.getElementById(cb.dataset.input);
+        activeRows.forEach(tr => {
+            const field = tr.dataset.field;
+            const input = document.getElementById(tr.dataset.input);
             if (!input) return;
             let value = input.value;
             if (input.type === 'date') {
@@ -15505,11 +15540,6 @@ set('bulk_shipmentDoc',   first.shipmentDoc   || '');
             }
             updates[field] = value;
         });
-
-        if (Object.keys(updates).length === 0) {
-            alert('Не выбрано ни одного поля. Поставьте галочку слева от нужного поля.');
-            return;
-        }
 
         let updated = 0;
         accountingData.forEach(item => {
@@ -15538,13 +15568,14 @@ set('bulk_shipmentDoc',   first.shipmentDoc   || '');
         if (typeof showAutosaveNotification === 'function')
             showAutosaveNotification(`Массово обновлено: ${updated} строк`);
 
+        // Снимаем выделение со строк после применения
         setTimeout(() => {
             const tbody = document.querySelector('#accountingTable tbody');
             if (tbody) {
-                tbody.querySelectorAll('tr').forEach(row => {
-                    const cb = row.querySelector('.bulk-row-checkbox');
-                    if (cb) cb.checked = false;
+                tbody.querySelectorAll('tr.bulk-row-selected').forEach(row => {
                     row.classList.remove('bulk-row-selected');
+                    const num = row.querySelector('td.id-cell .row-number');
+                    if (num) num.classList.remove('bulk-selected');
                 });
             }
             updateBulkUI();
@@ -15563,6 +15594,7 @@ set('bulk_shipmentDoc',   first.shipmentDoc   || '');
         hookAfter('clearAccountingFilters');
         hookAfter('showPage');
         hookAfter('updateUserInterface');
+        hookAfter('updateRowNumbers');
 
         document.addEventListener('input', function (e) {
             if (e.target && e.target.id === 'applicationFilter') scheduleSync();
@@ -15575,7 +15607,7 @@ set('bulk_shipmentDoc',   first.shipmentDoc   || '');
             syncAdminClass();
             const table = document.getElementById('accountingTable');
             if (table && table.offsetParent !== null) {
-                ensureCheckboxes();
+                ensureRowNumbersClickable();
                 clearHiddenSelection();
                 updateBulkUI();
             }
@@ -15588,6 +15620,212 @@ set('bulk_shipmentDoc',   first.shipmentDoc   || '');
         document.addEventListener('DOMContentLoaded', () => setTimeout(init, 800));
     } else {
         setTimeout(init, 800);
+    }
+})();
+</script>
+<script>
+/* ========== Проверка заполнения дат «План» и «Факт» ========== */
+(function () {
+
+    /* ---- 1. Красивое модальное окно-предупреждение ---- */
+    function ensureWarningModal() {
+        if (document.getElementById('validationWarningModal')) return;
+        const modal = document.createElement('div');
+        modal.id = 'validationWarningModal';
+        modal.className = 'modal';
+        modal.style.cssText =
+            'display:none; justify-content:center; align-items:center;' +
+            'padding:0 !important; padding-right:0 !important;' +
+            'background:rgba(0,0,0,0.65); z-index:1000000;';
+        modal.innerHTML = `
+            <div class="modal-content" style="
+                max-width:440px !important;
+                width:auto !important;
+                min-width:320px !important;
+                height:auto !important;
+                max-height:none !important;
+                padding:22px 26px !important;
+                border-radius:8px !important;
+                animation:fadeIn .18s ease-out;
+                box-shadow:0 10px 40px rgba(0,0,0,0.7);
+                border:1px solid #3d4450 !important;">
+                <h3 style="
+                    color:#ffd700; margin:0 0 12px 0; text-align:center;
+                    display:flex; align-items:center; justify-content:center;
+                    gap:8px; font-size:16px;">
+                    <span style="font-size:22px;">⚠️</span> Внимание
+                </h3>
+                <p id="validationWarningText" style="
+                    color:#c7d5e0; text-align:center; line-height:1.55;
+                    margin:0 0 18px 0; font-size:13px; white-space:pre-line;"></p>
+                <div style="display:flex; justify-content:center; gap:10px;">
+                    <button type="button" id="validationWarningOkBtn" style="
+                        padding:6px 26px;
+                        background:linear-gradient(135deg,#5c7e10 0%,#4c6b22 100%);
+                        color:white; border:none; border-radius:3px;
+                        cursor:pointer; font-weight:bold;">Понятно</button>
+                </div>
+            </div>`;
+        document.body.appendChild(modal);
+
+        // Закрытие по клику на фон
+        modal.addEventListener('click', function (e) {
+            if (e.target === modal) closeWarningModal();
+        });
+    }
+
+    let _warningFocusCallback = null;
+
+    function showValidationWarning(message, focusEl) {
+        ensureWarningModal();
+        const modal = document.getElementById('validationWarningModal');
+        const txt   = document.getElementById('validationWarningText');
+        const ok    = document.getElementById('validationWarningOkBtn');
+
+        txt.textContent = message;
+
+        _warningFocusCallback = () => {
+            if (typeof focusEl === 'function') focusEl();
+            else if (focusEl && typeof focusEl.focus === 'function') focusEl.focus();
+        };
+
+        ok.onclick = closeWarningModal;
+        modal.style.display = 'flex';
+    }
+
+    function closeWarningModal() {
+        const modal = document.getElementById('validationWarningModal');
+        if (modal) modal.style.display = 'none';
+        if (typeof _warningFocusCallback === 'function') {
+            const cb = _warningFocusCallback;
+            _warningFocusCallback = null;
+            setTimeout(cb, 50);
+        }
+    }
+
+    /* ---- 2. Живая подсветка незаполненных дат ---- */
+    function updateDateRequiredVisuals() {
+        const statusEl    = document.getElementById('editStatus');
+        const planFactEl  = document.getElementById('editPlanFact');
+        const factEl      = document.getElementById('editFact');
+        if (!statusEl || !planFactEl || !factEl) return;
+
+        const status       = statusEl.value;
+        const requireDates = (status === 'Выполнено' || status === 'Приход');
+
+        [planFactEl, factEl].forEach(el => {
+            if (requireDates && !el.value) {
+                el.style.borderColor = '#ff6b5b';
+                el.style.boxShadow   = '0 0 0 2px rgba(255,107,91,0.22)';
+            } else {
+                el.style.borderColor = '';
+                el.style.boxShadow   = '';
+            }
+        });
+    }
+
+    /* ---- 3. Проверка перед сохранением ---- */
+    function validatePlanFactDates() {
+        const statusEl = document.getElementById('editStatus');
+        if (!statusEl) return true;
+
+        const status = statusEl.value;
+        if (status !== 'Выполнено' && status !== 'Приход') return true;
+
+        const planFactEl = document.getElementById('editPlanFact');
+        const factEl     = document.getElementById('editFact');
+        const planFact   = planFactEl ? planFactEl.value : '';
+        const fact       = factEl     ? factEl.value     : '';
+
+        const missing = [];
+        if (!planFact) missing.push('«План»');
+        if (!fact)     missing.push('«Факт»');
+
+        if (missing.length === 0) return true;
+
+        const message =
+            `Для статуса «${status}» обязательно должны быть заполнены даты ${missing.join(' и ')}.\n\n` +
+            `Пожалуйста, укажите недостающие даты и сохраните запись снова.`;
+
+        showValidationWarning(
+            message,
+            () => {
+                if (!planFact && planFactEl) planFactEl.focus();
+                else if (factEl) factEl.focus();
+                updateDateRequiredVisuals();
+            }
+        );
+        return false;
+    }
+
+    /* ---- 4. Обёртка над saveAccountingChanges ---- */
+    function wrapSaveFunction() {
+        if (typeof window.saveAccountingChanges !== 'function') return false;
+        if (window.saveAccountingChanges._planFactWrapped) return true;
+
+        const original = window.saveAccountingChanges;
+
+        const wrapped = function (event) {
+            if (event && typeof event.preventDefault === 'function') {
+                event.preventDefault();
+            }
+            if (!validatePlanFactDates()) return;
+            return original.call(this, event);
+        };
+        wrapped._planFactWrapped = true;
+
+        window.saveAccountingChanges = wrapped;
+        return true;
+    }
+
+    /* ---- 5. Навешиваем слушатели на поля формы ---- */
+    function attachFieldListeners() {
+        const statusEl   = document.getElementById('editStatus');
+        const planFactEl = document.getElementById('editPlanFact');
+        const factEl     = document.getElementById('editFact');
+
+        if (statusEl && !statusEl._planFactWired) {
+            statusEl._planFactWired = true;
+            statusEl.addEventListener('change', updateDateRequiredVisuals);
+            statusEl.addEventListener('input',  updateDateRequiredVisuals);
+        }
+        [planFactEl, factEl].forEach(el => {
+            if (el && !el._planFactWired) {
+                el._planFactWired = true;
+                el.addEventListener('change', updateDateRequiredVisuals);
+                el.addEventListener('input',  updateDateRequiredVisuals);
+            }
+        });
+    }
+
+    /* ---- 6. Следим, когда открывается модалка учёта ---- */
+    function watchAccountingModal() {
+        const modal = document.getElementById('editAccountingModal');
+        if (!modal || modal._planFactWatched) return;
+        modal._planFactWatched = true;
+
+        const observer = new MutationObserver(() => {
+            if (modal.style.display === 'flex') {
+                attachFieldListeners();
+                // Небольшая задержка — чтобы значения полей уже были проставлены
+                setTimeout(updateDateRequiredVisuals, 60);
+            }
+        });
+        observer.observe(modal, { attributes: true, attributeFilter: ['style'] });
+    }
+
+    /* ---- 7. Инициализация ---- */
+    function init() {
+        ensureWarningModal();
+        wrapSaveFunction();
+        attachFieldListeners();
+        watchAccountingModal();
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => setTimeout(init, 900));
+    } else {
+        setTimeout(init, 900);
     }
 })();
 </script>
