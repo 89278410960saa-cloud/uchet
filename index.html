@@ -11899,6 +11899,14 @@ function showPage(pageId) {
                     if (showOverdueMode) showOverdueOnly();
                     else if (showWeeklyDeliveriesMode) showWeeklyDeliveriesOnly();
                     else filterAccountingTable();
+                    // ★ гарантированно инициализируем панель управления
+    if (typeof window.processAllControls === 'function') {
+        window.processAllControls();
+    }
+    // и заодно пересоберём группу «Факт + ⋮»
+    if (typeof window.wrapAccountingFilters === 'function') {
+        window.wrapAccountingFilters();
+    }
                     updatePrintButtonVisibility();
                     updateButtonsVisibility();
                     updateCommentBlockVisibility();
@@ -14282,22 +14290,24 @@ document.addEventListener('DOMContentLoaded', function () {
     const SELECTOR = '.controls';
     const processed = new WeakSet();
 
-    // Проверка: активен ли один из «залипающих» режимов
+    // ★ «Залипающий» режим — только на той странице, к которой относится
     function isStickyModeActive() {
+        const activePage = document.querySelector('.page.active');
+        if (!activePage) return false;
+        const pageId = activePage.id;
+
         try {
-            // Поставки на неделю
-            if (typeof showWeeklyDeliveriesMode !== 'undefined' && showWeeklyDeliveriesMode) return true;
-            // Просроченные
-            if (typeof showOverdueMode !== 'undefined' && showOverdueMode) return true;
-            // Избранное
-            if (typeof showFavoritesOnly !== 'undefined' && showFavoritesOnly) return true;
-            // Чёрный список
-            if (typeof showOnlyBlacklisted !== 'undefined' && showOnlyBlacklisted) return true;
+            if (pageId === 'accounting') {
+                if (typeof showWeeklyDeliveriesMode !== 'undefined' && showWeeklyDeliveriesMode) return true;
+                if (typeof showOverdueMode !== 'undefined' && showOverdueMode) return true;
+                if (typeof showFavoritesOnly !== 'undefined' && showFavoritesOnly) return true;
+            } else if (pageId === 'counterparties') {
+                if (typeof showOnlyBlacklisted !== 'undefined' && showOnlyBlacklisted) return true;
+            }
         } catch (_) {}
         return false;
     }
 
-    // Закрыть все дропдауны, если не активен «залипающий» режим
     function closeAllDropdowns(force = false) {
         if (!force && isStickyModeActive()) return;
         document.querySelectorAll('.controls-dropdown.open')
@@ -14309,7 +14319,6 @@ document.addEventListener('DOMContentLoaded', function () {
     function setupCollapsible(container) {
         if (processed.has(container)) return;
 
-        // Контейнер пока скрыт — пробуем позже
         if (container.offsetParent === null) {
             container._retries = (container._retries || 0) + 1;
             if (container._retries < 30) {
@@ -14322,48 +14331,53 @@ document.addEventListener('DOMContentLoaded', function () {
         container._retries = 0;
 
         if (container.querySelector(':scope > .controls-filters-row')) {
-    const dotsBtn = container.querySelector('.controls-dots-btn');
-    const dropdown = container.querySelector('.controls-dropdown');
-    if (dotsBtn && dropdown && !dotsBtn._wired) {
-        dotsBtn._wired = true;
+            const dotsBtn = container.querySelector('.controls-dots-btn');
+            const dropdown = container.querySelector('.controls-dropdown');
+            if (dotsBtn && dropdown && !dotsBtn._wired) {
+                dotsBtn._wired = true;
 
-        dotsBtn.addEventListener('click', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-            const willOpen = !dropdown.classList.contains('open');
+                dotsBtn.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
 
-            document.querySelectorAll('.controls-dropdown.open')
-                .forEach(d => d.classList.remove('open'));
-            document.querySelectorAll('.controls-dots-btn.active')
-                .forEach(b => b.classList.remove('active'));
+                    // ★ Если «⋮» перемещена внутрь дропдауна (активный режим) —
+                    //   не переключаем дропдаун, он должен остаться открытым
+                    if (dotsBtn.parentElement === dropdown) return;
 
-            if (willOpen) {
-                dropdown.classList.add('open');
-                dotsBtn.classList.add('active');
+                    const willOpen = !dropdown.classList.contains('open');
+
+                    document.querySelectorAll('.controls-dropdown.open')
+                        .forEach(d => d.classList.remove('open'));
+                    document.querySelectorAll('.controls-dots-btn.active')
+                        .forEach(b => b.classList.remove('active'));
+
+                    if (willOpen) {
+                        dropdown.classList.add('open');
+                        dotsBtn.classList.add('active');
+                    }
+                });
+
+                dropdown.addEventListener('click', function (e) {
+                    const btn = e.target.closest('button');
+                    if (!btn) return;
+                    setTimeout(() => {
+                        if (isStickyModeActive()) return;
+                        dropdown.classList.remove('open');
+                        dotsBtn.classList.remove('active');
+                    }, 80);
+                });
+
+                const syncOnShow = () => {
+                    if (isStickyModeActive()) {
+                        dropdown.classList.add('open');
+                        dotsBtn.classList.add('active');
+                    }
+                };
+                container._syncDropdown = syncOnShow;
             }
-        });
-
-        dropdown.addEventListener('click', function (e) {
-            const btn = e.target.closest('button');
-            if (!btn) return;
-            setTimeout(() => {
-                if (isStickyModeActive()) return;
-                dropdown.classList.remove('open');
-                dotsBtn.classList.remove('active');
-            }, 80);
-        });
-
-        const syncOnShow = () => {
-            if (isStickyModeActive()) {
-                dropdown.classList.add('open');
-                dotsBtn.classList.add('active');
-            }
-        };
-        container._syncDropdown = syncOnShow;
-    }
-    container.classList.add('controls-ready');
-    return;
-}
+            container.classList.add('controls-ready');
+            return;
+        }
 
         const children = Array.from(container.children);
         const filtersRow = document.createElement('div');
@@ -14403,7 +14417,6 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        // Кнопка «⋮»
         const dotsBtn = document.createElement('button');
         dotsBtn.type = 'button';
         dotsBtn.className = 'controls-dots-btn';
@@ -14411,7 +14424,6 @@ document.addEventListener('DOMContentLoaded', function () {
         dotsBtn.setAttribute('aria-label', 'Показать кнопки управления');
         dotsBtn.innerHTML = '<i class="fas fa-ellipsis-h"></i>';
 
-        // Дропдаун с кнопками
         const dropdown = document.createElement('div');
         dropdown.className = 'controls-dropdown';
         buttons.forEach(b => dropdown.appendChild(b));
@@ -14419,9 +14431,12 @@ document.addEventListener('DOMContentLoaded', function () {
         dotsBtn.addEventListener('click', function (e) {
             e.preventDefault();
             e.stopPropagation();
+
+            // ★ Та же защита: если кнопка внутри dropdown — не переключаем
+            if (dotsBtn.parentElement === dropdown) return;
+
             const willOpen = !dropdown.classList.contains('open');
 
-            // Закрываем все остальные
             document.querySelectorAll('.controls-dropdown.open')
                 .forEach(d => d.classList.remove('open'));
             document.querySelectorAll('.controls-dots-btn.active')
@@ -14433,17 +14448,14 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
 
-        // Клик по любой кнопке внутри дропдауна
         dropdown.addEventListener('click', function (e) {
             const btn = e.target.closest('button');
             if (!btn) return;
+            // Если клик был по самой «⋮» (внутри dropdown) — не закрываем
+            if (btn.classList.contains('controls-dots-btn')) return;
 
-            // Даём оригинальному onclick отработать и изменить состояние
             setTimeout(() => {
-                // Если активен «залипающий» режим (поставки/просрочка) — оставляем открытым
                 if (isStickyModeActive()) return;
-
-                // Иначе — закрываем
                 dropdown.classList.remove('open');
                 dotsBtn.classList.remove('active');
             }, 80);
@@ -14456,7 +14468,6 @@ document.addEventListener('DOMContentLoaded', function () {
         container.appendChild(dropdown);
         container.classList.add('controls-ready');
 
-        // Синхронизация при переключении страницы: если режим активен — раскрыть
         const syncOnShow = () => {
             if (isStickyModeActive()) {
                 dropdown.classList.add('open');
@@ -14474,11 +14485,10 @@ document.addEventListener('DOMContentLoaded', function () {
     window.addEventListener('load', () => setTimeout(processAllControls, 50));
 
     setTimeout(() => {
-    document.querySelectorAll('.controls:not(.controls-ready)')
-        .forEach(c => c.classList.add('controls-ready'));
-}, 2000);
+        document.querySelectorAll('.controls:not(.controls-ready)')
+            .forEach(c => c.classList.add('controls-ready'));
+    }, 2000);
 
-    // Подстраховка от перерисовок
     const observer = new MutationObserver(mutations => {
         let need = false;
         for (const m of mutations) {
@@ -14496,39 +14506,56 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     observer.observe(document.body, { childList: true, subtree: true });
 
-    // ── Клик вне дропдауна / кнопки «⋮» → закрыть (если не «залипающий» режим)
     document.addEventListener('click', function (e) {
         if (e.target.closest('.controls-dots-btn')) return;
         if (e.target.closest('.controls-dropdown')) return;
         closeAllDropdowns(false);
     });
 
-    // Esc — закрыть (если не «залипающий» режим)
     document.addEventListener('keydown', function (e) {
         if (e.key === 'Escape') closeAllDropdowns(false);
     });
 
-    // При переключении страницы сайдбара — синхронизируем состояние
+    // ★ Переключение страниц: сначала force-close ВСЕХ дропдаунов,
+    //   затем синхронизируем только активную страницу.
     document.addEventListener('click', function (e) {
         if (e.target.closest('.sidebar-cell.menu-item[data-page]')) {
-        // первый заход — почти сразу после переключения
-        setTimeout(() => {
-            processAllControls();
-            document.querySelectorAll(SELECTOR).forEach(c => {
-                if (typeof c._syncDropdown === 'function') c._syncDropdown();
-            });
-        }, 100);
-        // второй заход — когда блюр точно закончился
-        setTimeout(() => {
-            processAllControls();
-            document.querySelectorAll(SELECTOR).forEach(c => {
-                if (typeof c._syncDropdown === 'function') c._syncDropdown();
-            });
-        }, 600);
-    }
+
+            // Небольшая задержка — даём showPage() время обновить .active
+            setTimeout(() => {
+                // 1. Принудительно закрываем все дропдауны
+                document.querySelectorAll('.controls-dropdown.open')
+                    .forEach(d => d.classList.remove('open'));
+                document.querySelectorAll('.controls-dots-btn.active')
+                    .forEach(b => b.classList.remove('active'));
+
+                // 2. Пересобираем UI
+                processAllControls();
+
+                // 3. Синхронизируем ТОЛЬКО активную страницу
+                const activePage = document.querySelector('.page.active');
+                if (activePage) {
+                    const ctrls = activePage.querySelector(SELECTOR);
+                    if (ctrls && typeof ctrls._syncDropdown === 'function') {
+                        ctrls._syncDropdown();
+                    }
+                }
+            }, 100);
+
+            // Повторная проверка после завершения блюра
+            setTimeout(() => {
+                processAllControls();
+                const activePage = document.querySelector('.page.active');
+                if (activePage) {
+                    const ctrls = activePage.querySelector(SELECTOR);
+                    if (ctrls && typeof ctrls._syncDropdown === 'function') {
+                        ctrls._syncDropdown();
+                    }
+                }
+            }, 700);
+        }
     });
 
-    // Экспорт, чтобы при желании можно было синхронизировать извне
     window.closeControlsDropdowns = () => closeAllDropdowns(true);
 })();
 </script>
@@ -15965,6 +15992,353 @@ function initFiltersHighlight() {
     } else {
         setTimeout(init, 900);
     }
+})();
+</script>
+<script>
+/* ========== Скрытие кнопок и фильтров при активных режимах ========== */
+(function () {
+    'use strict';
+
+    /* ---------- 1. Утилиты ---------- */
+    const FILTER_IDS = [
+        'searchAccountingInput',
+        'yearFilter',
+        'statusFilter',
+        'supplierFilter',
+        'departmentFilter',
+        'applicationFilter',
+        'factMonthFilter'
+    ];
+
+    function hide(el) {
+        if (!el) return;
+        el.style.setProperty('display', 'none', 'important');
+    }
+    function show(el) {
+        if (!el) return;
+        el.style.removeProperty('display');
+    }
+
+    function isOnAccountingPage() {
+        const page = document.getElementById('accounting');
+        return !!(page && page.classList.contains('active'));
+    }
+
+    /* ---------- 2. ★ Override для updatePrintButtonVisibility ----------
+       При активном режиме «Поставки на неделю» / «Просроченные»
+       кнопка «Отчет» ВСЕГДА скрыта — независимо от того,
+       что решит оригинальная функция. */
+    (function overridePrintButtonVisibility() {
+        const orig = window.updatePrintButtonVisibility;
+        if (typeof orig !== 'function') {
+            // Функция ещё не определена — повторим попытку позже
+            setTimeout(overridePrintButtonVisibility, 200);
+            return;
+        }
+        if (orig._modeWrapped) return;
+
+        const wrapped = function () {
+            const isModeActive =
+                (typeof showOverdueMode !== 'undefined' && showOverdueMode) ||
+                (typeof showWeeklyDeliveriesMode !== 'undefined' && showWeeklyDeliveriesMode);
+
+            const btn = document.getElementById('printApplicationReportBtn');
+
+            if (isModeActive) {
+                if (btn) btn.style.setProperty('display', 'none', 'important');
+                return;
+            }
+
+            if (btn) btn.style.removeProperty('display');
+            return orig.apply(this, arguments);
+        };
+        wrapped._modeWrapped = true;
+        wrapped._orig = orig;
+        window.updatePrintButtonVisibility = wrapped;
+    })();
+
+    /* ---------- 3. Скрытие/показ фильтров ---------- */
+    function hideOrShowFilters(isActive) {
+        FILTER_IDS.forEach(id => {
+            const el = document.getElementById(id);
+            if (!el) return;
+            const target = el.closest('.filter-clear-wrapper') || el;
+            if (isActive) hide(target);
+            else show(target);
+        });
+    }
+
+    /* ---------- 4. Скрытие/показ дополнительных кнопок ---------- */
+    function hideOrShowExtraButtons(isActive) {
+        // Простые кнопки — прячем/показываем напрямую
+        ['addRecordBtn', 'favoriteToggleBtn'].forEach(id => {
+            const el = document.getElementById(id);
+            if (!el) return;
+            if (isActive) hide(el);
+            else show(el);
+        });
+
+        // «Отчет» — управляется updatePrintButtonVisibility (см. override выше)
+        const reportBtn = document.getElementById('printApplicationReportBtn');
+        if (reportBtn) {
+            if (isActive) {
+                hide(reportBtn);
+            } else {
+                // Снимаем нашу принудительную скрытость и пересчитываем
+                reportBtn.style.removeProperty('display');
+                if (typeof window.updatePrintButtonVisibility === 'function') {
+                    window.updatePrintButtonVisibility();
+                }
+            }
+        }
+
+        // «Поставки 30 дней» — без id, ищем по onclick
+        const printBtn = document.querySelector(
+            '#accounting .controls-dropdown button[onclick*="printDeliveriesAndOverdue"]'
+        );
+        if (printBtn) {
+            if (isActive) hide(printBtn);
+            else show(printBtn);
+        }
+    }
+
+    /* ---------- 5. Перенос «⋮» в дропдаун после ★-избранного ---------- */
+    function moveDotsBtnIntoDropdown(move) {
+        const dotsBtn   = document.querySelector('#accounting .controls-dots-btn');
+        const dropdown  = document.querySelector('#accounting .controls-dropdown');
+        const favoriteBtn = document.getElementById('favoriteToggleBtn');
+        if (!dotsBtn || !dropdown) return;
+
+        if (move) {
+            if (dotsBtn.parentElement === dropdown) return;
+
+            if (favoriteBtn && favoriteBtn.parentElement === dropdown) {
+                favoriteBtn.parentNode.insertBefore(dotsBtn, favoriteBtn.nextSibling);
+            } else {
+                dropdown.appendChild(dotsBtn);
+            }
+
+            // Фиксированный размер 30×22 — как на других страницах
+            dotsBtn.style.setProperty('flex',       '0 0 30px', 'important');
+            dotsBtn.style.setProperty('width',      '30px',     'important');
+            dotsBtn.style.setProperty('min-width',  '30px',     'important');
+            dotsBtn.style.setProperty('max-width',  '30px',     'important');
+            dotsBtn.style.setProperty('height',     '22px',     'important');
+            dotsBtn.style.setProperty('padding',    '0',        'important');
+            dotsBtn.style.setProperty('margin',     '0',        'important');
+        } else {
+    let factGroup = document.querySelector(
+        '#accounting .controls-filters-row > .fact-dots-group'
+    );
+    if (!factGroup) {
+        // fallback: кладём кнопку прямо в строку фильтров
+        const row = document.querySelector('#accounting .controls-filters-row');
+        if (!row) return;
+        row.appendChild(dotsBtn);
+        ['flex','width','min-width','max-width','height','padding','margin']
+            .forEach(p => dotsBtn.style.removeProperty(p));
+        return;
+    }
+    if (dotsBtn.parentElement === factGroup) return;
+    factGroup.appendChild(dotsBtn);
+
+            ['flex', 'width', 'min-width', 'max-width', 'height', 'padding', 'margin']
+                .forEach(p => dotsBtn.style.removeProperty(p));
+        }
+    }
+
+    /* ---------- 6. Главная функция ---------- */
+    window.updateButtonsVisibility = function () {
+        const overdueBtn = document.getElementById('overdueBtn');
+        const weeklyBtn  = document.getElementById('weeklyDeliveriesBtn');
+
+        const onAccounting = isOnAccountingPage();
+
+        const isOverdueActive = onAccounting &&
+            (typeof showOverdueMode !== 'undefined') && showOverdueMode;
+        const isWeeklyActive = onAccounting &&
+            (typeof showWeeklyDeliveriesMode !== 'undefined') && showWeeklyDeliveriesMode;
+        const anyModeActive  = isOverdueActive || isWeeklyActive;
+
+        // 1. Кнопки режимов
+        if (overdueBtn && weeklyBtn) {
+            if (isOverdueActive) {
+                hide(weeklyBtn);
+                show(overdueBtn);
+            } else if (isWeeklyActive) {
+                show(weeklyBtn);
+                hide(overdueBtn);
+            } else {
+                show(weeklyBtn);
+                show(overdueBtn);
+            }
+        }
+
+        // 2. Фильтры
+        hideOrShowFilters(anyModeActive);
+
+        // 3. Дополнительные кнопки — только на странице «Позиции»
+        if (onAccounting) {
+            hideOrShowExtraButtons(anyModeActive);
+        } else {
+            hideOrShowExtraButtons(false);
+        }
+
+        // 4. Перемещение «⋮» — только на «Позициях»
+        if (onAccounting) {
+            moveDotsBtnIntoDropdown(anyModeActive);
+        }
+    };
+
+    function enforceState() {
+        window.updateButtonsVisibility();
+    }
+
+    /* ---------- 7. Триггеры ---------- */
+    // При загрузке
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => setTimeout(enforceState, 1200));
+    } else {
+        setTimeout(enforceState, 1200);
+    }
+
+    // Переключение страниц
+    document.addEventListener('click', function (e) {
+        if (e.target.closest('.sidebar-cell.menu-item[data-page]')) {
+            setTimeout(enforceState, 300);
+            setTimeout(enforceState, 700);
+        }
+    });
+
+    // Клик по режимным кнопкам — несколько задержек
+    document.addEventListener('click', function (e) {
+        const btn = e.target.closest('#overdueBtn, #weeklyDeliveriesBtn');
+        if (btn) {
+            setTimeout(enforceState, 30);
+            setTimeout(enforceState, 150);
+            setTimeout(enforceState, 400);
+        }
+    });
+
+    // Сброс фильтров
+    document.addEventListener('click', function (e) {
+        if (e.target.closest('button[onclick*="clearAccountingFilters"]')) {
+            setTimeout(enforceState, 200);
+        }
+    });
+
+    // Открытие/закрытие «⋮»
+    document.addEventListener('click', function (e) {
+        if (e.target.closest('.controls-dots-btn')) {
+            setTimeout(enforceState, 30);
+            setTimeout(enforceState, 120);
+        }
+    });
+
+    window.enforceModeUI = enforceState;
+})();
+</script>
+<script>
+/* ========== Сброс режимов «Просроченные» / «Поставки на неделю» ==========
+   при переходах по ссылкам из других страниц (Контрагенты, Платежи,
+   Самовывоз, любые внутренние фильтрующие ссылки).
+   Проблема: если режим активен, функция applyModeSupplierFilter()
+   очищает tbody и оставляет только строки-кандидаты. Поэтому перед
+   повторной фильтрацией из внешнего источника нужно:
+      1) сбросить флаги режимов,
+      2) вернуть кнопки в исходный вид,
+      3) убрать быстрые фильтры по поставщикам,
+      4) ПОЛНОСТЬЮ перерисовать таблицу из accountingData.           */
+(function () {
+    'use strict';
+
+    function resetAccountingModes() {
+        const wasOverdue = (typeof showOverdueMode !== 'undefined') && showOverdueMode;
+        const wasWeekly  = (typeof showWeeklyDeliveriesMode !== 'undefined') && showWeeklyDeliveriesMode;
+
+        // Если режимы не активны — ничего не делаем
+        if (!wasOverdue && !wasWeekly) return;
+
+        /* 1. Флаги */
+        try { window.showOverdueMode = false; } catch (_) {}
+        try { window.showWeeklyDeliveriesMode = false; } catch (_) {}
+        try { showOverdueMode = false; } catch (_) {}
+        try { showWeeklyDeliveriesMode = false; } catch (_) {}
+
+        /* 2. Кнопки режимов — вернуть исходный вид */
+        const overdueBtn = document.getElementById('overdueBtn');
+        if (overdueBtn) {
+            overdueBtn.style.background = 'linear-gradient(135deg, rgba(190, 70, 60, 0.6) 0%, rgba(140, 44, 36, 0.6) 100%)';
+            overdueBtn.style.boxShadow = 'none';
+            if (typeof countOverdueRecords === 'function') {
+                overdueBtn.textContent = `Просроченные (${countOverdueRecords()})`;
+            }
+        }
+
+        const weeklyBtn = document.getElementById('weeklyDeliveriesBtn');
+        if (weeklyBtn) {
+            weeklyBtn.style.background = 'linear-gradient(135deg, #ffd700 0%, #ffa500 100%)';
+            weeklyBtn.style.boxShadow = 'none';
+            if (typeof countWeeklyDeliveries === 'function') {
+                weeklyBtn.textContent = `Поставки на неделю (${countWeeklyDeliveries()})`;
+            }
+        }
+
+        /* 3. Убрать быстрые фильтры по поставщикам (они привязаны к режимам) */
+        if (typeof hideSupplierQuickFilters === 'function') {
+            hideSupplierQuickFilters();
+        }
+        try {
+            _quickSupplierFilterValue = '';
+            _currentModeCandidates = [];
+            _currentModeType = '';
+        } catch (_) {}
+
+        /* 4. Восстановить видимость thead (мог быть скрыт режимом) */
+        const thead = document.querySelector('#accountingTable thead');
+        if (thead) thead.style.display = '';
+
+        /* 5. Убрать сообщение «нет данных по поставщику», если было */
+        const noDataRow = document.querySelector('#accountingTable tbody tr[data-no-results]');
+        if (noDataRow) noDataRow.remove();
+
+        /* 6. ★ Ключевое: полностью перерисовать таблицу из accountingData,
+              потому что applyModeSupplierFilter() очищал tbody        */
+        if (typeof updateAccountingTable === 'function') {
+            updateAccountingTable();
+        } else {
+            // На всякий случай — просто показать все строки
+            document.querySelectorAll('#accountingTable tbody tr')
+                .forEach(tr => { tr.style.display = ''; });
+        }
+
+        /* 7. Обновить видимость кнопок и фильтров */
+        if (typeof updateButtonsVisibility === 'function') {
+            updateButtonsVisibility();
+        }
+        if (typeof updateCommentBlockVisibility === 'function') {
+            updateCommentBlockVisibility();
+        }
+    }
+
+    /* Экспортируем для отладки */
+    window.resetAccountingModes = resetAccountingModes;
+
+    /* ★ Перехватываем клики на ссылки-фильтры в CAPTURE-фазе.
+       Это гарантирует, что сброс произойдёт РАНЬШЕ, чем сработают
+       встроенные обработчики (они все в bubble-фазе), и встроенные
+       функции увидят чистую таблицу + сброшенные режимы. */
+    document.addEventListener('click', function (e) {
+        const link = e.target.closest(
+            '.contract-filter-link, ' +
+            '.contract-filter-link-payments, ' +
+            '.supplier-filter-link, ' +
+            '.application-filter-link'
+        );
+        if (!link) return;
+
+        resetAccountingModes();
+    }, true); // ← capture phase
 })();
 </script>
 </body>
