@@ -16185,9 +16185,24 @@ function initFiltersHighlight() {
         }
 
         // 4. Перемещение «⋮» — только на «Позициях»
-        if (onAccounting) {
-            moveDotsBtnIntoDropdown(anyModeActive);
-        }
+if (onAccounting) {
+    moveDotsBtnIntoDropdown(anyModeActive);
+}
+
+// 5. ★ В активном режиме сворачиваем пустую строку фильтров
+//      и обнуляем отступ у дропдауна, чтобы он встал вплотную к сайдбару
+if (onAccounting) {
+    const filtersRow = document.querySelector('#accounting .controls-filters-row');
+    const dropdown   = document.querySelector('#accounting .controls-dropdown');
+
+    if (anyModeActive) {
+        if (filtersRow) filtersRow.style.setProperty('display', 'none', 'important');
+        if (dropdown)   dropdown.style.setProperty('margin-top', '0', 'important');
+    } else {
+        if (filtersRow) filtersRow.style.removeProperty('display');
+        if (dropdown)   dropdown.style.removeProperty('margin-top');
+    }
+}
     };
 
     function enforceState() {
