@@ -3,7 +3,7 @@
     {
       "recordId": "20261008122318480_wc7g15paf",
       "docNumber": "2026-885 (от 08.10.2026)",
-      "status": "В работе",
+      "status": "Выполнено",
       "id": "МАТ-05470",
       "name": "Литакоут Классик Комп. Б 1,8Л Краска.",
       "quantity": "3,6",
@@ -18,16 +18,16 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "3",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
-      "fact": "",
-      "shipmentDoc": "",
+      "date": "08.10.2026",
+      "planFact": "09.10.2026",
+      "fact": "09.10.2026",
+      "shipmentDoc": "858 от 09.10.2026",
       "favorite": false
     },
     {
       "recordId": "20261008122145346_1l5vwb2u2",
       "docNumber": "2026-885 (от 08.10.2026)",
-      "status": "В работе",
+      "status": "Выполнено",
       "id": "МАТ-05470",
       "name": "Литакоут Фрост RAL 3020 Комп. А 18,17Л Краска",
       "quantity": "36,34",
@@ -42,16 +42,16 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "3",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
-      "fact": "",
-      "shipmentDoc": "",
+      "date": "08.10.2026",
+      "planFact": "09.10.2026",
+      "fact": "09.10.2026",
+      "shipmentDoc": "858 от 09.10.2026",
       "favorite": false
     },
     {
       "recordId": "20261008122049649_cefyy20cz",
       "docNumber": "2026-885 (от 08.10.2026)",
-      "status": "В работе",
+      "status": "Выполнено",
       "id": "МАТ-05470",
       "name": "Литакоут Классик Комп. Б 1,8Л Краска.",
       "quantity": "5,4",
@@ -66,16 +66,16 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "3",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
-      "fact": "",
-      "shipmentDoc": "",
+      "date": "08.10.2026",
+      "planFact": "09.10.2026",
+      "fact": "09.10.2026",
+      "shipmentDoc": "858 от 09.10.2026",
       "favorite": false
     },
     {
       "recordId": "20261008121848976_g9b0xt318",
       "docNumber": "2026-885 (от 08.10.2026)",
-      "status": "В работе",
+      "status": "Выполнено",
       "id": "МАТ-05470",
       "name": "Литакоут Фрост RAL 5010 Комп. А 17,49Л Краска",
       "quantity": "52,47",
@@ -90,10 +90,10 @@
       "paymentTerms": "100 % предоплата",
       "deliveryDays": "3",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
-      "fact": "",
-      "shipmentDoc": "",
+      "date": "08.10.2026",
+      "planFact": "09.10.2026",
+      "fact": "09.10.2026",
+      "shipmentDoc": "858 от 09.10.2026",
       "favorite": false
     },
     {
@@ -291,7 +291,7 @@
     {
       "recordId": "20261005091023279_ay6q3avmi",
       "docNumber": "2026-847 (от 29.09.2026)",
-      "status": "Поставка",
+      "status": "Выполнено",
       "id": "МАТ-06906",
       "name": "Аптечка тактическая медицинская (арт. 1581652002)",
       "quantity": "1",
@@ -308,8 +308,8 @@
       "deliveryTerms": "Самовывоз",
       "date": "08.10.2026",
       "planFact": "15.10.2026",
-      "fact": "",
-      "shipmentDoc": "",
+      "fact": "09.10.2026",
+      "shipmentDoc": "139856526 от 08.10.2026",
       "favorite": false
     },
     {
@@ -339,7 +339,7 @@
     {
       "recordId": "20260929123016364_yom8kagdl",
       "docNumber": "2026-843 (от 29.09.2026)",
-      "status": "Приход",
+      "status": "Выполнено",
       "id": "МАТ-07152",
       "name": "Шнур плетеный полиамидный ООО Оптхозторг 4 мм 100 м бе-лый 01841002",
       "quantity": "10",
@@ -363,7 +363,7 @@
     {
       "recordId": "20260929123004119_28ht3sj7b",
       "docNumber": "2026-843 (от 29.09.2026)",
-      "status": "Приход",
+      "status": "Выполнено",
       "id": "МАТ-09246",
       "name": "Тент универ-сальный ЧЗМ Защитник 100 3х4м серый 8326\n",
       "quantity": "30",
@@ -387,7 +387,7 @@
     {
       "recordId": "20260929122942959_3d7udzkwz",
       "docNumber": "2026-843 (от 29.09.2026)",
-      "status": "Приход",
+      "status": "Выполнено",
       "id": "МАТ-07077",
       "name": "Набор ударных удлиненных го-ловок 10-32 мм, 1/2\"DR, 15 шт. Gigant G-11325\n",
       "quantity": "1",
@@ -411,7 +411,7 @@
     {
       "recordId": "20260929122931031_orksz4puk",
       "docNumber": "2026-843 (от 29.09.2026)",
-      "status": "Приход",
+      "status": "Выполнено",
       "id": "МАТ-07873",
       "name": "Гайковерт удар-ный КВТ WB-20-500 серия ПРО-ФИ аккумуля-торный бесще-точный 102594\n",
       "quantity": "1",
@@ -531,7 +531,7 @@
     {
       "recordId": "20260929122722540_bfos6ntdl",
       "docNumber": "2026-839 (от 29.09.2026)",
-      "status": "Поставка",
+      "status": "Выполнено",
       "id": "МАТ-04925",
       "name": "Наконечник НШВИ 2,5-8ММ КВТ\n",
       "quantity": "200",
@@ -548,14 +548,14 @@
       "deliveryTerms": "Самовывоз",
       "date": "01.10.2026",
       "planFact": "08.10.2026",
-      "fact": "",
-      "shipmentDoc": "",
+      "fact": "09.10.2026",
+      "shipmentDoc": "0973522 от 08.10.2026",
       "favorite": false
     },
     {
       "recordId": "20260929122657589_r2iugrsp3",
       "docNumber": "2026-839 (от 29.09.2026)",
-      "status": "Поставка",
+      "status": "Выполнено",
       "id": "МАТ-04925",
       "name": "Наконечник НШВИ 1,5-8ММ КВТ\n",
       "quantity": "200",
@@ -572,8 +572,8 @@
       "deliveryTerms": "Самовывоз",
       "date": "01.10.2026",
       "planFact": "08.10.2026",
-      "fact": "",
-      "shipmentDoc": "",
+      "fact": "09.10.2026",
+      "shipmentDoc": "0973522 от 08.10.2026",
       "favorite": false
     },
     {
@@ -1611,8 +1611,8 @@
     {
       "recordId": "20260915114918371_tgqu9qqvv",
       "docNumber": "2026-795 (от 15.09.2026)",
-      "status": "В работе",
-      "id": "-",
+      "status": "Поставка",
+      "id": "МАТ-04636",
       "name": "Аккумуляторный  моментный гайковерт  АМА-30\n",
       "quantity": "2",
       "unit": "шт",
@@ -1626,8 +1626,8 @@
       "paymentTerms": "100 % отсрочка 7 к.дн.",
       "deliveryDays": "60",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "09.10.2026",
+      "planFact": "14.12.2026",
       "fact": "",
       "shipmentDoc": "",
       "favorite": false
@@ -1635,8 +1635,8 @@
     {
       "recordId": "20260915114858807_kehj3f6cl",
       "docNumber": "2026-795 (от 15.09.2026)",
-      "status": "В работе",
-      "id": "-",
+      "status": "Поставка",
+      "id": "МАТ-04636",
       "name": "Аккумуляторный  моментный гайковерт  АМА-20\n",
       "quantity": "3",
       "unit": "шт",
@@ -1650,8 +1650,8 @@
       "paymentTerms": "100 % отсрочка 7 к.дн.",
       "deliveryDays": "60",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "09.10.2026",
+      "planFact": "14.12.2026",
       "fact": "",
       "shipmentDoc": "",
       "favorite": false
@@ -1659,8 +1659,8 @@
     {
       "recordId": "20260915114847247_g1locuypu",
       "docNumber": "2026-795 (от 15.09.2026)",
-      "status": "В работе",
-      "id": "-",
+      "status": "Поставка",
+      "id": "МАТ-04636",
       "name": "Аккумуляторный  моментный гайковерт  АМА-08 \n",
       "quantity": "1",
       "unit": "шт",
@@ -1674,8 +1674,8 @@
       "paymentTerms": "100 % отсрочка 7 к.дн.",
       "deliveryDays": "60",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "09.10.2026",
+      "planFact": "14.12.2026",
       "fact": "",
       "shipmentDoc": "",
       "favorite": false
@@ -3195,7 +3195,7 @@
     {
       "recordId": "20260901101755794_zd2l8fvxs",
       "docNumber": "2026-754 (от 25.08.2026)",
-      "status": "Поставка",
+      "status": "Выполнено",
       "id": "МАТ-04623",
       "name": "Нож строительный Gigant металл. корпус 18мм GWK 632",
       "quantity": "6",
@@ -3212,14 +3212,14 @@
       "deliveryTerms": "Включена",
       "date": "10.09.2026",
       "planFact": "17.09.2026",
-      "fact": "",
-      "shipmentDoc": "",
+      "fact": "09.10.2026",
+      "shipmentDoc": "ЦБ-2429 от 07.10.2026",
       "favorite": false
     },
     {
       "recordId": "20260901101720067_aoaqd86fd",
       "docNumber": "2026-754 (от 25.08.2026)",
-      "status": "Поставка",
+      "status": "Выполнено",
       "id": "МАТ-10443",
       "name": "Сабельная пила аккумуляторная Makita LXT 18В ход13мм рез50мм 2x3.0Ач ЗУ DJR185RFE",
       "quantity": "1",
@@ -3236,8 +3236,8 @@
       "deliveryTerms": "Включена",
       "date": "10.09.2026",
       "planFact": "17.09.2026",
-      "fact": "",
-      "shipmentDoc": "",
+      "fact": "09.10.2026",
+      "shipmentDoc": "ЦБ-2429 от 07.10.2026",
       "favorite": false
     },
     {
@@ -3291,7 +3291,7 @@
     {
       "recordId": "20260901101634223_ln150t63b",
       "docNumber": "2026-754 (от 25.08.2026)",
-      "status": "Поставка",
+      "status": "Выполнено",
       "id": "МАТ-05447",
       "name": "Отвертка шлицевая диэлектрическая Jonnesway SL DV13S275 2,4х75мм",
       "quantity": "10",
@@ -3308,8 +3308,8 @@
       "deliveryTerms": "Включена",
       "date": "10.09.2026",
       "planFact": "17.09.2026",
-      "fact": "",
-      "shipmentDoc": "",
+      "fact": "09.10.2026",
+      "shipmentDoc": "ЦБ-2429 от 07.10.2026",
       "favorite": false
     },
     {
@@ -3387,7 +3387,7 @@
     {
       "recordId": "20260901101533463_r3olk1sll",
       "docNumber": "2026-754 (от 25.08.2026)",
-      "status": "Поставка",
+      "status": "Выполнено",
       "id": "МАТ-07220",
       "name": "Ключ Т-образный Ceta Form Hex с шаром 6мм K11-060-200",
       "quantity": "4",
@@ -3404,8 +3404,8 @@
       "deliveryTerms": "Включена",
       "date": "10.09.2026",
       "planFact": "17.09.2026",
-      "fact": "",
-      "shipmentDoc": "",
+      "fact": "09.10.2026",
+      "shipmentDoc": "ЦБ-2429 от 07.10.2026",
       "favorite": false
     },
     {
@@ -3603,7 +3603,7 @@
     {
       "recordId": "20260901101307047_kmromd5gx",
       "docNumber": "2026-754 (от 25.08.2026)",
-      "status": "Поставка",
+      "status": "Выполнено",
       "id": "МАТ-07220",
       "name": "Торцевой шестигранный удлиненный ключ с шаром Thorvik HKLB50 H5 53094",
       "quantity": "10",
@@ -3620,14 +3620,14 @@
       "deliveryTerms": "Включена",
       "date": "10.09.2026",
       "planFact": "17.09.2026",
-      "fact": "",
-      "shipmentDoc": "",
+      "fact": "09.10.2026",
+      "shipmentDoc": "ЦБ-2429 от 07.10.2026",
       "favorite": false
     },
     {
       "recordId": "20260901101247767_cpu2wogtu",
       "docNumber": "2026-754 (от 25.08.2026)",
-      "status": "Поставка",
+      "status": "Выполнено",
       "id": "МАТ-07220",
       "name": "Торцевой шестигранный ключ с шаром Thorvik HKB40 H4 53081",
       "quantity": "10",
@@ -3644,8 +3644,8 @@
       "deliveryTerms": "Включена",
       "date": "10.09.2026",
       "planFact": "17.09.2026",
-      "fact": "",
-      "shipmentDoc": "",
+      "fact": "09.10.2026",
+      "shipmentDoc": "ЦБ-2429 от 07.10.2026",
       "favorite": false
     },
     {
@@ -4635,8 +4635,8 @@
     {
       "recordId": "20260824124952060_nvfgug8o2",
       "docNumber": "2026-732 (от 21.08.2026)",
-      "status": "В работе",
-      "id": "-",
+      "status": "Поставка",
+      "id": "МАТ-10138",
       "name": "Крышка горячее оцинкование W5-100 L=2М",
       "quantity": "40",
       "unit": "шт",
@@ -4650,8 +4650,8 @@
       "paymentTerms": "100 % отсрочка 7 к.дн.",
       "deliveryDays": "30",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "09.10.2026",
+      "planFact": "09.11.2026",
       "fact": "",
       "shipmentDoc": "",
       "favorite": false
@@ -4659,8 +4659,8 @@
     {
       "recordId": "20260824124932128_np4jrv5fs",
       "docNumber": "2026-732 (от 21.08.2026)",
-      "status": "В работе",
-      "id": "-",
+      "status": "Поставка",
+      "id": "МАТ-10145",
       "name": "Кабельный лоток неперфорированный W1/60-100 L=2м HDG",
       "quantity": "40",
       "unit": "шт",
@@ -4674,8 +4674,8 @@
       "paymentTerms": "100 % отсрочка 7 к.дн.",
       "deliveryDays": "30",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "09.10.2026",
+      "planFact": "09.11.2026",
       "fact": "",
       "shipmentDoc": "",
       "favorite": false
@@ -4683,8 +4683,8 @@
     {
       "recordId": "20260824124912274_y99xb5vqw",
       "docNumber": "2026-732 (от 21.08.2026)",
-      "status": "В работе",
-      "id": "-",
+      "status": "Поставка",
+      "id": "МАТ-09884",
       "name": "Консоль горячее оцинкование 50/150 \n",
       "quantity": "40",
       "unit": "шт",
@@ -4698,8 +4698,8 @@
       "paymentTerms": "100 % отсрочка 7 к.дн.",
       "deliveryDays": "30",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "09.10.2026",
+      "planFact": "09.11.2026",
       "fact": "",
       "shipmentDoc": "",
       "favorite": false
@@ -4707,8 +4707,8 @@
     {
       "recordId": "20260824124845944_9pas6koaj",
       "docNumber": "2026-732 (от 21.08.2026)",
-      "status": "В работе",
-      "id": "-",
+      "status": "Поставка",
+      "id": "МАТ-10568",
       "name": "Лоток лестничного типа 6м горячее оцинкование KHZP-150",
       "quantity": "18",
       "unit": "шт",
@@ -4722,8 +4722,8 @@
       "paymentTerms": "100 % отсрочка 7 к.дн.",
       "deliveryDays": "30",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "09.10.2026",
+      "planFact": "09.11.2026",
       "fact": "",
       "shipmentDoc": "",
       "favorite": false
@@ -4731,8 +4731,8 @@
     {
       "recordId": "20260824124826751_hrb5ra1rd",
       "docNumber": "2026-732 (от 21.08.2026)",
-      "status": "В работе",
-      "id": "-",
+      "status": "Поставка",
+      "id": "МАТ-07576",
       "name": "Стеновой кронштейн 20 HDG",
       "quantity": "530",
       "unit": "шт",
@@ -4746,8 +4746,8 @@
       "paymentTerms": "100 % отсрочка 7 к.дн.",
       "deliveryDays": "30",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "09.10.2026",
+      "planFact": "09.11.2026",
       "fact": "",
       "shipmentDoc": "",
       "favorite": false
@@ -4755,8 +4755,8 @@
     {
       "recordId": "20260824124803440_6s2ekk0rs",
       "docNumber": "2026-732 (от 21.08.2026)",
-      "status": "В работе",
-      "id": "-",
+      "status": "Поставка",
+      "id": "МАТ-06786",
       "name": "Анкерный болт М10х105 HDG",
       "quantity": "1060",
       "unit": "шт",
@@ -4770,8 +4770,8 @@
       "paymentTerms": "100 % отсрочка 7 к.дн.",
       "deliveryDays": "30",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "09.10.2026",
+      "planFact": "09.11.2026",
       "fact": "",
       "shipmentDoc": "",
       "favorite": false
@@ -4779,8 +4779,8 @@
     {
       "recordId": "20260824124741495_3ua2valxn",
       "docNumber": "2026-732 (от 21.08.2026)",
-      "status": "В работе",
-      "id": "-",
+      "status": "Поставка",
+      "id": "МАТ-10706",
       "name": "Вертикальный подвес 20FS/3000 HDG",
       "quantity": "9",
       "unit": "шт",
@@ -4794,8 +4794,8 @@
       "paymentTerms": "100 % отсрочка 7 к.дн.",
       "deliveryDays": "30",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "09.10.2026",
+      "planFact": "09.11.2026",
       "fact": "",
       "shipmentDoc": "",
       "favorite": false
@@ -4803,8 +4803,8 @@
     {
       "recordId": "20260824124719318_vgr9ebw49",
       "docNumber": "2026-732 (от 21.08.2026)",
-      "status": "В работе",
-      "id": "-",
+      "status": "Поставка",
+      "id": "МАТ-10285",
       "name": "Монтажный профиль 24/20 L=3м HDG",
       "quantity": "90",
       "unit": "шт",
@@ -4818,8 +4818,8 @@
       "paymentTerms": "100 % отсрочка 7 к.дн.",
       "deliveryDays": "30",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "09.10.2026",
+      "planFact": "09.11.2026",
       "fact": "",
       "shipmentDoc": "",
       "favorite": false
@@ -4827,8 +4827,8 @@
     {
       "recordId": "20260824124651261_oxrki63sd",
       "docNumber": "2026-732 (от 21.08.2026)",
-      "status": "В работе",
-      "id": "-",
+      "status": "Поставка",
+      "id": "МАТ-10568",
       "name": "Кабельная лестница KHZP-400 L=6м HDG",
       "quantity": "350",
       "unit": "шт",
@@ -4842,8 +4842,8 @@
       "paymentTerms": "100 % отсрочка 7 к.дн.",
       "deliveryDays": "30",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "09.10.2026",
+      "planFact": "09.11.2026",
       "fact": "",
       "shipmentDoc": "",
       "favorite": false
@@ -4851,8 +4851,8 @@
     {
       "recordId": "20260824124625716_r476z5bfs",
       "docNumber": "2026-732 (от 21.08.2026)",
-      "status": "В работе",
-      "id": "-",
+      "status": "Поставка",
+      "id": "МАТ-09884",
       "name": "Консоль  (кронштейн)  50/400 HDG",
       "quantity": "1060",
       "unit": "шт",
@@ -4866,8 +4866,8 @@
       "paymentTerms": "100 % отсрочка 7 к.дн.",
       "deliveryDays": "30",
       "deliveryTerms": "Включена",
-      "date": "",
-      "planFact": "",
+      "date": "09.10.2026",
+      "planFact": "09.11.2026",
       "fact": "",
       "shipmentDoc": "",
       "favorite": false
@@ -35388,13 +35388,23 @@
   ],
   "proxyData": [
     {
+      "recordId": "20261009101742548_1rxz1a9t5",
+      "date": "16.10.2026",
+      "docNumber": "2026-723 (от 04.09.2026)",
+      "supplier": "ООО \"Невареактив\"",
+      "contract": "СЧ № 25749",
+      "address": "Санкт-Петербург, Капсюльное ш, д.45, литер А",
+      "driver": "Елистратов И.Н.",
+      "status": "В работе"
+    },
+    {
       "recordId": "20261008090247710_3w5audyaj",
       "date": "16.10.2026",
       "docNumber": "2026-804 (от 16.09.2026)",
       "supplier": "ООО \"Мосавтошина\"",
       "contract": "СЧ № 5177052",
       "address": "Санкт-Петербург, ПЗ Пески, улица Кооперативная, 3",
-      "driver": "-",
+      "driver": "Елистратов И.Н.",
       "status": "В работе"
     },
     {
@@ -35415,7 +35425,7 @@
       "contract": "СЧ № 17986909",
       "address": "г. Санкт-Петербург, ул.Восстания, д.8а",
       "driver": "Елистратов И.Н.",
-      "status": "В работе"
+      "status": "Выполнено"
     },
     {
       "recordId": "20260918091426957_68013umxv",
@@ -36380,5 +36390,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-10-08T14:33:16.250Z"
+  "exportDate": "2026-10-09T13:32:32.806Z"
 }
