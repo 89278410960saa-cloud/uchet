@@ -4856,13 +4856,37 @@ function updateAccountingTable() {
         if (item.status === 'Поставка') row.classList.add('status-supply');
         
         // Создаем ячейку для контрагента с обработчиком клика
-        const supplierCell = document.createElement('td');
-        supplierCell.style.width = '135px';
-        supplierCell.style.cursor = 'pointer';
-        supplierCell.style.color = '#66c0f4';
-        supplierCell.style.textDecoration = 'underline';
-        supplierCell.title = 'Кликните для просмотра информации о контрагенте';
-        supplierCell.textContent = item.supplier || '';
+const supplierCell = document.createElement('td');
+supplierCell.style.width = '135px';
+supplierCell.style.cursor = 'pointer';
+supplierCell.style.textDecoration = 'underline';
+supplierCell.textContent = item.supplier || '';
+
+// ─── Проверка: контрагент в чёрном списке? ───
+const normalizeName = (str) => (str || '')
+    .toString()
+    .trim()
+    .toLowerCase()
+    .replace(/['"«»]/g, '')   // убираем кавычки
+    .replace(/\s+/g, ' ');    // множественные пробелы → один
+
+const targetNorm = normalizeName(item.supplier);
+
+const blacklistedCp = counterpartiesData.find(cp =>
+    cp.blacklisted &&
+    cp.supplier &&
+    normalizeName(cp.supplier) === targetNorm
+);
+
+if (blacklistedCp) {
+    // Красный цвет + подсказка
+    supplierCell.style.color = '#be463c';           // тот же красный, что у .blacklisted-row
+    supplierCell.title = '⚠️ Контрагент в чёрном списке. Кликните для подробностей';
+} else {
+    // Обычный синий цвет
+    supplierCell.style.color = '#66c0f4';
+    supplierCell.title = 'Кликните для просмотра информации о контрагенте';
+}
         
         // Добавляем обработчик клика для ячейки контрагента
         supplierCell.addEventListener('click', function(e) {
