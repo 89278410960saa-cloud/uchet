@@ -9412,10 +9412,44 @@ function updatePrintButtonVisibility() {
     const btn = document.getElementById('printApplicationReportBtn');
     if (!appFilter || !btn) return;
 
-    const value = appFilter.value.trim();
-    // Проверяем, существует ли заявка в данных учёта
-    const exists = accountingData.some(item => item.docNumber === value);
-    btn.style.display = (exists && value !== '') ? 'inline-flex' : 'none';
+    // Та же логика, что и у кнопки Group edit:
+    // показываем кнопку только если в фильтре выбрана заявка
+    // (значение совпадает с одной из опций в datalist
+    //  ИЛИ активен быстрый фильтр по заявке, кроме «Все»)
+    let isAppSelected = false;
+
+    if (typeof window.isApplicationFilterActive === 'function') {
+        isAppSelected = window.isApplicationFilterActive();
+    } else {
+        // Fallback — пока bulk-edit IIFE ещё не выполнился
+        const value = (appFilter.value || '').trim();
+        if (value !== '') {
+            const datalist = document.getElementById('applicationsListFilter');
+            if (datalist) {
+                for (let i = 0; i < datalist.options.length; i++) {
+                    if (datalist.options[i].value === value) {
+                        isAppSelected = true;
+                        break;
+                    }
+                }
+            }
+            if (!isAppSelected) {
+                const activeQuickBtn = document.querySelector(
+                    '#quickApplicationFilters .quick-filter-btn.active:not(.all-btn)'
+                );
+                if (activeQuickBtn) isAppSelected = true;
+            }
+        }
+    }
+
+    // ★ ВАЖНО: используем setProperty с приоритетом 'important',
+    //   чтобы перебить CSS-правило
+    //   `.controls-dropdown button { display: inline-flex !important; }`
+    if (isAppSelected) {
+        btn.style.setProperty('display', 'inline-flex', 'important');
+    } else {
+        btn.style.setProperty('display', 'none', 'important');
+    }
 }
 
 // Вызываем при изменении фильтра заявок
@@ -15332,6 +15366,8 @@ function initFiltersHighlight() {
         );
         return !!activeQuickBtn;
     }
+    // ★ Экспортируем наружу — используется для кнопки «Отчет»
+    window.isApplicationFilterActive = isApplicationFilterActive;
 
     /* ---------- 4. Привязка обработчика к номеру строки ---------- */
     function ensureRowNumbersClickable() {
