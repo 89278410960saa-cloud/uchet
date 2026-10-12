@@ -108,7 +108,7 @@
       "purchaseQuantity": "",
       "purchaseUnit": "",
       "amount": "",
-      "supplier": "ООО \"БалтКам\"",
+      "supplier": "",
       "department": "17/0001 РСУ",
       "contract": "",
       "paymentTerms": "",
@@ -25730,7 +25730,7 @@
       "email": "voiytovap@inmeh.ru",
       "address": "Кингисепп, пр-т Карла Маркса, 42",
       "material": "автотовары (Кингисепп)",
-      "blacklisted": true,
+      "blacklisted": false,
       "blacklistComment": ""
     },
     {
@@ -36632,5 +36632,5 @@
     "Служба главного инженера"
   ],
   "version": "1.1",
-  "exportDate": "2026-10-12T14:11:53.904Z"
+  "exportDate": "2026-10-12T14:38:10.325Z"
 }
