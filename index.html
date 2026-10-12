@@ -5,6 +5,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover">
     <title>Учет закупки</title>
     <link rel="icon" href="https://cdn.jsdelivr.net/gh/twitter/twemoji/assets/svg/1f6d2.svg" type="image/svg+xml">
+    <!-- ===== КРИТИЧНЫЙ CSS ДЛЯ НАЧАЛЬНОЙ ЗАГРУЗКИ ===== -->
+    <style>
+    html, body { background:#0f1115; margin:0; }
+
+    /* Скрываем интерфейс, пока JS не выставит body.app-ready */
+    body:not(.app-ready) .sidebar,
+body:not(.app-ready) .main-content {
+    display: none !important;
+}
+
+    #initialLoader {
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: #0f1115;
+        z-index: 2147483647;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #66c0f4;
+        font-family: 'Segoe UI', Arial, sans-serif;
+        transition: opacity .35s ease;
+        opacity: 1;
+    }
+    #initialLoader.hide {
+        opacity: 0;
+        pointer-events: none;
+    }
+    #initialLoader .initial-loader-spinner {
+        width: 36px;
+        height: 36px;
+        margin: 0 auto 12px;
+        border: 3px solid rgba(102,192,244,.3);
+        border-top-color: #66c0f4;
+        border-radius: 50%;
+        animation: initialSpin 0.9s linear infinite;
+    }
+    @keyframes initialSpin { to { transform: rotate(360deg); } }
+</style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
         * {
@@ -3054,6 +3092,13 @@ button:hover{background:#222733!important}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 </head>
 <body style="zoom: 100%; transform: scale(1); transform-origin: left top; width: 100%; height: 100%;">
+    <!-- ===== ОВЕРЛЕЙ НАЧАЛЬНОЙ ЗАГРУЗКИ ===== -->
+<div id="initialLoader">
+    <div style="text-align:center">
+        <div class="initial-loader-spinner"></div>
+        <div style="font-size:12px;letter-spacing:1px">ЗАГРУЗКА…</div>
+    </div>
+</div>
     
     <!-- Сайдбар меню -->
 <div class="sidebar hidden" style="display: none;">
@@ -12166,7 +12211,14 @@ function startApplication() {
                 showAutosaveNotification('Гостевой режим активен');
             }
         }, 500);
-        
+
+        // 8. Убираем стартовый оверлей загрузки
+        const loader = document.getElementById('initialLoader');
+        if (loader) {
+            loader.classList.add('hide');
+            setTimeout(() => loader.remove(), 400);
+        }
+
     }, 1000);
 }
 
@@ -12411,8 +12463,8 @@ function resetAllFilters() {
 
 </script>
 <!-- Блюр экрана при переключении страниц -->
-<div id="pageTransitionBlur" class="page-transition-blur active"></div>
-<div id="loadingSpinnerBlur" class="loading-spinner-blur active"></div>
+<div id="pageTransitionBlur" class="page-transition-blur"></div>
+<div id="loadingSpinnerBlur" class="loading-spinner-blur"></div>
 
 <datalist id="applicationsListFilter"></datalist>
 <datalist id="paymentTermsList">
@@ -16355,6 +16407,18 @@ if (onAccounting) {
         resetAccountingModes();
     }, true); // ← capture phase
 })();
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    // Прячем стартовый лоадер через небольшую задержку
+    setTimeout(function () {
+        var loader = document.getElementById('initialLoader');
+        if (loader) {
+            loader.classList.add('hide');
+            setTimeout(function () { loader.remove(); }, 400);
+        }
+    }, 300);
+});
 </script>
 </body>
 </html>
