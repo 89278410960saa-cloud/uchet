@@ -14326,6 +14326,127 @@ select.filter-active {
     justify-content: center !important;
 }
 </style>
+<style>
+/* ============================================================
+   ВЫРАВНИВАНИЕ КНОПОК ПОД ФИЛЬТРАМИ НА «ПОЗИЦИЯХ»
+   — когда НЕ выбрана заявка (нет .app-selected)
+   — и НЕ активен режим «Просроченные»/«Поставки на неделю» (.mode-active)
+   ============================================================ */
+
+#accounting .controls-container:not(.app-selected):not(.mode-active)
+    .controls-dropdown.open {
+    display: grid !important;
+    grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
+    gap: 4px !important;
+
+    padding: 2px !important;
+    background: #1e2d3d !important;
+    border: 1px solid #3d4450 !important;
+    border-radius: 4px !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
+
+    margin: 4px 0 0 0 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+
+    flex-wrap: nowrap !important;
+    align-items: stretch !important;
+}
+
+/* Кнопки — на всю ширину своей колонки, без «залипания» */
+#accounting .controls-container:not(.app-selected):not(.mode-active)
+    .controls-dropdown.open > button {
+    flex: none !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    height: 22px !important;
+    margin: 0 !important;
+    padding: 0 4px !important;
+    box-sizing: border-box !important;
+    font-size: 11px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    border: 1px solid transparent !important;
+    border-radius: 3px !important;
+}
+
+/* Явная привязка кнопок к столбцам, чтобы соседи не «съезжали» */
+#accounting .controls-container:not(.app-selected):not(.mode-active)
+    .controls-dropdown.open > #addRecordBtn                                { grid-column: 1 !important; }
+#accounting .controls-container:not(.app-selected):not(.mode-active)
+    .controls-dropdown.open > .reset-filter-btn                            { grid-column: 2 !important; }
+#accounting .controls-container:not(.app-selected):not(.mode-active)
+    .controls-dropdown.open > button[onclick*="exportToExcel"]             { grid-column: 3 !important; }
+#accounting .controls-container:not(.app-selected):not(.mode-active)
+    .controls-dropdown.open > #weeklyDeliveriesBtn                         { grid-column: 4 !important; }
+#accounting .controls-container:not(.app-selected):not(.mode-active)
+    .controls-dropdown.open > #overdueBtn                                  { grid-column: 5 !important; }
+#accounting .controls-container:not(.app-selected):not(.mode-active)
+    .controls-dropdown.open > #printApplicationReportBtn,
+#accounting .controls-container:not(.app-selected):not(.mode-active)
+    .controls-dropdown.open > button[onclick*="printDeliveriesAndOverdue"] { grid-column: 6 !important; }
+#accounting .controls-container:not(.app-selected):not(.mode-active)
+    .controls-dropdown.open > #favoriteToggleBtn                           { grid-column: 7 !important; }
+
+/* Ховер — как у остальных кнопок, без «прыжка» */
+#accounting .controls-container:not(.app-selected):not(.mode-active)
+    .controls-dropdown.open > button:hover {
+    border-color: #66c0f4 !important;
+    transform: none !important;
+}
+
+/* ============================================================
+   РЕЖИМЫ «ПРОСРОЧЕННЫЕ» / «ПОСТАВКИ НА НЕДЕЛЮ»
+   — кнопки растягиваются в обычный flex, но в том же «блоке»
+   ============================================================ */
+#accounting .controls-container.mode-active .controls-dropdown.open {
+    display: flex !important;
+    grid-template-columns: none !important;
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+
+    padding: 8px !important;
+    margin: 4px 0 0 0 !important;
+    width: 100% !important;
+
+    background: #1e2d3d !important;
+    border: 1px solid #3d4450 !important;
+    border-radius: 4px !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
+    box-sizing: border-box !important;
+    align-items: stretch !important;
+}
+#accounting .controls-container.mode-active .controls-dropdown.open > button {
+    flex: 1 1 0 !important;
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    grid-column: auto !important;
+    grid-row: auto !important;
+    height: 22px !important;
+    padding: 0 8px !important;
+    box-sizing: border-box !important;
+    font-size: 11px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    border: 1px solid transparent !important;
+    border-radius: 3px !important;
+}
+#accounting .controls-container.mode-active .controls-dropdown.open > button:hover {
+    border-color: #66c0f4 !important;
+    transform: none !important;
+}
+</style>
+
 <script>
 /* ===== Выпадающее меню «Ещё» в сайдбаре ===== */
 function toggleMoreMenu(event) {
@@ -16479,6 +16600,250 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }, 300);
 });
+</script>
+<script>
+/* ============================================================
+   Скрываем «Поставки на неделю», «Просроченные» и «Поставки 30 дней»,
+   когда в фильтре по заявкам выбрана конкретная заявка.
+   ============================================================ */
+(function () {
+    'use strict';
+
+    function isApplicationFilterActive() {
+        const input = document.getElementById('applicationFilter');
+        if (!input) return false;
+        const val = (input.value || '').trim();
+        if (val === '') return false;
+
+        const datalist = document.getElementById('applicationsListFilter');
+        if (datalist) {
+            for (let i = 0; i < datalist.options.length; i++) {
+                if (datalist.options[i].value === val) return true;
+            }
+        }
+        const activeQuickBtn = document.querySelector(
+            '#quickApplicationFilters .quick-filter-btn.active:not(.all-btn)'
+        );
+        return !!activeQuickBtn;
+    }
+
+    function updateModeButtonsVisibility() {
+    const isAppSelected   = isApplicationFilterActive();
+    const isOverdueActive = (typeof showOverdueMode !== 'undefined') && showOverdueMode;
+    const isWeeklyActive  = (typeof showWeeklyDeliveriesMode !== 'undefined') && showWeeklyDeliveriesMode;
+    const anyModeActive   = isOverdueActive || isWeeklyActive;
+
+    const weeklyBtn  = document.getElementById('weeklyDeliveriesBtn');
+    const overdueBtn = document.getElementById('overdueBtn');
+    const print30Btn = document.querySelector(
+        '#accounting .controls-dropdown button[onclick*="printDeliveriesAndOverdue"]'
+    );
+
+    // «Поставки на неделю» прячем: если выбрана заявка ИЛИ активен режим «Просроченные»
+    if (weeklyBtn) {
+        if (isAppSelected || isOverdueActive) {
+            weeklyBtn.style.setProperty('display', 'none', 'important');
+        } else {
+            weeklyBtn.style.removeProperty('display');
+        }
+    }
+
+    // «Просроченные» прячем: если выбрана заявка ИЛИ активен режим «Поставки на неделю»
+    if (overdueBtn) {
+        if (isAppSelected || isWeeklyActive) {
+            overdueBtn.style.setProperty('display', 'none', 'important');
+        } else {
+            overdueBtn.style.removeProperty('display');
+        }
+    }
+
+    // «Поставки 30 дней» прячем: если выбрана заявка ИЛИ активен любой режим
+    if (print30Btn) {
+        if (isAppSelected || anyModeActive) {
+            print30Btn.style.setProperty('display', 'none', 'important');
+        } else {
+            print30Btn.style.removeProperty('display');
+        }
+    }
+}
+
+    /* Патчим updatePrintButtonVisibility, чтобы синхронно обновлять
+       и «Отчет», и три режимные кнопки */
+    function patchPrintButtonVisibility() {
+        if (typeof window.updatePrintButtonVisibility !== 'function') return false;
+        if (window.updatePrintButtonVisibility._modeBtnPatched) return true;
+
+        const original = window.updatePrintButtonVisibility;
+        const wrapped = function () {
+            const r = original.apply(this, arguments);
+            updateModeButtonsVisibility();
+            return r;
+        };
+        wrapped._modeBtnPatched = true;
+        window.updatePrintButtonVisibility = wrapped;
+        return true;
+    }
+
+    function init() {
+        if (!patchPrintButtonVisibility()) {
+            setTimeout(init, 200);
+            return;
+        }
+
+        const appFilter = document.getElementById('applicationFilter');
+        if (appFilter && !appFilter._modeBtnWired) {
+            appFilter._modeBtnWired = true;
+            appFilter.addEventListener('input', updateModeButtonsVisibility);
+            appFilter.addEventListener('change', updateModeButtonsVisibility);
+        }
+
+        document.addEventListener('click', function (e) {
+            if (e.target.closest('.quick-filter-btn')) {
+                setTimeout(updateModeButtonsVisibility, 60);
+            }
+            if (e.target.closest('.sidebar-cell.menu-item[data-page]')) {
+                setTimeout(updateModeButtonsVisibility, 250);
+                setTimeout(updateModeButtonsVisibility, 700);
+            }
+        });
+
+        setInterval(updateModeButtonsVisibility, 1500);
+        updateModeButtonsVisibility();
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => setTimeout(init, 600));
+    } else {
+        setTimeout(init, 600);
+    }
+})();
+</script>
+<script>
+/* ============================================================
+   Управление классом .app-selected на контейнере фильтров «Позиции»
+   Пока класс НЕ стоит — работает выравнивание кнопок под фильтрами.
+   Как только заявка выбрана — класс ставится, выравнивание отключается.
+   ============================================================ */
+(function () {
+    'use strict';
+
+    function isApplicationFilterActive() {
+        const input = document.getElementById('applicationFilter');
+        if (!input) return false;
+        const val = (input.value || '').trim();
+        if (val === '') return false;
+
+        // Совпадает с пунктом из datalist?
+        const datalist = document.getElementById('applicationsListFilter');
+        if (datalist) {
+            for (let i = 0; i < datalist.options.length; i++) {
+                if (datalist.options[i].value === val) return true;
+            }
+        }
+
+        // Или нажат быстрый фильтр по заявке (не «Все»)?
+        const activeQuickBtn = document.querySelector(
+            '#quickApplicationFilters .quick-filter-btn.active:not(.all-btn)'
+        );
+        return !!activeQuickBtn;
+    }
+
+    function sync() {
+        const container = document.querySelector('#accounting .controls-container');
+        if (!container) return;
+        container.classList.toggle('app-selected', isApplicationFilterActive());
+    }
+
+    // Экспортируем — вдруг понадобится из других скриптов
+    window.syncAccountingAppSelectedClass = sync;
+
+    document.addEventListener('input', function (e) {
+        if (e.target && e.target.id === 'applicationFilter') sync();
+    });
+
+    document.addEventListener('change', function (e) {
+        if (e.target && e.target.id === 'applicationFilter') sync();
+    });
+
+    document.addEventListener('click', function (e) {
+        // клик по кнопке быстрого фильтра
+        if (e.target.closest('.quick-filter-btn')) {
+            setTimeout(sync, 40);
+        }
+        // переход на страницу «Позиции»
+        if (e.target.closest('.sidebar-cell.menu-item[data-page]')) {
+            setTimeout(sync, 300);
+            setTimeout(sync, 800);
+        }
+    });
+
+    // Страховка на случай динамических изменений
+    setInterval(sync, 1000);
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => setTimeout(sync, 700));
+    } else {
+        setTimeout(sync, 700);
+    }
+})();
+</script>
+<script>
+/* ============================================================
+   Ставим класс .mode-active на .controls-container страницы «Позиции»,
+   когда активен режим «Просроченные» или «Поставки на неделю».
+   В этом режиме дропдаун переключается в обычный flex и кнопки тянутся.
+   ============================================================ */
+(function () {
+    'use strict';
+
+    function sync() {
+        const container = document.querySelector('#accounting .controls-container');
+        if (!container) return;
+
+        const overdueActive =
+            (typeof showOverdueMode !== 'undefined') && showOverdueMode;
+        const weeklyActive =
+            (typeof showWeeklyDeliveriesMode !== 'undefined') && showWeeklyDeliveriesMode;
+
+        container.classList.toggle('mode-active', !!(overdueActive || weeklyActive));
+    }
+
+    window.syncAccountingModeActiveClass = sync;
+
+    // Клик по режимным кнопкам — несколько задержек (режим меняется асинхронно)
+    document.addEventListener('click', function (e) {
+        if (e.target.closest('#overdueBtn, #weeklyDeliveriesBtn')) {
+            setTimeout(sync, 30);
+            setTimeout(sync, 150);
+            setTimeout(sync, 400);
+        }
+    });
+
+    // Сброс фильтров — режимы гасятся
+    document.addEventListener('click', function (e) {
+        if (e.target.closest('button[onclick*="clearAccountingFilters"]')) {
+            setTimeout(sync, 200);
+            setTimeout(sync, 600);
+        }
+    });
+
+    // Переход на страницу «Позиции» из других страниц
+    document.addEventListener('click', function (e) {
+        if (e.target.closest('.sidebar-cell.menu-item[data-page]')) {
+            setTimeout(sync, 300);
+            setTimeout(sync, 800);
+        }
+    });
+
+    // Страховка
+    setInterval(sync, 1500);
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => setTimeout(sync, 700));
+    } else {
+        setTimeout(sync, 700);
+    }
+})();
 </script>
 </body>
 </html>
