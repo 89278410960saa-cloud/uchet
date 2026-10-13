@@ -16861,5 +16861,264 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 })();
 </script>
+<script>
+/* ============================================================
+   При переводе платежа в статус «Оплачено» — предложить
+   автоматически обновить связанные позиции на странице «Позиции»:
+   - статус → «Поставка»
+   - дата утверждения → дата оплаты
+   - План → дата оплаты + срок поставки (deliveryDays)
+   ============================================================ */
+(function () {
+    'use strict';
+
+    /* ---------- 1. Модальное окно «Обновить позиции?» ---------- */
+    function ensureOfferModal() {
+        if (document.getElementById('offerUpdateAccountingModal')) return;
+
+        const modal = document.createElement('div');
+        modal.id = 'offerUpdateAccountingModal';
+        modal.className = 'modal';
+        modal.style.cssText =
+            'display:none; justify-content:center; align-items:center;' +
+            'padding:0 !important; padding-right:0 !important;' +
+            'background:rgba(0,0,0,0.65); z-index:1000001;';
+
+        modal.innerHTML = `
+            <div class="modal-content" style="
+                max-width: 540px !important;
+                width: auto !important;
+                min-width: 360px !important;
+                height: auto !important;
+                max-height: 85vh !important;
+                padding: 22px 26px !important;
+                border-radius: 8px !important;
+                box-shadow: 0 10px 40px rgba(0,0,0,0.7);
+                border: 1px solid #3d4450 !important;
+                overflow-y: auto !important;">
+                <h3 style="
+                    color: #66c0f4; margin: 0 0 14px 0; text-align: center;
+                    font-size: 16px; display: flex; align-items: center;
+                    justify-content: center; gap: 8px;">
+                    <span style="font-size: 22px;">💡</span>
+                    Обновить позиции по заявке?
+                </h3>
+                <p id="offerUpdateAccountingText" style="
+                    color: #c7d5e0; text-align: center; line-height: 1.55;
+                    margin: 0 0 16px 0; font-size: 13px;"></p>
+                <div id="offerUpdateAccountingList" style="
+                    background: rgba(42, 71, 94, 0.4);
+                    border: 1px solid #3d4450;
+                    border-radius: 5px;
+                    padding: 8px 12px;
+                    margin-bottom: 16px;
+                    max-height: 200px;
+                    overflow-y: auto;
+                    font-size: 12px;"></div>
+                <div style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
+                    <button type="button" id="offerUpdateAccountingYesBtn" style="
+                        padding: 8px 22px;
+                        background: linear-gradient(135deg, #5c7e10 0%, #4c6b22 100%);
+                        color: white; border: none; border-radius: 3px;
+                        cursor: pointer; font-weight: bold; font-size: 12px;">
+                        Да, установить «Поставка»
+                    </button>
+                    <button type="button" id="offerUpdateAccountingNoBtn" style="
+                        padding: 8px 22px;
+                        background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+                        color: white; border: none; border-radius: 3px;
+                        cursor: pointer; font-weight: bold; font-size: 12px;">
+                        Нет, оставить как есть
+                    </button>
+                </div>
+            </div>`;
+        document.body.appendChild(modal);
+    }
+
+    /* ---------- 2. Поиск связанных записей в Позициях ---------- */
+    function findMatchingAccounting(payment) {
+        const docNumber = (payment.docNumber || '').trim();
+        const contract  = (payment.contract  || '').trim();
+        const agreement = (payment.agreement || '').trim();
+        const supplier  = (payment.supplier  || '').trim();
+
+        return accountingData.filter(acc => {
+            // Основной ключ — заявка
+            if (docNumber && acc.docNumber === docNumber) {
+                if (supplier && acc.supplier && supplier !== acc.supplier) return false;
+                return true;
+            }
+            // Резервный ключ — договор / счёт
+            if (contract && acc.contract && acc.contract.trim() === contract) return true;
+            if (agreement && agreement !== '-' && acc.contract && acc.contract.trim() === agreement) return true;
+            return false;
+        });
+    }
+
+    /* ---------- 3. Хелпер: +N дней к дате DD.MM.YYYY ---------- */
+    function addDaysToDateString(dateStr, days) {
+        const d = parseDate(dateStr);
+        if (!d) return '';
+        d.setDate(d.getDate() + days);
+        return String(d.getDate()).padStart(2, '0') + '.' +
+               String(d.getMonth() + 1).padStart(2, '0') + '.' +
+               d.getFullYear();
+    }
+
+    /* ---------- 4. Применение изменений ---------- */
+    function applyPaidStatusToAccounting(matches, paymentDateStr) {
+        const paymentDate = parseDate(paymentDateStr);
+        let updated = 0;
+
+        matches.forEach(acc => {
+            // Не трогаем уже завершённые/принятые позиции
+            if (acc.status === 'Выполнено' || acc.status === 'Приход') return;
+
+            acc.status = 'Поставка';
+            acc.date   = paymentDateStr; // дата утверждения = дата оплаты
+
+            // План = дата оплаты + срок поставки
+            const days = parseInt(acc.deliveryDays, 10);
+            if (paymentDate && !isNaN(days) && days > 0) {
+                acc.planFact = addDaysToDateString(paymentDateStr, days);
+            }
+
+            updated++;
+        });
+
+        return updated;
+    }
+
+    /* ---------- 5. Показ модалки-предложения ---------- */
+    function showOfferModal(matches, payment) {
+        ensureOfferModal();
+        const modal = document.getElementById('offerUpdateAccountingModal');
+        const text  = document.getElementById('offerUpdateAccountingText');
+        const list  = document.getElementById('offerUpdateAccountingList');
+        const yes   = document.getElementById('offerUpdateAccountingYesBtn');
+        const no    = document.getElementById('offerUpdateAccountingNoBtn');
+
+        text.innerHTML =
+            `Платёж переведён в статус <b style="color:#8bc34a;">«Оплачено»</b>.<br>` +
+            `Найдено позиций по этой заявке: <b style="color:#66c0f4;">${matches.length}</b>.<br>` +
+            `Установить им статус <b style="color:#ffd700;">«Поставка»</b>, ` +
+            `дату утверждения — по дате оплаты, ` +
+            `а дату <b style="color:#ffd700;">«План»</b> — как «дата оплаты + срок поставки»?`;
+
+        // Список позиций с предварительным расчётом
+        let rows = '';
+        matches.forEach(acc => {
+            const days = parseInt(acc.deliveryDays, 10);
+            const planPreview = (payment.date && !isNaN(days) && days > 0)
+                ? addDaysToDateString(payment.date, days)
+                : null;
+
+            rows += `
+                <div style="padding: 6px 0; border-bottom: 1px solid rgba(61,68,80,0.5);">
+                    <div style="color:#c7d5e0; font-weight:bold; margin-bottom:2px;">
+                        ${escapeString(acc.id || '(без ID)')} — ${escapeString((acc.name || '').substring(0, 80))}
+                    </div>
+                    <div style="font-size:11px; color:#8f98a0;">
+                        Заявка: <b style="color:#c7d5e0;">${escapeString(acc.docNumber || '—')}</b> ·
+                        Текущий статус: <b style="color:#c7d5e0;">${escapeString(acc.status || '—')}</b> ·
+                        Срок поставки: <b style="color:#c7d5e0;">${acc.deliveryDays || '—'} дн.</b>
+                        ${planPreview
+                            ? ' · Будет План: <b style="color:#8bc34a;">' + planPreview + '</b>'
+                            : ' · <i style="color:#be463c;">План не будет установлен (нет срока поставки)</i>'}
+                    </div>
+                </div>`;
+        });
+        list.innerHTML = rows || '<div style="color:#8f98a0;">—</div>';
+
+        yes.onclick = function () {
+            const updated = applyPaidStatusToAccounting(matches, payment.date);
+
+            if (updated > 0) {
+                saveAllData();
+                if (typeof updateAccountingTable        === 'function') updateAccountingTable();
+                if (typeof filterAccountingTable        === 'function') filterAccountingTable();
+                if (typeof updateAllBadges              === 'function') updateAllBadges();
+                if (typeof updateOverdueButton          === 'function') updateOverdueButton();
+                if (typeof updateWeeklyDeliveriesButton === 'function') updateWeeklyDeliveriesButton();
+                if (typeof updateQuickFilters           === 'function') updateQuickFilters();
+                if (typeof updateSuppliersFilterList    === 'function') updateSuppliersFilterList();
+                if (typeof refreshStatusStatsIfOpen     === 'function') refreshStatusStatsIfOpen();
+                if (typeof markChangesMade              === 'function') markChangesMade();
+                if (typeof showAutosaveNotification     === 'function')
+                    showAutosaveNotification(`Обновлено позиций: ${updated}`);
+            } else {
+                if (typeof showAutosaveNotification === 'function')
+                    showAutosaveNotification('Нечего обновлять: позиции уже в статусе «Выполнено»/«Приход»');
+            }
+            modal.style.display = 'none';
+        };
+
+        no.onclick = function () { modal.style.display = 'none'; };
+
+        // Закрытие по клику на фон
+        modal.addEventListener('click', function (e) {
+            if (e.target === modal) modal.style.display = 'none';
+        });
+
+        modal.style.display = 'flex';
+    }
+
+    /* ---------- 6. Обёртка над savePaymentChanges ---------- */
+    function patchSavePayment() {
+        if (typeof window.savePaymentChanges !== 'function') {
+            setTimeout(patchSavePayment, 200);
+            return;
+        }
+        if (window.savePaymentChanges._paidOfferWrapped) return;
+
+        const original = window.savePaymentChanges;
+
+        const wrapped = function (event) {
+            if (event && typeof event.preventDefault === 'function') {
+                event.preventDefault();
+            }
+
+            // Снимок формы ДО сохранения (оригинал закроет и очистит модалку)
+            const newStatus = (document.getElementById('editPaymentStatus') || {}).value || '';
+            const rawDate   = (document.getElementById('editPaymentDate')   || {}).value || '';
+            const paymentDateStr = rawDate
+                ? (typeof formatDateForDisplay === 'function' ? formatDateForDisplay(rawDate) : rawDate)
+                : '';
+
+            const paymentSnapshot = {
+                status:    newStatus,
+                date:      paymentDateStr,
+                docNumber: ((document.getElementById('editPaymentApplication') || {}).value || '').trim(),
+                supplier:  ((document.getElementById('editPaymentSupplier')    || {}).value || '').trim(),
+                contract:  ((document.getElementById('editPaymentContract')    || {}).value || '').trim(),
+                agreement: ((document.getElementById('editPaymentAgreement')   || {}).value || '').trim()
+            };
+
+            // Сначала сохраняем платёж как обычно
+            original.call(this, event);
+
+            // Реагируем только на статус «Оплачено»
+            if (newStatus !== 'Оплачено') return;
+
+            // Ищем связанные позиции
+            const matches = findMatchingAccounting(paymentSnapshot);
+            if (!matches || matches.length === 0) return;
+
+            // Даём модалке платежа закрыться, затем показываем предложение
+            setTimeout(() => showOfferModal(matches, paymentSnapshot), 250);
+        };
+
+        wrapped._paidOfferWrapped = true;
+        window.savePaymentChanges = wrapped;
+    }
+
+    /* ---------- 7. Инициализация ---------- */
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => setTimeout(patchSavePayment, 900));
+    } else {
+        setTimeout(patchSavePayment, 900);
+    }
+})();
+</script>
 </body>
 </html>
