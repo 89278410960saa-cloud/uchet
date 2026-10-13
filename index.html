@@ -16988,7 +16988,7 @@ document.addEventListener('DOMContentLoaded', function () {
                d.getFullYear();
     }
 
-    /* ---------- 3. Поиск связанных позиций (СТРОГО: все 3 поля) ---------- */
+    /* ---------- 3. Поиск связанных позиций (СТРОГО: все 3 поля + статус «В работе») ---------- */
     function normalizeForMatch(v) {
         return (v == null ? '' : String(v)).trim().replace(/\s+/g, ' ').toLowerCase();
     }
@@ -17022,6 +17022,11 @@ document.addEventListener('DOMContentLoaded', function () {
             const accDocNumber = normalizeForMatch(acc.docNumber);
             const accSupplier  = normalizeForMatch(acc.supplier);
             const accContract  = normalizeForMatch(acc.contract);
+            const accStatus    = normalizeForMatch(acc.status);
+
+            // ★ Дополнительно: работаем ТОЛЬКО с позициями, у которых статус «В работе».
+            //   Все остальные статусы игнорируем.
+            if (accStatus !== 'в работе') return false;
 
             // Все три условия — обязательны (логическое И):
             if (accDocNumber !== docNumber) return false;   // 1) Заявка
