@@ -16863,101 +16863,130 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
 <script>
 /* ============================================================
-   При переводе платежа в статус «Оплачено» — предложить
-   автоматически обновить связанные позиции на странице «Позиции»:
-   - статус → «Поставка»
-   - дата утверждения → дата оплаты
-   - План → дата оплаты + срок поставки (deliveryDays)
+   При переводе платежа в статус «Оплачено» — показать ВНУТРИ
+   модального окна платежа панель с предложением установить
+   связанным позициям статус «Поставка».
+
+   Поиск связанных позиций:
+     1) по заявке (docNumber);
+     2) ИЛИ по контрагенту + счёту (contract);
+     3) ИЛИ по контрагенту + договору (agreement).
+
+   При согласии:
+     • статус              → «Поставка»
+     • дата утверждения    → дата оплаты
+     • План                → дата оплаты + срок поставки (deliveryDays)
    ============================================================ */
 (function () {
     'use strict';
 
-    /* ---------- 1. Модальное окно «Обновить позиции?» ---------- */
-    function ensureOfferModal() {
-        if (document.getElementById('offerUpdateAccountingModal')) return;
+    /* ---------- 1. Стили встроенной панели ---------- */
+    function injectStyles() {
+        if (document.getElementById('offerUpdateStyles')) return;
 
-        const modal = document.createElement('div');
-        modal.id = 'offerUpdateAccountingModal';
-        modal.className = 'modal';
-        modal.style.cssText =
-            'display:none; justify-content:center; align-items:center;' +
-            'padding:0 !important; padding-right:0 !important;' +
-            'background:rgba(0,0,0,0.65); z-index:1000001;';
-
-        modal.innerHTML = `
-            <div class="modal-content" style="
-                max-width: 540px !important;
-                width: auto !important;
-                min-width: 360px !important;
-                height: auto !important;
-                max-height: 85vh !important;
-                padding: 22px 26px !important;
-                border-radius: 8px !important;
-                box-shadow: 0 10px 40px rgba(0,0,0,0.7);
-                border: 1px solid #3d4450 !important;
-                overflow-y: auto !important;">
-                <h3 style="
-                    color: #66c0f4; margin: 0 0 14px 0; text-align: center;
-                    font-size: 16px; display: flex; align-items: center;
-                    justify-content: center; gap: 8px;">
-                    <span style="font-size: 22px;">💡</span>
-                    Обновить позиции по заявке?
-                </h3>
-                <p id="offerUpdateAccountingText" style="
-                    color: #c7d5e0; text-align: center; line-height: 1.55;
-                    margin: 0 0 16px 0; font-size: 13px;"></p>
-                <div id="offerUpdateAccountingList" style="
-                    background: rgba(42, 71, 94, 0.4);
-                    border: 1px solid #3d4450;
-                    border-radius: 5px;
-                    padding: 8px 12px;
-                    margin-bottom: 16px;
-                    max-height: 200px;
-                    overflow-y: auto;
-                    font-size: 12px;"></div>
-                <div style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
-                    <button type="button" id="offerUpdateAccountingYesBtn" style="
-                        padding: 8px 22px;
-                        background: linear-gradient(135deg, #5c7e10 0%, #4c6b22 100%);
-                        color: white; border: none; border-radius: 3px;
-                        cursor: pointer; font-weight: bold; font-size: 12px;">
-                        Да, установить «Поставка»
-                    </button>
-                    <button type="button" id="offerUpdateAccountingNoBtn" style="
-                        padding: 8px 22px;
-                        background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
-                        color: white; border: none; border-radius: 3px;
-                        cursor: pointer; font-weight: bold; font-size: 12px;">
-                        Нет, оставить как есть
-                    </button>
-                </div>
-            </div>`;
-        document.body.appendChild(modal);
-    }
-
-    /* ---------- 2. Поиск связанных записей в Позициях ---------- */
-    function findMatchingAccounting(payment) {
-        const docNumber = (payment.docNumber || '').trim();
-        const contract  = (payment.contract  || '').trim();
-        const agreement = (payment.agreement || '').trim();
-        const supplier  = (payment.supplier  || '').trim();
-
-        return accountingData.filter(acc => {
-            // Основной ключ — заявка
-            if (docNumber && acc.docNumber === docNumber) {
-                if (supplier && acc.supplier && supplier !== acc.supplier) return false;
-                return true;
+        const style = document.createElement('style');
+        style.id = 'offerUpdateStyles';
+        style.textContent = `
+            #editPaymentModal .modal-content {
+                position: relative;      /* база для absolute-панели */
             }
-            // Резервный ключ — договор / счёт
-            if (contract && acc.contract && acc.contract.trim() === contract) return true;
-            if (agreement && agreement !== '-' && acc.contract && acc.contract.trim() === agreement) return true;
-            return false;
-        });
+
+            #offerUpdatePanel {
+                position: absolute;
+                inset: 0;
+                background: rgba(8, 12, 20, 0.94);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 500;            /* выше формы и кнопки закрытия */
+                padding: 16px;
+                box-sizing: border-box;
+                animation: offerFadeIn 0.18s ease-out;
+            }
+            @keyframes offerFadeIn {
+                from { opacity: 0; }
+                to   { opacity: 1; }
+            }
+
+            #offerUpdatePanel .offer-inner {
+                background: linear-gradient(135deg, #1b2838 0%, #2a475e 100%);
+                border: 1px solid #3d4450;
+                border-radius: 8px;
+                padding: 18px 22px;
+                max-width: 560px;
+                width: 100%;
+                max-height: 100%;
+                overflow-y: auto;
+                box-shadow: 0 10px 40px rgba(0,0,0,0.75);
+                box-sizing: border-box;
+            }
+
+            #offerUpdatePanel .offer-title {
+                color: #66c0f4;
+                font-size: 15px;
+                font-weight: bold;
+                margin: 0 0 10px 0;
+                text-align: center;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+            }
+
+            #offerUpdatePanel .offer-desc {
+                color: #c7d5e0;
+                font-size: 12px;
+                line-height: 1.5;
+                text-align: center;
+                margin: 0 0 12px 0;
+            }
+
+            #offerUpdatePanel .offer-list {
+                background: rgba(42, 71, 94, 0.4);
+                border: 1px solid #3d4450;
+                border-radius: 5px;
+                padding: 6px 12px;
+                margin-bottom: 14px;
+                max-height: 240px;
+                overflow-y: auto;
+                font-size: 12px;
+            }
+
+            #offerUpdatePanel .offer-actions {
+                display: flex;
+                justify-content: center;
+                gap: 10px;
+                flex-wrap: wrap;
+            }
+            #offerUpdatePanel .offer-actions button {
+                padding: 7px 20px;
+                border: none;
+                border-radius: 3px;
+                cursor: pointer;
+                font-weight: bold;
+                font-size: 12px;
+                color: #fff;
+                transition: background 0.15s;
+            }
+            #offerUpdatePanel .offer-btn-yes {
+                background: linear-gradient(135deg, #5c7e10 0%, #4c6b22 100%);
+            }
+            #offerUpdatePanel .offer-btn-yes:hover {
+                background: linear-gradient(135deg, #6b8f12 0%, #5c7e10 100%);
+            }
+            #offerUpdatePanel .offer-btn-no {
+                background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+            }
+            #offerUpdatePanel .offer-btn-no:hover {
+                background: linear-gradient(135deg, #868e96 0%, #5a6268 100%);
+            }
+        `;
+        document.head.appendChild(style);
     }
 
-    /* ---------- 3. Хелпер: +N дней к дате DD.MM.YYYY ---------- */
+    /* ---------- 2. Хелпер: +N дней к дате DD.MM.YYYY ---------- */
     function addDaysToDateString(dateStr, days) {
-        const d = parseDate(dateStr);
+        const d = (typeof parseDate === 'function') ? parseDate(dateStr) : null;
         if (!d) return '';
         d.setDate(d.getDate() + days);
         return String(d.getDate()).padStart(2, '0') + '.' +
@@ -16965,19 +16994,49 @@ document.addEventListener('DOMContentLoaded', function () {
                d.getFullYear();
     }
 
-    /* ---------- 4. Применение изменений ---------- */
+    /* ---------- 3. Поиск связанных позиций ---------- */
+    function findMatchingAccounting(payment) {
+        if (typeof accountingData === 'undefined' || !Array.isArray(accountingData)) {
+            return [];
+        }
+
+        const docNumber = (payment.docNumber || '').trim();
+        const contract  = (payment.contract  || '').trim();
+        const agreement = (payment.agreement || '').trim();
+        const supplier  = (payment.supplier  || '').trim();
+
+        return accountingData.filter(acc => {
+            const accDocNumber = (acc.docNumber || '').trim();
+            const accContract  = (acc.contract  || '').trim();
+            const accSupplier  = (acc.supplier  || '').trim();
+
+            /* 1) По заявке (при необходимости — с уточнением по контрагенту) */
+            if (docNumber && accDocNumber === docNumber) {
+                if (supplier && accSupplier && supplier !== accSupplier) return false;
+                return true;
+            }
+
+            /* 2) По контрагенту + (счёт ИЛИ договор) */
+            if (supplier && accSupplier === supplier) {
+                if (contract && accContract && accContract === contract) return true;
+                if (agreement && agreement !== '-' && accContract && accContract === agreement) return true;
+            }
+
+            return false;
+        });
+    }
+
+    /* ---------- 4. Применение изменений к позициям ---------- */
     function applyPaidStatusToAccounting(matches, paymentDateStr) {
-        const paymentDate = parseDate(paymentDateStr);
+        const paymentDate = (typeof parseDate === 'function') ? parseDate(paymentDateStr) : null;
         let updated = 0;
 
         matches.forEach(acc => {
-            // Не трогаем уже завершённые/принятые позиции
             if (acc.status === 'Выполнено' || acc.status === 'Приход') return;
 
             acc.status = 'Поставка';
-            acc.date   = paymentDateStr; // дата утверждения = дата оплаты
+            acc.date   = paymentDateStr;
 
-            // План = дата оплаты + срок поставки
             const days = parseInt(acc.deliveryDays, 10);
             if (paymentDate && !isNaN(days) && days > 0) {
                 acc.planFact = addDaysToDateString(paymentDateStr, days);
@@ -16989,23 +17048,26 @@ document.addEventListener('DOMContentLoaded', function () {
         return updated;
     }
 
-    /* ---------- 5. Показ модалки-предложения ---------- */
-    function showOfferModal(matches, payment) {
-        ensureOfferModal();
-        const modal = document.getElementById('offerUpdateAccountingModal');
-        const text  = document.getElementById('offerUpdateAccountingText');
-        const list  = document.getElementById('offerUpdateAccountingList');
-        const yes   = document.getElementById('offerUpdateAccountingYesBtn');
-        const no    = document.getElementById('offerUpdateAccountingNoBtn');
+    /* ---------- 5. Показ встроенной панели внутри модалки ---------- */
+    function showInlinePanel(matches, payment, onConfirm, onCancel) {
+        injectStyles();
 
-        text.innerHTML =
-            `Платёж переведён в статус <b style="color:#8bc34a;">«Оплачено»</b>.<br>` +
-            `Найдено позиций по этой заявке: <b style="color:#66c0f4;">${matches.length}</b>.<br>` +
-            `Установить им статус <b style="color:#ffd700;">«Поставка»</b>, ` +
-            `дату утверждения — по дате оплаты, ` +
-            `а дату <b style="color:#ffd700;">«План»</b> — как «дата оплаты + срок поставки»?`;
+        const modalContent = document.querySelector('#editPaymentModal .modal-content');
+        if (!modalContent) {
+            // Не смогли найти контейнер — просто продолжаем без предложения
+            onCancel();
+            return;
+        }
 
-        // Список позиций с предварительным расчётом
+        // Убираем старую панель, если осталась от предыдущего открытия
+        const old = document.getElementById('offerUpdatePanel');
+        if (old) old.remove();
+
+        const esc = (typeof escapeString === 'function')
+            ? escapeString
+            : (s => s == null ? '' : String(s));
+
+        /* --- Список позиций --- */
         let rows = '';
         matches.forEach(acc => {
             const days = parseInt(acc.deliveryDays, 10);
@@ -17013,54 +17075,71 @@ document.addEventListener('DOMContentLoaded', function () {
                 ? addDaysToDateString(payment.date, days)
                 : null;
 
+            // ★ Наименование — из столбца «Наименование закупки»
+            const posName = acc.purchaseName || '';
+
             rows += `
                 <div style="padding: 6px 0; border-bottom: 1px solid rgba(61,68,80,0.5);">
                     <div style="color:#c7d5e0; font-weight:bold; margin-bottom:2px;">
-                        ${escapeString(acc.id || '(без ID)')} — ${escapeString((acc.name || '').substring(0, 80))}
+                        ${esc(acc.id || '(без ID)')} — ${esc(posName.substring(0, 120))}
                     </div>
                     <div style="font-size:11px; color:#8f98a0;">
-                        Заявка: <b style="color:#c7d5e0;">${escapeString(acc.docNumber || '—')}</b> ·
-                        Текущий статус: <b style="color:#c7d5e0;">${escapeString(acc.status || '—')}</b> ·
-                        Срок поставки: <b style="color:#c7d5e0;">${acc.deliveryDays || '—'} дн.</b>
+                        Заявка: <b style="color:#c7d5e0;">${esc(acc.docNumber || '—')}</b> ·
+                        Контрагент: <b style="color:#c7d5e0;">${esc(acc.supplier || '—')}</b> ·
+                        Статус: <b style="color:#c7d5e0;">${esc(acc.status || '—')}</b> ·
+                        Срок: <b style="color:#c7d5e0;">${acc.deliveryDays || '—'} дн.</b>
                         ${planPreview
-                            ? ' · Будет План: <b style="color:#8bc34a;">' + planPreview + '</b>'
+                            ? ' · План: <b style="color:#8bc34a;">' + planPreview + '</b>'
                             : ' · <i style="color:#be463c;">План не будет установлен (нет срока поставки)</i>'}
                     </div>
                 </div>`;
         });
-        list.innerHTML = rows || '<div style="color:#8f98a0;">—</div>';
 
-        yes.onclick = function () {
-            const updated = applyPaidStatusToAccounting(matches, payment.date);
+        /* --- Панель --- */
+        const panel = document.createElement('div');
+        panel.id = 'offerUpdatePanel';
+        panel.innerHTML = `
+            <div class="offer-inner">
+                <h4 class="offer-title">
+                    <span style="font-size: 20px;">💡</span>
+                    Установить статус «Поставка» ?
+                </h4>
+                <p class="offer-desc">
+                    Найдено позиций: <b style="color:#66c0f4;">${matches.length}</b><br>
+                    Им будет установлен статус <b style="color:#ffd700;">«Поставка»</b>,
+                    дата утверждения — по дате оплаты,
+                    а <b style="color:#ffd700;">«План»</b> — как «дата оплаты + срок поставки».
+                </p>
+                <div class="offer-list">${rows || '<div style="color:#8f98a0;">—</div>'}</div>
+                <div class="offer-actions">
+                    <button type="button" class="offer-btn-yes" id="offerBtnYes">Да, установить</button>
+                    <button type="button" class="offer-btn-no"  id="offerBtnNo">Нет, оставить как есть</button>
+                </div>
+            </div>
+        `;
+        modalContent.appendChild(panel);
 
-            if (updated > 0) {
-                saveAllData();
-                if (typeof updateAccountingTable        === 'function') updateAccountingTable();
-                if (typeof filterAccountingTable        === 'function') filterAccountingTable();
-                if (typeof updateAllBadges              === 'function') updateAllBadges();
-                if (typeof updateOverdueButton          === 'function') updateOverdueButton();
-                if (typeof updateWeeklyDeliveriesButton === 'function') updateWeeklyDeliveriesButton();
-                if (typeof updateQuickFilters           === 'function') updateQuickFilters();
-                if (typeof updateSuppliersFilterList    === 'function') updateSuppliersFilterList();
-                if (typeof refreshStatusStatsIfOpen     === 'function') refreshStatusStatsIfOpen();
-                if (typeof markChangesMade              === 'function') markChangesMade();
-                if (typeof showAutosaveNotification     === 'function')
-                    showAutosaveNotification(`Обновлено позиций: ${updated}`);
-            } else {
-                if (typeof showAutosaveNotification === 'function')
-                    showAutosaveNotification('Нечего обновлять: позиции уже в статусе «Выполнено»/«Приход»');
-            }
-            modal.style.display = 'none';
-        };
-
-        no.onclick = function () { modal.style.display = 'none'; };
-
-        // Закрытие по клику на фон
-        modal.addEventListener('click', function (e) {
-            if (e.target === modal) modal.style.display = 'none';
+        /* --- Обработчики кнопок --- */
+        panel.querySelector('#offerBtnYes').addEventListener('click', function () {
+            panel.remove();
+            onConfirm();
+        });
+        panel.querySelector('#offerBtnNo').addEventListener('click', function () {
+            panel.remove();
+            onCancel();
         });
 
-        modal.style.display = 'flex';
+        /* --- На время показа панели блокируем закрытие модалки кликом по фону --- */
+        const modalEl = document.getElementById('editPaymentModal');
+        if (modalEl && !modalEl._offerPanelGuard) {
+            modalEl._offerPanelGuard = function (e) {
+                if (document.getElementById('offerUpdatePanel') && e.target === modalEl) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+            };
+            modalEl.addEventListener('click', modalEl._offerPanelGuard, true);
+        }
     }
 
     /* ---------- 6. Обёртка над savePaymentChanges ---------- */
@@ -17078,7 +17157,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 event.preventDefault();
             }
 
-            // Снимок формы ДО сохранения (оригинал закроет и очистит модалку)
+            /* --- Снимок формы ДО сохранения --- */
             const newStatus = (document.getElementById('editPaymentStatus') || {}).value || '';
             const rawDate   = (document.getElementById('editPaymentDate')   || {}).value || '';
             const paymentDateStr = rawDate
@@ -17094,18 +17173,55 @@ document.addEventListener('DOMContentLoaded', function () {
                 agreement: ((document.getElementById('editPaymentAgreement')   || {}).value || '').trim()
             };
 
-            // Сначала сохраняем платёж как обычно
-            original.call(this, event);
+            /* --- Не «Оплачено» → просто сохраняем --- */
+            if (newStatus !== 'Оплачено') {
+                return original.call(this, event);
+            }
 
-            // Реагируем только на статус «Оплачено»
-            if (newStatus !== 'Оплачено') return;
-
-            // Ищем связанные позиции
+            /* --- Ищем связанные позиции --- */
             const matches = findMatchingAccounting(paymentSnapshot);
-            if (!matches || matches.length === 0) return;
 
-            // Даём модалке платежа закрыться, затем показываем предложение
-            setTimeout(() => showOfferModal(matches, paymentSnapshot), 250);
+            /* --- Нет связанных — просто сохраняем --- */
+            if (!matches || matches.length === 0) {
+                return original.call(this, event);
+            }
+
+            /* --- Показываем панель внутри модалки и ждём решения --- */
+            const self = this;
+            showInlinePanel(
+                matches,
+                paymentSnapshot,
+
+                /* Да */
+                function () {
+                    const updated = applyPaidStatusToAccounting(matches, paymentSnapshot.date);
+
+                    original.call(self, event);
+
+                    if (updated > 0) {
+                        if (typeof saveAllData               === 'function') saveAllData();
+                        if (typeof updateAccountingTable     === 'function') updateAccountingTable();
+                        if (typeof filterAccountingTable     === 'function') filterAccountingTable();
+                        if (typeof updateAllBadges           === 'function') updateAllBadges();
+                        if (typeof updateOverdueButton       === 'function') updateOverdueButton();
+                        if (typeof updateWeeklyDeliveriesButton === 'function') updateWeeklyDeliveriesButton();
+                        if (typeof updateQuickFilters        === 'function') updateQuickFilters();
+                        if (typeof updateSuppliersFilterList === 'function') updateSuppliersFilterList();
+                        if (typeof refreshStatusStatsIfOpen  === 'function') refreshStatusStatsIfOpen();
+                        if (typeof markChangesMade           === 'function') markChangesMade();
+                        if (typeof showAutosaveNotification  === 'function')
+                            showAutosaveNotification(`Обновлено позиций: ${updated}`);
+                    } else {
+                        if (typeof showAutosaveNotification === 'function')
+                            showAutosaveNotification('Нечего обновлять: позиции уже «Выполнено»/«Приход»');
+                    }
+                },
+
+                /* Нет */
+                function () {
+                    original.call(self, event);
+                }
+            );
         };
 
         wrapped._paidOfferWrapped = true;
