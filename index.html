@@ -5650,7 +5650,16 @@ if (factMonthFilter) {
     document.getElementById('departmentFilter').value = '';
     document.getElementById('applicationFilter').value = '';
     document.getElementById('supplierFilter').value = '';
-    document.getElementById('yearFilter').value = '';
+    const yearFilterEl = document.getElementById('yearFilter');
+if (yearFilterEl) {
+    const currentYear = new Date().getFullYear().toString();
+    const hasCurrentYear = Array.from(yearFilterEl.options)
+        .some(o => o.value === currentYear);
+    yearFilterEl.value = hasCurrentYear ? currentYear : '';
+    if (typeof updateFilterHighlight === 'function') {
+        updateFilterHighlight(yearFilterEl);
+    }
+}
     document.getElementById('applicationComment').value = '';
     document.getElementById('factMonthFilter').value = '';
     
@@ -6885,39 +6894,46 @@ function extractYearFromPaymentDate(dateString) {
 function updateYearsFilter() {
     const yearFilter = document.getElementById('yearFilter');
     if (!yearFilter) return;
-    
-    // Собираем уникальные года из всех заявок (столбец "Заявка")
+
+    // Собираем уникальные года из заявок
     const years = new Set();
-    
     accountingData.forEach(item => {
         const year = extractYearFromDocNumber(item.docNumber);
-        if (year) {
-            years.add(year);
-        }
+        if (year) years.add(year);
     });
-    
-    // Сохраняем текущее выбранное значение
+
+    // Запоминаем текущее выбранное значение
     const currentValue = yearFilter.value;
-    
-    // Очищаем опции, кроме первой ("Все года")
+
+    // Очищаем опции (кроме «Все года»)
     while (yearFilter.options.length > 1) {
         yearFilter.remove(1);
     }
-    
-    // Преобразуем Set в массив и сортируем по убыванию
+
     const sortedYears = Array.from(years).sort((a, b) => b - a);
-    
-    // Добавляем новые опции
+
     sortedYears.forEach(year => {
         const option = document.createElement('option');
         option.value = year;
         option.textContent = year;
         yearFilter.appendChild(option);
     });
-    
-    // Восстанавливаем выбранное значение
-    if (currentValue && sortedYears.includes(currentValue)) {
+
+    // ★ НОВОЕ: при первой инициализации ставим текущий год
+    if (!yearFilter.dataset.yearInitialized) {
+        const currentYear = new Date().getFullYear().toString();
+        if (sortedYears.includes(currentYear)) {
+            yearFilter.value = currentYear;
+        }
+        yearFilter.dataset.yearInitialized = '1';
+    } else if (currentValue && sortedYears.includes(currentValue)) {
+        // При последующих обновлениях сохраняем выбор пользователя
         yearFilter.value = currentValue;
+    }
+
+    // Обновляем подсветку активного фильтра
+    if (typeof updateFilterHighlight === 'function') {
+        updateFilterHighlight(yearFilter);
     }
 }
 function applyFixedAccountingTableLayout() {
