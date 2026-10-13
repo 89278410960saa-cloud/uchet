@@ -16994,35 +16994,47 @@ document.addEventListener('DOMContentLoaded', function () {
                d.getFullYear();
     }
 
-    /* ---------- 3. Поиск связанных позиций ---------- */
+    /* ---------- 3. Поиск связанных позиций (СТРОГО: все 3 поля) ---------- */
+    function normalizeForMatch(v) {
+        return (v == null ? '' : String(v)).trim().replace(/\s+/g, ' ').toLowerCase();
+    }
+
     function findMatchingAccounting(payment) {
         if (typeof accountingData === 'undefined' || !Array.isArray(accountingData)) {
             return [];
         }
 
-        const docNumber = (payment.docNumber || '').trim();
-        const contract  = (payment.contract  || '').trim();
-        const agreement = (payment.agreement || '').trim();
-        const supplier  = (payment.supplier  || '').trim();
+        const docNumber = normalizeForMatch(payment.docNumber);   // Заявка
+        const supplier  = normalizeForMatch(payment.supplier);    // Контрагент
+        const contract  = normalizeForMatch(payment.contract);    // Счёт
+        const agreement = normalizeForMatch(payment.agreement);   // Договор
+
+        // Документ для сравнения: приоритет у счёта, если он пуст — берём договор.
+        // Значение «-» (заглушка) не считается заполненным.
+        let paymentDoc = '';
+        if (contract) {
+            paymentDoc = contract;
+        } else if (agreement && agreement !== '-') {
+            paymentDoc = agreement;
+        }
+
+        /* ★ СТРОГО: все три поля должны быть заполнены в платеже.
+           Если хотя бы одно пустое — совпадений быть не может. */
+        if (!docNumber || !supplier || !paymentDoc) {
+            return [];
+        }
 
         return accountingData.filter(acc => {
-            const accDocNumber = (acc.docNumber || '').trim();
-            const accContract  = (acc.contract  || '').trim();
-            const accSupplier  = (acc.supplier  || '').trim();
+            const accDocNumber = normalizeForMatch(acc.docNumber);
+            const accSupplier  = normalizeForMatch(acc.supplier);
+            const accContract  = normalizeForMatch(acc.contract);
 
-            /* 1) По заявке (при необходимости — с уточнением по контрагенту) */
-            if (docNumber && accDocNumber === docNumber) {
-                if (supplier && accSupplier && supplier !== accSupplier) return false;
-                return true;
-            }
+            // Все три условия — обязательны (логическое И):
+            if (accDocNumber !== docNumber) return false;   // 1) Заявка
+            if (accSupplier  !== supplier)  return false;   // 2) Контрагент
+            if (accContract  !== paymentDoc) return false;  // 3) Счёт ИЛИ Договор
 
-            /* 2) По контрагенту + (счёт ИЛИ договор) */
-            if (supplier && accSupplier === supplier) {
-                if (contract && accContract && accContract === contract) return true;
-                if (agreement && agreement !== '-' && accContract && accContract === agreement) return true;
-            }
-
-            return false;
+            return true;
         });
     }
 
