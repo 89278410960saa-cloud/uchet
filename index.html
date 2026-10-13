@@ -16933,13 +16933,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 gap: 8px;
             }
 
-            #offerUpdatePanel .offer-desc {
-                color: #c7d5e0;
-                font-size: 12px;
-                line-height: 1.5;
-                text-align: center;
-                margin: 0 0 12px 0;
-            }
+           
 
             #offerUpdatePanel .offer-list {
                 background: rgba(42, 71, 94, 0.4);
@@ -17066,12 +17060,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const modalContent = document.querySelector('#editPaymentModal .modal-content');
         if (!modalContent) {
-            // Не смогли найти контейнер — просто продолжаем без предложения
             onCancel();
             return;
         }
 
-        // Убираем старую панель, если осталась от предыдущего открытия
+        // Убираем старую панель, если осталась
         const old = document.getElementById('offerUpdatePanel');
         if (old) old.remove();
 
@@ -17079,31 +17072,16 @@ document.addEventListener('DOMContentLoaded', function () {
             ? escapeString
             : (s => s == null ? '' : String(s));
 
-        /* --- Список позиций --- */
+        /* --- Список позиций: только ID и наименование закупки --- */
         let rows = '';
         matches.forEach(acc => {
-            const days = parseInt(acc.deliveryDays, 10);
-            const planPreview = (payment.date && !isNaN(days) && days > 0)
-                ? addDaysToDateString(payment.date, days)
-                : null;
-
-            // ★ Наименование — из столбца «Наименование закупки»
             const posName = acc.purchaseName || '';
 
             rows += `
                 <div style="padding: 6px 0; border-bottom: 1px solid rgba(61,68,80,0.5);">
-                    <div style="color:#c7d5e0; font-weight:bold; margin-bottom:2px;">
+                    <span style="color:#c7d5e0;">
                         ${esc(acc.id || '(без ID)')} — ${esc(posName.substring(0, 120))}
-                    </div>
-                    <div style="font-size:11px; color:#8f98a0;">
-                        Заявка: <b style="color:#c7d5e0;">${esc(acc.docNumber || '—')}</b> ·
-                        Контрагент: <b style="color:#c7d5e0;">${esc(acc.supplier || '—')}</b> ·
-                        Статус: <b style="color:#c7d5e0;">${esc(acc.status || '—')}</b> ·
-                        Срок: <b style="color:#c7d5e0;">${acc.deliveryDays || '—'} дн.</b>
-                        ${planPreview
-                            ? ' · План: <b style="color:#8bc34a;">' + planPreview + '</b>'
-                            : ' · <i style="color:#be463c;">План не будет установлен (нет срока поставки)</i>'}
-                    </div>
+                    </span>
                 </div>`;
         });
 
@@ -17113,15 +17091,8 @@ document.addEventListener('DOMContentLoaded', function () {
         panel.innerHTML = `
             <div class="offer-inner">
                 <h4 class="offer-title">
-                    <span style="font-size: 20px;">💡</span>
                     Установить статус «Поставка» ?
                 </h4>
-                <p class="offer-desc">
-                    Найдено позиций: <b style="color:#66c0f4;">${matches.length}</b><br>
-                    Им будет установлен статус <b style="color:#ffd700;">«Поставка»</b>,
-                    дата утверждения — по дате оплаты,
-                    а <b style="color:#ffd700;">«План»</b> — как «дата оплаты + срок поставки».
-                </p>
                 <div class="offer-list">${rows || '<div style="color:#8f98a0;">—</div>'}</div>
                 <div class="offer-actions">
                     <button type="button" class="offer-btn-yes" id="offerBtnYes">Да, установить</button>
