@@ -14462,7 +14462,22 @@ select.filter-active {
     transform: none !important;
 }
 </style>
-
+<style>
+/* ============================================================
+   Уменьшаем ширину модалок до размера окна GitHub-токена (640px)
+   ============================================================ */
+@media (min-width: 769px) {
+    #editCounterpartyModal .modal-content,
+    #editPaymentModal .modal-content,
+    #editProxyModal .modal-content,
+    #editSettlementModal .modal-content,
+    #editMailModal .modal-content {
+        max-width: 640px !important;
+        width: 60% !important;
+        min-width: 320px !important;
+    }
+}
+</style>
 <script>
 /* ===== Выпадающее меню «Ещё» в сайдбаре ===== */
 function toggleMoreMenu(event) {
