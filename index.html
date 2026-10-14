@@ -692,15 +692,31 @@ body:not(.app-ready) .main-content {
     width: 100% !important;
 }
 
-/* Новые ширины столбцов (8 столбцов) */
-#settlementTable th:nth-child(1), #settlementTable td:nth-child(1) { width: 70px !important; }  /* Дата = Статус */
-#settlementTable th:nth-child(2), #settlementTable td:nth-child(2) { width: 70px !important; }  /* Статус = Дата */
-#settlementTable th:nth-child(3), #settlementTable td:nth-child(3) { width: 100px !important; } /* Контрагент = Договор */
-#settlementTable th:nth-child(4), #settlementTable td:nth-child(4) { width: 100px !important; } /* Договор = Контрагент */
-#settlementTable th:nth-child(5), #settlementTable td:nth-child(5) { width: 150px !important; } /* Замечание = Примечание */
-#settlementTable th:nth-child(6), #settlementTable td:nth-child(6) { width: 100px !important; } /* № Исходящее */
-#settlementTable th:nth-child(7), #settlementTable td:nth-child(7) { width: 100px !important; } /* № Входящее */
-#settlementTable th:nth-child(8), #settlementTable td:nth-child(8) { width: 150px !important; } /* Примечание = Замечание */
+/* Новые ширины столбцов (9 столбцов) */
+#settlementTable th:nth-child(1), #settlementTable td:nth-child(1) { width: 60px !important; }  /* Дата (уменьшено) */
+#settlementTable th:nth-child(2), #settlementTable td:nth-child(2) { width: 60px !important; }  /* Статус (уменьшено) */
+#settlementTable th:nth-child(3), #settlementTable td:nth-child(3) { width: 100px !important; } /* Контрагент */
+#settlementTable th:nth-child(4), #settlementTable td:nth-child(4) { width: 95px !important; }  /* Договор (увеличено) */
+#settlementTable th:nth-child(5), #settlementTable td:nth-child(5) { width: 95px !important; }  /* Заявка (уменьшено, = Договор) */
+#settlementTable th:nth-child(6), #settlementTable td:nth-child(6) { width: 140px !important; } /* Замечание */
+#settlementTable th:nth-child(7), #settlementTable td:nth-child(7) { width: 70px !important; }  /* № Исходящее */
+#settlementTable th:nth-child(8), #settlementTable td:nth-child(8) { width: 70px !important; }  /* № Входящее */
+#settlementTable th:nth-child(9), #settlementTable td:nth-child(9) { width: 140px !important; } /* Примечание */
+
+/* Перенос длинных номеров договоров в Рекламациях */
+#settlementTable td:nth-child(4) {
+    white-space: normal !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+}
+#settlementTable td:nth-child(4) a {
+    white-space: normal !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+    display: inline-block;
+    max-width: 100%;
+}
+
 /* Для таблицы учета - более сложное распределение */
 #accountingTable th {
     width: auto !important;
@@ -3446,18 +3462,19 @@ button:hover{background:#222733!important}
             <table id="settlementTable" style="table-layout: fixed;">
 <thead>
     <tr>
-        <th style="width: 70px;">Дата</th>
-        <th style="width: 70px;">Статус</th>
+        <th style="width: 60px;">Дата</th>
+        <th style="width: 60px;">Статус</th>
         <th style="width: 100px;">Контрагент</th>
-        <th style="width: 100px;">Договор</th>
-        <th style="width: 150px;">Замечание</th>
-        <th style="width: 100px;">№ Исходящее</th>
-        <th style="width: 100px;">№ Входящее</th>
-        <th style="width: 150px;">Примечание</th>
+        <th style="width: 95px;">Договор</th>
+        <th style="width: 95px;">Заявка</th>
+        <th style="width: 140px;">Замечание</th>
+        <th style="width: 70px;">№ Исходящее</th>
+        <th style="width: 70px;">№ Входящее</th>
+        <th style="width: 140px;">Примечание</th>
     </tr>
 </thead>
                 <tbody id="settlementTableBody"><tr>
-                    <td colspan="8" style="text-align: center; color: rgb(143, 152, 160); padding: 20px; width: 134px;">
+                    <td colspan="9" style="text-align: center; color: rgb(143, 152, 160); padding: 20px; width: 134px;">
                         Нет данных об урегулировании. Добавьте первую запись.
                     </td>
                 </tr></tbody>
@@ -3889,6 +3906,10 @@ button:hover{background:#222733!important}
                 <div style="margin-bottom: 10.05px;">
                  <label>Договор:</label>
                 <input type="text" id="editSettlementContract" list="contractsList" style="width: 100%;" placeholder="Номер договора" class="datalist-input">
+                </div>
+                <div style="margin-bottom: 10.05px;">
+                <label>Заявка:</label>
+                <input list="applicationsList" id="editSettlementApplication" class="datalist-input" style="width: 100%;" placeholder="Номер заявки">
                 </div>
                 <div style="margin-bottom: 10.05px;">
                     <label>Замечание:</label>
@@ -8258,7 +8279,7 @@ function formatCurrency(value) {
         const emptyRow = document.createElement('tr');
         emptyRow.setAttribute('data-no-data', 'true');
         emptyRow.innerHTML = `
-            <td colspan="8" style="text-align: center; color: #8f98a0; padding: 20px;">
+            <td colspan="9" style="text-align: center; color: #8f98a0; padding: 20px;">
                 Нет данных об урегулировании. Добавьте первую запись.
             </td>
         `;
@@ -8283,13 +8304,34 @@ function formatCurrency(value) {
         row.classList.add('clickable-row');
         if (!isAdmin) row.classList.add('guest-mode');
 
-        const displayDate = item.date ? item.date : '';
-        
+const displayDate = item.date ? item.date : '';
+
+        // ─── Формируем ссылку на договор (фильтрация → Позиции) ───
+        const contractText = item.contract || '';
+        const supplierText = item.supplier || '';
+        const applicationText = item.docNumber || '';
+
+        let contractHtml = '';
+        if (contractText && contractText.trim() !== '' && contractText.trim() !== '-') {
+            contractHtml =
+                `<a href="#" class="contract-filter-link"` +
+                ` data-contract="${encodeURIComponent(contractText)}"` +
+                ` data-supplier="${encodeURIComponent(supplierText)}"` +
+                ` data-application="${encodeURIComponent(applicationText)}"` +
+                ` title="Показать позиции этой заявки у этого контрагента по этому договору"` +
+                ` style="color:#66c0f4; text-decoration:underline; cursor:pointer;` +
+                `        word-break:break-word; white-space:normal; display:inline-block; max-width:100%;">` +
+                `${escapeString(contractText)}</a>`;
+        } else {
+            contractHtml = escapeString(contractText);
+        }
+
         row.innerHTML = `
     <td>${displayDate}</td>
     <td>${escapeString(item.status || '')}</td>
     <td>${escapeString(item.supplier || '')}</td>
-    <td>${escapeString(item.contract || '')}</td>
+    <td>${contractHtml}</td>
+    <td>${escapeString(item.docNumber || '')}</td>
     <td>${escapeString(item.remark || '')}</td>
     <td>${escapeString(item.outgoing || '')}</td>
     <td>${escapeString(item.incoming || '')}</td>
@@ -8413,6 +8455,7 @@ function formatCurrency(value) {
     document.getElementById('editSettlementStatus').value = item.status || 'В работе';
     document.getElementById('editSettlementSupplier').value = item.supplier || '';
     document.getElementById('editSettlementContract').value = item.contract || '';
+    document.getElementById('editSettlementApplication').value = item.docNumber || '';
     document.getElementById('editSettlementRemark').value = item.remark || '';
     document.getElementById('editSettlementOutgoing').value = item.outgoing || '';
     document.getElementById('editSettlementIncoming').value = item.incoming || '';
@@ -8440,6 +8483,7 @@ function formatCurrency(value) {
         status: document.getElementById('editSettlementStatus').value,
         supplier: document.getElementById('editSettlementSupplier').value,
         contract: document.getElementById('editSettlementContract').value,
+        docNumber: document.getElementById('editSettlementApplication').value,
         remark: document.getElementById('editSettlementRemark').value,
         outgoing: document.getElementById('editSettlementOutgoing').value,
         incoming: document.getElementById('editSettlementIncoming').value
