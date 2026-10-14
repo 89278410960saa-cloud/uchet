@@ -1082,16 +1082,136 @@ body:not(.app-ready) .main-content {
     padding-top: 13.4px;
 }
 
-/* Анимация загрузки */
+/* ============================================================
+   ЗАГРУЗКА ПРИ ВХОДЕ — ПЕРЕЛИВАНИЕ ВСЕЙ СТРАНИЦЫ + СКЕЛЕТОНЫ
+   ============================================================ */
 .login-loading {
     display: none;
-    margin-top: 13.4px;
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    background: rgba(15, 17, 21, 0.96);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    overflow: hidden;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
 }
 
 .login-loading.active {
     display: block;
+    opacity: 1;
 }
 
+/* Диагональный световой поток, проходящий по всей странице */
+.login-loading::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        115deg,
+        transparent 0%,
+        transparent 38%,
+        rgba(102, 192, 244, 0.02) 44%,   /* ← было 0.06 */
+        rgba(102, 192, 244, 0.12) 50%,   /* ← было 0.30 */
+        rgba(102, 192, 244, 0.02) 56%,   /* ← было 0.06 */
+        transparent 62%,
+        transparent 100%
+    );
+    background-size: 250% 250%;
+    animation: pageSweep 4s linear infinite;   /* ← было 2s */
+    pointer-events: none;
+    will-change: background-position;
+}
+
+/* Мягкое пульсирующее свечение из центра */
+.login-loading::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+        ellipse at center,
+        rgba(102, 192, 244, 0.05) 0%,   /* ← было 0.10 */
+        transparent 60%
+    );
+    animation: bgPulse 3s ease-in-out infinite;   /* ← было 1.8s */
+    pointer-events: none;
+}
+
+@keyframes pageSweep {
+    0%   { background-position: 200% 200%; }
+    100% { background-position: -100% -100%; }
+}
+
+@keyframes bgPulse {
+    0%, 100% { opacity: 0.5; }
+    50%      { opacity: 1; }
+}
+
+/* Контейнер со скелетонами — размер как у .login-container
+   (max-width: 402px, внутренние отступы 40.2 / 26.8) */
+.shimmer-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: min(402px, calc(100vw - 26.8px));
+    padding: 40.2px 26.8px;
+    box-sizing: border-box;
+    z-index: 2;
+}
+
+.shimmer-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 28px;
+}
+
+.shimmer-bar {
+    height: 12px;
+    border-radius: 6px;
+    background: linear-gradient(
+        90deg,
+        rgba(102, 192, 244, 0.02) 0%,
+        rgba(102, 192, 244, 0.16) 50%,
+        rgba(102, 192, 244, 0.02) 100%
+    );
+    background-size: 200% 100%;
+    animation: barShimmer 3.2s ease-in-out infinite;   /* ← было 1.6s */
+    margin: 0 auto;
+    will-change: background-position;
+}
+
+.shimmer-bar:nth-child(1) { animation-delay: 0s; }
+.shimmer-bar:nth-child(2) { animation-delay: 0.24s; }
+.shimmer-bar:nth-child(3) { animation-delay: 0.48s; }
+.shimmer-bar:nth-child(4) { animation-delay: 0.72s; }
+.shimmer-bar:nth-child(5) { animation-delay: 0.96s; }
+.shimmer-bar:nth-child(6) { animation-delay: 1.20s; }
+
+@keyframes barShimmer {
+    0%   { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+.loading-text {
+    color: #66c0f4;
+    text-align: center;
+    font-size: 13px;
+    letter-spacing: 4px;
+    font-weight: 500;
+    margin: 0;
+    animation: textPulse 3s ease-in-out infinite;   /* ← было 1.6s */
+}
+
+@keyframes textPulse {
+    0%, 100% { opacity: 0.25; }   /* ← было 0.4 */
+    50%      { opacity: 0.85; }   /* ← было 1 */
+}
+
+/* Прежний спиннер оставляем на случай использования в других местах */
 .loading-spinner {
     width: 26.8px;
     height: 26.8px;
@@ -12598,9 +12718,18 @@ function resetAllFilters() {
         <button class="start-button" id="startButton" onclick="startApplication()"> ВОЙТИ </button>
         
         <div class="login-loading" id="loginLoading">
-            <div class="loading-spinner"></div>
-            <p style="color: #66c0f4; margin-top: 10px;">Загрузка системы...</p>
+    <div class="shimmer-content">
+        <div class="shimmer-bars">
+            <div class="shimmer-bar" style="width: 55%;"></div>
+            <div class="shimmer-bar" style="width: 90%;"></div>
+            <div class="shimmer-bar" style="width: 75%;"></div>
+            <div class="shimmer-bar" style="width: 85%;"></div>
+            <div class="shimmer-bar" style="width: 60%;"></div>
+            <div class="shimmer-bar" style="width: 70%;"></div>
         </div>
+        <p class="loading-text">ЗАГРУЗКА СИСТЕМЫ...</p>
+    </div>
+</div>
         
        <div class="login-footer">
     <p style="font-size: 12px; margin-top: 5px;">
