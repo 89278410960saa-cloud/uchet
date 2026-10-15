@@ -14650,6 +14650,121 @@ select.filter-active {
         min-width: 320px !important;
     }
 }
+
+<!-- ============================================================
+     МОБИЛЬНАЯ ВЁРСТКА ФОРМЫ «УЧЁТ ЗАКУПКИ»
+     — 2 колонки полей на узких экранах
+     ============================================================ -->
+<style>
+@media (max-width: 768px) {
+
+    /* -------- Общие правила для модалок (страховка) -------- */
+    .modal {
+        padding-right: 0 !important;
+        padding: 8px !important;
+        justify-content: center !important;
+        align-items: center !important;
+    }
+    .modal-content {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        height: 100% !important;
+        max-height: 100% !important;
+        border-radius: 6px !important;
+        box-sizing: border-box !important;
+    }
+
+    /* -------- Специфика модалки «Позиции» -------- */
+    #editAccountingModal .modal-content {
+        padding: 12px !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+    }
+
+    /* Таблица превращается в grid-контейнер */
+    #editAccountingModal form > table {
+        display: block !important;
+        width: 100% !important;
+        border-collapse: initial !important;
+        margin-bottom: 10px !important;
+    }
+    #editAccountingModal form > table > tbody {
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 8px 8px !important;
+        width: 100% !important;
+    }
+
+    /* Строки «исчезают» — их td становятся элементами grid */
+    #editAccountingModal form > table > tbody > tr {
+        display: contents !important;
+    }
+
+    /* Ячейки — обычные блоки, на всю ширину своей колонки */
+    #editAccountingModal form > table > tbody > tr > td {
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        box-sizing: border-box !important;
+        vertical-align: top !important;
+        /* убираем старые инлайновые проценты ширины */
+    }
+
+    /* Textarea (Наименование позиции / Наименование закупки) — на обе колонки */
+    #editAccountingModal form > table > tbody > tr > td:has(textarea) {
+        grid-column: 1 / -1 !important;
+    }
+
+    /* Все поля — на всю ширину своей ячейки */
+    #editAccountingModal form > table input,
+    #editAccountingModal form > table select,
+    #editAccountingModal form > table textarea {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Высота инпутов/селектов — удобнее нажимать пальцем */
+    #editAccountingModal form > table input,
+    #editAccountingModal form > table select {
+        height: 30px !important;
+        font-size: 12px !important;
+    }
+
+    /* Textarea — растягивается по контенту */
+    #editAccountingModal form > table textarea {
+        min-height: 70px !important;
+        height: auto !important;
+        font-size: 12px !important;
+    }
+
+    /* Метки полей — чуть крупнее и с меньшим отступом */
+    #editAccountingModal form > table label {
+        font-size: 11px !important;
+        margin-bottom: 3px !important;
+    }
+
+    /* -------- Общий контейнер страницы (страховка) -------- */
+    .container {
+        padding-left: 6px !important;
+        padding-right: 6px !important;
+    }
+}
+
+/* -------- Совсем узкие экраны: уменьшаем gap, чтобы поля были шире -------- */
+@media (max-width: 420px) {
+    #editAccountingModal form > table > tbody {
+        gap: 6px 6px !important;
+    }
+    #editAccountingModal .modal-content {
+        padding: 8px !important;
+    }
+}
 </style>
 <script>
 /* ===== Выпадающее меню «Ещё» в сайдбаре ===== */
@@ -15850,12 +15965,19 @@ function initFiltersHighlight() {
         if (document.getElementById('bulkEditModal')) return;
 
         const fields = [
-            { field: 'status',      label: 'Статус:',           type: 'select', options: ['В работе','Поставка','Приход','Выполнено','Иное'] },
-            { field: 'date',        label: 'Дата утверждения:', type: 'date' },
-            { field: 'planFact',    label: 'План:',             type: 'date' },
-            { field: 'fact',        label: 'Факт:',             type: 'date' },
-            { field: 'shipmentDoc', label: 'Документ:',         type: 'datalist', list: 'shipmentDocsList' }
-        ];
+    { field: 'status',        label: 'Статус:',           type: 'select',   options: ['В работе','Поставка','Приход','Выполнено','Иное'] },
+    { field: 'date',          label: 'Дата утверждения:', type: 'date' },
+    { field: 'planFact',      label: 'План:',             type: 'date' },
+    { field: 'fact',          label: 'Факт:',             type: 'date' },
+    { field: 'shipmentDoc',   label: 'Документ:',         type: 'datalist', list: 'shipmentDocsList' },
+
+    /* ===== НОВЫЕ ПОЛЯ ===== */
+    { field: 'supplier',      label: 'Контрагент:',       type: 'datalist', list: 'suppliersList' },
+    { field: 'contract',      label: 'Договор:',          type: 'datalist', list: 'contractsList' },
+    { field: 'paymentTerms',  label: 'Оплата:',           type: 'datalist', list: 'paymentTermsList' },
+    { field: 'deliveryTerms', label: 'Условие поставки:', type: 'select',   options: ['', 'Включена', 'Самовывоз', 'Терминал'] },
+    { field: 'deliveryDays',  label: 'Срок поставки:',    type: 'number' }
+];
 
         let rowsHTML = '';
         fields.forEach(r => {
@@ -15965,11 +16087,18 @@ function initFiltersHighlight() {
         const set = (id, val) => { const el = document.getElementById(id); if (el) el.value = val; };
         const fmt = (v) => (typeof formatDateForInput === 'function' ? formatDateForInput(v) : v || '');
 
-        set('bulk_status',      first.status       || 'В работе');
-        set('bulk_date',        fmt(first.date));
-        set('bulk_planFact',    fmt(first.planFact));
-        set('bulk_fact',        fmt(first.fact));
-        set('bulk_shipmentDoc', first.shipmentDoc  || '');
+        set('bulk_status',        first.status        || 'В работе');
+set('bulk_date',          fmt(first.date));
+set('bulk_planFact',      fmt(first.planFact));
+set('bulk_fact',          fmt(first.fact));
+set('bulk_shipmentDoc',   first.shipmentDoc   || '');
+
+/* ===== НОВЫЕ ПОЛЯ ===== */
+set('bulk_supplier',      first.supplier      || '');
+set('bulk_contract',      first.contract      || '');
+set('bulk_paymentTerms',  first.paymentTerms  || '');
+set('bulk_deliveryTerms', first.deliveryTerms || '');
+set('bulk_deliveryDays',  first.deliveryDays  || '');
 
         document.getElementById('bulkEditCount').textContent = ids.length;
         document.getElementById('bulkEditModal').style.display = 'flex';
