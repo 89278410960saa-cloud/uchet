@@ -14682,11 +14682,14 @@ select.filter-active {
         overflow-x: hidden !important;
     }
 
-    /* Таблица превращается в grid-контейнер */
+    /* ===== Убираем «решётку»: фон и рамки таблицы-обёртки ===== */
     #editAccountingModal form > table {
         display: block !important;
         width: 100% !important;
+        background: transparent !important;
+        border: none !important;
         border-collapse: initial !important;
+        border-spacing: 0 !important;
         margin-bottom: 10px !important;
     }
     #editAccountingModal form > table > tbody {
@@ -14699,9 +14702,10 @@ select.filter-active {
     /* Строки «исчезают» — их td становятся элементами grid */
     #editAccountingModal form > table > tbody > tr {
         display: contents !important;
+        border: none !important;
     }
 
-    /* Ячейки — обычные блоки, на всю ширину своей колонки */
+    /* ===== Ячейки: без рамок и фона, только контент ===== */
     #editAccountingModal form > table > tbody > tr > td {
         display: block !important;
         width: 100% !important;
@@ -14711,7 +14715,9 @@ select.filter-active {
         margin: 0 !important;
         box-sizing: border-box !important;
         vertical-align: top !important;
-        /* убираем старые инлайновые проценты ширины */
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
     }
 
     /* Textarea (Наименование позиции / Наименование закупки) — на обе колонки */
@@ -14729,24 +14735,30 @@ select.filter-active {
         box-sizing: border-box !important;
     }
 
-    /* Высота инпутов/селектов — удобнее нажимать пальцем */
+    /* ===== Высота полей — как в остальных модалках (25px) ===== */
     #editAccountingModal form > table input,
     #editAccountingModal form > table select {
-        height: 30px !important;
+        height: 25px !important;
+        min-height: 25px !important;
+        max-height: 25px !important;
+        padding: 2px 6px !important;
         font-size: 12px !important;
+        line-height: 1.2 !important;
     }
 
-    /* Textarea — растягивается по контенту */
+    /* Textarea — по контенту, чуть выше обычного поля */
     #editAccountingModal form > table textarea {
-        min-height: 70px !important;
+        min-height: 60px !important;
         height: auto !important;
+        padding: 4px 6px !important;
         font-size: 12px !important;
     }
 
-    /* Метки полей — чуть крупнее и с меньшим отступом */
+    /* Метки полей */
     #editAccountingModal form > table label {
         font-size: 11px !important;
-        margin-bottom: 3px !important;
+        margin-bottom: 2px !important;
+        display: block !important;
     }
 
     /* -------- Общий контейнер страницы (страховка) -------- */
@@ -14756,7 +14768,7 @@ select.filter-active {
     }
 }
 
-/* -------- Совсем узкие экраны: уменьшаем gap, чтобы поля были шире -------- */
+/* -------- Совсем узкие экраны: уменьшаем gap -------- */
 @media (max-width: 420px) {
     #editAccountingModal form > table > tbody {
         gap: 6px 6px !important;
