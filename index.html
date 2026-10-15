@@ -14650,7 +14650,7 @@ select.filter-active {
         min-width: 320px !important;
     }
 }
-
+</style>
 <!-- ============================================================
      МОБИЛЬНАЯ ВЁРСТКА ФОРМЫ «УЧЁТ ЗАКУПКИ»
      — 2 колонки полей на узких экранах
@@ -16087,18 +16087,20 @@ function initFiltersHighlight() {
         const set = (id, val) => { const el = document.getElementById(id); if (el) el.value = val; };
         const fmt = (v) => (typeof formatDateForInput === 'function' ? formatDateForInput(v) : v || '');
 
-        set('bulk_status',        first.status        || 'В работе');
+set('bulk_status',        first.status        || 'В работе');
 set('bulk_date',          fmt(first.date));
 set('bulk_planFact',      fmt(first.planFact));
 set('bulk_fact',          fmt(first.fact));
 set('bulk_shipmentDoc',   first.shipmentDoc   || '');
 
-/* ===== НОВЫЕ ПОЛЯ ===== */
-set('bulk_supplier',      first.supplier      || '');
-set('bulk_contract',      first.contract      || '');
-set('bulk_paymentTerms',  first.paymentTerms  || '');
-set('bulk_deliveryTerms', first.deliveryTerms || '');
-set('bulk_deliveryDays',  first.deliveryDays  || '');
+/* ===== НОВЫЕ ПОЛЯ ===== 
+   Всегда пустые: у разных позиций эти значения могут отличаться,
+   поэтому автоподстановка из первой записи отключена. */
+set('bulk_supplier',      '');
+set('bulk_contract',      '');
+set('bulk_paymentTerms',  '');
+set('bulk_deliveryTerms', '');
+set('bulk_deliveryDays',  '');
 
         document.getElementById('bulkEditCount').textContent = ids.length;
         document.getElementById('bulkEditModal').style.display = 'flex';
