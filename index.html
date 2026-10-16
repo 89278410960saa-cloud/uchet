@@ -2633,9 +2633,19 @@ tr.status-supply {
     background: linear-gradient(135deg, #2a475e 0%, #1f3549 100%) !important;
 }
 #statusStatsModal .modal-content {
-    max-height: 85vh;          /* чуть больше, но не во всю высоту экрана */
-    overflow-y: auto;          /* прокрутка только внутри окна, страница не скроллится */
+    max-width: 640px !important;   /* как у остальных модалок */
+    width: 60% !important;         /* как у остальных модалок */
+    min-width: 320px !important;   /* как у остальных модалок */
+    max-height: 85vh;              /* чуть больше, но не во всю высоту экрана */
+    overflow-y: auto;              /* прокрутка только внутри окна, страница не скроллится */
     padding: 8px 12px !important;  /* уменьшенные отступы */
+}
+@media (max-width: 768px) {
+    #statusStatsModal .modal-content {
+        max-width: 100% !important;
+        width: 100% !important;
+        min-width: 0 !important;
+    }
 }
 
 #statusStatsModal h2 {
@@ -5179,6 +5189,7 @@ if (contractText && contractText.trim() !== '-' && contractText.trim() !== '') {
                        data-contract="${encodeURIComponent(contractText)}" 
                        data-supplier="${encodeURIComponent(supplier)}" 
                        data-application="${encodeURIComponent(application)}" 
+                       title="Показать платеж"
                        style="color: #66c0f4; text-decoration: underline; cursor: pointer;">
                        ${escapeString(contractText)}
                     </a>`;
@@ -5199,7 +5210,12 @@ if (matchingPaymentPlan) {
     contractPaymentCell.style.position = 'relative';
     const indicator = document.createElement('span');
     indicator.className = 'payment-plan-indicator';
-    if (isPaymentOverdue) indicator.classList.add('overdue');
+    if (isPaymentOverdue) {
+        indicator.classList.add('overdue');
+        indicator.title = 'Заказ создан, просрочен';
+    } else {
+        indicator.title = 'Заказ создан';
+    }
     contractPaymentCell.appendChild(indicator);
 }
 
@@ -5218,7 +5234,12 @@ if (matchingProxy) {
     deliveryCell.style.position = 'relative';
     const indicator = document.createElement('span');
     indicator.className = 'payment-plan-indicator';
-    if (isProxyOverdue) indicator.classList.add('overdue');
+    if (isProxyOverdue) {
+        indicator.classList.add('overdue');
+        indicator.title = 'Заказ создан, просрочен';
+    } else {
+        indicator.title = 'Заказ создан';
+    }
     deliveryCell.appendChild(indicator);
 }
 
@@ -7875,12 +7896,12 @@ function updateSuppliersFilterList() {
         const applicationAttr = `data-application="${encodeURIComponent(item.docNumber || '')}"`;
 
 if (foundInAccounting && contractText) {
-    contractHtml = `<a href="#" class="contract-filter-link" data-contract="${encodeURIComponent(contractText)}" data-supplier="${encodeURIComponent(supplier)}" ${applicationAttr} style="color: #66c0f4; text-decoration: underline; cursor: pointer;">${escapeString(contractText)}</a>`;
+    contractHtml = `<a href="#" class="contract-filter-link" data-contract="${encodeURIComponent(contractText)}" data-supplier="${encodeURIComponent(supplier)}" ${applicationAttr} title="Показать позиции" style="...">${escapeString(contractText)}</a>`;
     agreementHtml = escapeString(agreementText);
 } else {
     contractHtml = escapeString(contractText);
     if (agreementText && agreementText.trim() !== '-') {
-        agreementHtml = `<a href="#" class="contract-filter-link" data-contract="${encodeURIComponent(agreementText)}" data-supplier="${encodeURIComponent(supplier)}" ${applicationAttr} style="color: #66c0f4; text-decoration: underline; cursor: pointer;">${escapeString(agreementText)}</a>`;
+        agreementHtml = `<a href="#" class="contract-filter-link" data-contract="${encodeURIComponent(agreementText)}" data-supplier="${encodeURIComponent(supplier)}" ${applicationAttr} title="Показать позиции" style="...">${escapeString(agreementText)}</a>`;
     } else {
         agreementHtml = escapeString(agreementText);
     }
@@ -8937,7 +8958,7 @@ const docCell = row.querySelector('td:nth-child(5)');
 if (docCell) {
     const docText = item.contract || '';
     if (docText) {
-        docCell.innerHTML = `<a href="#" class="contract-filter-link" data-contract="${encodeURIComponent(docText)}" data-supplier="${encodeURIComponent(item.supplier || '')}" data-application="${encodeURIComponent(item.docNumber || '')}" style="color: #66c0f4; text-decoration: underline; cursor: pointer;">${escapeString(docText)}</a>`;
+        docCell.innerHTML = `<a href="#" class="contract-filter-link" data-contract="${encodeURIComponent(docText)}" data-supplier="${encodeURIComponent(item.supplier || '')}" data-application="${encodeURIComponent(item.docNumber || '')}" title="Показать позиции" style="color: #66c0f4; text-decoration: underline; cursor: pointer;">${escapeString(docText)}</a>`;
     }
 }
         
@@ -12851,14 +12872,19 @@ button[onclick*="exportToExcel"]:hover {
 /* Индикатор наличия платежа в статусе "План" для договора */
 .payment-plan-indicator {
     position: absolute;
-    bottom: 1px;               /* прижимаем к нижнему краю */
-    right: 1px;                /* прижимаем к правому краю */
+    bottom: 1px;
+    right: 1px;
     width: 8px;
     height: 8px;
     border-radius: 50%;
     background: linear-gradient(135deg, #be9e3c 0%, #8c2c24 100%);
-    pointer-events: none;
+
+    /* ★ Включаем приём событий мыши, чтобы браузер показывал title */
+    pointer-events: auto;
+    cursor: help;              /* курсор-«вопросик» намекает, что есть подсказка */
+
     box-shadow: none;
+    z-index: 2;                /* гарантированно поверх содержимого ячейки */
 }
 .payment-plan-indicator.overdue {
     background: #be463c !important; /* красный */
