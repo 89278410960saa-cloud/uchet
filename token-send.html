@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Передача токена</title>
+    <script src="https://unpkg.com/mqtt@5.3.5/dist/mqtt.min.js"></script>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        body {
+            font-family: -apple-system, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0c1b2d 0%, #2a4a7f 50%, #0c1b2d 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: #e5e7eb;
+        }
+        .card {
+            background: rgba(23, 30, 38, 0.96);
+            border: 1px solid #3d4450;
+            border-radius: 14px;
+            padding: 28px 22px;
+            max-width: 420px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+        }
+        h1 {
+            color: #66c0f4;
+            font-size: 22px;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            color: #8f98a0;
+            font-size: 13px;
+            text-align: center;
+            margin-bottom: 22px;
+            line-height: 1.5;
+        }
+        label {
+            font-size: 13px;
+            color: #c7d5e0;
+            display: block;
+            margin-bottom: 6px;
+        }
+        input[type=password] {
+            width: 100%;
+            padding: 12px 14px;
+            background: #1e2d3d;
+            border: 1px solid #3d4450;
+            border-radius: 6px;
+            color: #e5e7eb;
+            font-size: 15px;
+            font-family: monospace;
+            margin-bottom: 14px;
+        }
+        input[type=password]:focus {
+            outline: none;
+            border-color: #66c0f4;
+            box-shadow: 0 0 0 3px rgba(102,192,244,0.2);
+        }
+        button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #5c7e10 0%, #4c6b22 100%);
+            border: none;
+            border-radius: 6px;
+            color: #fff;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        button:active {
+            opacity: 0.8;
+        }
+        .linkbtn {
+            width: 100%;
+            margin-top: 8px;
+            padding: 8px;
+            background: none;
+            border: none;
+            color: #8f98a0;
+            font-size: 12px;
+            font-weight: 400;
+            text-decoration: underline;
+        }
+        .linkbtn:hover { color: #c7d5e0; }
+        .status {
+            text-align: center;
+            margin-top: 16px;
+            font-size: 13px;
+            min-height: 20px;
+            line-height: 1.4;
+        }
+        .success { color: #4caf50; }
+        .error   { color: #ff6b5b; }
+        .info    { color: #ffd700; }
+        .hint {
+            font-size: 11px;
+            color: #8f98a0;
+            text-align: center;
+            margin-top: 14px;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>Передача токена</h1>
+        <p class="subtitle">
+            Вставьте GitHub-токен.<br>
+            Он будет зашифрован и отправлен на компьютер.
+        </p>
+
+        <label>GitHub-токен:</label>
+        <input type="password" id="tokenInput" placeholder="ghp_..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+
+        <button id="sendBtn" onclick="sendToken()">Отправить на компьютер</button>
+        <div class="status" id="status"></div>
+        <button class="linkbtn" id="forgetBtn" onclick="forgetToken()" style="display:none">Забыть сохранённый токен</button>
+        <p class="hint">
+            Токен передаётся в зашифрованном виде.<br>
+            Он сохраняется в памяти этого браузера и подставляется автоматически.
+        </p>
+    </div>
+
+    <script>
+        /* ============ ключи хранилища ============ */
+        const LS_TOKEN = 'gh_pat_saved';   // сам токен
+        const LS_CTX   = 'gh_xfer_ctx';    // topic + ключ шифрования из QR
+
+        const statusEl   = document.getElementById('status');
+        const btn        = document.getElementById('sendBtn');
+        const tokenInput = document.getElementById('tokenInput');
+        const forgetBtn  = document.getElementById('forgetBtn');
+
+        /* ============ 1. Контекст: topic и ключ ============ */
+        const params = new URLSearchParams(location.hash.slice(1));
+        let topic     = params.get('t');
+        let keyBase64 = params.get('k');
+
+        function saveCtx(t, k) {
+            try { localStorage.setItem(LS_CTX, JSON.stringify({ t, k })); } catch (e) {}
+        }
+        function loadCtx() {
+            try { return JSON.parse(localStorage.getItem(LS_CTX) || 'null'); } catch (e) { return null; }
+        }
+
+        if (topic && keyBase64) {
+            // пришли из QR — запоминаем
+            saveCtx(topic, keyBase64);
+        } else {
+            // QR уже нет (или страница перезагружена) — берём из памяти
+            const c = loadCtx();
+            if (c && c.t && c.k) { topic = c.t; keyBase64 = c.k; }
+        }
+
+        if (!topic || !keyBase64) {
+            statusEl.className = 'status error';
+            statusEl.textContent = 'Неверная ссылка. Отсканируйте QR заново.';
+            btn.disabled = true;
+        }
+
+        /* ============ 2. Токен в памяти ============ */
+        function saveToken(v) {
+            try {
+                if (v) localStorage.setItem(LS_TOKEN, v);
+                else   localStorage.removeItem(LS_TOKEN);
+            } catch (e) {}
+            updateForgetBtn();
+        }
+        function loadToken() {
+            try { return localStorage.getItem(LS_TOKEN) || ''; } catch (e) { return ''; }
+        }
+        function updateForgetBtn() {
+            forgetBtn.style.display = loadToken() ? 'block' : 'none';
+        }
+
+        // подставляем ранее сохранённый токен
+        const savedToken = loadToken();
+        if (savedToken) tokenInput.value = savedToken;
+        updateForgetBtn();
+
+        // сохраняем при каждом изменении поля
+        tokenInput.addEventListener('input', () => saveToken(tokenInput.value.trim()));
+
+        function forgetToken() {
+            saveToken('');
+            tokenInput.value = '';
+            statusEl.className = 'status info';
+            statusEl.textContent = 'Сохранённый токен удалён из памяти.';
+        }
+
+        /* ============ 3. Base64 -> байты ============ */
+        function base64ToBytes(b64) {
+            const bin = atob(b64);
+            const bytes = new Uint8Array(bin.length);
+            for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+            return bytes;
+        }
+
+        /* ============ 4. Отправка ============ */
+        async function sendToken() {
+            const token = tokenInput.value.trim();
+            if (!token) {
+                statusEl.className = 'status error';
+                statusEl.textContent = 'Введите токен';
+                return;
+            }
+            if (!/^(ghp_|github_pat_)/.test(token)) {
+                if (!confirm('Токен не похож на GitHub PAT. Продолжить?')) return;
+            }
+
+            // на случай, если input не сработал — фиксируем в памяти
+            saveToken(token);
+
+            btn.disabled = true;
+            statusEl.className = 'status info';
+            statusEl.textContent = 'Отправка...';
+
+            try {
+                // Шифруем токен ключом из QR
+                const keyBytes = base64ToBytes(keyBase64);
+                const aesKey = await crypto.subtle.importKey(
+                    'raw', keyBytes, { name: 'AES-GCM' }, false, ['encrypt']
+                );
+
+                const iv = crypto.getRandomValues(new Uint8Array(12));
+                const ciphertext = await crypto.subtle.encrypt(
+                    { name: 'AES-GCM', iv },
+                    aesKey,
+                    new TextEncoder().encode(token)
+                );
+
+                // [12 байт IV][шифротекст]
+                const combined = new Uint8Array(iv.length + ciphertext.byteLength);
+                combined.set(iv, 0);
+                combined.set(new Uint8Array(ciphertext), iv.length);
+
+                // Подключаемся к тому же публичному брокеру
+                const client = mqtt.connect('wss://broker.emqx.io:8084/mqtt', {
+                    clean: true,
+                    connectTimeout: 10000,
+                    reconnectPeriod: 0
+                });
+
+                const done = (ok, msg) => {
+                    try { client.end(true); } catch (e) {}
+                    statusEl.className = 'status ' + (ok ? 'success' : 'error');
+                    statusEl.textContent = msg;
+                    btn.disabled = false;
+                };
+
+                client.on('connect', () => {
+                    client.publish(topic, combined, { qos: 1 }, (err) => {
+                        if (err) {
+                            done(false, 'Ошибка отправки: ' + err.message);
+                        } else {
+                            // чистим только адресную строку — токен остаётся в памяти
+                            history.replaceState(null, '', location.pathname);
+                            done(true, '✅ Токен отправлен! Вернитесь к компьютеру.');
+                        }
+                    });
+                });
+
+                client.on('error', (err) => {
+                    console.error('MQTT error:', err);
+                    done(false, 'Ошибка соединения. Попробуйте снова.');
+                });
+
+                // Защита от зависания
+                setTimeout(() => {
+                    if (btn.disabled) done(false, 'Таймаут. Попробуйте снова.');
+                }, 15000);
+
+            } catch (e) {
+                console.error(e);
+                statusEl.className = 'status error';
+                statusEl.textContent = 'Ошибка: ' + e.message;
+                btn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>
