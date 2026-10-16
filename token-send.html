@@ -109,26 +109,83 @@
             margin-top: 14px;
             line-height: 1.4;
         }
+
+        /* ===== Экран успеха ===== */
+        #successBlock {
+            display: none;
+            text-align: center;
+            padding: 10px 0 4px;
+        }
+        #successBlock .check {
+            width: 68px;
+            height: 68px;
+            margin: 0 auto 18px;
+            border-radius: 50%;
+            background: rgba(76, 175, 80, 0.15);
+            border: 2px solid #4caf50;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 34px;
+            color: #4caf50;
+            animation: pop 0.4s ease-out;
+        }
+        @keyframes pop {
+            0%   { transform: scale(0.4); opacity: 0; }
+            70%  { transform: scale(1.12); opacity: 1; }
+            100% { transform: scale(1); }
+        }
+        #successBlock h2 {
+            color: #4caf50;
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+        #successBlock p {
+            color: #c7d5e0;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 6px;
+        }
+        #successBlock .small {
+            color: #8f98a0;
+            font-size: 12px;
+            margin-top: 14px;
+            line-height: 1.5;
+        }
     </style>
 </head>
 <body>
     <div class="card">
-        <h1>Передача токена</h1>
-        <p class="subtitle">
+        <h1 id="pageTitle">Передача токена</h1>
+        <p class="subtitle" id="pageSubtitle">
             Вставьте GitHub-токен.<br>
             Он будет зашифрован и отправлен на компьютер.
         </p>
 
-        <label>GitHub-токен:</label>
-        <input type="password" id="tokenInput" placeholder="ghp_..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+        <!-- ===== Форма ===== -->
+        <div id="formBlock">
+            <label>GitHub-токен:</label>
+            <input type="password" id="tokenInput" placeholder="ghp_..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
 
-        <button id="sendBtn" onclick="sendToken()">Отправить на компьютер</button>
-        <div class="status" id="status"></div>
-        <button class="linkbtn" id="forgetBtn" onclick="forgetToken()" style="display:none">Забыть сохранённый токен</button>
-        <p class="hint">
-            Токен передаётся в зашифрованном виде.<br>
-            Он сохраняется в памяти этого браузера и подставляется автоматически.
-        </p>
+            <button id="sendBtn" onclick="sendToken()">Отправить на компьютер</button>
+            <div class="status" id="status"></div>
+            <button class="linkbtn" id="forgetBtn" onclick="forgetToken()" style="display:none">Забыть сохранённый токен</button>
+            <p class="hint">
+                Токен передаётся в зашифрованном виде.<br>
+                Он сохраняется в памяти этого браузера и подставляется автоматически.
+            </p>
+        </div>
+
+        <!-- ===== Экран успеха ===== -->
+        <div id="successBlock">
+            <div class="check">✓</div>
+            <h2>Токен отправлен!</h2>
+            <p>Вернитесь к компьютеру — токен уже там.</p>
+            <p class="small">
+                Это окно можно закрыть.<br>
+                Токен остался в памяти браузера и подставится автоматически в следующий раз.
+            </p>
+        </div>
     </div>
 
     <script>
@@ -140,6 +197,20 @@
         const btn        = document.getElementById('sendBtn');
         const tokenInput = document.getElementById('tokenInput');
         const forgetBtn  = document.getElementById('forgetBtn');
+        const formBlock  = document.getElementById('formBlock');
+        const successBlock = document.getElementById('successBlock');
+        const pageTitle  = document.getElementById('pageTitle');
+        const pageSubtitle = document.getElementById('pageSubtitle');
+
+        /* ============ Экран успеха ============ */
+        function showSuccess() {
+            formBlock.style.display = 'none';
+            pageSubtitle.style.display = 'none';
+            pageTitle.style.display = 'none';
+            successBlock.style.display = 'block';
+            // убираем адресную строку с параметрами
+            try { history.replaceState(null, '', location.pathname); } catch (e) {}
+        }
 
         /* ============ 1. Контекст: topic и ключ ============ */
         const params = new URLSearchParams(location.hash.slice(1));
@@ -253,9 +324,13 @@
 
                 const done = (ok, msg) => {
                     try { client.end(true); } catch (e) {}
-                    statusEl.className = 'status ' + (ok ? 'success' : 'error');
-                    statusEl.textContent = msg;
-                    btn.disabled = false;
+                    if (ok) {
+                        showSuccess();
+                    } else {
+                        statusEl.className = 'status error';
+                        statusEl.textContent = msg;
+                        btn.disabled = false;
+                    }
                 };
 
                 client.on('connect', () => {
@@ -263,8 +338,6 @@
                         if (err) {
                             done(false, 'Ошибка отправки: ' + err.message);
                         } else {
-                            // чистим только адресную строку — токен остаётся в памяти
-                            history.replaceState(null, '', location.pathname);
                             done(true, '✅ Токен отправлен! Вернитесь к компьютеру.');
                         }
                     });
