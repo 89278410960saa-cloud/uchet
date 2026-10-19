@@ -3927,30 +3927,33 @@ button:hover{background:#222733!important}
 
 /* Маленький квадрат с красным минусом (удаление позиции) */
 .new-request-remove-btn {
-    width: 24px !important;
-    height: 24px !important;
-    min-width: 24px !important;
-    max-width: 24px !important;
-    border-radius: 4px !important;
-    background: rgba(255, 255, 255, 0.06) !important;
-    color: #ff4d3d !important;         /* Красный цвет минуса */
-    border: 1px solid #be463c !important;
-    font-size: 18px !important;
-    font-weight: bold !important;
-    line-height: 1 !important;
-    padding: 0 !important;             /* Убираем глобальный padding */
-    margin: 0 auto !important;
-    cursor: pointer !important;
-    display: inline-flex !important;
-    align-items: center !important;    /* Центрируем по вертикали */
-    justify-content: center !important;/* Центрируем по горизонтали */
-    box-sizing: border-box !important;
-}
-.new-request-remove-btn:hover {
-    background: rgba(190, 70, 60, 0.25) !important;
-    border-color: #ff7b70 !important;
-    transform: none !important;
-}
+        width: 22px !important;
+        height: 22px !important;
+        min-width: 22px !important;
+        max-width: 22px !important;
+        border-radius: 3px !important;
+        background: rgba(255, 255, 255, 0.06) !important;
+        color: #ff4d3d !important;         /* Красный минус */
+        border: 1px solid #be463c !important; /* Красная рамка */
+        font-size: 16px !important;
+        font-weight: bold !important;
+        line-height: 1 !important;
+        padding: 0 !important;             /* Сбрасываем глобальные отступы */
+        margin: 0 auto !important;         /* Центрируем кнопку в ячейке */
+        cursor: pointer !important;
+        display: inline-flex !important;
+        align-items: center !important;    /* Центрирование по вертикали */
+        justify-content: center !important;/* Центрирование по горизонтали */
+        box-sizing: border-box !important;
+        transition: background 0.15s, border-color 0.15s !important;
+    }
+    
+    .new-request-remove-btn:hover {
+        background: rgba(190, 70, 60, 0.25) !important;
+        border-color: #ff7b70 !important;
+        transform: none !important;
+    }
+
 
     /* Поля в таблице позиций — компактные */
     #newRequestPositions input {
@@ -3978,11 +3981,11 @@ button:hover{background:#222733!important}
     overflow-y: auto;
 }
 #newRequestPositions td {
-    padding: 3px !important;
-    border: none !important;
-    background: transparent !important;
-    vertical-align: middle !important;
-}
+        padding: 3px !important;
+        border: none !important;
+        background: transparent !important;
+        vertical-align: middle !important;
+    }
 #newRequestPositions tr:hover td {
     background: transparent !important;
 }
@@ -3999,15 +4002,21 @@ button:hover{background:#222733!important}
     }
     /* Фиксируем ширины столбцов (ID/Кол-во/Ед.изм. — узкие, Наименование — широкая) */
 #newRequestModal table {
-    table-layout: fixed !important;
-    width: 100% !important;
-    min-width: 0 !important;
-}
-#newRequestModal table th:nth-child(1) { width: 80px !important; }  /* ID */
-#newRequestModal table th:nth-child(2) { width: auto !important; }  /* Наименование */
-#newRequestModal table th:nth-child(3) { width: 60px !important; }  /* Кол-во */
-#newRequestModal table th:nth-child(4) { width: 65px !important; }  /* Ед. изм. */
-#newRequestModal table th:nth-child(5) { width: 44px !important; }  /* Кнопка удаления */
+        table-layout: fixed !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+    #newRequestModal table th,
+    #newRequestModal table td {
+        box-sizing: border-box !important;
+        padding: 3px !important;
+    }
+/* Задаем адекватную ширину столбцов, чтобы инпуты полностью помещались */
+    #newRequestModal table th:nth-child(1) { width: 65px !important; }  /* ID */
+    #newRequestModal table th:nth-child(2) { width: auto !important; }  /* Наименование */
+    #newRequestModal table th:nth-child(3) { width: 55px !important; }  /* Кол-во */
+    #newRequestModal table th:nth-child(4) { width: 60px !important; }  /* Ед. изм. */
+    #newRequestModal table th:nth-child(5) { width: 40px !important; }  /* Кнопка удаления */
 
 /* Поля ввода внутри таблицы — компактные и ровные */
 #newRequestPositions input {
@@ -4063,14 +4072,32 @@ button:hover{background:#222733!important}
 
     /* Таблица позиций — горизонтальный скролл */
     #newRequestModal div[style*="max-height"] {
-        overflow-x: auto !important;
-        -webkit-overflow-scrolling: touch;
+        padding: 4px !important;
+        box-sizing: border-box !important;
+        overflow-x: hidden !important; 
     }
 
     /* Чуть компактнее поля в таблице */
     #newRequestPositions input,
     #newRequestPositions textarea.pos-name {
-        font-size: 12px !important;
+        width: 100% !important;
+        height: 24px !important;
+        min-height: 24px !important;
+        padding: 2px 4px !important;
+        font-size: 11px !important;
+        box-sizing: border-box !important;
+        background: #1e2d3d !important;
+        color: #c7d5e0 !important;
+        border: 1px solid #3d4450 !important;
+        border-radius: 3px !important;
+        transition: border-color 0.15s ease, box-shadow 0.15s ease !important;
+    }
+    #newRequestPositions input:focus,
+    #newRequestPositions textarea:focus {
+        outline: none !important;
+        border-color: #66c0f4 !important;
+        box-shadow: 0 0 0 2px rgba(102, 192, 244, 0.2) !important;
+        background: #26374a !important;
     }
 }
 
