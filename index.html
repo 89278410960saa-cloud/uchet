@@ -3857,8 +3857,8 @@ button:hover{background:#222733!important}
 /* Модалка выбора: центрированная, ширина как у окна ввода токена */
     #addModeChoiceModal,
     #newRequestModal {
-        justify-content: flex-end !important;   /* справа, как все модалки */
-        align-items: flex-start !important;     /* сверху, auto-height */
+        justify-content: flex-end !important;
+        align-items: flex-start !important;
     }
 
     #addModeChoiceModal .modal-content,
@@ -3872,13 +3872,8 @@ button:hover{background:#222733!important}
         box-sizing: border-box !important;
     }
 
-    #addModeChoiceModal .modal-content {
-        padding: 22px 26px !important;
-    }
-
-    #newRequestModal .modal-content {
-        padding: 18px 20px !important;
-    }
+    #addModeChoiceModal .modal-content { padding: 22px 26px !important; }
+    #newRequestModal .modal-content { padding: 18px 20px !important; }
 
     /* Кнопки выбора режима */
     .add-mode-btn {
@@ -3899,14 +3894,10 @@ button:hover{background:#222733!important}
         transform: translateY(-1px);
         box-shadow: 0 4px 12px rgba(0,0,0,0.3);
     }
-    .add-mode-btn.primary {
-        background: linear-gradient(135deg, #5c7e10 0%, #4c6b22 100%);
-    }
-    .add-mode-btn.secondary {
-        background: linear-gradient(135deg, #2a6b8a 0%, #1a4a6a 100%);
-    }
+    .add-mode-btn.primary { background: linear-gradient(135deg, #5c7e10 0%, #4c6b22 100%); }
+    .add-mode-btn.secondary { background: linear-gradient(135deg, #2a6b8a 0%, #1a4a6a 100%); }
 
-    /* Круглая кнопка «+» для добавления позиции */
+    /* Кнопка «+» для добавления позиции */
     .new-request-add-btn {
         padding: 8px 24px !important;
         background: linear-gradient(135deg, #5c7e10 0%, #4c6b22 100%) !important;
@@ -3922,46 +3913,51 @@ button:hover{background:#222733!important}
         transition: border-color 0.15s;
         height: 32px !important;
     }
-    .new-request-add-btn:hover {
-        border-color: #66c0f4 !important;
-    }
+    .new-request-add-btn:hover { border-color: #66c0f4 !important; }
 
-    /* ★ ИДЕАЛЬНАЯ КНОПКА УДАЛЕНИЯ (перебиваем глобальные стили) */
-    .new-request-remove-btn {
-        width: 22px !important;
-        height: 22px !important;
-        min-width: 22px !important;
-        max-width: 22px !important;
-        border-radius: 3px !important;
+    /* ★ ИДЕАЛЬНАЯ КНОПКА УДАЛЕНИЯ */
+    #newRequestModal .new-request-remove-btn {
+        width: 24px !important;
+        height: 24px !important;
+        min-width: 24px !important;
+        max-width: 24px !important;
+        min-height: 24px !important;
+        max-height: 24px !important;
+        border-radius: 4px !important;
         background: rgba(255, 255, 255, 0.06) !important;
-        color: #ff4d3d !important;         /* Красный цвет */
+        color: #ff4d3d !important;         
         border: 1px solid #be463c !important; 
-        font-size: 18px !important;
+        font-size: 20px !important;
         font-weight: bold !important;
-        line-height: 1 !important;         /* Сбрасываем line-height */
-        padding: 0 !important;             /* Жестко убираем padding */
+        line-height: 1 !important;         
+        padding: 0 !important;             
         margin: 0 auto !important;
         cursor: pointer !important;
-        display: flex !important;          /* Идеальное центрирование */
+        display: flex !important;          
         align-items: center !important;    
         justify-content: center !important;
         box-sizing: border-box !important;
         transition: background 0.15s, border-color 0.15s !important;
     }
-    .new-request-remove-btn:hover {
+    #newRequestModal .new-request-remove-btn:hover {
         background: rgba(190, 70, 60, 0.25) !important;
         border-color: #ff7b70 !important;
     }
 
     /* ★ ТАБЛИЦА И ПОЛЯ ВВОДА */
-    #newRequestPositions {
-        width: 100% !important;
+    #newRequestModal table {
         table-layout: fixed !important;
+        width: 100% !important;
         border-collapse: collapse !important;
         margin: 0 !important;
     }
 
-    /* Убираем все лишние отступы у ячеек */
+    #newRequestPositions {
+        width: 100% !important;
+        table-layout: fixed !important;
+    }
+
+    /* Запрещаем ячейкам расширяться */
     #newRequestPositions td {
         padding: 2px !important;
         border: none !important;
@@ -3969,23 +3965,25 @@ button:hover{background:#222733!important}
         vertical-align: middle !important;
         box-sizing: border-box !important;
         overflow: hidden !important;
+        min-width: 0 !important; 
     }
 
-    /* ★ ШИРИНА КОЛОНОК (точный расчет, чтобы ничего не вылезало) */
+    /* ★ ШИРИНА КОЛОНОК */
     #newRequestModal table th:nth-child(1) { width: 60px !important; }
     #newRequestModal table th:nth-child(2) { width: auto !important; }
     #newRequestModal table th:nth-child(3) { width: 55px !important; }
     #newRequestModal table th:nth-child(4) { width: 60px !important; }
-    #newRequestModal table th:nth-child(5) { width: 32px !important; }
+    #newRequestModal table th:nth-child(5) { width: 36px !important; }
 
-    /* ★ ИНПУТЫ (перебиваем глобальный padding: 4px 8px) */
+    /* ★ ИНПУТЫ (перебиваем глобальный min-width: 134px) */
     #newRequestPositions input,
     #newRequestPositions textarea.pos-name {
         width: 100% !important;
         max-width: 100% !important;
+        min-width: 0 !important; /* ← КРИТИЧЕСКИ ВАЖНО */
         height: 22px !important;
         min-height: 22px !important;
-        padding: 0 4px !important;       /* Узкий padding, чтобы влезало в колонку */
+        padding: 0 4px !important;       
         font-size: 11px !important;
         box-sizing: border-box !important;
         background: #1e2d3d !important;
@@ -4004,7 +4002,7 @@ button:hover{background:#222733!important}
         overflow-y: auto;
     }
 
-    /* ★ ПОДСВЕТКА ПРИ ФОКУСЕ (как в остальном приложении) */
+    /* ★ ПОДСВЕТКА ПРИ ФОКУСЕ */
     #newRequestPositions input:focus,
     #newRequestPositions textarea:focus {
         outline: none !important;
@@ -4025,7 +4023,7 @@ button:hover{background:#222733!important}
     }
     #newRequestModal table th:nth-child(2) { text-align: left !important; }
 
-    /* ★ КОНТЕЙНЕР ТАБЛИЦЫ (убираем обрезку краев) */
+    /* ★ КОНТЕЙНЕР ТАБЛИЦЫ */
     #newRequestModal div[style*="max-height"] {
         padding: 2px !important;
         box-sizing: border-box !important;
@@ -4034,9 +4032,7 @@ button:hover{background:#222733!important}
         border-radius: 4px !important;
     }
 
-    /* ============================================================
-       МОБИЛЬНЫЙ ВИД «Новая заявка» и «Что добавить?»
-       ============================================================ */
+    /* Мобильный вид */
     @media (max-width: 768px) {
         #addModeChoiceModal .modal-content,
         #newRequestModal .modal-content {
@@ -4047,14 +4043,9 @@ button:hover{background:#222733!important}
             border-radius: 0 !important;
             padding: 12px !important;
         }
-        #newRequestForm > div:first-child {
-            grid-template-columns: 1fr !important;
-        }
+        #newRequestForm > div:first-child { grid-template-columns: 1fr !important; }
         #newRequestPositions input,
-        #newRequestPositions textarea.pos-name {
-            font-size: 12px !important;
-            height: 26px !important;
-        }
+        #newRequestPositions textarea.pos-name { font-size: 12px !important; height: 26px !important; }
     }
 
 </style>
