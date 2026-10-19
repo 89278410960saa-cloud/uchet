@@ -3861,19 +3861,16 @@ button:hover{background:#222733!important}
     align-items: flex-start !important;     /* сверху, auto-height */
 }
 
-    #addModeChoiceModal .modal-content,
-    #newRequestModal .modal-content {
-        max-width: 640px !important;
-        width: 60% !important;
-        min-width: 320px !important;
-        height: auto !important;
-        max-height: 90vh !important;
-        border-radius: 8px !important;
-        box-shadow: 0 10px 40px rgba(0,0,0,0.6) !important;
-        overflow-y: auto !important;
-        box-sizing: border-box !important;
-        margin-top: 10px !important;
-    }
+#addModeChoiceModal .modal-content,
+#newRequestModal .modal-content {
+    max-width: 640px !important;
+    width: 60% !important;
+    min-width: 320px !important;
+    height: 100% !important;
+    max-height: none !important;
+    border-radius: 0 !important;
+    box-sizing: border-box !important;
+}
 
     #addModeChoiceModal .modal-content {
         padding: 22px 26px !important;
@@ -3930,24 +3927,26 @@ button:hover{background:#222733!important}
 
 /* Маленький квадрат с красным минусом (удаление позиции) */
 .new-request-remove-btn {
-    width: 20px;
-    height: 20px;
-    min-width: 20px;
-    border-radius: 3px;               /* ← квадрат */
-    background: linear-gradient(135deg, #be463c 0%, #8c2c24 100%);
-    color: #fff;
-    border: 1px solid transparent;
-    font-size: 14px;
+    width: 22px;
+    height: 22px;
+    min-width: 22px;
+    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.06);
+    color: #ff4d3d;                      /* ← красный минус */
+    border: 1px solid #be463c;           /* ← красная рамка */
+    font-size: 16px;
     font-weight: bold;
     line-height: 1;
     padding: 0;
+    margin: 0;
     cursor: pointer;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    transition: border-color 0.15s;
+    transition: background 0.15s, border-color 0.15s;
 }
 .new-request-remove-btn:hover {
+    background: rgba(190, 70, 60, 0.18);
     border-color: #ff7b70;
 }
 
@@ -3980,7 +3979,7 @@ button:hover{background:#222733!important}
     padding: 3px !important;
     border: none !important;
     background: transparent !important;
-    vertical-align: top !important;      /* ← чтобы textarea рос вниз аккуратно */
+    vertical-align: middle !important;
 }
 #newRequestPositions tr:hover td {
     background: transparent !important;
@@ -3996,6 +3995,54 @@ button:hover{background:#222733!important}
         font-size: 11px !important;
         white-space: nowrap !important;
     }
+    /* Фиксируем ширины столбцов (ID/Кол-во/Ед.изм. — узкие, Наименование — широкая) */
+#newRequestModal table {
+    table-layout: fixed !important;
+    width: 100% !important;
+    min-width: 0 !important;
+}
+
+/* Таблица позиций: ID=50, Наименование=auto, Кол-во=35, Ед.изм.=35, Удалить=40 */
+#newRequestModal table th:nth-child(1) { width: 50px !important; }
+#newRequestModal table th:nth-child(2) { width: auto !important; }
+#newRequestModal table th:nth-child(3) { width: 35px !important; }
+#newRequestModal table th:nth-child(4) { width: 35px !important; }
+#newRequestModal table th:nth-child(5) { width: 40px !important; }
+
+/* ============================================================
+   МОБИЛЬНЫЙ ВИД «Новая заявка» и «Что добавить?»
+   ============================================================ */
+@media (max-width: 768px) {
+
+    /* Модалки — на весь экран */
+    #addModeChoiceModal .modal-content,
+    #newRequestModal .modal-content {
+        max-width: 100% !important;
+        width: 100% !important;
+        min-width: 0 !important;
+        height: 100% !important;
+        border-radius: 0 !important;
+        padding: 12px !important;
+    }
+
+    /* Подразделение и Заявка — в одну колонку */
+    #newRequestForm > div:first-child {
+        grid-template-columns: 1fr !important;
+    }
+
+    /* Таблица позиций — горизонтальный скролл */
+    #newRequestModal div[style*="max-height"] {
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* Чуть компактнее поля в таблице */
+    #newRequestPositions input,
+    #newRequestPositions textarea.pos-name {
+        font-size: 12px !important;
+    }
+}
+
 </style>
 
 <!-- Модалка выбора: что добавить -->
@@ -16275,7 +16322,8 @@ function initFiltersHighlight() {
             #bulkEditModal table {
                 border-collapse: collapse;
                 background: transparent !important;
-                width: 100%;
+                width: 100% !important;
+                table-layout: fixed !important; /* ★ Жёстко фиксируем колонки */
             }
 
             #bulkEditModal table td {
@@ -16289,6 +16337,11 @@ function initFiltersHighlight() {
             #bulkEditModal table td.bulk-field-label-cell {
                 width: 42% !important;
                 cursor: pointer;
+            }
+
+            /* Вторая колонка — оставшееся место */
+            #bulkEditModal table td:not(.bulk-field-label-cell) {
+                width: 58% !important;
             }
 
             #bulkEditModal .bulk-field-label {
@@ -16656,7 +16709,7 @@ function toggleBulkExtraFields() {
     const btn = document.getElementById('bulkMoreBtn');
     if (!extraTable || !btn) return;
 
-    // ★ Источник истины — класс .open на кнопке (его же использует updateBulkMoreBtnState)
+    // ★ Источник истины — класс .open на кнопке
     const isOpen = btn.classList.contains('open');
 
     if (isOpen) {
@@ -16664,9 +16717,9 @@ function toggleBulkExtraFields() {
         extraTable.style.display = 'none';
         btn.classList.remove('open');
     } else {
-        // Показываем — явный 'block', а не пустая строка,
-        // чтобы следующая проверка не сбилась
-        extraTable.style.display = 'block';
+        // Показываем — используем пустую строку '', чтобы браузер вернул 
+        // стандартный display: table, иначе block ломает табличную раскладку
+        extraTable.style.display = '';
         btn.classList.add('open');
     }
     updateBulkMoreBtnState();
