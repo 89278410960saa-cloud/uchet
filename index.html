@@ -3378,7 +3378,7 @@ button:hover{background:#222733!important}
         </div>
 
         <div class="controls-dropdown">
-            <button onclick="showAddAccountingForm()" id="addRecordBtn">Добавить запись</button>
+            <button onclick="showAddModeChoiceModal()" id="addRecordBtn">Добавить запись</button>
             <button onclick="clearAccountingFilters()" class="reset-filter-btn">Сбросить фильтры</button>
             <button onclick="exportToExcel('main')">Экспорт в Excel</button>
             <button onclick="toggleWeeklyDeliveriesMode()" id="weeklyDeliveriesBtn" style="background: linear-gradient(135deg, rgb(255, 215, 0) 0%, rgb(255, 165, 0) 100%); color: rgb(27, 40, 56); border: 0.67px solid rgb(255, 215, 0); box-shadow: none;">Поставки на неделю (0)</button>
@@ -3850,7 +3850,376 @@ button:hover{background:#222733!important}
         </form>
     </div>
 </div>
+<!-- ============================================================
+     НОВЫЕ МОДАЛЬНЫЕ ОКНА: выбор режима добавления + новая заявка
+     ============================================================ -->
+<style>
+    /* Модалка выбора: центрированная, ширина как у окна ввода токена */
+    #addModeChoiceModal,
+    #newRequestModal {
+        justify-content: center !important;
+        align-items: center !important;
+        padding: 8px !important;
+        padding-right: 8px !important;
+    }
 
+    #addModeChoiceModal .modal-content,
+    #newRequestModal .modal-content {
+        max-width: 640px !important;
+        width: 60% !important;
+        min-width: 320px !important;
+        height: auto !important;
+        max-height: 90vh !important;
+        border-radius: 8px !important;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.6) !important;
+        overflow-y: auto !important;
+        box-sizing: border-box !important;
+    }
+
+    #addModeChoiceModal .modal-content {
+        padding: 22px 26px !important;
+    }
+
+    #newRequestModal .modal-content {
+        padding: 18px 20px !important;
+    }
+
+    /* Кнопки выбора режима */
+    .add-mode-btn {
+        padding: 16px 20px;
+        font-size: 14px;
+        color: #fff;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
+    }
+    .add-mode-btn:hover {
+        border-color: #66c0f4;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+    .add-mode-btn.primary {
+        background: linear-gradient(135deg, #5c7e10 0%, #4c6b22 100%);
+    }
+    .add-mode-btn.secondary {
+        background: linear-gradient(135deg, #2a6b8a 0%, #1a4a6a 100%);
+    }
+
+    /* Круглая кнопка «+» для добавления позиции */
+    .new-request-add-btn {
+        width: 32px;
+        height: 32px;
+        min-width: 32px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #5c7e10 0%, #4c6b22 100%);
+        color: #fff;
+        border: 1px solid transparent;
+        font-size: 20px;
+        line-height: 1;
+        padding: 0;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        transition: border-color 0.15s, transform 0.15s;
+    }
+    .new-request-add-btn:hover {
+        border-color: #66c0f4;
+        transform: scale(1.05);
+    }
+
+    /* Круглая кнопка «−» для удаления позиции */
+    .new-request-remove-btn {
+        width: 22px;
+        height: 22px;
+        min-width: 22px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #be463c 0%, #8c2c24 100%);
+        color: #fff;
+        border: 1px solid transparent;
+        font-size: 14px;
+        line-height: 1;
+        padding: 0;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        transition: border-color 0.15s;
+    }
+    .new-request-remove-btn:hover {
+        border-color: #ff7b70;
+    }
+
+    /* Поля в таблице позиций — компактные */
+    #newRequestPositions input {
+        width: 100% !important;
+        height: 24px !important;
+        padding: 2px 6px !important;
+        font-size: 11px !important;
+        box-sizing: border-box !important;
+    }
+    #newRequestPositions td {
+        padding: 3px !important;
+        border: none !important;
+        background: transparent !important;
+    }
+    #newRequestPositions tr:hover td {
+        background: transparent !important;
+    }
+
+    /* Заголовки таблицы позиций */
+    #newRequestModal table th {
+        padding: 4px 6px !important;
+        text-align: left !important;
+        background: linear-gradient(135deg, #2a475e 0%, #1f3549 100%) !important;
+        color: #66c0f4 !important;
+        border-bottom: 1px solid #3d4450 !important;
+        font-size: 11px !important;
+        white-space: nowrap !important;
+    }
+</style>
+
+<!-- Модалка выбора: что добавить -->
+<div id="addModeChoiceModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <span class="close" onclick="closeAddModeChoiceModal()">×</span>
+        <h2 style="text-align: center; margin-bottom: 20px;">Что добавить?</h2>
+        <div style="display: flex; flex-direction: column; gap: 14px;">
+            <button type="button" class="add-mode-btn primary" onclick="chooseAddMode('record')">
+                <i class="fas fa-plus"></i>
+                Добавить запись
+            </button>
+            <button type="button" class="add-mode-btn secondary" onclick="chooseAddMode('new')">
+                <i class="fas fa-file-alt"></i>
+                Добавить новую заявку
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Модалка новой заявки с несколькими позициями -->
+<div id="newRequestModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <span class="close" onclick="closeNewRequestModal()">×</span>
+        <h2 style="text-align: center; margin-bottom: 14px;">Новая заявка</h2>
+        <form id="newRequestForm" onsubmit="saveNewRequest(event)">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px;">
+    <div>
+        <label style="display: block; margin-bottom: 5px; color: #66c0f4; font-size: 11px; font-weight: bold;">Подразделение:</label>
+        <input list="departmentsList" id="newRequestDepartment" style="width: 100%;" placeholder="Начните вводить...">
+    </div>
+    <div>
+        <label style="display: block; margin-bottom: 5px; color: #66c0f4; font-size: 11px; font-weight: bold;">Заявка:</label>
+        <input list="applicationsList" id="newRequestDocNumber" required style="width: 100%;" placeholder="123 (от 31.12.2024)">
+    </div>
+</div>
+
+            <div style="margin-bottom: 6px; color: #66c0f4; font-size: 11px; font-weight: bold;">Позиции:</div>
+            <div style="max-height: 320px; overflow-y: auto; border: 1px solid #3d4450; border-radius: 4px; padding: 4px;">
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr>
+                            <th style="width: 100px;">ID</th>
+                            <th>Наименование позиции</th>
+                            <th style="width: 70px;">Кол-во</th>
+                            <th style="width: 70px;">Ед. изм.</th>
+                            <th style="width: 28px;"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="newRequestPositions"></tbody>
+                </table>
+            </div>
+
+            <div style="display: flex; justify-content: center; margin-top: 10px;">
+                <button type="button" class="new-request-add-btn" onclick="addNewRequestPositionRow()" title="Добавить позицию">+</button>
+            </div>
+
+            <div style="display: flex; gap: 8px; justify-content: center; margin-top: 16px;">
+                <button type="submit" style="padding: 8px 24px; background: linear-gradient(135deg, #5c7e10 0%, #4c6b22 100%); color: white; border: none; border-radius: 3px; cursor: pointer; font-weight: bold;">Сохранить</button>
+                <button type="button" onclick="closeNewRequestModal()" style="padding: 8px 24px; background: linear-gradient(135deg, #8f98a0 0%, #6d7882 100%); color: white; border: none; border-radius: 3px; cursor: pointer;">Отмена</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+// ========== ВЫБОР РЕЖИМА ДОБАВЛЕНИЯ ==========
+function showAddModeChoiceModal() {
+    if (typeof isAdmin !== 'undefined' && !isAdmin) {
+        alert('Только администратор может добавлять записи');
+        return;
+    }
+    const modal = document.getElementById('addModeChoiceModal');
+    if (modal) modal.style.display = 'flex';
+}
+
+function closeAddModeChoiceModal() {
+    const modal = document.getElementById('addModeChoiceModal');
+    if (modal) modal.style.display = 'none';
+}
+
+function chooseAddMode(mode) {
+    closeAddModeChoiceModal();
+    if (mode === 'record') {
+        if (typeof showAddAccountingForm === 'function') {
+            showAddAccountingForm();
+        }
+    } else if (mode === 'new') {
+        openNewRequestModal();
+    }
+}
+
+// ========== НОВАЯ ЗАЯВКА С ПОЗИЦИЯМИ ==========
+function openNewRequestModal() {
+    if (typeof isAdmin !== 'undefined' && !isAdmin) {
+        alert('Только администратор может добавлять записи');
+        return;
+    }
+    if (typeof updateApplicationsList === 'function') updateApplicationsList();
+
+    document.getElementById('newRequestForm').reset();
+    document.getElementById('newRequestPositions').innerHTML = '';
+    addNewRequestPositionRow();
+    document.getElementById('newRequestModal').style.display = 'flex';
+}
+
+function closeNewRequestModal() {
+    const modal = document.getElementById('newRequestModal');
+    if (modal) modal.style.display = 'none';
+}
+
+function addNewRequestPositionRow(id, name, qty, unit) {
+    const tbody = document.getElementById('newRequestPositions');
+    if (!tbody) return;
+
+    const esc = function (s) {
+        if (s == null) return '';
+        return String(s)
+            .replace(/&/g, '&amp;')
+            .replace(/"/g, '&quot;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
+    };
+
+    const tr = document.createElement('tr');
+    tr.innerHTML =
+        '<td><input type="text" class="pos-id" value="' + esc(id) + '"></td>' +
+        '<td><input type="text" class="pos-name" value="' + esc(name) + '"></td>' +
+        '<td><input type="text" class="pos-qty" value="' + esc(qty) + '"></td>' +
+        '<td><input type="text" class="pos-unit" value="' + esc(unit) + '"></td>' +
+        '<td style="text-align: center;">' +
+            '<button type="button" class="new-request-remove-btn" title="Удалить позицию" ' +
+                'onclick="this.closest(\'tr\').remove()">−</button>' +
+        '</td>';
+    tbody.appendChild(tr);
+
+    const first = tr.querySelector('.pos-id');
+    if (first) first.focus();
+}
+
+function saveNewRequest(event) {
+    if (event) event.preventDefault();
+
+    if (typeof isAdmin !== 'undefined' && !isAdmin) {
+        alert('Только администратор может добавлять записи');
+        return;
+    }
+
+    const department = document.getElementById('newRequestDepartment').value.trim();
+const docNumber  = document.getElementById('newRequestDocNumber').value.trim();
+const status     = 'В работе';   // ← статус всегда «В работе», не выбирается
+
+    if (!docNumber) {
+        alert('Укажите номер заявки');
+        document.getElementById('newRequestDocNumber').focus();
+        return;
+    }
+
+    if (typeof validateApplicationFormat === 'function' && !validateApplicationFormat(docNumber)) {
+        alert('Неверный формат заявки!\nПравильный формат: "номер (от ДД.ММ.ГГГГ)"\nПример: "123 (от 31.12.2024)"');
+        document.getElementById('newRequestDocNumber').focus();
+        return;
+    }
+
+    if (department && typeof departmentsList !== 'undefined' && !departmentsList.includes(department)) {
+        departmentsList.push(department);
+        departmentsList.sort();
+        if (typeof saveDepartmentsList === 'function') saveDepartmentsList();
+        if (typeof updateDepartmentsFilter === 'function') updateDepartmentsFilter();
+    }
+
+    const rows = document.querySelectorAll('#newRequestPositions tr');
+    const positions = [];
+
+    rows.forEach(function (row) {
+        const id   = row.querySelector('.pos-id').value.trim();
+        const name = row.querySelector('.pos-name').value.trim();
+        const qty  = row.querySelector('.pos-qty').value.trim();
+        const unit = row.querySelector('.pos-unit').value.trim();
+
+        if (!id && !name && !qty && !unit) return;
+        positions.push({ id: id, name: name, qty: qty, unit: unit });
+    });
+
+    if (positions.length === 0) {
+        alert('Добавьте хотя бы одну позицию');
+        return;
+    }
+
+    positions.forEach(function (pos) {
+        const item = {
+            recordId: (typeof generateUniqueId === 'function')
+                ? generateUniqueId()
+                : Date.now() + '_' + Math.random().toString(36).slice(2),
+            docNumber: docNumber,
+            status: status,
+            id: pos.id,
+            name: pos.name,
+            quantity: pos.qty,
+            unit: pos.unit,
+            purchaseName: '',
+            purchaseQuantity: '',
+            purchaseUnit: '',
+            amount: '',
+            supplier: '',
+            department: department,
+            contract: '',
+            paymentTerms: '',
+            deliveryDays: '',
+            deliveryTerms: '',
+            date: '',
+            planFact: '',
+            fact: '',
+            shipmentDoc: '',
+            favorite: false
+        };
+        accountingData.push(item);
+    });
+
+    if (typeof saveAllData === 'function') saveAllData();
+    if (typeof updateAccountingTable === 'function') updateAccountingTable();
+    if (typeof updateDepartmentsFilter === 'function') updateDepartmentsFilter();
+    if (typeof updateApplicationsList === 'function') updateApplicationsList();
+    if (typeof updateQuickFilters === 'function') updateQuickFilters();
+    if (typeof updateYearsFilter === 'function') updateYearsFilter();
+    if (typeof updateAllBadges === 'function') updateAllBadges();
+    if (typeof updateOverdueButton === 'function') updateOverdueButton();
+    if (typeof updateWeeklyDeliveriesButton === 'function') updateWeeklyDeliveriesButton();
+    if (typeof updateSuppliersFilterList === 'function') updateSuppliersFilterList();
+    if (typeof filterAccountingTable === 'function') filterAccountingTable();
+    if (typeof markChangesMade === 'function') markChangesMade();
+    closeNewRequestModal();
+
+    if (typeof showAutosaveNotification === 'function') {
+        showAutosaveNotification('Добавлено позиций: ' + positions.length);
+    }
+}
+</script>
 <!-- Модальное окно для добавления/редактирования учета -->
 <div id="editAccountingModal" class="modal" style="display: none;">
     <div class="modal-content" style="max-width: 804.0px;">
@@ -16271,9 +16640,19 @@ function toggleBulkExtraFields() {
     const btn = document.getElementById('bulkMoreBtn');
     if (!extraTable || !btn) return;
 
-    const isHidden = extraTable.style.display === 'none' || !extraTable.style.display;
-    extraTable.style.display = isHidden ? '' : 'none';
-    btn.classList.toggle('open', isHidden);
+    // ★ Источник истины — класс .open на кнопке (его же использует updateBulkMoreBtnState)
+    const isOpen = btn.classList.contains('open');
+
+    if (isOpen) {
+        // Скрываем
+        extraTable.style.display = 'none';
+        btn.classList.remove('open');
+    } else {
+        // Показываем — явный 'block', а не пустая строка,
+        // чтобы следующая проверка не сбилась
+        extraTable.style.display = 'block';
+        btn.classList.add('open');
+    }
     updateBulkMoreBtnState();
 }
 
