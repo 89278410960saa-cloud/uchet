@@ -61,6 +61,10 @@
             border-color: #66c0f4;
             box-shadow: 0 0 0 3px rgba(102,192,244,0.2);
         }
+        input[type=password]:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
         button {
             width: 100%;
             padding: 14px;
@@ -152,6 +156,45 @@
             margin-top: 14px;
             line-height: 1.5;
         }
+
+        /* ===== Экран "уже отправлено" ===== */
+        #alreadySentBlock {
+            display: none;
+            text-align: center;
+            padding: 10px 0 4px;
+        }
+        #alreadySentBlock .check {
+            width: 68px;
+            height: 68px;
+            margin: 0 auto 18px;
+            border-radius: 50%;
+            background: rgba(255, 215, 0, 0.15);
+            border: 2px solid #ffd700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            font-weight: bold;
+            color: #ffd700;
+            animation: pop 0.4s ease-out;
+        }
+        #alreadySentBlock h2 {
+            color: #ffd700;
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+        #alreadySentBlock p {
+            color: #c7d5e0;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 6px;
+        }
+        #alreadySentBlock .small {
+            color: #8f98a0;
+            font-size: 12px;
+            margin-top: 14px;
+            line-height: 1.5;
+        }
     </style>
 </head>
 <body>
@@ -186,30 +229,53 @@
                 Токен остался в памяти браузера и подставится автоматически в следующий раз.
             </p>
         </div>
+
+        <!-- ===== Экран "уже отправлено" ===== -->
+        <div id="alreadySentBlock">
+            <div class="check">!</div>
+            <h2>Токен уже отправлен</h2>
+            <p>Этот QR-код уже был использован ранее.</p>
+            <p class="small">
+                Повторный ввод токена невозможен.<br>
+                Если нужно передать новый токен — сгенерируйте новый QR-код на компьютере.
+            </p>
+        </div>
     </div>
 
     <script>
         /* ============ ключи хранилища ============ */
-        const LS_TOKEN = 'gh_pat_saved';   // сам токен
-        const LS_CTX   = 'gh_xfer_ctx';    // topic + ключ шифрования из QR
+        const LS_TOKEN = 'gh_pat_saved';        // сам токен
+        const LS_CTX   = 'gh_xfer_ctx';         // topic + ключ шифрования из QR
+        const LS_SENT_PREFIX = 'gh_pat_sent_';  // флаг "по этому topic токен уже отправлен"
 
-        const statusEl   = document.getElementById('status');
-        const btn        = document.getElementById('sendBtn');
-        const tokenInput = document.getElementById('tokenInput');
-        const forgetBtn  = document.getElementById('forgetBtn');
-        const formBlock  = document.getElementById('formBlock');
+        const statusEl     = document.getElementById('status');
+        const btn          = document.getElementById('sendBtn');
+        const tokenInput   = document.getElementById('tokenInput');
+        const forgetBtn    = document.getElementById('forgetBtn');
+        const formBlock    = document.getElementById('formBlock');
         const successBlock = document.getElementById('successBlock');
-        const pageTitle  = document.getElementById('pageTitle');
+        const alreadySentBlock = document.getElementById('alreadySentBlock');
+        const pageTitle    = document.getElementById('pageTitle');
         const pageSubtitle = document.getElementById('pageSubtitle');
 
-        /* ============ Экран успеха ============ */
-        function showSuccess() {
+        /* ============ Экраны результата ============ */
+        function hideHeaderAndForm() {
             formBlock.style.display = 'none';
             pageSubtitle.style.display = 'none';
             pageTitle.style.display = 'none';
-            successBlock.style.display = 'block';
-            // убираем адресную строку с параметрами
             try { history.replaceState(null, '', location.pathname); } catch (e) {}
+        }
+
+        function showSuccess() {
+            hideHeaderAndForm();
+            alreadySentBlock.style.display = 'none';
+            successBlock.style.display = 'block';
+        }
+
+        function showAlreadySent() {
+            hideHeaderAndForm();
+            successBlock.style.display = 'none';
+            alreadySentBlock.style.display = 'block';
         }
 
         /* ============ 1. Контекст: topic и ключ ============ */
@@ -225,10 +291,8 @@
         }
 
         if (topic && keyBase64) {
-            // пришли из QR — запоминаем
             saveCtx(topic, keyBase64);
         } else {
-            // QR уже нет (или страница перезагружена) — берём из памяти
             const c = loadCtx();
             if (c && c.t && c.k) { topic = c.t; keyBase64 = c.k; }
         }
@@ -237,6 +301,7 @@
             statusEl.className = 'status error';
             statusEl.textContent = 'Неверная ссылка. Отсканируйте QR заново.';
             btn.disabled = true;
+            tokenInput.disabled = true;
         }
 
         /* ============ 2. Токен в памяти ============ */
@@ -254,12 +319,10 @@
             forgetBtn.style.display = loadToken() ? 'block' : 'none';
         }
 
-        // подставляем ранее сохранённый токен
         const savedToken = loadToken();
         if (savedToken) tokenInput.value = savedToken;
         updateForgetBtn();
 
-        // сохраняем при каждом изменении поля
         tokenInput.addEventListener('input', () => saveToken(tokenInput.value.trim()));
 
         function forgetToken() {
@@ -277,7 +340,112 @@
             return bytes;
         }
 
-        /* ============ 4. Отправка ============ */
+        /* ============ 4. Флаги "уже отправлено" ============ */
+        function isTopicMarkedAsSent(t) {
+            try { return localStorage.getItem(LS_SENT_PREFIX + t) === 'true'; }
+            catch (e) { return false; }
+        }
+        function markTopicAsSent(t) {
+            try { localStorage.setItem(LS_SENT_PREFIX + t, 'true'); }
+            catch (e) {}
+        }
+
+        /* ============ 5. Проверка GitHub-токена ============ */
+        async function verifyGitHubToken(token) {
+            try {
+                const controller = new AbortController();
+                const timeoutId  = setTimeout(() => controller.abort(), 10000);
+                const response = await fetch('https://api.github.com/user', {
+                    headers: { 'Authorization': `token ${token}` },
+                    signal: controller.signal
+                });
+                clearTimeout(timeoutId);
+                if (response.ok) return 'valid';
+                if (response.status === 401) return 'invalid';
+                return 'error';
+            } catch (e) {
+                console.error('Token verification error:', e);
+                return 'error';
+            }
+        }
+
+        /* ============ 6. Проверка: уже был отправлен токен по этому topic? ============ */
+        function checkTopicRetained(t) {
+            return new Promise((resolve) => {
+                if (typeof mqtt === 'undefined') { resolve(false); return; }
+
+                let resolved     = false;
+                let retainedFound = false;
+                let client        = null;
+
+                const finish = (result) => {
+                    if (resolved) return;
+                    resolved = true;
+                    if (client) { try { client.end(true); } catch (e) {} }
+                    resolve(result);
+                };
+
+                // жёсткий таймаут — 4 секунды
+                setTimeout(() => finish(false), 4000);
+
+                try {
+                    client = mqtt.connect('wss://broker.emqx.io:8084/mqtt', {
+                        clean: true,
+                        connectTimeout: 3000,
+                        reconnectPeriod: 0
+                    });
+                } catch (e) { finish(false); return; }
+
+                client.on('connect', () => {
+                    client.subscribe(t, { qos: 1 }, (err) => {
+                        if (err) { finish(false); return; }
+                        // после SUBACK ждём 1.5 с — за это время должен прийти retained-пакет, если он есть
+                        setTimeout(() => finish(retainedFound), 1500);
+                    });
+                });
+
+                client.on('message', (recvTopic, payload) => {
+                    if (recvTopic === t && payload && payload.length > 0) {
+                        retainedFound = true;
+                    }
+                });
+
+                client.on('error', () => finish(false));
+            });
+        }
+
+        /* ============ 7. Инициализация состояния при загрузке ============ */
+        async function initializeState() {
+            if (!topic || !keyBase64) return;
+
+            // Мгновенная проверка localStorage (повторное открытие на этом же устройстве)
+            if (isTopicMarkedAsSent(topic)) {
+                showAlreadySent();
+                return;
+            }
+
+            // Проверка через MQTT (для повторного открытия на ЛЮБОМ устройстве)
+            btn.disabled = true;
+            tokenInput.disabled = true;
+            statusEl.className = 'status info';
+            statusEl.textContent = 'Проверка статуса…';
+
+            const alreadySent = await checkTopicRetained(topic);
+
+            if (alreadySent) {
+                markTopicAsSent(topic);
+                showAlreadySent();
+                return;
+            }
+
+            // Разрешаем ввод
+            btn.disabled = false;
+            tokenInput.disabled = false;
+            statusEl.textContent = '';
+            statusEl.className = 'status';
+        }
+
+        /* ============ 8. Отправка ============ */
         async function sendToken() {
             const token = tokenInput.value.trim();
             if (!token) {
@@ -289,15 +457,44 @@
                 if (!confirm('Токен не похож на GitHub PAT. Продолжить?')) return;
             }
 
-            // на случай, если input не сработал — фиксируем в памяти
             saveToken(token);
-
             btn.disabled = true;
+            tokenInput.disabled = true;
+
+            /* --- Проверка токена через GitHub API --- */
             statusEl.className = 'status info';
-            statusEl.textContent = 'Отправка...';
+            statusEl.textContent = 'Проверка токена…';
+
+            const verification = await verifyGitHubToken(token);
+
+            if (verification === 'invalid') {
+                statusEl.className = 'status error';
+                statusEl.textContent = '❌ Токен недействителен. Проверьте его правильность.';
+                btn.disabled = false;
+                tokenInput.disabled = false;
+                return;
+            }
+
+            if (verification === 'error') {
+                const proceed = confirm(
+                    'Не удалось проверить токен через GitHub.\n' +
+                    'Возможно, нет соединения с интернетом.\n\n' +
+                    'Отправить токен без проверки?'
+                );
+                if (!proceed) {
+                    statusEl.className = 'status';
+                    statusEl.textContent = '';
+                    btn.disabled = false;
+                    tokenInput.disabled = false;
+                    return;
+                }
+            }
+
+            /* --- Шифрование и отправка --- */
+            statusEl.className = 'status info';
+            statusEl.textContent = 'Отправка…';
 
             try {
-                // Шифруем токен ключом из QR
                 const keyBytes = base64ToBytes(keyBase64);
                 const aesKey = await crypto.subtle.importKey(
                     'raw', keyBytes, { name: 'AES-GCM' }, false, ['encrypt']
@@ -310,12 +507,10 @@
                     new TextEncoder().encode(token)
                 );
 
-                // [12 байт IV][шифротекст]
                 const combined = new Uint8Array(iv.length + ciphertext.byteLength);
                 combined.set(iv, 0);
                 combined.set(new Uint8Array(ciphertext), iv.length);
 
-                // Подключаемся к тому же публичному брокеру
                 const client = mqtt.connect('wss://broker.emqx.io:8084/mqtt', {
                     clean: true,
                     connectTimeout: 10000,
@@ -330,14 +525,18 @@
                         statusEl.className = 'status error';
                         statusEl.textContent = msg;
                         btn.disabled = false;
+                        tokenInput.disabled = false;
                     }
                 };
 
                 client.on('connect', () => {
-                    client.publish(topic, combined, { qos: 1 }, (err) => {
+                    /* retain: true — чтобы при повторном открытии ссылки
+                       (на любом устройстве) можно было обнаружить, что токен уже отправлен */
+                    client.publish(topic, combined, { qos: 1, retain: true }, (err) => {
                         if (err) {
                             done(false, 'Ошибка отправки: ' + err.message);
                         } else {
+                            markTopicAsSent(topic);
                             done(true, '✅ Токен отправлен! Вернитесь к компьютеру.');
                         }
                     });
@@ -348,7 +547,6 @@
                     done(false, 'Ошибка соединения. Попробуйте снова.');
                 });
 
-                // Защита от зависания
                 setTimeout(() => {
                     if (btn.disabled) done(false, 'Таймаут. Попробуйте снова.');
                 }, 15000);
@@ -358,7 +556,13 @@
                 statusEl.className = 'status error';
                 statusEl.textContent = 'Ошибка: ' + e.message;
                 btn.disabled = false;
+                tokenInput.disabled = false;
             }
+        }
+
+        /* ============ 9. Запуск проверки при загрузке ============ */
+        if (topic && keyBase64) {
+            initializeState();
         }
     </script>
 </body>
