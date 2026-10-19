@@ -4180,25 +4180,15 @@ button:hover{background:#222733!important}
         </h2>
         
         <!-- Одна строка: поле ввода + переключатель + надпись -->
-        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
-            <input type="password" id="githubToken" 
-                   style="flex: 1; padding: 6px; min-width: 0;" 
-                   placeholder="Токен GitHub (classic)">
+        <div style="margin-bottom: 10px;">
+    <input type="password" id="githubToken" 
+           style="width: 100%; padding: 6px 8px; box-sizing: border-box; height: 26px;" 
+           placeholder="Токен GitHub (classic)">
+</div>
 
-            <label class="toggle-switch" style="flex-shrink: 0;">
-                <input type="checkbox" id="githubAutoSave">
-                <span class="slider round"></span>
-            </label>
-
-            <span style="font-size: 11px; text-align: right; white-space: nowrap; flex-shrink: 1;">
-                Автосохранение в GitHub (при каждом изменении)
-            </span>
-        </div>
-
-        <!-- Подсказка под строкой -->
-        <div style="font-size: 10px; color: #8f98a0; margin-bottom: 13.4px; text-align: center;">
-            Токен хранится только локально и не экспортируется.
-        </div>
+<div style="font-size: 10px; color: #8f98a0; margin-bottom: 13.4px; text-align: center;">
+    Токен хранится только в текущей сессии. После закрытия вкладки потребуется повторный вход.
+</div>
 
         <div style="display: flex; gap: 10px;">
             <button onclick="saveGithubSettings()" style="flex:1;">Сохранить</button>
@@ -4230,16 +4220,41 @@ button:hover{background:#222733!important}
             </div>
 
             <img id="githubQRImage"
-                 style="width: 200px; height: 200px;
-                        background: #fff; padding: 6px;
-                        border-radius: 8px;
-                        display: block; margin: 0 auto 8px;">
+     style="width: 200px; height: 200px;
+            background: #fff; padding: 6px;
+            border-radius: 8px;
+            display: block; margin: 0 auto 8px;">
 
-            <div id="githubQRStatus" style="
-                font-size: 11px;
-                color: #8f98a0;
-                min-height: 16px;
-                line-height: 1.3;"></div>
+<!-- ★ Кнопка «Обновить QR» -->
+<button type="button" id="refreshQRBtn" onclick="refreshGithubQR()"
+    style="
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        padding: 6px 14px;
+        margin-bottom: 8px;
+        font-family: inherit;
+        font-size: 11px;
+        font-weight: 500;
+        color: #c7d5e0;
+        background: rgba(102, 192, 244, 0.10);
+        border: 1px solid rgba(102, 192, 244, 0.35);
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.15s, border-color 0.15s, color 0.15s, opacity 0.15s;
+    "
+    onmouseover="this.style.background='rgba(102,192,244,0.22)'; this.style.borderColor='#66c0f4'; this.style.color='#ffffff';"
+    onmouseout="this.style.background='rgba(102,192,244,0.10)'; this.style.borderColor='rgba(102,192,244,0.35)'; this.style.color='#c7d5e0';"
+    title="Сгенерировать новый QR-код (старый станет недействительным)">
+    <i class="fas fa-sync-alt"></i> Обновить QR
+</button>
+
+<div id="githubQRStatus" style="
+    font-size: 11px;
+    color: #8f98a0;
+    min-height: 16px;
+    line-height: 1.3;"></div>
         </div>
         <!-- ============================================================== -->
     </div>
@@ -4479,7 +4494,9 @@ async function enableAdminModeWithToken(token) {
     if (isValid) {
         isAdmin = true;
         currentUser = 'admin';
-        localStorage.setItem('userAuth', JSON.stringify({ isAdmin, currentUser, githubToken: token }));
+        githubToken = token;
+        sessionStorage.setItem('github_token', token);
+        sessionStorage.setItem('userAuth', JSON.stringify({ isAdmin, currentUser, githubToken: token }));
         updateUserInterface();
         // Принудительная перерисовка таблиц через задержку, чтобы все обработчики обновились
         setTimeout(() => {
@@ -4495,21 +4512,19 @@ async function enableAdminModeWithToken(token) {
 }
 async function saveGithubSettings() {
     const token = document.getElementById('githubToken').value.trim();
-    const autoSave = document.getElementById('githubAutoSave').checked;
 
     if (token) {
         const isValid = await verifyGitHubToken(token);
         if (isValid) {
             githubToken = token;
-            localStorage.setItem('github_token', token);
+            sessionStorage.setItem('github_token', token);
             isAdmin = true;
             currentUser = 'admin';
-            localStorage.setItem('userAuth', JSON.stringify({ isAdmin, currentUser, githubToken: token }));
-            updateUserInterface();          // обновляет интерфейс и перерисовывает таблицы
+            sessionStorage.setItem('userAuth', JSON.stringify({ isAdmin, currentUser, githubToken: token }));
+            updateUserInterface();
             closeGithubSettingsModal();
             showAutosaveNotification('✅ Режим администратора активирован!');
 
-            // Перезагрузка страницы для полного обновления состояния
             setTimeout(() => location.reload(), 100);
             return;
         } else {
@@ -4518,10 +4533,10 @@ async function saveGithubSettings() {
     } else {
         // Удаление токена, переход в гостевой режим
         githubToken = null;
-        localStorage.removeItem('github_token');
+        sessionStorage.removeItem('github_token');
         isAdmin = false;
         currentUser = 'guest';
-        localStorage.setItem('userAuth', JSON.stringify({ isAdmin, currentUser }));
+        sessionStorage.setItem('userAuth', JSON.stringify({ isAdmin, currentUser }));
         updateUserInterface();
         updateAllTables();
         showAutosaveNotification('Гостевой режим активирован');
@@ -4529,28 +4544,28 @@ async function saveGithubSettings() {
         setTimeout(() => location.reload(), 100);
     }
 
-    githubAutoSaveEnabled = autoSave;
-    localStorage.setItem('github_auto_save', autoSave);
     closeGithubSettingsModal();
 }
 async function checkAuthOnLoad() {
-    const savedToken = localStorage.getItem('github_token');
+    const savedToken = sessionStorage.getItem('github_token');
     if (savedToken) {
         const isValid = await verifyGitHubToken(savedToken);
         if (isValid) {
             isAdmin = true;
             currentUser = 'admin';
-            localStorage.setItem('userAuth', JSON.stringify({ isAdmin, currentUser, githubToken: savedToken }));
+            githubToken = savedToken;
+            sessionStorage.setItem('userAuth', JSON.stringify({ isAdmin, currentUser, githubToken: savedToken }));
             return true;
         } else {
-            localStorage.removeItem('github_token');
-            localStorage.removeItem('userAuth');
+            sessionStorage.removeItem('github_token');
+            sessionStorage.removeItem('userAuth');
+            githubToken = null;
         }
     }
     // По умолчанию – гость
     isAdmin = false;
     currentUser = 'guest';
-    localStorage.setItem('userAuth', JSON.stringify({ isAdmin, currentUser }));
+    sessionStorage.setItem('userAuth', JSON.stringify({ isAdmin, currentUser }));
     return false;
 }
 function handleAdminPasswordKeyPress(event) {
@@ -4576,8 +4591,8 @@ function updateUserInterface() {
     // ОБЯЗАТЕЛЬНО перерисовываем все таблицы
     updateAllTables();
 
-    // Сохраняем состояние в localStorage
-    localStorage.setItem('userAuth', JSON.stringify({ isAdmin, currentUser }));
+// Сохраняем состояние в sessionStorage (живёт только в рамках вкладки)
+sessionStorage.setItem('userAuth', JSON.stringify({ isAdmin, currentUser }));
 }
 
 function updateGitHubGuestBadge() {
@@ -4626,11 +4641,11 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeRecordIds();
     refreshGitHubDate();
     
-    // Если был сохранён токен GitHub – забираем его, но не входим
-    const savedToken = localStorage.getItem('github_token');
-    if (savedToken) {
-        githubToken = savedToken;
-    }
+    // Если был сохранён токен в текущей сессии – забираем его
+const savedToken = sessionStorage.getItem('github_token');
+if (savedToken) {
+    githubToken = savedToken;
+}
 });
 function toggleFavoriteFilter() {
     showFavoritesOnly = !showFavoritesOnly;
@@ -4956,12 +4971,8 @@ function applyFixedTableLayouts() {
             }
         }
 
-        function markChangesMade() {
-            changesMade = true;
-        // Если включено автосохранение в GitHub – сохраняем сразу
-    if (githubAutoSaveEnabled && githubToken) {
-        saveToGitHub();
-    }
+function markChangesMade() {
+    changesMade = true;
 }
 // Копирование текста в буфер обмена
 function copyToClipboard(text) {
@@ -7518,27 +7529,16 @@ function setupLoginPage() {
     }, 100);
 }
 // --- GitHub интеграция ---
-let githubAutoSaveEnabled = false;
 let githubToken = null;
 
 function loadGithubSettings() {
-    const savedToken = localStorage.getItem('github_token');
-    const savedAuto = localStorage.getItem('github_auto_save');
-
+    const savedToken = sessionStorage.getItem('github_token');
     if (savedToken) githubToken = savedToken;
-
-    // По умолчанию автосохранение ВКЛЮЧЕНО (true), если явно не сохранено false
-    if (savedAuto === 'false') {
-        githubAutoSaveEnabled = false;
-    } else {
-        githubAutoSaveEnabled = true;
-    }
 }
 loadGithubSettings();
 
 function showGithubSettingsModal() {
     document.getElementById('githubToken').value = githubToken || '';
-    document.getElementById('githubAutoSave').checked = githubAutoSaveEnabled;
     document.getElementById('githubSettingsModal').style.display = 'flex';
 }
 
@@ -7579,91 +7579,19 @@ async function testGitHubToken() {
 
         if (response.ok) {
             showAutosaveNotification('Токен GitHub валиден');
-
-            // ✅ ВКЛЮЧАЕМ АДМИНА
-            localStorage.setItem('isAdmin', 'true');
-
+            sessionStorage.setItem('isAdmin', 'true');
         } else {
             showAutosaveNotification('Токен GitHub недействителен', true);
-
             githubToken = null;
-            localStorage.removeItem('github_token');
-
-            // ❌ ОТКЛЮЧАЕМ
-            localStorage.setItem('isAdmin', 'false');
+            sessionStorage.removeItem('github_token');
+            sessionStorage.setItem('isAdmin', 'false');
         }
 
     } catch(e) {
         console.error('Ошибка проверки токена:', e);
     }
 }
-async function saveToGitHub() {
-    if (!githubToken || !githubAutoSaveEnabled) return;
-    
-    const data = {
-        accountingData,
-        counterpartiesData,
-        paymentsData,
-        settlementData,
-        mailData,
-        proxyData,
-        applicationComments,
-        departmentsList,
-        version: '1.1',
-        exportDate: new Date().toISOString()
-    };
-    
-    const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
-    
-    const owner = '89278410960saa-cloud';
-    const repo = 'uchet';
-    const path = 'uchet_backup.json';
-    
-    try {
-        // Сначала получаем sha текущего файла (если он есть)
-        let sha = null;
-        const getResponse = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`, {
-            headers: { 'Authorization': `token ${githubToken}` }
-        });
-        if (getResponse.ok) {
-            const fileInfo = await getResponse.json();
-            sha = fileInfo.sha;
-        } else if (getResponse.status !== 404) {
-            throw new Error(`GitHub API error: ${getResponse.status}`);
-        }
-        
-        // Отправляем новый файл
-        const putResponse = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`, {
-            method: 'PUT',
-            headers: {
-                'Authorization': `token ${githubToken}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                message: 'Автосохранение из приложения',
-                content: content,
-                sha: sha,
-                branch: 'main'
-            })
-        });
-        
-        if (putResponse.ok) {
-            showAutosaveNotification('Данные сохранены в GitHub');
-        } else {
-            const err = await putResponse.json();
-            throw new Error(err.message || 'Ошибка сохранения');
-        }
-    } catch (error) {
-        console.error('GitHub save error:', error);
-        showAutosaveNotification(`GitHub: ${error.message}`, true);
-        // При ошибке отключаем автосохранение, чтобы не спамить
-        if (error.message.includes('401') || error.message.includes('403')) {
-            githubAutoSaveEnabled = false;
-            localStorage.setItem('github_auto_save', 'false');
-            showAutosaveNotification('Автосохранение в GitHub отключено из-за ошибки токена', true);
-        }
-    }
-}
+
 // ========== ФУНКЦИЯ ДЛЯ принудительного экспорта данных ==========
 async function forceExportToGitHub() {
     const btn = document.querySelector('.github-export-btn');
@@ -11886,11 +11814,11 @@ document.addEventListener('DOMContentLoaded', async function() {
     loadAllData();
     initializeRecordIds();
 
-    // Если есть сохранённый токен – забираем его, но не входим автоматически
-    const savedToken = localStorage.getItem('github_token');
-    if (savedToken) {
-        githubToken = savedToken;
-    }
+    // Если есть сохранённый токен в текущей сессии – забираем его
+const savedToken = sessionStorage.getItem('github_token');
+if (savedToken) {
+    githubToken = savedToken;
+}
 
     // Обработчик Enter на странице входа
     const loginPage = document.getElementById('login-page');
@@ -12464,7 +12392,7 @@ function startApplication() {
         initializeRecordIds();
         
         // 2. Определяем режим (админ / гость)
-        const savedAuth = localStorage.getItem('userAuth');
+        const savedAuth = sessionStorage.getItem('userAuth');
         if (savedAuth) {
             try {
                 const auth = JSON.parse(savedAuth);
@@ -12831,7 +12759,9 @@ function startGithubQR() {
             statusEl.style.color = '#ff6b5b';
         });
 
-        // 6. Ждём сообщение с телефона
+        // ===== ИЗМЕНЁННЫЙ ОБРАБОТЧИК СООБЩЕНИЯ =====
+        // Токен сначала проверяется через GitHub API. Поле #githubToken
+        // заполняется ТОЛЬКО если токен валиден.
         _githubQRClient.on('message', async (receivedTopic, payload) => {
             if (receivedTopic !== topic) return;
 
@@ -12849,17 +12779,36 @@ function startGithubQR() {
                 const token = new TextDecoder().decode(plaintext).trim();
                 if (!token) throw new Error('Пустой токен');
 
-                // === УСПЕХ ===
-                statusEl.textContent = '✅ Токен получен';
+                // ★ ПРОВЕРКА ТОКЕНА ПЕРЕД ПОДСТАНОВКОЙ
+                statusEl.textContent = 'Проверка токена…';
+                statusEl.style.color = '#ffd700';
+
+                const verification = await verifyGitHubToken(token);
+
+                if (verification === 'invalid') {
+                    statusEl.textContent =
+                        '❌ Неверный токен. Нажмите «Обновить QR» и введите корректный токен.';
+                    statusEl.style.color = '#ff6b5b';
+                    stopGithubQR();
+                    return;
+                }
+
+                if (verification === 'error') {
+                    statusEl.textContent =
+                        '⚠️ Не удалось проверить токен (нет соединения). Нажмите «Обновить QR» и попробуйте снова.';
+                    statusEl.style.color = '#ff6b5b';
+                    stopGithubQR();
+                    return;
+                }
+
+                // ★ ТОКЕН ВАЛИДЕН — подставляем в поле и активируем админ-режим
+                statusEl.textContent = '✅ Токен проверен';
                 statusEl.style.color = '#4caf50';
 
-                // Подставляем токен в поле ввода
                 document.getElementById('githubToken').value = token;
 
-                // Останавливаем MQTT-сессию
                 stopGithubQR();
 
-                // Автоматически сохраняем (активируем админ-режим)
                 if (typeof saveGithubSettings === 'function') {
                     saveGithubSettings();
                 }
@@ -12870,6 +12819,7 @@ function startGithubQR() {
                 statusEl.style.color = '#ff6b5b';
             }
         });
+        // ===== КОНЕЦ ИЗМЕНЁННОГО ОБРАБОТЧИКА =====
 
     }).catch(err => {
         console.error('[QR] importKey error:', err);
@@ -12911,6 +12861,46 @@ window.closeGithubSettingsModal = function() {
         _origCloseGithubSettingsModal.apply(this, arguments);
     }
 };
+/* ============================================================
+   Перегенерация QR прямо в открытой модалке
+   ============================================================ */
+function refreshGithubQR() {
+    const btn      = document.getElementById('refreshQRBtn');
+    const statusEl = document.getElementById('githubQRStatus');
+    const qrImg    = document.getElementById('githubQRImage');
+    const tokenEl  = document.getElementById('githubToken');
+
+    // ★ Очищаем поле — новый токен подставится автоматически,
+    //   только когда пользователь отсканирует новый QR,
+    //   введёт токен на телефоне и он пройдёт проверку.
+    if (tokenEl) tokenEl.value = '';
+
+    // Блокируем кнопку и показываем индикатор генерации
+    if (btn) {
+        btn.disabled      = true;
+        btn.style.opacity = '0.55';
+        btn.style.cursor  = 'wait';
+        btn.innerHTML     = '<i class="fas fa-sync-alt fa-spin"></i> Генерация…';
+    }
+    if (statusEl) {
+        statusEl.textContent = 'Генерация нового QR…';
+        statusEl.style.color = '#ffd700';
+    }
+    if (qrImg) qrImg.style.opacity = '0.35';
+
+    // startGithubQR() сам вызовет stopGithubQR() в начале
+    startGithubQR();
+
+    setTimeout(() => {
+        if (btn) {
+            btn.disabled      = false;
+            btn.style.opacity = '1';
+            btn.style.cursor  = 'pointer';
+            btn.innerHTML     = '<i class="fas fa-sync-alt"></i> Обновить QR';
+        }
+        if (qrImg) qrImg.style.opacity = '1';
+    }, 700);
+}
 
     
 
@@ -16195,23 +16185,27 @@ function initFiltersHighlight() {
 
     /* ---------- 10. Модальное окно (без чекбоксов — ярлык кликабельный) ---------- */
     function injectModal() {
-        if (document.getElementById('bulkEditModal')) return;
+    if (document.getElementById('bulkEditModal')) return;
 
-        const fields = [
-    { field: 'status',        label: 'Статус:',           type: 'select',   options: ['В работе','Поставка','Приход','Выполнено','Иное'] },
-    { field: 'date',          label: 'Дата утверждения:', type: 'date' },
-    { field: 'planFact',      label: 'План:',             type: 'date' },
-    { field: 'fact',          label: 'Факт:',             type: 'date' },
-    { field: 'shipmentDoc',   label: 'Документ:',         type: 'datalist', list: 'shipmentDocsList' },
+    /* ── Базовые поля (до «Документ» включительно) ── */
+    const baseFields = [
+        { field: 'status',        label: 'Статус:',           type: 'select',   options: ['В работе','Поставка','Приход','Выполнено','Иное'] },
+        { field: 'date',          label: 'Дата утверждения:', type: 'date' },
+        { field: 'planFact',      label: 'План:',             type: 'date' },
+        { field: 'fact',          label: 'Факт:',             type: 'date' },
+        { field: 'shipmentDoc',   label: 'Документ:',         type: 'datalist', list: 'shipmentDocsList' }
+    ];
 
-    /* ===== НОВЫЕ ПОЛЯ ===== */
-    { field: 'supplier',      label: 'Контрагент:',       type: 'datalist', list: 'suppliersList' },
-    { field: 'contract',      label: 'Договор:',          type: 'datalist', list: 'contractsList' },
-    { field: 'paymentTerms',  label: 'Оплата:',           type: 'datalist', list: 'paymentTermsList' },
-    { field: 'deliveryTerms', label: 'Условие поставки:', type: 'select',   options: ['', 'Включена', 'Самовывоз', 'Терминал'] },
-    { field: 'deliveryDays',  label: 'Срок поставки:',    type: 'number' }
-];
+    /* ── Дополнительные поля (под кнопкой «Еще») ── */
+    const extraFields = [
+        { field: 'supplier',      label: 'Контрагент:',       type: 'datalist', list: 'suppliersList' },
+        { field: 'contract',      label: 'Договор:',          type: 'datalist', list: 'contractsList' },
+        { field: 'paymentTerms',  label: 'Оплата:',           type: 'datalist', list: 'paymentTermsList' },
+        { field: 'deliveryTerms', label: 'Условие поставки:', type: 'select',   options: ['', 'Включена', 'Самовывоз', 'Терминал'] },
+        { field: 'deliveryDays',  label: 'Срок поставки:',    type: 'number' }
+    ];
 
+    function buildRows(fields) {
         let rowsHTML = '';
         fields.forEach(r => {
             const inputId = 'bulk_' + r.field;
@@ -16240,8 +16234,10 @@ function initFiltersHighlight() {
                     <td>${inputHTML}</td>
                 </tr>`;
         });
+        return rowsHTML;
+    }
 
-        const html = `
+    const html = `
 <div id="bulkEditModal" class="modal" style="display:none;">
   <div class="modal-content">
     <span class="close" onclick="closeBulkEditModal()">×</span>
@@ -16251,7 +16247,19 @@ function initFiltersHighlight() {
       нажмите на <b>название поля</b>, чтобы включить его обновление
     </p>
     <form id="bulkEditForm" onsubmit="applyBulkEdit(event)">
-      <table><tbody>${rowsHTML}</tbody></table>
+      <table><tbody>${buildRows(baseFields)}</tbody></table>
+
+      <!-- ★ Кнопка «Еще» — на всю ширину, сразу после «Документ» -->
+      <button type="button" id="bulkMoreBtn" class="bulk-more-btn">
+        <span class="bulk-more-btn-text">Еще</span>
+        <i class="fas fa-chevron-down bulk-more-btn-icon"></i>
+      </button>
+
+      <!-- ★ Дополнительные поля (скрыты по умолчанию) -->
+      <table id="bulkExtraTable" class="bulk-extra-table" style="display:none;">
+        <tbody>${buildRows(extraFields)}</tbody>
+      </table>
+
       <div style="display:flex; gap:8px; justify-content:center; margin-top:18px;">
         <button type="submit" style="padding:8px 22px; background:linear-gradient(135deg,#5c7e10 0%,#4c6b22 100%); color:#fff; border:none; border-radius:3px; cursor:pointer;">
           Применить к выбранным
@@ -16264,19 +16272,52 @@ function initFiltersHighlight() {
   </div>
 </div>`;
 
-        document.body.insertAdjacentHTML('beforeend', html);
+    document.body.insertAdjacentHTML('beforeend', html);
 
-        // Клик по ярлыку — переключение активности поля
-        document.querySelectorAll('#bulkEditForm .bulk-field-label').forEach(label => {
-            label.addEventListener('click', function (e) {
-                e.preventDefault();
-                e.stopPropagation();
-                const tr = this.closest('tr');
-                if (!tr) return;
-                tr.classList.toggle('bulk-row-active');
-            });
+    // Клик по ярлыку — переключение активности поля
+    document.querySelectorAll('#bulkEditForm .bulk-field-label').forEach(label => {
+        label.addEventListener('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const tr = this.closest('tr');
+            if (!tr) return;
+            tr.classList.toggle('bulk-row-active');
+            updateBulkMoreBtnState();
         });
-    }
+    });
+
+    // Обработчик кнопки «Еще»
+    const moreBtn = document.getElementById('bulkMoreBtn');
+    if (moreBtn) moreBtn.addEventListener('click', toggleBulkExtraFields);
+}
+
+/* ---------- 10.1 Переключение доп. полей ---------- */
+function toggleBulkExtraFields() {
+    const extraTable = document.getElementById('bulkExtraTable');
+    const btn = document.getElementById('bulkMoreBtn');
+    if (!extraTable || !btn) return;
+
+    const isHidden = extraTable.style.display === 'none' || !extraTable.style.display;
+    extraTable.style.display = isHidden ? '' : 'none';
+    btn.classList.toggle('open', isHidden);
+    updateBulkMoreBtnState();
+}
+
+/* ---------- 10.2 Состояние кнопки «Еще» ---------- */
+function updateBulkMoreBtnState() {
+    const btn = document.getElementById('bulkMoreBtn');
+    const extraTable = document.getElementById('bulkExtraTable');
+    if (!btn) return;
+
+    const isOpen = btn.classList.contains('open');
+    const activeExtra = extraTable ? extraTable.querySelectorAll('tr.bulk-row-active').length : 0;
+
+    let label = isOpen ? 'Скрыть' : 'Еще';
+    if (!isOpen && activeExtra > 0) label = `Еще (${activeExtra})`;
+
+    const text = btn.querySelector('.bulk-more-btn-text');
+    if (text) text.textContent = label;
+}
 
     /* ---------- 11. Получить выбранные recordId (только видимые) ---------- */
     function getSelectedRecordIds() {
@@ -16336,6 +16377,12 @@ set('bulk_deliveryTerms', '');
 set('bulk_deliveryDays',  '');
 
         document.getElementById('bulkEditCount').textContent = ids.length;
+        // ★ Сбрасываем «Еще» — доп. поля по умолчанию скрыты
+const extraTable = document.getElementById('bulkExtraTable');
+const moreBtn = document.getElementById('bulkMoreBtn');
+if (extraTable) extraTable.style.display = 'none';
+if (moreBtn) moreBtn.classList.remove('open');
+updateBulkMoreBtnState();
         document.getElementById('bulkEditModal').style.display = 'flex';
     };
 
@@ -17526,6 +17573,57 @@ document.addEventListener('DOMContentLoaded', function () {
             #offerUpdatePanel .offer-btn-no:hover {
                 background: linear-gradient(135deg, #868e96 0%, #5a6268 100%);
             }
+            /* ===== Кнопка «Еще» — разделитель между базовыми и доп. полями ===== */
+#bulkEditModal .bulk-more-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+    height: 26px;
+    margin: 6px 0;
+    padding: 0 12px;
+    background: rgba(102, 192, 244, 0.10);
+    color: #66c0f4;
+    border: 1px solid rgba(102, 192, 244, 0.35);
+    border-radius: 3px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+    box-sizing: border-box;
+}
+#bulkEditModal .bulk-more-btn:hover {
+    background: rgba(102, 192, 244, 0.20);
+    border-color: #66c0f4;
+    color: #ffffff;
+}
+#bulkEditModal .bulk-more-btn .bulk-more-btn-icon {
+    font-size: 10px;
+    transition: transform 0.2s ease;
+}
+#bulkEditModal .bulk-more-btn.open {
+    background: rgba(102, 192, 244, 0.18);
+    border-color: #66c0f4;
+    color: #ffffff;
+}
+#bulkEditModal .bulk-more-btn.open .bulk-more-btn-icon {
+    transform: rotate(180deg);
+}
+
+/* Плавное появление доп. полей */
+#bulkEditModal .bulk-extra-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: transparent !important;
+    animation: bulkExtraFadeIn 0.2s ease-out;
+}
+@keyframes bulkExtraFadeIn {
+    from { opacity: 0; transform: translateY(-4px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
         `;
         document.head.appendChild(style);
     }
