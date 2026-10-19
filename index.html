@@ -4048,6 +4048,61 @@ button:hover{background:#222733!important}
         #newRequestPositions textarea.pos-name { font-size: 12px !important; height: 26px !important; }
     }
 
+    
+/* 1. Наименование позиции — фиксированная высота, без растягивания ячейки */
+#newRequestPositions textarea.pos-name {
+    height: 25px !important;
+    min-height: 25px !important;
+    max-height: 25px !important;
+    padding: 3px 4px !important;
+    line-height: 1.2 !important;
+    resize: none !important;        /* запрет ручного растягивания */
+    overflow-y: auto !important;    /* длинный текст — скролл внутри */
+    white-space: pre-wrap !important;
+    word-wrap: break-word !important;
+    box-sizing: border-box !important;
+}
+
+/* 2. Ширина ID +15px: было 60px, стало 75px */
+#newRequestModal table th:nth-child(1),
+#newRequestModal table td:nth-child(1) {
+    width: 75px !important;
+}
+
+/* 3. Высота полей/ячеек как у «Подразделение» и «Заявка» — 25px */
+#newRequestPositions input,
+#newRequestPositions textarea.pos-name {
+    height: 25px !important;
+    min-height: 25px !important;
+    max-height: 25px !important;
+    box-sizing: border-box !important;
+}
+
+#newRequestPositions td {
+    height: 29px !important;        /* 25px поле + 2px padding сверху/снизу */
+    padding: 2px !important;
+    vertical-align: middle !important;
+    box-sizing: border-box !important;
+}
+
+/* 4. Меньше расстояние от таблицы до кнопки «Добавить позицию» */
+#newRequestForm > div:nth-child(3) {
+    margin-bottom: 0 !important;
+}
+#newRequestForm > div:nth-child(4) {
+    margin-top: 2px !important;     /* было 10px */
+}
+
+/* 5. Убрать зелёный цвет у кнопки «Добавить позицию» */
+#newRequestModal .new-request-add-btn {
+    background: linear-gradient(135deg, #2a6b8a 0%, #1a4a6a 100%) !important;
+    color: #ffffff !important;
+}
+#newRequestModal .new-request-add-btn:hover {
+    background: linear-gradient(135deg, #347fa3 0%, #23597d 100%) !important;
+    border-color: #66c0f4 !important;
+}
+
 </style>
 
 <!-- Модалка выбора: что добавить -->
