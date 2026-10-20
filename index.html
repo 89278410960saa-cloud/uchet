@@ -4013,7 +4013,7 @@ button:hover{background:#222733!important}
 
     /* Заголовки таблицы позиций */
     #newRequestModal table th {
-        padding: 4px 2px !important;
+        padding: 6px 3px !important;
         text-align: center !important;
         background: linear-gradient(135deg, #2a475e 0%, #1f3549 100%) !important;
         color: #66c0f4 !important;
@@ -4107,6 +4107,28 @@ button:hover{background:#222733!important}
 #newRequestModal .new-request-add-btn:hover {
     background: linear-gradient(135deg, #0b3974 0%, #0b3974 100%) !important;
     border-color: #09182c !important;
+}
+/* ============================================================
+   Увеличенная высота ячеек в таблице модалки «Новая заявка»
+   ============================================================ */
+
+/* 1. Ячейки — главный параметр (определяет высоту строки) */
+#newRequestModal #newRequestPositions td {
+    height: 38px !important;      /* было 29px */
+    padding: 2px !important;      /* не трогаем — оставляем 4px «воздуха» */
+    vertical-align: middle !important;
+    box-sizing: border-box !important;
+}
+
+/* 2. Поля ввода — растягиваем под новую высоту ячейки.
+     38px (ячейка) − 2px×2 (padding) = 34px — ровно заполнит ячейку. */
+#newRequestModal #newRequestPositions input,
+#newRequestModal #newRequestPositions textarea.pos-name {
+    height: 34px !important;      /* было 25px */
+    min-height: 34px !important;
+    max-height: 34px !important;
+    padding: 6px 4px !important;  /* больше «воздуха» внутри поля */
+    box-sizing: border-box !important;
 }
 
 </style>
@@ -6639,26 +6661,26 @@ function formatApplicationNumber(input) {
     input.setCustomValidity(''); // Сбрасываем сообщение об ошибке
 }
 
-function autoCompleteApplicationDate() {
-    // Автодополнение даты при вводе номера
-    const input = document.getElementById('editDocNumber');
+function autoCompleteApplicationDate(inputId) {
+    const input = document.getElementById(inputId || 'editDocNumber');
     if (!input) return;
-    
+
+    // Защита от повторного навешивания обработчика
+    if (input._autoDateWired) return;
+    input._autoDateWired = true;
+
     input.addEventListener('blur', function() {
         let value = this.value.trim();
-        
-        // Если уже есть правильный формат, ничего не делаем
-        if (validateApplicationFormat(value)) {
-            return;
-        }
-        
-        // Если введен только номер, добавляем текущую дату
+
+        // Уже правильный формат — не трогаем
+        if (validateApplicationFormat(value)) return;
+
+        // Только номер — дописываем текущую дату
         if (value && !value.includes('(от')) {
             const today = new Date();
             const day = String(today.getDate()).padStart(2, '0');
             const month = String(today.getMonth() + 1).padStart(2, '0');
             const year = today.getFullYear();
-            
             this.value = `${value} (от ${day}.${month}.${year})`;
         }
     });
@@ -12997,13 +13019,21 @@ function forceTableUpdate() {
             }
             // Инициализируем валидацию для поля заявки
             const appInput = document.getElementById('editDocNumber');
-            if (appInput) {
-            appInput.addEventListener('input', function() {
-            formatApplicationNumber(this);
-        });
-        
-        autoCompleteApplicationDate();
-    }
+if (appInput) {
+    appInput.addEventListener('input', function() {
+        formatApplicationNumber(this);
+    });
+    autoCompleteApplicationDate('editDocNumber');
+}
+
+// Инициализируем валидацию для поля заявки (модалка "Новая заявка")
+const newReqInput = document.getElementById('newRequestDocNumber');
+if (newReqInput) {
+    newReqInput.addEventListener('input', function() {
+        formatApplicationNumber(this);
+    });
+    autoCompleteApplicationDate('newRequestDocNumber');
+}
             // Добавляем небольшую задержку для полной инициализации DOM
             setTimeout(() => {
                 initializeCurrentPage();
