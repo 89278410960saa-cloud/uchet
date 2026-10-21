@@ -5795,9 +5795,31 @@ deliveryCell.style.width = '60px';
 deliveryCell.style.verticalAlign = 'top';
 deliveryCell.style.padding = '4px 2px';
 const dateStr = item.date ? 'от ' + item.date : '';
+
+// Делаем "Самовывоз" и "Терминал" кликабельными
+const deliveryTermsValue = item.deliveryTerms || '';
+const hasAnyFilterValue = !!(item.contract || item.supplier || item.docNumber);
+const isClickableDeliveryTerms =
+    (deliveryTermsValue === 'Самовывоз' || deliveryTermsValue === 'Терминал') &&
+    hasAnyFilterValue;
+
+let deliveryTermsHtml;
+if (isClickableDeliveryTerms) {
+    deliveryTermsHtml =
+        `<a href="#" class="delivery-terms-filter-link" ` +
+        `data-contract="${encodeURIComponent(item.contract || '')}" ` +
+        `data-supplier="${encodeURIComponent(item.supplier || '')}" ` +
+        `data-application="${encodeURIComponent(item.docNumber || '')}" ` +
+        `title="Показать в реестре" ` +
+        `style="color: #66c0f4; text-decoration: underline; cursor: pointer;">` +
+        `${escapeString(deliveryTermsValue)}</a>`;
+} else {
+    deliveryTermsHtml = escapeString(deliveryTermsValue);
+}
+
 deliveryCell.innerHTML = `
     <div style="margin-bottom: 2px; font-weight: bold; color: #c7d5e0;">${escapeString(item.deliveryDays || '')}</div>
-    <div style="font-size: 0.9em; color: #c7d5e0;">${escapeString(item.deliveryTerms || '')}</div>
+    <div style="font-size: 0.9em; color: #c7d5e0;">${deliveryTermsHtml}</div>
     <div style="font-size: 0.9em; color: #c7d5e0; margin-top: 2px;">${escapeString(dateStr)}</div>
 `;
 if (matchingProxy) {
@@ -9923,6 +9945,24 @@ document.addEventListener('click', function(e) {
         }
     }
 });
+// Клик по ссылке «Самовывоз» / «Терминал» в столбце «Срок / Поставка»
+document.addEventListener('click', function (e) {
+    const link = e.target.closest('.delivery-terms-filter-link');
+    if (!link) return;
+
+    e.preventDefault();
+    e.stopPropagation();
+
+    const contract    = decodeURIComponent(link.dataset.contract    || '');
+    const supplier    = decodeURIComponent(link.dataset.supplier    || '');
+    const application = decodeURIComponent(link.dataset.application || '');
+
+    if (typeof filterProxyByContract === 'function') {
+        filterProxyByContract(contract, supplier, application);
+    } else {
+        console.error('Функция filterProxyByContract не определена!');
+    }
+});
 // Переход на страницу «Позиции» с фильтром по контрагенту
 function filterAccountingBySupplier(supplierName) {
     if (!supplierName) return;
@@ -10070,6 +10110,51 @@ function filterPaymentsByContract(contract, supplier, application) {
         }
         // Применяем фильтрацию
         filterPaymentsTable();
+    }, 300);
+}
+// Переход на страницу «Самовывоз» с фильтром по договору, контрагенту и заявке
+function filterProxyByContract(contract, supplier, application) {
+    // Если нечего фильтровать — выходим
+    if (!contract && !supplier && !application) return;
+
+    showPage('proxy-registry');
+
+    setTimeout(() => {
+        const searchInput      = document.getElementById('searchProxyInput');
+        const applicationFilter= document.getElementById('proxyApplicationFilter');
+        const supplierFilter   = document.getElementById('proxySupplierFilter');
+        const statusFilter     = document.getElementById('proxyStatusFilter');
+        const dateFilter       = document.getElementById('proxyDateFilter');
+
+        // Сброс всех фильтров
+        if (searchInput)       searchInput.value = '';
+        if (applicationFilter) applicationFilter.value = '';
+        if (supplierFilter)    supplierFilter.value = '';
+        if (statusFilter)      statusFilter.value = '';
+        if (dateFilter)        dateFilter.value = '';
+
+        [searchInput, applicationFilter, supplierFilter, statusFilter, dateFilter].forEach(el => {
+            if (el) el.classList.remove('filter-active');
+        });
+
+        // Устанавливаем фильтр по договору (номер договора) в поле поиска
+        if (contract && searchInput) {
+            searchInput.value = contract;
+            updateFilterHighlight(searchInput);
+        }
+        // Если передан поставщик — заполняем фильтр по контрагентам
+        if (supplier && supplierFilter) {
+            supplierFilter.value = supplier;
+            updateFilterHighlight(supplierFilter);
+        }
+        // Если передана заявка — заполняем фильтр по заявкам
+        if (application && applicationFilter) {
+            applicationFilter.value = application;
+            updateFilterHighlight(applicationFilter);
+        }
+
+        // Применяем фильтрацию
+        filterProxyTable();
     }, 300);
 }
 // ===== ПОКАЗ / СКРЫТИЕ КНОПКИ ПЕЧАТИ ОТЧЕТА =====
@@ -10222,16 +10307,17 @@ function buildReportHTML(appNumber, positions, comment, counterparties, payments
     });
 
     // ---- Платежи (без ссылки) ----
-    let payRows = '';
-    payments.forEach(p => {
-        payRows += `<tr>
-            <td>${esc(p.date)}</td>
-            <td>${esc(p.status)}</td>
-            <td>${p.amount ? formatCurrency(p.amount) : ''}</td>
-            <td>${esc(p.contract)}</td>
-            <td>${esc(p.agreement)}</td>
-        </tr>`;
-    });
+let payRows = '';
+payments.forEach(p => {
+    payRows += `<tr>
+        <td>${esc(p.date)}</td>
+        <td>${esc(p.status)}</td>
+        <td>${esc(p.supplier)}</td>
+        <td>${p.amount ? formatCurrency(p.amount) : ''}</td>
+        <td>${esc(p.contract)}</td>
+        <td>${esc(p.agreement)}</td>
+    </tr>`;
+});
 
     // ---- Самовывоз ----
     let proxyRows = '';
@@ -10355,22 +10441,23 @@ function buildReportHTML(appNumber, positions, comment, counterparties, payments
     </div>` : ''}
 
     <!-- Платежи -->
-    ${payments.length ? `
-    <div class="section">
-        <div class="section-title">Платежи по заявке</div>
-        <table>
-            <thead>
-                <tr>
-                    <th>Дата</th>
-                    <th>Статус</th>
-                    <th>Сумма</th>
-                    <th>Счет</th>
-                    <th>Договор</th>
-                </tr>
-            </thead>
-            <tbody>${payRows}</tbody>
-        </table>
-    </div>` : ''}
+${payments.length ? `
+<div class="section">
+    <div class="section-title">Платежи по заявке</div>
+    <table>
+        <thead>
+            <tr>
+                <th>Дата</th>
+                <th>Статус</th>
+                <th>Контрагент</th>
+                <th>Сумма</th>
+                <th>Счет</th>
+                <th>Договор</th>
+            </tr>
+        </thead>
+        <tbody>${payRows}</tbody>
+    </table>
+</div>` : ''}
 
     <!-- Самовывоз -->
     ${proxies.length ? `
