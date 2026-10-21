@@ -16501,11 +16501,36 @@ function initFiltersHighlight() {
             }
             #bulkEditModal .bulk-hint strong { color: #4caf50; font-size: 14px; }
 
-            /* Отступ между иконкой и текстом на кнопке Group edit */
-            #bulkEditBtn > i.fas,
-            #bulkEditBtn > i.fa {
-                margin-right: 5px !important;
-            }
+/* Кнопка Group edit — под полем комментария (стилизована как кнопки панели) */
+#bulkEditBtn {
+    background: linear-gradient(135deg, #7b4ab8 0%, #5b3699 100%) !important;
+    color: #fff !important;
+    border: 1px solid transparent !important;
+    border-radius: 3px !important;
+    height: 22px !important;
+    min-height: 22px !important;
+    max-height: 22px !important;
+    padding: 0 14px !important;
+    font-size: 11px !important;
+    font-weight: bold !important;
+    cursor: pointer !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 0 6px 0 !important;
+    transition: border-color .15s !important;
+    box-sizing: border-box !important;
+    width: auto !important;
+    min-width: 0 !important;
+}
+#bulkEditBtn:hover {
+    border-color: #66c0f4 !important;
+    transform: none !important;
+}
+#bulkEditBtn > i.fas,
+#bulkEditBtn > i.fa {
+    margin-right: 5px !important;
+}
         `;
         const style = document.createElement('style');
         style.id = 'bulkEditStyles';
@@ -16633,16 +16658,18 @@ function initFiltersHighlight() {
             return;
         }
 
-        const selectedCount = visibleRows.filter(r =>
-            r.classList.contains('bulk-row-selected')
-        ).length;
+const selectedCount = visibleRows.filter(r =>
+    r.classList.contains('bulk-row-selected')
+).length;
 
-        setDisplay('inline-flex');
+// ★ Показываем кнопку только если выбрана хотя бы одна позиция
+if (selectedCount === 0) {
+    setDisplay('none');
+    return;
+}
 
-        btn.innerHTML = selectedCount > 0
-            ? `<i class="fas fa-layer-group" style="margin-right:5px;"></i>Group edit (${selectedCount})`
-            : `<i class="fas fa-layer-group" style="margin-right:5px;"></i>Group edit`;
-    }
+setDisplay('inline-flex');
+btn.innerHTML = `<i class="fas fa-layer-group" style="margin-right:5px;"></i>Group edit (${selectedCount})`;
 
     /* ---------- 7. Планировщик ---------- */
     let syncTimer = null;
@@ -16670,26 +16697,23 @@ function initFiltersHighlight() {
 
     /* ---------- 9. Кнопка в выпадающем блоке — после «Поставки 30 дней» ---------- */
     function injectButton() {
-        if (document.getElementById('bulkEditBtn')) return;
-        const dropdown = document.querySelector('#accounting .controls-dropdown');
-        if (!dropdown) return;
+    if (document.getElementById('bulkEditBtn')) return;
 
-        const btn = document.createElement('button');
-        btn.id = 'bulkEditBtn';
-        btn.type = 'button';
-        btn.style.setProperty('display', 'none', 'important');
-        btn.style.background = 'linear-gradient(135deg, #7b4ab8 0%, #5b3699 100%)';
-        btn.title = 'Массово изменить выбранные позиции';
-        btn.innerHTML = '<i class="fas fa-layer-group" style="margin-right:5px;"></i>Group edit';
-        btn.onclick = function (e) { e.preventDefault(); window.showBulkEditModal(); };
+    // Кнопка должна быть под полем комментария
+    const commentControl = document.querySelector('#accounting .comment-control');
+    if (!commentControl || !commentControl.parentNode) return;
 
-        const anchor = dropdown.querySelector('button[onclick*="printDeliveriesAndOverdue"]');
-        if (anchor && anchor.parentNode === dropdown) {
-            anchor.parentNode.insertBefore(btn, anchor.nextSibling);
-        } else {
-            dropdown.appendChild(btn);
-        }
-    }
+    const btn = document.createElement('button');
+    btn.id = 'bulkEditBtn';
+    btn.type = 'button';
+    btn.style.setProperty('display', 'none', 'important');
+    btn.title = 'Массово изменить выбранные позиции';
+    btn.innerHTML = '<i class="fas fa-layer-group" style="margin-right:5px;"></i>Group edit';
+    btn.onclick = function (e) { e.preventDefault(); window.showBulkEditModal(); };
+
+    // Вставляем сразу после comment-control (внутри .controls-container)
+    commentControl.parentNode.insertBefore(btn, commentControl.nextSibling);
+}
 
     /* ---------- 10. Модальное окно (без чекбоксов — ярлык кликабельный) ---------- */
     function injectModal() {
