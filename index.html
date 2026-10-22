@@ -4306,16 +4306,52 @@ const status     = 'В работе';   // ← статус всегда «В р
 
     const rows = document.querySelectorAll('#newRequestPositions tr');
     const positions = [];
+    const errors = [];
 
-    rows.forEach(function (row) {
-        const id   = row.querySelector('.pos-id').value.trim();
-        const name = row.querySelector('.pos-name').value.trim();
-        const qty  = row.querySelector('.pos-qty').value.trim();
-        const unit = row.querySelector('.pos-unit').value.trim();
+    rows.forEach(function (row, index) {
+        const rowNum = index + 1;
 
+        const idEl   = row.querySelector('.pos-id');
+        const nameEl = row.querySelector('.pos-name');
+        const qtyEl  = row.querySelector('.pos-qty');
+        const unitEl = row.querySelector('.pos-unit');
+
+        if (!idEl || !nameEl || !qtyEl || !unitEl) return;
+
+        const id   = idEl.value.trim();
+        const name = nameEl.value.trim();
+        const qty  = qtyEl.value.trim();
+        const unit = unitEl.value.trim();
+
+        // Полностью пустая строка — просто пропускаем (не ошибка)
         if (!id && !name && !qty && !unit) return;
+
+        // 1) Все поля должны быть заполнены
+        const missing = [];
+        if (!id)   missing.push('ID');
+        if (!name) missing.push('Наименование позиции');
+        if (!qty)  missing.push('Кол-во');
+        if (!unit) missing.push('Ед. изм.');
+
+        if (missing.length > 0) {
+            errors.push(`Позиция №${rowNum}: не заполнено — ${missing.join(', ')}`);
+            return;
+        }
+
+        // 2) Кол-во — только число (запятая или точка как разделитель)
+        if (!/^\d+([.,]\d+)?$/.test(qty)) {
+            errors.push(`Позиция №${rowNum}: «Кол-во» должно быть числом (например 10 или 10,5)`);
+            return;
+        }
+
         positions.push({ id: id, name: name, qty: qty, unit: unit });
     });
+
+    // Если были ошибки — показываем все сразу, не сохраняем
+    if (errors.length > 0) {
+        alert('Исправьте следующие ошибки:\n\n' + errors.join('\n'));
+        return;
+    }
 
     if (positions.length === 0) {
         alert('Добавьте хотя бы одну позицию');
@@ -6591,6 +6627,37 @@ if (editPurchaseName && editPurchaseName.tagName === 'TEXTAREA') {
     if (!validateApplicationFormat(docNumber)) {
         alert('Неверный формат заявки!\nПравильный формат: "номер (от ДД.ММ.ГГГГ)"\nПример: "123 (от 31.12.2024)"');
         document.getElementById('editDocNumber').focus();
+        return;
+    }
+    const quantityValue    = document.getElementById('editQuantity').value.trim();
+    const purchaseQtyValue = document.getElementById('editPurchaseQuantity').value.trim();
+    const unitValue        = document.getElementById('editUnit').value.trim();
+
+    // 1) Обязательные поля
+    const missingFields = [];
+    if (!quantityValue) missingFields.push('Кол-во');
+    if (!unitValue)     missingFields.push('Ед. изм.');
+
+    if (missingFields.length > 0) {
+        alert('Заполните обязательные поля: ' + missingFields.join(', '));
+        const firstEmpty = !quantityValue
+            ? document.getElementById('editQuantity')
+            : document.getElementById('editUnit');
+        firstEmpty.focus();
+        return;
+    }
+
+    // 2) Кол-во — только число
+    if (!/^\d+([.,]\d+)?$/.test(quantityValue)) {
+        alert('Поле «Кол-во» должно содержать только число (например 10 или 10,5)');
+        document.getElementById('editQuantity').focus();
+        return;
+    }
+
+    // 3) Кол-во (закуп) — если заполнено, тоже только число
+    if (purchaseQtyValue && !/^\d+([.,]\d+)?$/.test(purchaseQtyValue)) {
+        alert('Поле «Кол-во (закуп)» должно содержать только число (например 10 или 10,5)');
+        document.getElementById('editPurchaseQuantity').focus();
         return;
     }
     const quantity = normalizeNumber(document.getElementById('editQuantity').value);
