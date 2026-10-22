@@ -4358,6 +4358,7 @@ const status     = 'В работе';   // ← статус всегда «В р
         }
 
         positions.push({ id: id, name: name, qty: qty, unit: unit });
+        }); 
 
     // Если были ошибки — показываем все сразу, не сохраняем
     if (errors.length > 0) {
@@ -16578,10 +16579,10 @@ function initFiltersHighlight() {
             }
             /* Подсветка выбранной строки — яркий светлый зелёный */
             #accountingTable tr.bulk-row-selected > td {
-                background-color: rgba(76, 175, 80, 0.35) !important;
+                background-color: rgba(76, 175, 80, 0.20) !important;
             }
             #accountingTable tr.bulk-row-selected:hover > td {
-                background-color: rgba(102, 217, 108, 0.50) !important;
+                background-color: rgba(102, 217, 108, 0.30) !important;
             }
             /* Для гостя номер не кликабельный */
             body:not(.is-admin-mode) #accountingTable td.id-cell.has-row-number .row-number {
