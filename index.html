@@ -4285,6 +4285,13 @@ function saveNewRequest(event) {
 const docNumber  = document.getElementById('newRequestDocNumber').value.trim();
 const status     = 'В работе';   // ← статус всегда «В работе», не выбирается
 
+    // ★ Подразделение обязательно (как ID)
+    if (!department) {
+        alert('Укажите подразделение');
+        document.getElementById('newRequestDepartment').focus();
+        return;
+    }
+
     if (!docNumber) {
         alert('Укажите номер заявки');
         document.getElementById('newRequestDocNumber').focus();
@@ -4344,8 +4351,13 @@ const status     = 'В работе';   // ← статус всегда «В р
             return;
         }
 
+        // 3) Ед. изм. — только текст, без цифр
+        if (/\d/.test(unit)) {
+            errors.push(`Позиция №${rowNum}: «Ед. изм.» не должно содержать цифр (например «шт», «кг», «упак»)`)
+            return;
+        }
+
         positions.push({ id: id, name: name, qty: qty, unit: unit });
-    });
 
     // Если были ошибки — показываем все сразу, не сохраняем
     if (errors.length > 0) {
@@ -6614,9 +6626,16 @@ if (editPurchaseName && editPurchaseName.tagName === 'TEXTAREA') {
     
     const recordId = document.getElementById('editAccountingRecordId').value;
     const department = document.getElementById('editDepartment').value.trim();
+
+    // ★ Подразделение обязательно (как ID)
+    if (!department) {
+        alert('Укажите подразделение');
+        document.getElementById('editDepartment').focus();
+        return;
+    }
     
     // Если указано новое подразделение, добавляем его в список
-    if (department && !departmentsList.includes(department)) {
+    if (!departmentsList.includes(department)) {
         departmentsList.push(department);
         departmentsList.sort();
         saveDepartmentsList();
@@ -6660,8 +6679,15 @@ if (editPurchaseName && editPurchaseName.tagName === 'TEXTAREA') {
         document.getElementById('editPurchaseQuantity').focus();
         return;
     }
+
+    // 4) Ед. изм. — только текст, без цифр
+    if (/\d/.test(unitValue)) {
+        alert('Поле «Ед. изм.» не должно содержать цифр (например «шт», «кг», «упак»)');
+        document.getElementById('editUnit').focus();
+        return;
+    }
+    
     const quantity = normalizeNumber(document.getElementById('editQuantity').value);
-    const purchaseQuantity = normalizeNumber(document.getElementById('editPurchaseQuantity').value);
     
     const item = {
         recordId: recordId || generateUniqueId(),
@@ -16550,12 +16576,12 @@ function initFiltersHighlight() {
                 background: rgba(76,175,80,0.15);
                 border-color: rgba(76,175,80,0.5);
             }
-            /* Подсветка выбранной строки */
+            /* Подсветка выбранной строки — яркий светлый зелёный */
             #accountingTable tr.bulk-row-selected > td {
-                background-color: rgba(76,175,80,0.10) !important;
+                background-color: rgba(76, 175, 80, 0.35) !important;
             }
             #accountingTable tr.bulk-row-selected:hover > td {
-                background-color: rgba(76,175,80,0.18) !important;
+                background-color: rgba(102, 217, 108, 0.50) !important;
             }
             /* Для гостя номер не кликабельный */
             body:not(.is-admin-mode) #accountingTable td.id-cell.has-row-number .row-number {
