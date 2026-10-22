@@ -16590,8 +16590,8 @@ function initFiltersHighlight() {
 
 /* Кнопка Group edit — под полем комментария (стилизована как кнопки панели) */
 #bulkEditBtn {
-    background: linear-gradient(135deg, #7b4ab8 0%, #5b3699 100%) !important;
-    color: #fff !important;
+    background: rgba(100, 70, 150, 0.30) !important;   /* как «Экспорт в Excel» */
+    color: #c7d5e0 !important;                          /* как «Экспорт в Excel» */
     border: 1px solid transparent !important;
     border-radius: 3px !important;
     height: 22px !important;
@@ -16605,13 +16605,14 @@ function initFiltersHighlight() {
     align-items: center;
     justify-content: center;
     margin: 0 0 6px 0 !important;
-    transition: border-color .15s !important;
+    transition: border-color .15s, background .15s !important;
     box-sizing: border-box !important;
-    width: auto !important;
+    width: 100% !important;                             /* на всю ширину */
     min-width: 0 !important;
 }
 #bulkEditBtn:hover {
     border-color: #66c0f4 !important;
+    background: rgba(100, 70, 150, 0.50) !important;    /* как hover «Экспорт в Excel» */
     transform: none !important;
 }
 #bulkEditBtn > i.fas,
