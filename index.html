@@ -3961,9 +3961,9 @@ const status     = 'В работе';   // ← статус всегда «В р
     <button type="button" onclick="deleteAccountingRecord()" class="delete-btn" style="padding: 6.7px 13.4px; background: linear-gradient(135deg, #be463c 0%, #8c2c24 100%); color: white; border: none; border-radius: 2.68px; cursor: pointer; display: none; margin-left: 0;">
         Удалить запись
     </button>
-    <button type="button" onclick="closeAccountingModal()" style="padding: 6.7px 13.4px; background: linear-gradient(135deg, #8f98a0 0%, #6d7882 100%); color: white; border: none; border-radius: 2.68px; cursor: pointer;">
-        Отмена
-    </button>
+    <button type="button" id="cancelAccountingBtn" onclick="closeAccountingModal()" style="padding: 6.7px 13.4px; background: linear-gradient(135deg, #8f98a0 0%, #6d7882 100%); color: white; border: none; border-radius: 2.68px; cursor: pointer;">
+    Отмена
+</button>
 </div>
         </form>
     </div>
@@ -16742,6 +16742,7 @@ function applyDuplicateModeUI(isDuplicate) {
     const dupBtn     = document.getElementById('duplicateAccountingBtn');
     const addMoreBtn = document.getElementById('saveAndAddBtn');
     const deleteBtn  = document.querySelector('#editAccountingModal .delete-btn');
+    const cancelBtn  = document.getElementById('cancelAccountingBtn');
     const titleEl    = document.getElementById('modalAccountingTitle');
 
     if (dupBtn)     dupBtn.style.display     = isDuplicate ? 'none' : 'inline-block';
@@ -16749,6 +16750,9 @@ function applyDuplicateModeUI(isDuplicate) {
 
     // В режиме дубликата можно удалить копию — кнопка «Удалить» доступна
     if (deleteBtn)  deleteBtn.style.display  = 'inline-block';
+
+    // ★ В режиме дубликата «Отмена» скрыта
+    if (cancelBtn)  cancelBtn.style.display  = isDuplicate ? 'none' : 'inline-block';
 
     if (titleEl) {
         titleEl.textContent = isDuplicate
@@ -16783,6 +16787,9 @@ function applyDuplicateModeUI(isDuplicate) {
         _duplicateSourceRecordId = null;
         const dupBtn = document.getElementById('duplicateAccountingBtn');
         if (dupBtn) dupBtn.style.display = 'none';
+        // ★ Возвращаем «Отмена» при обычном добавлении
+        const cancelBtn = document.getElementById('cancelAccountingBtn');
+        if (cancelBtn) cancelBtn.style.display = 'inline-block';
         return r;
     };
     window.showAddAccountingForm._dupPatched = true;
@@ -16828,13 +16835,20 @@ function applyDuplicateModeUI(isDuplicate) {
     const observer = new MutationObserver(() => {
         if (modal.style.display !== 'flex') return;
         const dupBtn = document.getElementById('duplicateAccountingBtn');
+        const cancelBtn = document.getElementById('cancelAccountingBtn');
         if (!dupBtn) return;
         const hasRecordId = !!document.getElementById('editAccountingRecordId').value;
         if (!hasRecordId) {
             dupBtn.style.display = 'none';
+            if (cancelBtn) cancelBtn.style.display = 'inline-block';
         } else if (_duplicateSourceRecordId === null) {
-            // Обычное редактирование — показываем
+            // Обычное редактирование — показываем обе
             dupBtn.style.display = 'inline-block';
+            if (cancelBtn) cancelBtn.style.display = 'inline-block';
+        } else {
+            // Режим дубликата — скрываем и «Дублировать», и «Отмена»
+            dupBtn.style.display = 'none';
+            if (cancelBtn) cancelBtn.style.display = 'none';
         }
     });
     observer.observe(modal, { attributes: true, attributeFilter: ['style'] });
