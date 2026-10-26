@@ -3950,6 +3950,11 @@ const status     = 'В работе';   // ← статус всегда «В р
     <button type="submit" style="padding: 6.7px 13.4px; background: linear-gradient(135deg, #5c7e10 0%, #4c6b22 100%); color: white; border: none; border-radius: 2.68px; cursor: pointer;">
         Сохранить
     </button>
+    <button type="button" id="duplicateAccountingBtn"
+        onclick="duplicateAccountingRecord()"
+        style="padding: 6.7px 13.4px; background: linear-gradient(135deg, #2a6b8a 0%, #1a4a6a 100%); color: white; border: none; border-radius: 2.68px; cursor: pointer; display: none;">
+    <i class="fas fa-copy" style="margin-right: 4px;"></i>Дублировать запись
+</button>
     <button type="button" id="saveAndAddBtn" onclick="saveAndAddAccountingRecord()" style="padding: 6.7px 13.4px; background: linear-gradient(135deg, #2a6b8a 0%, #1a4a6a 100%); color: white; border: none; border-radius: 2.68px; cursor: pointer; display: none;">
         Сохранить и добавить еще
     </button>
@@ -16613,6 +16618,228 @@ document.addEventListener('DOMContentLoaded', function () {
 })();
 </script>
 <script>
+// ========== ДУБЛИРОВАНИЕ ЗАПИСИ (Позиции) ==========
+let _duplicateSourceRecordId = null; // recordId исходной записи, если открыто окно дубликата
+
+/**
+ * Собирает объект записи из текущих значений формы.
+ */
+function buildAccountingItemFromForm(recordId) {
+    const item = {
+        recordId: recordId,
+        docNumber: document.getElementById('editDocNumber').value,
+        status: document.getElementById('editStatus').value,
+        id: document.getElementById('editId').value,
+        name: document.getElementById('editName').value,
+        quantity: document.getElementById('editQuantity').value,
+        unit: document.getElementById('editUnit').value,
+        purchaseName: document.getElementById('editPurchaseName').value,
+        purchaseQuantity: document.getElementById('editPurchaseQuantity').value,
+        purchaseUnit: document.getElementById('editPurchaseUnit').value,
+        amount: document.getElementById('editAmount').value,
+        supplier: document.getElementById('editAccountingSupplier').value,
+        department: document.getElementById('editDepartment').value.trim(),
+        contract: document.getElementById('editContract').value,
+        paymentTerms: document.getElementById('editPaymentTerms').value,
+        deliveryDays: document.getElementById('editDeliveryDays').value,
+        deliveryTerms: document.getElementById('editDeliveryTerms').value,
+        date: formatDateForDisplay(document.getElementById('editDate').value),
+        planFact: formatDateForDisplay(document.getElementById('editPlanFact').value),
+        fact: formatDateForDisplay(document.getElementById('editFact').value),
+        shipmentDoc: document.getElementById('editShipmentDoc').value,
+        favorite: false
+    };
+    return item;
+}
+
+/**
+ * Кнопка «Дублировать запись» в модалке редактирования.
+ * 1) Сохраняет текущие правки в исходную запись (если пользователь что-то изменил).
+ * 2) Создаёт копию с новым recordId и пустым id.
+ * 3) Открывает модалку на этой новой записи — но БЕЗ кнопки «Дублировать».
+ */
+function duplicateAccountingRecord() {
+    if (!isAdmin) {
+        alert('Только администратор может дублировать записи');
+        return;
+    }
+
+    const sourceRecordId = document.getElementById('editAccountingRecordId').value;
+    if (!sourceRecordId) {
+        alert('Сначала сохраните запись, чтобы её продублировать');
+        return;
+    }
+
+    // Проверка обязательных полей (минимальная — как в saveAccountingChanges)
+    const department = document.getElementById('editDepartment').value.trim();
+    if (!department) {
+        alert('Укажите подразделение');
+        document.getElementById('editDepartment').focus();
+        return;
+    }
+    const docNumber = document.getElementById('editDocNumber').value.trim();
+    if (!validateApplicationFormat(docNumber)) {
+        alert('Неверный формат заявки!\nПравильный формат: "номер (от ДД.ММ.ГГГГ)"');
+        document.getElementById('editDocNumber').focus();
+        return;
+    }
+
+    // 1) Сохраняем текущие изменения в исходную запись
+    const sourceIndex = accountingData.findIndex(r => r.recordId === sourceRecordId);
+    if (sourceIndex !== -1) {
+        const updatedSource = buildAccountingItemFromForm(sourceRecordId);
+        // сохраняем favorite от исходной записи
+        updatedSource.favorite = accountingData[sourceIndex].favorite || false;
+        accountingData[sourceIndex] = updatedSource;
+    }
+
+    // 2) Создаём копию
+    const duplicate = buildAccountingItemFromForm(generateUniqueId());
+// ID позиции НЕ очищаем — копируется как есть, все поля переносятся 1:1
+
+    accountingData.push(duplicate);
+    saveAllData();
+
+    // 3) Обновляем таблицу/фильтры/бейджи
+    if (typeof updateAccountingTable === 'function') updateAccountingTable();
+    if (typeof updateDepartmentsFilter === 'function') updateDepartmentsFilter();
+    if (typeof updateContractsList === 'function') updateContractsList();
+    if (typeof updateShipmentDocsList === 'function') updateShipmentDocsList();
+    if (typeof updateApplicationsList === 'function') updateApplicationsList();
+    if (typeof updateQuickFilters === 'function') updateQuickFilters();
+    if (typeof updateYearsFilter === 'function') updateYearsFilter();
+    if (typeof filterAccountingTable === 'function') filterAccountingTable();
+    if (typeof updateAllBadges === 'function') updateAllBadges();
+    if (typeof updateOverdueButton === 'function') updateOverdueButton();
+    if (typeof updateWeeklyDeliveriesButton === 'function') updateWeeklyDeliveriesButton();
+    if (typeof updateSuppliersFilterList === 'function') updateSuppliersFilterList();
+    if (typeof markChangesMade === 'function') markChangesMade();
+    if (typeof refreshStatusStatsIfOpen === 'function') refreshStatusStatsIfOpen();
+
+    // 4) Открываем модалку с дубликатом
+    setTimeout(() => {
+        // Находим индекс новой записи
+        const newIndex = accountingData.findIndex(r => r.recordId === duplicate.recordId);
+        if (newIndex === -1) return;
+
+        editAccountingRow(newIndex);
+
+        // Помечаем, что это дубликат — кнопку «Дублировать» скрываем
+        _duplicateSourceRecordId = sourceRecordId;
+        applyDuplicateModeUI(true);
+
+        if (typeof showAutosaveNotification === 'function') {
+            showAutosaveNotification('Создана копия записи. Отредактируйте и сохраните.');
+        }
+    }, 80);
+}
+
+/**
+ * Управляет видимостью кнопки «Дублировать» и «Сохранить и добавить».
+ * В режиме дубликата кнопка «Дублировать» скрыта.
+ */
+function applyDuplicateModeUI(isDuplicate) {
+    const dupBtn     = document.getElementById('duplicateAccountingBtn');
+    const addMoreBtn = document.getElementById('saveAndAddBtn');
+    const deleteBtn  = document.querySelector('#editAccountingModal .delete-btn');
+    const titleEl    = document.getElementById('modalAccountingTitle');
+
+    if (dupBtn)     dupBtn.style.display     = isDuplicate ? 'none' : 'inline-block';
+    if (addMoreBtn) addMoreBtn.style.display = isDuplicate ? 'none' : 'inline-block';
+
+    // В режиме дубликата можно удалить копию — кнопка «Удалить» доступна
+    if (deleteBtn)  deleteBtn.style.display  = 'inline-block';
+
+    if (titleEl) {
+        titleEl.textContent = isDuplicate
+            ? 'Дублировать запись'
+            : 'Редактировать запись';
+    }
+}
+
+// ── Патчим editAccountingRow: показываем «Дублировать», скрываем «Сохранить и добавить» ──
+(function () {
+    if (typeof window.editAccountingRow !== 'function') return;
+    if (window.editAccountingRow._dupPatched) return;
+
+    const orig = window.editAccountingRow;
+    window.editAccountingRow = function (index) {
+        const r = orig.apply(this, arguments);
+        _duplicateSourceRecordId = null;
+        applyDuplicateModeUI(false);
+        return r;
+    };
+    window.editAccountingRow._dupPatched = true;
+})();
+
+// ── Патчим showAddAccountingForm: скрываем «Дублировать» при добавлении ──
+(function () {
+    if (typeof window.showAddAccountingForm !== 'function') return;
+    if (window.showAddAccountingForm._dupPatched) return;
+
+    const orig = window.showAddAccountingForm;
+    window.showAddAccountingForm = function () {
+        const r = orig.apply(this, arguments);
+        _duplicateSourceRecordId = null;
+        const dupBtn = document.getElementById('duplicateAccountingBtn');
+        if (dupBtn) dupBtn.style.display = 'none';
+        return r;
+    };
+    window.showAddAccountingForm._dupPatched = true;
+})();
+
+// ── Патчим closeAccountingModal: сбрасываем режим дубликата ──
+(function () {
+    if (typeof window.closeAccountingModal !== 'function') return;
+    if (window.closeAccountingModal._dupPatched) return;
+
+    const orig = window.closeAccountingModal;
+    window.closeAccountingModal = function () {
+        _duplicateSourceRecordId = null;
+        const dupBtn = document.getElementById('duplicateAccountingBtn');
+        if (dupBtn) dupBtn.style.display = 'none';
+        return orig.apply(this, arguments);
+    };
+    window.closeAccountingModal._dupPatched = true;
+})();
+
+// ── Патчим saveAccountingChanges: скрываем кнопку «Дублировать» в режиме дубликата ──
+// (при сохранении дубликата она уже скрыта, но подстрахуемся)
+(function () {
+    if (typeof window.saveAccountingChanges !== 'function') return;
+    if (window.saveAccountingChanges._dupPatched) return;
+
+    const orig = window.saveAccountingChanges;
+    window.saveAccountingChanges = function (event) {
+        // Если открыт режим дубликата — кнопка «Дублировать» должна остаться скрытой
+        const dupBtn = document.getElementById('duplicateAccountingBtn');
+        const wasDuplicate = _duplicateSourceRecordId !== null;
+        if (dupBtn && wasDuplicate) dupBtn.style.display = 'none';
+        return orig.apply(this, arguments);
+    };
+    window.saveAccountingChanges._dupPatched = true;
+})();
+
+// ── Убираем «залипание» кнопки «Дублировать» при открытии через bulk-edit и т.п. ──
+// Страховка: если модалка открыта, но кнопка не должна быть видна (нет recordId)
+(function () {
+    const modal = document.getElementById('editAccountingModal');
+    if (!modal) return;
+    const observer = new MutationObserver(() => {
+        if (modal.style.display !== 'flex') return;
+        const dupBtn = document.getElementById('duplicateAccountingBtn');
+        if (!dupBtn) return;
+        const hasRecordId = !!document.getElementById('editAccountingRecordId').value;
+        if (!hasRecordId) {
+            dupBtn.style.display = 'none';
+        } else if (_duplicateSourceRecordId === null) {
+            // Обычное редактирование — показываем
+            dupBtn.style.display = 'inline-block';
+        }
+    });
+    observer.observe(modal, { attributes: true, attributeFilter: ['style'] });
+})();
+
 /* ============================================================
    При переводе платежа в статус «Оплачено» — показать ВНУТРИ
    модального окна платежа панель с предложением установить
