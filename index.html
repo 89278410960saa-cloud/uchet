@@ -2647,6 +2647,36 @@ button:hover{background:#222733!important}
         <div style="font-size:12px;letter-spacing:1px">ЗАГРУЗКА…</div>
     </div>
 </div>
+<!-- ===== ОВЕРЛЕЙ СОХРАНЕНИЯ НА GITHUB ===== -->
+<div id="githubSaveLoader" style="
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(15, 17, 21, 0.85);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    z-index: 2147483646;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    color: #66c0f4;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    opacity: 0;
+    transition: opacity .25s ease;
+">
+    <div style="text-align:center">
+        <div style="
+            width: 40px;
+            height: 40px;
+            margin: 0 auto 14px;
+            border: 3px solid rgba(102,192,244,.3);
+            border-top-color: #66c0f4;
+            border-radius: 50%;
+            animation: initialSpin 0.9s linear infinite;
+        "></div>
+        <div style="font-size:13px;letter-spacing:1.5px;font-weight:600">СОХРАНЕНИЕ НА GITHUB…</div>
+        <div id="githubSaveLoaderSubtext" style="font-size:11px;color:#8f98a0;margin-top:6px;min-height:14px;"></div>
+    </div>
+</div>
     
     <!-- Сайдбар меню -->
 <div class="sidebar hidden" style="display: none;">
@@ -3510,13 +3540,26 @@ button:hover{background:#222733!important}
 
 /* 2. Поля ввода — растягиваем под новую высоту ячейки.
      38px (ячейка) − 2px×2 (padding) = 34px — ровно заполнит ячейку. */
-#newRequestModal #newRequestPositions input,
-#newRequestModal #newRequestPositions textarea.pos-name {
-    height: 34px !important;      /* было 25px */
-    min-height: 34px !important;
-    max-height: 34px !important;
-    padding: 6px 4px !important;  /* больше «воздуха» внутри поля */
-    box-sizing: border-box !important;
+/* ★ ИНПУТЫ (перебиваем глобальный min-width: 134px) */
+#newRequestPositions input.pos-id,
+#newRequestPositions input.pos-qty,
+#newRequestPositions input.pos-unit,
+#newRequestPositions textarea.pos-name {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    padding: 0 4px !important;       
+    font-size: 11px !important;
+    background: #1e2d3d !important;
+    color: #c7d5e0 !important;
+    border: 1px solid #3d4450 !important;
+    border-radius: 3px !important;
+    transition: border-color 0.15s, box-shadow 0.15s !important;
+}
+
+#newRequestPositions input.pos-qty,
+#newRequestPositions input.pos-unit {
+    text-align: center !important;
 }
 
 </style>
@@ -7355,7 +7398,25 @@ async function gitBlobSha(content) {
     const h = await crypto.subtle.digest('SHA-1', all);
     return Array.from(new Uint8Array(h)).map(b => b.toString(16).padStart(2, '0')).join('');
 }
+/* ===== Оверлей сохранения на GitHub ===== */
+function showGithubSaveLoader(text) {
+    const el = document.getElementById('githubSaveLoader');
+    const sub = document.getElementById('githubSaveLoaderSubtext');
+    if (!el) return;
+    if (sub) sub.textContent = text || '';
+    el.style.display = 'flex';
+    // даём браузеру отрисовать display, затем плавно показываем
+    requestAnimationFrame(() => {
+        requestAnimationFrame(() => { el.style.opacity = '1'; });
+    });
+}
 
+function hideGithubSaveLoader() {
+    const el = document.getElementById('githubSaveLoader');
+    if (!el) return;
+    el.style.opacity = '0';
+    setTimeout(() => { el.style.display = 'none'; }, 260);
+}
 async function forceExportToGitHub() {
     const btn = document.querySelector('.github-export-btn');
 
@@ -7366,6 +7427,9 @@ async function forceExportToGitHub() {
     }
 
     if (btn) { btn.style.pointerEvents = 'none'; btn.classList.add('saving'); }
+
+    // ★ Показываем оверлей со спиннером
+    showGithubSaveLoader('Подключение к GitHub…');
 
     try {
         const H = { 'Authorization': `token ${githubToken}`, 'Accept': 'application/vnd.github+json', 'Content-Type': 'application/json' };
@@ -7415,6 +7479,9 @@ async function forceExportToGitHub() {
         }
     } finally {
         if (btn) { btn.style.pointerEvents = ''; btn.classList.remove('saving'); }
+
+        // ★ Прячем спиннер одновременно с появлением уведомления
+        hideGithubSaveLoader();
     }
 }
 // ========== ФУНКЦИЯ ДЛЯ ОБНОВЛЕНИЯ СПИСКА ДОГОВОРОВ ==========
@@ -15003,20 +15070,20 @@ function initFiltersHighlight() {
                 background: rgba(102,192,244,0.12);
                 border-color: rgba(102,192,244,0.35);
             }
-            /* Выбранная строка — зелёная цифра */
-            #accountingTable td.id-cell .row-number.bulk-selected {
-                color: #4caf50 !important;
-                text-shadow: 0 0 8px rgba(76,175,80,0.7);
-                background: rgba(76,175,80,0.15);
-                border-color: rgba(76,175,80,0.5);
-            }
-            /* Подсветка выбранной строки — яркий светлый зелёный */
-            #accountingTable tr.bulk-row-selected > td {
-                background-color: rgba(76, 175, 80, 0.20) !important;
-            }
-            #accountingTable tr.bulk-row-selected:hover > td {
-                background-color: rgba(102, 217, 108, 0.30) !important;
-            }
+            /* Выбранная строка — фиолетовая цифра (чуть светлее кнопки Group edit) */
+#accountingTable td.id-cell .row-number.bulk-selected {
+    color: #b398e0 !important;
+    text-shadow: 0 0 8px rgba(140, 110, 190, 0.7);
+    background: rgba(140, 110, 190, 0.18);
+    border-color: rgba(140, 110, 190, 0.55);
+}
+/* Подсветка выбранной строки — светлый фиолетовый (чуть светлее кнопки Group edit) */
+#accountingTable tr.bulk-row-selected > td {
+    background-color: rgba(140, 110, 190, 0.22) !important;
+}
+#accountingTable tr.bulk-row-selected:hover > td {
+    background-color: rgba(160, 130, 210, 0.32) !important;
+}
             /* Для гостя номер не кликабельный */
             body:not(.is-admin-mode) #accountingTable td.id-cell.has-row-number .row-number {
                 pointer-events: none !important;
@@ -15506,7 +15573,7 @@ function updateBulkMoreBtnState() {
 
         const ids = getSelectedRecordIds();
         if (ids.length === 0) {
-            alert('Сначала нажмите на номера позиций (в столбце ID), чтобы выбрать строки.\n\nНомер выбранной строки станет зелёным.');
+            alert('Сначала нажмите на номера позиций (в столбце ID), чтобы выбрать строки.\n\nНомер выбранной строки станет фиолетовым.');
             return;
         }
 
