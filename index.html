@@ -2644,7 +2644,7 @@ button:hover{background:#222733!important}
 <div id="initialLoader">
     <div style="text-align:center">
         <div class="initial-loader-spinner"></div>
-        <div style="font-size:12px;letter-spacing:1px">ЗАГРУЗКА…</div>
+        <div style="font-size:12px;letter-spacing:1px">ЗАГРУЗКА ДАННЫХ…</div>
     </div>
 </div>
 <!-- ===== ОВЕРЛЕЙ СОХРАНЕНИЯ НА GITHUB ===== -->
@@ -2675,6 +2675,36 @@ button:hover{background:#222733!important}
         "></div>
         <div style="font-size:13px;letter-spacing:1.5px;font-weight:600">СОХРАНЕНИЕ НА GITHUB…</div>
         <div id="githubSaveLoaderSubtext" style="font-size:11px;color:#8f98a0;margin-top:6px;min-height:14px;"></div>
+    </div>
+</div>
+<!-- ===== ОВЕРЛЕЙ ЗАГРУЗКИ / ОБНОВЛЕНИЯ ДАННЫХ ===== -->
+<div id="dataLoadLoader" style="
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(15, 17, 21, 0.85);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    z-index: 2147483646;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    color: #66c0f4;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    opacity: 0;
+    transition: opacity .25s ease;
+">
+    <div style="text-align:center">
+        <div style="
+            width: 40px;
+            height: 40px;
+            margin: 0 auto 14px;
+            border: 3px solid rgba(102,192,244,.3);
+            border-top-color: #66c0f4;
+            border-radius: 50%;
+            animation: initialSpin 0.9s linear infinite;
+        "></div>
+        <div style="font-size:13px;letter-spacing:1.5px;font-weight:600">ЗАГРУЗКА ДАННЫХ…</div>
+        <div id="dataLoadLoaderSubtext" style="font-size:11px;color:#8f98a0;margin-top:6px;min-height:14px;"></div>
     </div>
 </div>
     
@@ -3560,6 +3590,32 @@ button:hover{background:#222733!important}
 #newRequestPositions input.pos-qty,
 #newRequestPositions input.pos-unit {
     text-align: center !important;
+}
+
+/* ★ Единый синий контур активной ячейки — как в других модальных окнах.
+   Специфичность выше, чем у правила с серой рамкой (#3d4450), поэтому фокус больше не перебивается. */
+#newRequestModal input:focus,
+#newRequestModal textarea:focus,
+#newRequestPositions input.pos-id:focus,
+#newRequestPositions input.pos-qty:focus,
+#newRequestPositions input.pos-unit:focus,
+#newRequestPositions textarea.pos-name:focus {
+    outline: none !important;
+    border: 1px solid #66c0f4 !important;
+    box-shadow: 0 0 0 2px rgba(102, 192, 244, 0.2) !important;
+}
+#newRequestPositions input.pos-id:focus,
+#newRequestPositions input.pos-qty:focus,
+#newRequestPositions input.pos-unit:focus,
+#newRequestPositions textarea.pos-name:focus {
+    background: #26374a !important;
+}
+
+/* ★ Один и тот же шрифт во всех полях окна
+   («Наименование позиции» раньше отображалось моноширинным шрифтом браузера по умолчанию) */
+#newRequestModal input,
+#newRequestModal textarea {
+    font-family: Arial, sans-serif !important;
 }
 
 </style>
@@ -4760,18 +4816,11 @@ function updateCommentFieldPermissions() {
             proxy: proxyData.length
         });
 
+        // updateAllTables() уже обновляет таблицы, бейджи, фильтры подразделений/годов/поставщиков
         updateAllTables();
         updateSuppliersList();
-        updateApplicationsList();
         updateContractsList();
-        updateShipmentDocsList()
         updateQuickFilters();
-        updateAllBadges()
-        updateDepartmentsFilter();
-        updateOverdueButton();
-        updateWeeklyDeliveriesButton();
-        updateSuppliersFilterList();
-        updateYearsFilter();
         updateGitHubGuestBadge();
         
         // Принудительно применяем фиксированные ширины после обновления таблиц
@@ -4814,20 +4863,43 @@ function safeParseJSON(jsonString) {
         showAutosaveNotification('Ошибка сохранения данных!');
     }
 }
+        var __updateAllTablesToken = 0;
         function updateAllTables() {
-    updateAccountingTable();
-    updateCounterpartiesTable();
+    const token = ++__updateAllTablesToken;
+    const activePage = document.querySelector('.page.active');
+    const activeId = activePage ? activePage.id : '';
+
+    // Главная таблица и таблица открытой страницы — сразу,
+    // остальные страницы дорисовываются позже (при переходе на них они всё равно обновляются)
+    const steps = [
+        ['accounting',      updateAccountingTable],
+        ['counterparties',  updateCounterpartiesTable],
+        ['payments',        updatePaymentsTable],
+        ['settlement',      updateSettlementTable],
+        ['mail-registry',   updateMailTable],
+        ['proxy-registry',  updateProxyTable]
+    ];
+    const deferred = [];
+    steps.forEach(([id, fn]) => {
+        if (id === 'accounting' || id === activeId) fn();
+        else deferred.push(fn);
+    });
+
     updateShipmentDocsList()
-    updatePaymentsTable();
-    updateSettlementTable();
-    updateMailTable();
-    updateProxyTable();
     updateDepartmentsFilter();
     updateOverdueButton();
     updateWeeklyDeliveriesButton();
     updateSuppliersFilterList();
     updateYearsFilter();
-    
+
+    deferred.forEach((fn, i) => {
+        setTimeout(() => {
+            if (token !== __updateAllTablesToken) return;
+            try { fn(); } catch (e) { console.error('Отложенное обновление таблицы:', e); }
+            if (i === deferred.length - 1) applyFixedTableLayouts();
+        }, 150 + i * 40);
+    });
+
     // Принудительно применяем фиксированные ширины после обновления таблиц
     setTimeout(() => {
         applyFixedTableLayouts();
@@ -4912,46 +4984,359 @@ function fallbackCopy(text) {
     document.body.removeChild(textarea);
 }
         // ========== ФУНКЦИИ ДЛЯ СТРАНИЦЫ УЧЕТА ==========
-function updateAccountingTable() {
-    const tableBody = document.querySelector('#accountingTable tbody');
-    if (!tableBody) return;
-    
-    tableBody.innerHTML = '';
-    
+
+// =====================================================================
+//  ЛЕНИВАЯ ОТРИСОВКА ТАБЛИЦЫ УЧЁТА (по 100 строк)
+//  - фильтрация идёт по данным (accountingData), а не по DOM;
+//  - в DOM создаются только первые ACC_PAGE_SIZE подходящих строк;
+//  - остальные подгружаются при прокрутке или по кнопке «Показать ещё»;
+//  - созданные строки кэшируются и не перестраиваются при смене фильтров.
+// =====================================================================
+var ACC_PAGE_SIZE = 100;
+var accLimit = ACC_PAGE_SIZE;     // сколько строк показывать сейчас
+var accForceAll = false;          // true — режимы «Просроченные»/«Поставки на неделю»: нужны ВСЕ строки в DOM
+var accRowCache = new Map();      // item -> <tr>
+var accIndexCache = new Map();    // item -> поисковый индекс
+var accNatural = [];              // записи в естественном порядке (дата заявки ↓, номер ↑)
+var accCtx = null;
+var accDataRef = null;
+var accLastOrdered = [];
+var accShown = 0;
+var accLastSig = '';
+var accLoadObserver = null;
+var accNumFmt = null;
+
+function accNormName(str) {
+    return (str || '')
+        .toString()
+        .trim()
+        .toLowerCase()
+        .replace(/['"«»]/g, '')
+        .replace(/\s+/g, ' ');
+}
+
+function accStr(x) { return x == null ? '' : String(x); }
+
+function accIndexOf(item) {
+    let ix = accIndexCache.get(item);
+    if (ix) return ix;
+    const app = accStr(item.docNumber).toLowerCase().trim();
+    const d = extractDateFromDocNumber(item.docNumber);
+    ix = {
+        status: accStr(item.status).trim(),
+        dept: accStr(item.department).trim(),
+        app: app,
+        supplier: accStr(item.supplier).toLowerCase().replace(/\s+/g, ' ').trim(),
+        year: extractYearFromDocNumber(app),
+        fact: accStr(item.fact),
+        plan: accStr(item.planFact),
+        docTime: d ? d.getTime() : 0,
+        _text: null,
+        _factMonth: undefined,
+        _factTime: undefined,
+        _planTime: undefined
+    };
+    accIndexCache.set(item, ix);
+    return ix;
+}
+
+// Текст всей строки для общего поиска (как раньше — склейка текста ячеек)
+function accTextOf(item, ix) {
+    if (ix._text !== null) return ix._text;
+    if (!accNumFmt) accNumFmt = new Intl.NumberFormat('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    let amount = '';
+    if (item.amount) {
+        const n = parseFloat(item.amount);
+        amount = isNaN(n) ? accStr(item.amount) : accNumFmt.format(n);
+    }
+    const s = accStr;
+    ix._text = [
+        s(item.department),
+        s(item.docNumber),
+        s(item.status),
+        s(item.id),
+        s(item.name),
+        s(item.quantity) + s(item.unit),
+        s(item.purchaseName),
+        s(item.purchaseQuantity) + s(item.purchaseUnit),
+        amount,
+        s(item.supplier),
+        s(item.contract) + ' ' + s(item.paymentTerms),
+        s(item.deliveryDays) + ' ' + s(item.deliveryTerms) + ' ' + (item.date ? 'от ' + item.date : ''),
+        s(item.planFact) + s(item.fact),
+        s(item.shipmentDoc)
+    ].join(' ').toLowerCase().replace(/\s+/g, ' ').trim();
+    return ix._text;
+}
+
+function accFactMonth(ix) {
+    if (ix._factMonth === undefined) {
+        const d = parseDate(ix.fact);
+        ix._factMonth = d ? d.getMonth() + 1 : 0;
+        ix._factTime = d ? d.getTime() : 0;
+    }
+    return ix._factMonth;
+}
+function accFactTime(ix) { accFactMonth(ix); return ix._factTime; }
+function accPlanTime(ix) {
+    if (ix._planTime === undefined) {
+        const d = parseDate(ix.plan);
+        ix._planTime = d ? d.getTime() : Infinity;
+    }
+    return ix._planTime;
+}
+
+function accPrepare() {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const blacklist = new Set();
+    counterpartiesData.forEach(cp => {
+        if (cp.blacklisted && cp.supplier) blacklist.add(accNormName(cp.supplier));
+    });
+
+    const plansByDoc = new Map();
+    paymentsData.forEach(p => {
+        if (p.status !== 'План') return;
+        let arr = plansByDoc.get(p.docNumber);
+        if (!arr) { arr = []; plansByDoc.set(p.docNumber, arr); }
+        arr.push(p);
+    });
+
+    const proxiesByDoc = new Map();
+    proxyData.forEach(p => {
+        if (p.status !== 'В работе') return;
+        let arr = proxiesByDoc.get(p.docNumber);
+        if (!arr) { arr = []; proxiesByDoc.set(p.docNumber, arr); }
+        arr.push(p);
+    });
+
+    accCtx = { today, normName: accNormName, blacklist, plansByDoc, proxiesByDoc };
+    accRowCache = new Map();
+    accIndexCache = new Map();
+    accDataRef = accountingData;
+
+    accNatural = [...accountingData].sort((a, b) => {
+        const ta = accIndexOf(a).docTime;
+        const tb = accIndexOf(b).docTime;
+        if (tb !== ta) return tb - ta;
+        const sa = accStr(a.docNumber), sb = accStr(b.docNumber);
+        if (sa < sb) return -1;
+        if (sa > sb) return 1;
+        return 0;
+    });
+}
+
+function accSync() {
+    if (!accCtx || accDataRef !== accountingData || accNatural.length !== accountingData.length) {
+        accPrepare();
+    }
+}
+
+function accReadFilters() {
+    const v = id => { const el = document.getElementById(id); return el ? el.value : ''; };
+    return {
+        factMonth: v('factMonthFilter'),
+        search: v('searchAccountingInput').toLowerCase().trim(),
+        status: v('statusFilter'),
+        department: v('departmentFilter'),
+        application: v('applicationFilter').toLowerCase().trim(),
+        supplier: v('supplierFilter').toLowerCase().trim(),
+        year: v('yearFilter')
+    };
+}
+
+// opts.skipStatus / opts.skipFactDate — для подсчёта счётчиков статусов
+function accMatches(item, F, opts) {
+    const ix = accIndexOf(item);
+
+    if (!(opts && opts.skipStatus) && F.status && ix.status !== F.status) return false;
+    if (F.department && !ix.dept.toLowerCase().includes(F.department.toLowerCase())) return false;
+    if (F.application && ix.app !== F.application) return false;
+    if (F.supplier && !ix.supplier.includes(F.supplier)) return false;
+    if (F.year && ix.year !== F.year) return false;
+
+    if (F.factMonth) {
+        if (F.factMonth === 'all') {
+            if (!(ix.fact && ix.fact.trim() !== '')) return false;
+        } else if (accFactMonth(ix) !== parseInt(F.factMonth)) {
+            return false;
+        }
+    }
+    if (!(opts && opts.skipFactDate) && selectedFactDate && ix.fact !== selectedFactDate) return false;
+    if (showFavoritesOnly && item.favorite !== true) return false;
+    if (F.search && !accTextOf(item, ix).includes(F.search)) return false;
+    return true;
+}
+
+function accOrder(list, F) {
+    if (F.factMonth) {
+        return list.slice().sort((a, b) => accFactTime(accIndexOf(b)) - accFactTime(accIndexOf(a)));
+    }
+    if (F.status === 'Поставка') {
+        return list.slice().sort((a, b) => {
+            const ta = accPlanTime(accIndexOf(a)), tb = accPlanTime(accIndexOf(b));
+            return ta === tb ? 0 : (ta < tb ? -1 : 1);
+        });
+    }
+    return list;
+}
+
+function accGetRow(item) {
+    let tr = accRowCache.get(item);
+    if (!tr) {
+        tr = accBuildRow(item, accCtx);
+        accRowCache.set(item, tr);
+    }
+    return tr;
+}
+
+function accMakeMessageRow(text, attr) {
+    const tr = document.createElement('tr');
+    if (attr) tr.setAttribute(attr, 'true');
+    tr.innerHTML = `<td colspan="14" style="text-align: center; color: #8f98a0; padding: 20px;">${text}</td>`;
+    return tr;
+}
+
+function accMakeLoadMoreRow(remaining) {
+    const tr = document.createElement('tr');
+    tr.setAttribute('data-load-more', 'true');
+    const td = document.createElement('td');
+    td.colSpan = 14;
+    td.style.cssText = 'text-align:center;padding:14px;';
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'acc-load-more-btn';
+    btn.style.cssText = 'background:rgba(102,192,244,.15);color:#66c0f4;border:1px solid rgba(102,192,244,.5);border-radius:4px;padding:8px 22px;cursor:pointer;font-size:14px;';
+    btn.textContent = `Показать ещё ${Math.min(ACC_PAGE_SIZE, remaining)} (осталось ${remaining})`;
+    btn.addEventListener('click', accLoadMore);
+    td.appendChild(btn);
+    tr.appendChild(td);
+    return tr;
+}
+
+function accObserveLoadMore(tr) {
+    if (accLoadObserver) { accLoadObserver.disconnect(); accLoadObserver = null; }
+    if (!tr || !('IntersectionObserver' in window)) return;
+    accLoadObserver = new IntersectionObserver(entries => {
+        if (entries.some(e => e.isIntersecting)) accLoadMore();
+    }, { rootMargin: '600px 0px' });
+    accLoadObserver.observe(tr);
+}
+
+function accLoadMore() {
+    const tbody = document.querySelector('#accountingTable tbody');
+    if (!tbody) return;
+    const more = tbody.querySelector('tr[data-load-more]');
+    if (!more) return;
+    if (accLoadObserver) { accLoadObserver.disconnect(); accLoadObserver = null; }
+
+    const end = Math.min(accLastOrdered.length, accShown + ACC_PAGE_SIZE);
+    const frag = document.createDocumentFragment();
+    for (let i = accShown; i < end; i++) {
+        const tr = accGetRow(accLastOrdered[i]);
+        tr.style.display = '';
+        frag.appendChild(tr);
+    }
+    tbody.insertBefore(frag, more);
+    accShown = end;
+    accLimit = Math.max(accLimit, end);
+
+    if (end >= accLastOrdered.length) {
+        more.remove();
+    } else {
+        const fresh = accMakeLoadMoreRow(accLastOrdered.length - end);
+        tbody.replaceChild(fresh, more);
+        accObserveLoadMore(fresh);
+    }
+    updateRowNumbers();
+}
+
+// Нужны ВСЕ строки в DOM (режимы «Просроченные» / «Поставки на неделю»)
+function accEnsureAllRows() {
+    if (accForceAll) return;
+    accForceAll = true;
+    accRender();
+}
+
+function accRender() {
+    const tbody = document.querySelector('#accountingTable tbody');
+    if (!tbody) return;
+    accSync();
+
+    const F = accReadFilters();
+    const hasFilters = !!(F.search || F.status || F.department || F.application ||
+        F.supplier || F.year || F.factMonth || showFavoritesOnly);
+
+    if (accLoadObserver) { accLoadObserver.disconnect(); accLoadObserver = null; }
+
     if (accountingData.length === 0) {
-        const emptyRow = document.createElement('tr');
-        emptyRow.innerHTML = `
-            <td colspan="14" style="text-align: center; color: #8f98a0; padding: 20px;">
-                Нет данных о закупках. Добавьте первую запись.
-            </td>
-        `;
-        tableBody.appendChild(emptyRow);
+        accLastOrdered = [];
+        accShown = 0;
+        tbody.replaceChildren(hasFilters
+            ? accMakeMessageRow('По вашему запросу ничего не найдено. Проверьте фильтры.', 'data-no-results')
+            : accMakeMessageRow('Нет данных о закупках. Добавьте первую запись.'));
         return;
     }
-    
-   const sortedData = [...accountingData].sort((a, b) => {
-    const dateA = extractDateFromDocNumber(a.docNumber);
-    const dateB = extractDateFromDocNumber(b.docNumber);
-    const timeA = dateA ? dateA.getTime() : 0;
-    const timeB = dateB ? dateB.getTime() : 0;
 
-    // 1. Сначала сравниваем даты (новые сверху)
-    if (timeB !== timeA) return timeB - timeA;
+    // Если фильтры поменялись — начинаем со стартовых 100 строк
+    const sig = JSON.stringify([F, selectedFactDate, showFavoritesOnly]);
+    if (sig !== accLastSig) {
+        accLastSig = sig;
+        accLimit = ACC_PAGE_SIZE;
+    }
 
-    // 2. Если даты равны (или обе отсутствуют), сравниваем полные номера заявок
-    if (a.docNumber < b.docNumber) return -1;
-    if (a.docNumber > b.docNumber) return 1;
-    return 0;
-});
-    
-    sortedData.forEach((item) => {
+    const matches = [];
+    for (let i = 0; i < accNatural.length; i++) {
+        if (accMatches(accNatural[i], F)) matches.push(accNatural[i]);
+    }
+    const ordered = accOrder(matches, F);
+    accLastOrdered = ordered;
+
+    // Выбрана конкретная заявка — строк мало, показываем все (нужно для нумерации и групповых операций)
+    const noLimit = accForceAll || !!F.application;
+    const shown = noLimit ? ordered : ordered.slice(0, Math.max(accLimit, ACC_PAGE_SIZE));
+    accShown = shown.length;
+
+    const frag = document.createDocumentFragment();
+    for (let i = 0; i < shown.length; i++) {
+        const tr = accGetRow(shown[i]);
+        tr.style.display = '';
+        frag.appendChild(tr);
+    }
+
+    if (accForceAll) {
+        // Старое поведение режимов: неподходящие строки лежат в DOM скрытыми
+        const set = new Set(ordered);
+        for (let i = 0; i < accNatural.length; i++) {
+            if (set.has(accNatural[i])) continue;
+            const tr = accGetRow(accNatural[i]);
+            tr.style.display = 'none';
+            frag.appendChild(tr);
+        }
+    }
+
+    let moreRow = null;
+    if (!noLimit && ordered.length > shown.length) {
+        moreRow = accMakeLoadMoreRow(ordered.length - shown.length);
+        frag.appendChild(moreRow);
+    }
+
+    if (hasFilters && ordered.length === 0) {
+        frag.appendChild(accMakeMessageRow('По вашему запросу ничего не найдено. Проверьте фильтры.', 'data-no-results'));
+    }
+
+    tbody.replaceChildren(frag);
+    if (moreRow) accObserveLoadMore(moreRow);
+}
+
+function accBuildRow(item, ctx) {
         const row = document.createElement('tr');
         
         // Добавляем уникальный ID записи в data-атрибут
         row.dataset.recordId = item.recordId || '';
         
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
+        const today = ctx.today;
         const planFactDate = parseDate(item.planFact);
         const isOverdue = planFactDate && planFactDate < today;
         
@@ -4972,20 +5357,7 @@ supplierCell.style.textDecoration = 'underline';
 supplierCell.textContent = item.supplier || '';
 
 // ─── Проверка: контрагент в чёрном списке? ───
-const normalizeName = (str) => (str || '')
-    .toString()
-    .trim()
-    .toLowerCase()
-    .replace(/['"«»]/g, '')   // убираем кавычки
-    .replace(/\s+/g, ' ');    // множественные пробелы → один
-
-const targetNorm = normalizeName(item.supplier);
-
-const blacklistedCp = counterpartiesData.find(cp =>
-    cp.blacklisted &&
-    cp.supplier &&
-    normalizeName(cp.supplier) === targetNorm
-);
+const blacklistedCp = ctx.blacklist.has(ctx.normName(item.supplier));
 
 if (blacklistedCp) {
     // Красный цвет + подсказка
@@ -5082,7 +5454,7 @@ const docNumber = item.docNumber || '';
 const contractNumbers = extractContractNumbers(contractText);
 
 // ----- Поиск для индикатора (только статус "План") -----
-const matchingPaymentPlan = paymentsData.find(p => {
+const matchingPaymentPlan = (ctx.plansByDoc.get(docNumber) || []).find(p => {
     if (p.status !== 'План') return false;
     if (p.docNumber !== docNumber) return false;
     let contractValue = p.agreement && p.agreement.trim() !== '' && p.agreement.trim() !== '-' 
@@ -5111,7 +5483,7 @@ if (matchingPaymentPlan && matchingPaymentPlan.date) {
 }
 
 // ---------- Проверка наличия доверенности со статусом "В работе" ----------
-const matchingProxy = proxyData.find(proxy => {
+const matchingProxy = (ctx.proxiesByDoc.get(item.docNumber) || []).find(proxy => {
     if (proxy.status !== 'В работе') return false;
     if (proxy.docNumber !== item.docNumber) return false;
     if (proxy.supplier !== item.supplier) return false;
@@ -5356,9 +5728,18 @@ row.appendChild(shipmentDocCell);
             });
         }
         
-        tableBody.appendChild(row);
-    });
-    
+        return row;
+}
+
+function updateAccountingTable() {
+    const tableBody = document.querySelector('#accountingTable tbody');
+    if (!tableBody) return;
+
+    // Данные могли измениться — сбрасываем кэши строк и индексов
+    accForceAll = false;
+    accPrepare();
+    accRender();
+
     updateApplicationsList();
     updateAllBadges()
     updateWeeklyDeliveriesButton();
@@ -5366,7 +5747,6 @@ row.appendChild(shipmentDocCell);
     setTimeout(forceTableUpdate, 100);
     updatePrintButtonVisibility();
     updateStatusFilterCounts();
-    
 }
 function extractContractNumbers(str) {
     if (!str) return [];
@@ -5393,192 +5773,13 @@ function normalizeContract(str) {
 
    function filterAccountingTable() {
     updateStatusFilterCounts();
-    const factMonthFilter = document.getElementById('factMonthFilter').value;
-    const searchText = document.getElementById('searchAccountingInput').value.toLowerCase().trim();
-    const statusFilter = document.getElementById('statusFilter').value;
-    const departmentFilter = document.getElementById('departmentFilter').value;
-    const applicationFilter = document.getElementById('applicationFilter').value.toLowerCase().trim();
-    const supplierFilter = document.getElementById('supplierFilter').value.toLowerCase().trim();
-    const yearFilter = document.getElementById('yearFilter').value;
-
-    // ─── ОПРЕДЕЛЯЕМ, ЕСТЬ ЛИ АКТИВНЫЕ ФИЛЬТРЫ ───
-    const hasFilters = !!(searchText || statusFilter || departmentFilter || applicationFilter || supplierFilter || yearFilter || factMonthFilter || showFavoritesOnly);
-
-    const rows = document.querySelectorAll('#accountingTable tbody tr');
-    let visibleCount = 0;
-
-    rows.forEach(row => {
-        if (row.hasAttribute('data-no-results')) return; // ← НОВОЕ
-
-        // ─── СТРОКА-ЗАГЛУШКА «Нет данных о закупках…» ───
-        if (row.cells.length === 1 && row.cells[0].colSpan > 1) {
-            // Показываем, если фильтров нет; скрываем, если есть
-            row.style.display = hasFilters ? 'none' : '';
-            return; // не учитываем в visibleCount
-        }
-
-        const cells = row.querySelectorAll('td');
-        if (cells.length < 4) {
-            row.style.display = 'none';
-            return;
-        }
-
-        const statusCell = cells[2] ? cells[2].textContent.trim() : '';
-        const departmentCell = cells[0] ? cells[0].textContent.trim() : '';
-        const applicationCell = cells[1] ? cells[1].textContent.toLowerCase().trim() : '';
-        const supplierCell = cells[9] ? cells[9].textContent.toLowerCase().replace(/\s+/g, ' ').trim() : '';
-
-        const yearFromApplication = extractYearFromDocNumber(applicationCell);
-
-        const planFactCellEl = cells[12];
-        const factValue = (planFactCellEl && planFactCellEl.dataset.fact) ? planFactCellEl.dataset.fact : '';
-
-        let factMonthMatch = true;
-if (factMonthFilter) {
-    if (factMonthFilter === 'all') {
-        // Режим ВСЕ — показываем только записи, где вообще есть дата факта
-        factMonthMatch = !!(factValue && factValue.trim() !== '');
-    } else {
-        const factDate = parseDate(factValue);
-        if (factDate) {
-            const month = factDate.getMonth() + 1;
-            factMonthMatch = month === parseInt(factMonthFilter);
-        } else {
-            factMonthMatch = false;
-        }
-    }
-}
-        let factDateMatch = true;
-        if (selectedFactDate) {
-            factDateMatch = factValue === selectedFactDate;
-        }
-
-        let rowText = '';
-        cells.forEach(cell => {
-            rowText += cell.textContent.toLowerCase() + ' ';
-        });
-        rowText = rowText.replace(/\s+/g, ' ').trim();
-
-        let favoriteMatch = true;
-        if (showFavoritesOnly) {
-        const recordId = row.dataset.recordId;
-        if (recordId) {
-            const dataItem = accountingData.find(d => d.recordId === recordId);
-            favoriteMatch = dataItem ? dataItem.favorite === true : false;
-        } else {
-            favoriteMatch = false;
-        }
-        }
-        const searchMatch = !searchText || rowText.includes(searchText);
-        const statusMatch = !statusFilter || statusCell === statusFilter;
-        const departmentMatch = !departmentFilter ||
-            departmentCell.toLowerCase().includes(departmentFilter.toLowerCase());
-        const applicationMatch = !applicationFilter || applicationCell === applicationFilter;
-        const supplierMatch = !supplierFilter || supplierCell.includes(supplierFilter);
-        const yearMatch = !yearFilter || yearFromApplication === yearFilter;
-
-        if (searchMatch && statusMatch && departmentMatch && applicationMatch && 
-    supplierMatch && yearMatch && factMonthMatch && factDateMatch && favoriteMatch) {
-        row.style.display = '';
-        visibleCount++;
-    } else {
-        row.style.display = 'none';
-    }
-});
-
-    // ─── СОРТИРОВКА ПОСТАВОК (если выбран статус «Поставка») ───
-    if (statusFilter === 'Поставка') {
-        const tbody = document.querySelector('#accountingTable tbody');
-        const rows = Array.from(tbody.querySelectorAll('tr'));
-        const visibleRows = rows.filter(row =>
-            row.style.display !== 'none' &&
-            !(row.cells.length === 1 && row.cells[0].colSpan > 1)
-        );
-        const hiddenRows = rows.filter(row => !visibleRows.includes(row));
-
-        visibleRows.sort((trA, trB) => {
-            const cellA = trA.cells[12];
-            const cellB = trB.cells[12];
-            const planA = (cellA && cellA.dataset.plan) ? cellA.dataset.plan : '';
-            const planB = (cellB && cellB.dataset.plan) ? cellB.dataset.plan : '';
-            const dateA = parseDate(planA);
-            const dateB = parseDate(planB);
-            const timeA = dateA ? dateA.getTime() : Infinity;
-            const timeB = dateB ? dateB.getTime() : Infinity;
-            return timeA - timeB;
-        });
-
-        while (tbody.firstChild) tbody.removeChild(tbody.firstChild);
-        hiddenRows.forEach(tr => tbody.appendChild(tr));
-        visibleRows.forEach(tr => tbody.appendChild(tr));
-    }
-
-    // ─── УДАЛЯЕМ СТАРОЕ СООБЩЕНИЕ «ПО ВАШЕМУ ЗАПРОСУ…» ───
-    const tableBody = document.querySelector('#accountingTable tbody');
-    let noDataRow = tableBody.querySelector('tr[data-no-results]');
-    if (noDataRow) noDataRow.remove();
-
-    // ─── ДОБАВЛЯЕМ НОВОЕ СООБЩЕНИЕ, ТОЛЬКО ЕСЛИ ЕСТЬ ФИЛЬТРЫ И НЕТ РЕЗУЛЬТАТОВ ───
-    if (hasFilters && visibleCount === 0) {
-        noDataRow = document.createElement('tr');
-        noDataRow.setAttribute('data-no-results', 'true');
-        noDataRow.innerHTML = `
-            <td colspan="14" style="text-align: center; color: #8f98a0; padding: 20px;">
-                По вашему запросу ничего не найдено. Проверьте фильтры.
-            </td>
-        `;
-        tableBody.appendChild(noDataRow);
-    }
+    accRender();
 
     // ─── ОСТАЛЬНЫЕ ДЕЙСТВИЯ (ОБНОВЛЕНИЕ КОММЕНТАРИЕВ, ФИЛЬТРОВ, ШИРИНЫ) ───
     updateCommentField();
     hideQuickFiltersIfMonthSelected();
     saveColumnWidths();
     updatePrintButtonVisibility();
-
-    const tbody = document.querySelector('#accountingTable tbody');
-const rowsArray = Array.from(tbody.querySelectorAll('tr:not([data-no-results])'));
-const validRows = rowsArray.filter(row => row.cells.length > 1 && !row.querySelector('td[colspan]'));
-
-if (factMonthFilter && factMonthFilter !== '') {
-    // Сортировка по дате факта
-    validRows.sort((rowA, rowB) => {
-        const cellA = rowA.cells[12];
-        const cellB = rowB.cells[12];
-        const factA = (cellA && cellA.dataset.fact) ? cellA.dataset.fact : '';
-        const factB = (cellB && cellB.dataset.fact) ? cellB.dataset.fact : '';
-        const dateA = parseDate(factA);
-        const dateB = parseDate(factB);
-        const timeA = dateA ? dateA.getTime() : 0;
-        const timeB = dateB ? dateB.getTime() : 0;
-        return timeB - timeA;
-    });
-} else if (statusFilter !== 'Поставка') {
-    // Натуральный порядок: по дате заявки, убывание; при равенстве — по строке номера
-    const orderMap = new Map();
-    [...accountingData]
-        .sort((a, b) => {
-            const dA = extractDateFromDocNumber(a.docNumber);
-            const dB = extractDateFromDocNumber(b.docNumber);
-            const tA = dA ? dA.getTime() : 0;
-            const tB = dB ? dB.getTime() : 0;
-            if (tB !== tA) return tB - tA;
-            const sA = a.docNumber || '';
-            const sB = b.docNumber || '';
-            if (sA < sB) return -1;
-            if (sA > sB) return 1;
-            return 0;
-        })
-        .forEach((item, idx) => orderMap.set(item.recordId, idx));
-
-    validRows.sort((rowA, rowB) => {
-        const a = orderMap.get(rowA.dataset.recordId);
-        const b = orderMap.get(rowB.dataset.recordId);
-        return (a ?? 999999) - (b ?? 999999);
-    });
-}
-
-validRows.forEach(row => tbody.appendChild(row));
 
     refreshQuickFiltersVisibility();
     updateQuickFactDateFilters();
@@ -5640,89 +5841,25 @@ if (isAppSelected && row.style.display !== 'none') {
 function updateStatusFilterCounts() {
     const select = document.getElementById('statusFilter');
     if (!select) return;
+    accSync();
 
     // Все возможные статусы (должны совпадать со значениями option)
     const statuses = ['В работе', 'Поставка', 'Приход', 'Выполнено', 'Иное'];
     const counts = {};
     statuses.forEach(s => counts[s] = 0);
 
-    // ---- читаем остальные фильтры (кроме statusFilter) ----
-    const factMonthFilter    = document.getElementById('factMonthFilter').value;
-    const searchText         = document.getElementById('searchAccountingInput').value.toLowerCase().trim();
-    const departmentFilter   = document.getElementById('departmentFilter').value;
-    const applicationFilter  = document.getElementById('applicationFilter').value.toLowerCase().trim();
-    const supplierFilter     = document.getElementById('supplierFilter').value.toLowerCase().trim();
-    const yearFilter         = document.getElementById('yearFilter').value;
-
-    const rows = document.querySelectorAll('#accountingTable tbody tr');
-
-    rows.forEach(row => {
-        // пропускаем служебные строки
-        if (row.hasAttribute('data-no-results')) return;
-        if (row.cells.length === 1 && row.cells[0].colSpan > 1) return;
-
-        const cells = row.querySelectorAll('td');
-        if (cells.length < 4) return;
-
-        const statusCell        = cells[2] ? cells[2].textContent.trim() : '';
-        const departmentCell    = cells[0] ? cells[0].textContent.trim() : '';
-        const applicationCell   = cells[1] ? cells[1].textContent.toLowerCase().trim() : '';
-        const supplierCell      = cells[9] ? cells[9].textContent.toLowerCase().replace(/\s+/g, ' ').trim() : '';
-        const yearFromApp       = extractYearFromDocNumber(applicationCell);
-
-        // ---- фильтр по месяцу факта ----
-        let factMonthMatch = true;
-if (factMonthFilter) {
-    const pfCell = cells[12];
-    const factValue = (pfCell && pfCell.dataset.fact) ? pfCell.dataset.fact : '';
-    if (factMonthFilter === 'all') {
-        factMonthMatch = !!(factValue && factValue.trim() !== '');
-    } else {
-        const factDate = parseDate(factValue);
-        if (factDate) {
-            factMonthMatch = (factDate.getMonth() + 1) === parseInt(factMonthFilter);
-        } else {
-            factMonthMatch = false;
-        }
+    // Остальные фильтры учитываем, статус — нет (считаем по всем статусам сразу)
+    const F = accReadFilters();
+    for (let i = 0; i < accNatural.length; i++) {
+        const item = accNatural[i];
+        if (!accMatches(item, F, { skipStatus: true, skipFactDate: true })) continue;
+        const st = accIndexOf(item).status;
+        if (Object.prototype.hasOwnProperty.call(counts, st)) counts[st]++;
     }
-}
-
-        // ---- общий поиск по всей строке ----
-        let rowText = '';
-        cells.forEach(cell => { rowText += cell.textContent.toLowerCase() + ' '; });
-        rowText = rowText.replace(/\s+/g, ' ').trim();
-
-        // ---- избранное ----
-        let favoriteMatch = true;
-        if (showFavoritesOnly) {
-            const recordId = row.dataset.recordId;
-            if (recordId) {
-                const dataItem = accountingData.find(d => d.recordId === recordId);
-                favoriteMatch = dataItem ? dataItem.favorite === true : false;
-            } else {
-                favoriteMatch = false;
-            }
-        }
-
-        const searchMatch      = !searchText        || rowText.includes(searchText);
-        const departmentMatch  = !departmentFilter  || departmentCell.toLowerCase().includes(departmentFilter.toLowerCase());
-        const applicationMatch = !applicationFilter || applicationCell === applicationFilter;
-        const supplierMatch    = !supplierFilter    || supplierCell.includes(supplierFilter);
-        const yearMatch        = !yearFilter        || yearFromApp === yearFilter;
-
-        // статус НЕ учитываем — считаем по всем статусам сразу
-        if (searchMatch && departmentMatch && applicationMatch &&
-            supplierMatch && yearMatch && factMonthMatch && favoriteMatch) {
-            if (Object.prototype.hasOwnProperty.call(counts, statusCell)) {
-                counts[statusCell]++;
-            }
-        }
-    });
 
     // ---- обновляем текст опций ----
     Array.from(select.options).forEach(opt => {
         if (!opt.value) {
-            // "Все статусы" — показываем общее число
             const total = Object.values(counts).reduce((a, b) => a + b, 0);
             opt.textContent = `Все статусы (${total})`;
         } else if (Object.prototype.hasOwnProperty.call(counts, opt.value)) {
@@ -6121,6 +6258,7 @@ function showOverdueOnly() {
     document.getElementById('departmentFilter').value = '';
     document.getElementById('applicationFilter').value = '';
     clearQuickFilters();
+    accEnsureAllRows(); // режиму нужны все строки в DOM
 
     const thead = document.querySelector('#accountingTable thead');
     const tbody = document.querySelector('#accountingTable tbody');
@@ -6342,6 +6480,7 @@ function showWeeklyDeliveriesOnly() {
 
     // ---- 2. Очищаем быстрые фильтры ----
     clearQuickFilters();
+    accEnsureAllRows(); // режиму нужны все строки в DOM
 
     const rows = document.querySelectorAll('#accountingTable tbody tr');
 
@@ -7032,37 +7171,208 @@ function applyFixedAccountingTableLayout() {
 setTimeout(applyFixedAccountingTableLayout, 100);
 
         // ========== ФУНКЦИИ ДЛЯ СТРАНИЦЫ КОНТРАГЕНТОВ ==========
-        function updateCounterpartiesTable() {
-    const tableBody = document.querySelector('#counterpartiesTable tbody');
-    if (!tableBody) {
-        console.error('Не найден tbody для таблицы контрагентов');
+
+// =====================================================================
+//  ОБЩИЙ ДВИЖОК ЛЕНИВОЙ ОТРИСОВКИ ТАБЛИЦ (по 100 строк)
+//  Для страниц: контрагенты, платежи, урегулирование, почта, доверенности.
+//  Фильтрация идёт по данным, в DOM создаются только первые LZ_PAGE строк,
+//  остальные подгружаются при прокрутке / по кнопке «Показать ещё».
+// =====================================================================
+var LZ_PAGE = 100;
+var LZ_ENGINES = {};
+var LZ_NF = null;
+
+function lzStr(x) { return x == null ? '' : String(x); }
+function lzCell(x) { return lzStr(x).replace(/\n/g, ' '); }
+function lzDateFmt(v) {            // YYYY-MM-DD -> DD.MM.YYYY
+    if (!v) return '';
+    const p = v.split('-');
+    return `${p[2]}.${p[1]}.${p[0]}`;
+}
+function lzMsgRow(text, colspan, attr) {
+    const tr = document.createElement('tr');
+    if (attr) tr.setAttribute(attr, 'true');
+    tr.innerHTML = `<td colspan="${colspan}" style="text-align: center; color: #8f98a0; padding: 20px;">${text}</td>`;
+    return tr;
+}
+
+function LazyTable(cfg) {
+    this.cfg = cfg;
+    this.rowCache = new Map();
+    this.idx = new Map();
+    this.sorted = [];
+    this.dataRef = null;
+    this.ctx = null;
+    this.limit = LZ_PAGE;
+    this.sig = '';
+    this.ordered = [];
+    this.shown = 0;
+    this.observer = null;
+}
+LazyTable.prototype.tbody = function () { return document.querySelector(this.cfg.tbody); };
+LazyTable.prototype.ix = function (item) {
+    let x = this.idx.get(item);
+    if (!x) { x = this.cfg.index(item); x._t = null; this.idx.set(item, x); }
+    return x;
+};
+LazyTable.prototype.text = function (item) {
+    const x = this.ix(item);
+    if (x._t === null) {
+        x._t = this.cfg.text(item).map(p => lzStr(p).toLowerCase() + ' ').join('');
+    }
+    return x._t;
+};
+LazyTable.prototype.prepare = function () {
+    const self = this;
+    this.rowCache = new Map();
+    this.idx = new Map();
+    this.ctx = this.cfg.ctx ? this.cfg.ctx() : {};
+    this.dataRef = this.cfg.data();
+    this.sorted = [...this.dataRef].sort((a, b) => self.ix(b).time - self.ix(a).time);
+};
+LazyTable.prototype.sync = function () {
+    const d = this.cfg.data();
+    if (!this.ctx || this.dataRef !== d || this.sorted.length !== d.length) this.prepare();
+};
+LazyTable.prototype.getRow = function (item) {
+    let tr = this.rowCache.get(item);
+    if (!tr) { tr = this.cfg.row(item, this.ctx); this.rowCache.set(item, tr); }
+    tr.style.display = '';
+    return tr;
+};
+LazyTable.prototype.moreRow = function (remaining) {
+    const self = this;
+    const tr = document.createElement('tr');
+    tr.setAttribute('data-load-more', 'true');
+    const td = document.createElement('td');
+    td.colSpan = this.cfg.colspan;
+    td.style.cssText = 'text-align:center;padding:14px;';
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'acc-load-more-btn';
+    btn.style.cssText = 'background:rgba(102,192,244,.15);color:#66c0f4;border:1px solid rgba(102,192,244,.5);border-radius:4px;padding:8px 22px;cursor:pointer;font-size:14px;';
+    btn.textContent = `Показать ещё ${Math.min(LZ_PAGE, remaining)} (осталось ${remaining})`;
+    btn.addEventListener('click', function () { self.loadMore(); });
+    td.appendChild(btn);
+    tr.appendChild(td);
+    return tr;
+};
+LazyTable.prototype.observe = function (tr) {
+    const self = this;
+    if (this.observer) { this.observer.disconnect(); this.observer = null; }
+    if (!tr || !('IntersectionObserver' in window)) return;
+    this.observer = new IntersectionObserver(function (entries) {
+        if (entries.some(e => e.isIntersecting)) self.loadMore();
+    }, { rootMargin: '600px 0px' });
+    this.observer.observe(tr);
+};
+LazyTable.prototype.loadMore = function () {
+    const tb = this.tbody();
+    if (!tb) return;
+    const more = tb.querySelector('tr[data-load-more]');
+    if (!more) return;
+    if (this.observer) { this.observer.disconnect(); this.observer = null; }
+    const end = Math.min(this.ordered.length, this.shown + LZ_PAGE);
+    const frag = document.createDocumentFragment();
+    for (let i = this.shown; i < end; i++) frag.appendChild(this.getRow(this.ordered[i]));
+    tb.insertBefore(frag, more);
+    this.shown = end;
+    this.limit = Math.max(this.limit, end);
+    if (end >= this.ordered.length) {
+        more.remove();
+    } else {
+        const fresh = this.moreRow(this.ordered.length - end);
+        tb.replaceChild(fresh, more);
+        this.observe(fresh);
+    }
+};
+LazyTable.prototype.loadAll = function () {
+    this.limit = Infinity;
+    this.render();
+};
+LazyTable.prototype.render = function () {
+    const tb = this.tbody();
+    if (!tb) return;
+    const c = this.cfg;
+    this.sync();
+    if (this.observer) { this.observer.disconnect(); this.observer = null; }
+
+    const F = c.filters();
+    const has = c.hasFilters(F);
+
+    if (this.dataRef.length === 0) {
+        this.ordered = [];
+        this.shown = 0;
+        const msg = has ? c.noResults(F) : null;
+        tb.replaceChildren(msg
+            ? lzMsgRow(msg, c.noColspan || c.colspan, 'data-no-results')
+            : lzMsgRow(c.empty, c.colspan, c.emptyAttr));
+        if (c.after) c.after(this);
         return;
     }
-    
-    tableBody.innerHTML = '';
-    
-    if (counterpartiesData.length === 0) {
-        const emptyRow = document.createElement('tr');
-        emptyRow.innerHTML = `
-            <td colspan="7" style="text-align: center; color: #8f98a0; padding: 20px;">
-                Нет данных о контрагентах. Добавьте первого контрагента.
-            </td>
-        `;
-        tableBody.appendChild(emptyRow);
-        return;
+
+    const sig = JSON.stringify(F);
+    if (sig !== this.sig) { this.sig = sig; this.limit = LZ_PAGE; }
+
+    const matches = [];
+    for (let i = 0; i < this.sorted.length; i++) {
+        const it = this.sorted[i];
+        if (c.match(it, this.ix(it), F, () => this.text(it))) matches.push(it);
     }
-    
-    // СОРТИРОВКА ПО ДАТЕ (УБЫВАНИЕ - СНАЧАЛА НОВЫЕ)
-    const sortedCounterparties = [...counterpartiesData].sort((a, b) => {
-        // Извлекаем timestamp из recordId
-        const timeA = getTimeFromRecordId(a.recordId) || 0;
-        const timeB = getTimeFromRecordId(b.recordId) || 0;
-        
-        // Сортировка по убыванию (новые сначала)
-        return timeB - timeA;
-    });
-    
-    sortedCounterparties.forEach((item) => {
+    this.ordered = matches;
+
+    const shown = matches.slice(0, Math.max(this.limit, LZ_PAGE));
+    this.shown = shown.length;
+
+    const frag = document.createDocumentFragment();
+    for (let i = 0; i < shown.length; i++) frag.appendChild(this.getRow(shown[i]));
+
+    let more = null;
+    if (matches.length > shown.length) {
+        more = this.moreRow(matches.length - shown.length);
+        frag.appendChild(more);
+    }
+    if (matches.length === 0 && has) {
+        const msg = c.noResults(F);
+        if (msg) frag.appendChild(lzMsgRow(msg, c.noColspan || c.colspan, 'data-no-results'));
+    }
+    tb.replaceChildren(frag);
+    if (more) this.observe(more);
+    if (c.after) c.after(this);
+};
+
+function lz(name) {
+    if (!LZ_ENGINES[name]) LZ_ENGINES[name] = new LazyTable(LZ_CONFIGS[name]());
+    return LZ_ENGINES[name];
+}
+function lzInput(id) { const el = document.getElementById(id); return el ? el.value : ''; }
+
+// При печати подгружаем все строки открытой страницы
+window.addEventListener('beforeprint', function () {
+    try {
+        const page = document.querySelector('.page.active');
+        const id = page ? page.id : '';
+        if (id === 'accounting' && !accForceAll) { accLimit = Infinity; accRender(); updateRowNumbers(); }
+        const map = { counterparties: 'cp', payments: 'pay', settlement: 'set', 'mail-registry': 'mail', 'proxy-registry': 'proxy' };
+        if (map[id]) lz(map[id]).loadAll();
+    } catch (e) { console.error(e); }
+});
+
+var LZ_CONFIGS = {};
+
+// Подгрузить ВСЕ подходящие строки таблицы (для экспорта в Excel)
+function lzLoadAllForTable(type) {
+    try {
+        if (type === 'main') {
+            if (!accForceAll) { accLimit = Infinity; accRender(); updateRowNumbers(); }
+            return;
+        }
+        const map = { counterparties: 'cp', payments: 'pay', settlement: 'set', mail: 'mail', proxy: 'proxy' };
+        if (map[type]) lz(map[type]).loadAll();
+    } catch (e) { console.error(e); }
+}
+
+function lzRowCp(item, ctx) {
         const row = document.createElement('tr');
         
         // Добавляем уникальный ID записи в data-атрибут
@@ -7120,7 +7430,6 @@ if (isAdmin) {
     });
 }
         
-        tableBody.appendChild(row);
         // Делаем email кликабельным для копирования
 const emailCell = row.querySelectorAll('td')[4]; // пятый столбец (0-based)
 if (emailCell) {
@@ -7134,71 +7443,33 @@ if (emailCell) {
         });
     }
 }
-    });
+    return row;
 }
-
-    function filterCounterpartiesTable() {
-    const searchText = document.getElementById('searchCounterpartiesInput').value.toLowerCase();
-    const rows = document.querySelectorAll('#counterpartiesTable tbody tr');
-    // thead больше не управляется вручную
-    
-    let visibleCount = 0;
-    
-    rows.forEach(row => {
-        if (row.hasAttribute('data-no-results')) return; // ← НОВОЕ
-
-        if (row.cells.length === 1 && row.cells[0].colSpan > 1) {
-            row.style.display = (searchText || showOnlyBlacklisted) ? 'none' : '';
-            if (!searchText && !showOnlyBlacklisted) visibleCount++;
-            return;
-        }
-        
-        let rowText = '';
-        row.querySelectorAll('td').forEach(cell => {
-            rowText += cell.textContent.toLowerCase() + ' ';
-        });
-        
-        const isBlacklisted = row.classList.contains('blacklisted-row');
-        const blacklistMatch = !showOnlyBlacklisted || isBlacklisted;
-        const searchMatch = !searchText || rowText.includes(searchText);
-        
-        if (blacklistMatch && searchMatch) {
-            row.style.display = '';
-            visibleCount++;
-        } else {
-            row.style.display = 'none';
-        }
-    });
-    
-// ─── Управление строкой "ничего не найдено" ───
-    const tableBody = document.querySelector('#counterpartiesTable tbody');
-
-    // 1) Всегда удаляем старую строку
-    let noDataRow = tableBody.querySelector('tr[data-no-results]');
-    if (noDataRow) noDataRow.remove();
-
-    // 2) Создаём заново, если нужно
-    if (showOnlyBlacklisted && visibleCount === 0) {
-        noDataRow = document.createElement('tr');
-        noDataRow.setAttribute('data-no-results', 'true');
-        noDataRow.innerHTML = `
-            <td colspan="7" style="text-align: center; color: #8f98a0; padding: 20px;">
-                В черном списке нет контрагентов
-            </td>
-        `;
-        tableBody.appendChild(noDataRow);
-    } else if (visibleCount === 0 && searchText) {
-        noDataRow = document.createElement('tr');
-        noDataRow.setAttribute('data-no-results', 'true');
-        noDataRow.innerHTML = `
-            <td colspan="7" style="text-align: center; color: #8f98a0; padding: 20px;">
-                По запросу "${searchText}" ничего не найдено
-            </td>
-        `;
-        tableBody.appendChild(noDataRow);
+LZ_CONFIGS.cp = () => ({
+    tbody: '#counterpartiesTable tbody', colspan: 7,
+    data: () => counterpartiesData,
+    index: it => ({ time: getTimeFromRecordId(it.recordId) || 0, bl: !!it.blacklisted }),
+    text: it => [it.supplier, it.inn, it.phone, it.contact, it.email, it.material, it.address].map(lzCell),
+    row: lzRowCp,
+    filters: () => ({ q: lzInput('searchCounterpartiesInput').toLowerCase(), bl: !!showOnlyBlacklisted }),
+    hasFilters: F => !!(F.q || F.bl),
+    match: (it, ix, F, T) => (!F.bl || ix.bl) && (!F.q || T().includes(F.q)),
+    empty: 'Нет данных о контрагентах. Добавьте первого контрагента.',
+    noResults: F => F.bl ? 'В черном списке нет контрагентов'
+        : (F.q ? `По запросу "${F.q}" ничего не найдено` : null)
+});
+function updateCounterpartiesTable() {
+    if (!document.querySelector('#counterpartiesTable tbody')) {
+        console.error('Не найден tbody для таблицы контрагентов');
+        return;
     }
+    lz('cp').prepare();
+    lz('cp').render();
 }
 
+function filterCounterpartiesTable() {
+    lz('cp').render();
+}
 
         function clearCounterpartiesFilters() {
     const searchInput = document.getElementById('searchCounterpartiesInput');
@@ -7417,6 +7688,43 @@ function hideGithubSaveLoader() {
     el.style.opacity = '0';
     setTimeout(() => { el.style.display = 'none'; }, 260);
 }
+
+/* ===== Оверлей «Загрузка данных» (по образцу оверлея сохранения на GitHub) ===== */
+var __dataLoaderDepth = 0;
+var __dataLoaderGuard = null;
+function showDataLoader(text) {
+    const el = document.getElementById('dataLoadLoader');
+    const sub = document.getElementById('dataLoadLoaderSubtext');
+    if (!el) return;
+    __dataLoaderDepth++;
+    if (sub) sub.textContent = text || '';
+    el.style.display = 'flex';
+    requestAnimationFrame(() => {
+        requestAnimationFrame(() => { if (__dataLoaderDepth > 0) el.style.opacity = '1'; });
+    });
+    // страховка: оверлей не должен зависнуть навсегда
+    clearTimeout(__dataLoaderGuard);
+    __dataLoaderGuard = setTimeout(() => hideDataLoader(true), 60000);
+}
+function hideDataLoader(force) {
+    const el = document.getElementById('dataLoadLoader');
+    if (!el) return;
+    __dataLoaderDepth = force ? 0 : Math.max(0, __dataLoaderDepth - 1);
+    if (__dataLoaderDepth > 0) return;
+    clearTimeout(__dataLoaderGuard);
+    el.style.opacity = '0';
+    setTimeout(() => { if (__dataLoaderDepth === 0) el.style.display = 'none'; }, 260);
+}
+// Показывает оверлей, даёт браузеру его отрисовать и только потом выполняет тяжёлую работу
+function runWithDataLoader(fn, text) {
+    showDataLoader(text);
+    return new Promise(resolve => {
+        requestAnimationFrame(() => setTimeout(() => {
+            try { resolve(fn()); }
+            finally { hideDataLoader(); }
+        }, 30));
+    });
+}
 async function forceExportToGitHub() {
     const btn = document.querySelector('.github-export-btn');
 
@@ -7569,37 +7877,9 @@ function updateSuppliersFilterList() {
     });
 }
         // ========== ФУНКЦИИ ДЛЯ СТРАНИЦЫ ПЛАТЕЖЕЙ ==========
-    function updatePaymentsTable() {
-    const tableBody = document.querySelector('#paymentsTable tbody');
-    if (!tableBody) return;
-    
-    tableBody.innerHTML = '';
-    
-    if (paymentsData.length === 0) {
-        const emptyRow = document.createElement('tr');
-        emptyRow.innerHTML = `
-            <td colspan="8" style="text-align: center; color: #8f98a0; padding: 20px;">
-                Нет данных о платежах. Добавьте первую запись.
-            </td>
-        `;
-        tableBody.appendChild(emptyRow);
-        return;
-    }
-    
-    // Сортировка по дате (убывание)
-    const sortedPayments = [...paymentsData].sort((a, b) => {
-        const dateA = parseDate(a.date);
-        const dateB = parseDate(b.date);
-        const timeA = dateA ? dateA.getTime() : 0;
-        const timeB = dateB ? dateB.getTime() : 0;
-        return timeB - timeA;
-    });
-    
-    // НОВОЕ: текущая дата без времени для сравнения
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    
-    sortedPayments.forEach((item) => {
+
+function lzRowPay(item, ctx) {
+        const today = ctx.today;
         const row = document.createElement('tr');
         row.dataset.recordId = item.recordId || '';
         if (item.status === 'Оплачено') row.classList.add('status-completed');
@@ -7627,9 +7907,7 @@ function updateSuppliersFilterList() {
         const agreementText = item.agreement || '';
         const supplier = item.supplier || '';
         
-        const foundInAccounting = accountingData.some(accItem => 
-            accItem.contract && accItem.contract.trim() === contractText.trim()
-        );
+        const foundInAccounting = ctx.accContracts.has(contractText.trim());
         
         let contractHtml = '';
         let agreementHtml = '';
@@ -7701,10 +7979,60 @@ if (foundInAccounting && contractText) {
             });
         }
         
-        tableBody.appendChild(row);
-    });
-    
-    updatePaymentsTotal();
+        return row;
+}
+LZ_CONFIGS.pay = () => ({
+    tbody: '#paymentsTable tbody', colspan: 8,
+    data: () => paymentsData,
+    ctx: () => {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const accContracts = new Set();
+        accountingData.forEach(a => { if (a.contract) accContracts.add(a.contract.trim()); });
+        return { today, accContracts };
+    },
+    index: it => {
+        const d = parseDate(it.date);
+        if (!LZ_NF) LZ_NF = new Intl.NumberFormat('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        let s = '';
+        if (it.amount) {
+            const n = parseFloat(it.amount);
+            s = isNaN(n) ? String(it.amount) : LZ_NF.format(n) + ' руб.';
+        }
+        return {
+            time: d ? d.getTime() : 0,
+            status: lzStr(it.status).trim(),
+            app: lzStr(it.docNumber).toLowerCase().trim(),
+            supplier: lzStr(it.supplier).toLowerCase().trim(),
+            date: lzStr(it.date).trim(),
+            amt: parseCurrency(s)
+        };
+    },
+    text: it => [it.date, it.status, it.docNumber, it.supplier,
+        it.amount ? formatCurrency(it.amount) : '', lzCell(it.contract), lzCell(it.agreement), it.link ? '🔗' : ''],
+    row: lzRowPay,
+    filters: () => ({
+        q: lzInput('searchPaymentsInput').toLowerCase(),
+        status: lzInput('paymentsStatusFilter'),
+        app: lzInput('paymentsApplicationFilter').toLowerCase().trim(),
+        supplier: lzInput('paymentsSupplierFilter').toLowerCase().trim(),
+        date: lzDateFmt(lzInput('paymentDateFilter'))
+    }),
+    hasFilters: F => !!(F.q || F.status || F.app || F.supplier || F.date),
+    match: (it, ix, F, T) =>
+        (!F.status || ix.status === F.status) &&
+        (!F.app || ix.app.includes(F.app)) &&
+        (!F.supplier || ix.supplier.includes(F.supplier)) &&
+        (!F.date || ix.date === F.date) &&
+        (!F.q || T().includes(F.q)),
+    noResults: () => 'По вашему запросу ничего не найдено',
+    empty: 'Нет данных о платежах. Добавьте первую запись.',
+    after: () => { updatePaymentsTotal(); updatePaymentsTotalVisibility(); }
+});
+function updatePaymentsTable() {
+    if (!document.querySelector('#paymentsTable tbody')) return;
+    lz('pay').prepare();
+    lz('pay').render();
     updatePaymentsBadge();
 }
 // ========== ФУНКЦИИ ДЛЯ парсинга суммы ==========
@@ -7716,20 +8044,11 @@ function parseCurrency(currencyText) {
     return isNaN(num) ? 0 : num;
 }
 function updatePaymentsTotal() {
-    const rows = document.querySelectorAll('#paymentsTable tbody tr');
+    // Сумма считается по всем подходящим записям (а не только по загруженным строкам)
+    const eng = lz('pay');
+    const list = (eng.ctx && eng.dataRef === paymentsData) ? eng.ordered : paymentsData;
     let total = 0;
-
-    rows.forEach(row => {
-        // Пропускаем скрытые строки и строки-заглушки
-        if (row.style.display === 'none' ||
-            (row.cells.length === 1 && row.cells[0].colSpan > 1)) {
-            return;
-        }
-        const amountCell = row.cells[4]; // столбец "Сумма"
-        if (amountCell) {
-            total += parseCurrency(amountCell.textContent);
-        }
-    });
+    list.forEach(it => { total += eng.ix(it).amt; });
 
     const totalElement = document.getElementById('paymentsTotalAmount');
     if (!totalElement) return;
@@ -7786,76 +8105,7 @@ function fallbackCopyAmount(text) {
     document.body.removeChild(ta);
 }
         function filterPaymentsTable() {
-    const searchText = document.getElementById('searchPaymentsInput').value.toLowerCase();
-    const statusFilter = document.getElementById('paymentsStatusFilter').value;
-    const applicationFilter = document.getElementById('paymentsApplicationFilter').value.toLowerCase().trim();
-    const supplierFilter = document.getElementById('paymentsSupplierFilter').value.toLowerCase().trim();
-    const dateFilter = document.getElementById('paymentDateFilter').value;
-
-    const rows = document.querySelectorAll('#paymentsTable tbody tr');
-    let visibleCount = 0;
-
-    rows.forEach(row => {
-        if (row.hasAttribute('data-no-results')) return; // ← НОВОЕ
-
-        // пропуск строки-заглушки
-        if (row.cells.length === 1 && row.cells[0].colSpan > 1) {
-            row.style.display = (searchText || statusFilter || applicationFilter || supplierFilter || dateFilter) ? 'none' : '';
-            return;
-        }
-
-        // сбор текста строки для поиска
-        let rowText = '';
-        row.querySelectorAll('td').forEach(cell => {
-            rowText += cell.textContent.toLowerCase() + ' ';
-        });
-
-        const dateCell = row.querySelector('td:nth-child(1)')?.textContent.trim();
-        const applicationCell = row.querySelector('td:nth-child(3)')?.textContent.toLowerCase().trim() || '';
-        const supplierCell = row.querySelector('td:nth-child(4)')?.textContent.toLowerCase().trim() || '';
-        const statusCell = row.querySelector('td:nth-child(2)')?.textContent.trim() || '';
-
-        // фильтр по дате
-        let dateMatch = true;
-        if (dateFilter) {
-            const [year, month, day] = dateFilter.split('-');
-            const formattedDateFilter = `${day}.${month}.${year}`;
-            dateMatch = (dateCell === formattedDateFilter);
-        }
-
-        const statusMatch = !statusFilter || statusCell === statusFilter;
-        const searchMatch = !searchText || rowText.includes(searchText);
-        const applicationMatch = !applicationFilter || applicationCell.includes(applicationFilter);
-        const supplierMatch = !supplierFilter || supplierCell.includes(supplierFilter);
-
-        if (statusMatch && searchMatch && applicationMatch && supplierMatch && dateMatch) {
-            row.style.display = '';
-            visibleCount++;
-        } else {
-            row.style.display = 'none';
-        }
-    });
-
-    // !!! ВАЖНО: пересчитываем общую сумму после фильтрации
-    updatePaymentsTotal();
-    updatePaymentsTotalVisibility();
-
-    // ─── Управление строкой "ничего не найдено" ───
-    const tableBody = document.querySelector('#paymentsTable tbody');
-
-    let noDataRow = tableBody.querySelector('tr[data-no-results]');
-    if (noDataRow) noDataRow.remove();
-
-    if (visibleCount === 0 && (searchText || statusFilter || applicationFilter || supplierFilter || dateFilter)) {
-        noDataRow = document.createElement('tr');
-        noDataRow.setAttribute('data-no-results', 'true');
-        noDataRow.innerHTML = `
-            <td colspan="8" style="text-align: center; color: #8f98a0; padding: 20px;">
-                По вашему запросу ничего не найдено
-            </td>
-        `;
-        tableBody.appendChild(noDataRow);
-    }
+    lz('pay').render();
 }
 
     function clearPaymentsFilters() {
@@ -8111,33 +8361,8 @@ function formatCurrency(value) {
 }
 
         // ========== ФУНКЦИИ ДЛЯ СТРАНИЦЫ УРЕГУЛИРОВАНИЯ ==========
-    function updateSettlementTable() {
-    const tableBody = document.querySelector('#settlementTable tbody');
-    if (!tableBody) return;
-    tableBody.innerHTML = '';
 
-    if (settlementData.length === 0) {
-        const emptyRow = document.createElement('tr');
-        emptyRow.setAttribute('data-no-data', 'true');
-        emptyRow.innerHTML = `
-            <td colspan="9" style="text-align: center; color: #8f98a0; padding: 20px;">
-                Нет данных об урегулировании. Добавьте первую запись.
-            </td>
-        `;
-        tableBody.appendChild(emptyRow);
-        return;
-    }
-
-    // Сортировка по дате (убывание – сначала новые)
-    const sortedData = [...settlementData].sort((a, b) => {
-        const dateA = parseDate(a.date);
-        const dateB = parseDate(b.date);
-        const timeA = dateA ? dateA.getTime() : 0;
-        const timeB = dateB ? dateB.getTime() : 0;
-        return timeB - timeA;
-    });
-
-    sortedData.forEach((item) => {
+function lzRowSet(item, ctx) {
         const row = document.createElement('tr');
         row.dataset.recordId = item.recordId || '';
 
@@ -8189,66 +8414,40 @@ const displayDate = item.date ? item.date : '';
             });
         }
 
-        tableBody.appendChild(row);
-    });
+        return row;
+}
+LZ_CONFIGS.set = () => ({
+    tbody: '#settlementTable tbody', colspan: 9, noColspan: 8, emptyAttr: 'data-no-data',
+    data: () => settlementData,
+    index: it => {
+        const d = parseDate(it.date);
+        return { time: d ? d.getTime() : 0, status: lzStr(it.status).trim(), supplier: lzStr(it.supplier).toLowerCase().trim() };
+    },
+    text: it => [it.date, lzCell(it.status), lzCell(it.supplier), lzCell(it.contract), lzCell(it.docNumber),
+        lzCell(it.remark), lzCell(it.outgoing), lzCell(it.incoming), lzCell(it.note)],
+    row: lzRowSet,
+    filters: () => ({
+        q: lzInput('searchSettlementInput').toLowerCase(),
+        status: lzInput('settlementStatusFilter'),
+        supplier: lzInput('settlementSupplierFilter').toLowerCase().trim()
+    }),
+    hasFilters: F => !!(F.q || F.status || F.supplier),
+    match: (it, ix, F, T) =>
+        (!F.status || ix.status === F.status) &&
+        (!F.supplier || ix.supplier.includes(F.supplier)) &&
+        (!F.q || T().includes(F.q)),
+    noResults: () => 'По вашему запросу ничего не найдено',
+    empty: 'Нет данных об урегулировании. Добавьте первую запись.'
+});
+function updateSettlementTable() {
+    if (!document.querySelector('#settlementTable tbody')) return;
+    lz('set').prepare();
+    lz('set').render();
     updateSettlementBadge();
 }
 
-    function filterSettlementTable() {
-    const searchText = document.getElementById('searchSettlementInput').value.toLowerCase();
-    const statusFilter = document.getElementById('settlementStatusFilter').value;
-    const supplierFilter = document.getElementById('settlementSupplierFilter').value.toLowerCase().trim();
-    
-    const rows = document.querySelectorAll('#settlementTable tbody tr');
-    let visibleCount = 0;
-    
-    rows.forEach(row => {
-        if (row.hasAttribute('data-no-results')) return; // ← НОВОЕ
-
-        if (row.cells.length === 1 && row.cells[0].colSpan > 1) {
-            row.style.display = (searchText || statusFilter || supplierFilter) ? 'none' : '';
-            return;
-        }
-        
-        let rowText = '';
-        row.querySelectorAll('td').forEach(cell => {
-            rowText += cell.textContent.toLowerCase() + ' ';
-        });
-        
-        // ✅ Исправленные индексы
-        const statusCell = row.querySelector('td:nth-child(2)')?.textContent.trim() || '';
-        const supplierCell = row.querySelector('td:nth-child(3)')?.textContent.toLowerCase().trim() || '';
-        
-        const statusMatch = !statusFilter || statusCell === statusFilter;
-        const searchMatch = !searchText || rowText.includes(searchText);
-        const supplierMatch = !supplierFilter || supplierCell.includes(supplierFilter);
-        
-        if (statusMatch && searchMatch && supplierMatch) {
-            row.style.display = '';
-            visibleCount++;
-        } else {
-            row.style.display = 'none';
-        }
-    });
-    
-    // Удаляем старую строку "По вашему запросу ничего не найдено", если есть
-    const tableBody = document.querySelector('#settlementTable tbody');
-    let noResultsRow = tableBody.querySelector('tr[data-no-results]');
-    if (noResultsRow) {
-        noResultsRow.remove();
-    }
-    
-    // Если нет видимых строк и есть активные фильтры, показываем сообщение
-    if (visibleCount === 0 && (searchText || statusFilter || supplierFilter)) {
-        const newRow = document.createElement('tr');
-        newRow.setAttribute('data-no-results', 'true');
-        newRow.innerHTML = `
-            <td colspan="8" style="text-align: center; color: #8f98a0; padding: 20px;">
-                По вашему запросу ничего не найдено
-            </td>
-        `;
-        tableBody.appendChild(newRow);
-    }
+function filterSettlementTable() {
+    lz('set').render();
 }
 
     function clearSettlementFilters() {
@@ -8350,33 +8549,8 @@ const displayDate = item.date ? item.date : '';
         }
 
         // ========== ФУНКЦИИ ДЛЯ СТРАНИЦЫ ПОЧТОВЫЙ РЕЕСТР ==========
-        function updateMailTable() {
-    const tableBody = document.querySelector('#mailTable tbody');
-    if (!tableBody) return;
-    
-    tableBody.innerHTML = '';
-    
-    if (mailData.length === 0) {
-        const emptyRow = document.createElement('tr');
-        emptyRow.innerHTML = `
-            <td colspan="5" style="text-align: center; color: #8f98a0; padding: 20px;">
-                Нет данных в почтовом реестре. Добавьте первую запись.
-            </td>
-        `;
-        tableBody.appendChild(emptyRow);
-        return;
-    }
-    
-    // СОРТИРОВКА ПО ДАТЕ (УБЫВАНИЕ - СНАЧАЛА НОВЫЕ)
-    const sortedMailData = [...mailData].sort((a, b) => {
-    const dateA = parseDate(a.date);
-    const dateB = parseDate(b.date);
-    const timeA = dateA ? dateA.getTime() : 0;
-    const timeB = dateB ? dateB.getTime() : 0;
-    return timeB - timeA; // убывание (новые сверху)
-});
-    
-    sortedMailData.forEach((item) => {
+
+function lzRowMail(item, ctx) {
         const row = document.createElement('tr');
         
         // Добавляем уникальный ID записи в data-атрибут
@@ -8423,78 +8597,38 @@ if (isAdmin) {
     });
 }
         
-        tableBody.appendChild(row);
-    });
+    return row;
+}
+LZ_CONFIGS.mail = () => ({
+    tbody: '#mailTable tbody', colspan: 5,
+    data: () => mailData,
+    index: it => {
+        const d = parseDate(it.date);
+        return { time: d ? d.getTime() : 0, date: lzStr(it.date).trim(), supplier: lzStr(it.supplier).toLowerCase().trim() };
+    },
+    text: it => [it.date, it.supplier, it.document, it.sheets, it.address],
+    row: lzRowMail,
+    filters: () => ({
+        q: lzInput('searchMailInput').toLowerCase(),
+        date: lzDateFmt(lzInput('mailDateFilter')),
+        supplier: lzInput('mailSupplierFilter').toLowerCase().trim()
+    }),
+    hasFilters: F => !!(F.q || F.date || F.supplier),
+    match: (it, ix, F, T) =>
+        (!F.date || ix.date === F.date) &&
+        (!F.supplier || ix.supplier.includes(F.supplier)) &&
+        (!F.q || T().includes(F.q)),
+    noResults: () => 'По вашему запросу ничего не найдено',
+    empty: 'Нет данных в почтовом реестре. Добавьте первую запись.'
+});
+function updateMailTable() {
+    if (!document.querySelector('#mailTable tbody')) return;
+    lz('mail').prepare();
+    lz('mail').render();
 }
 
-        function filterMailTable() {
-    const searchText = document.getElementById('searchMailInput').value.toLowerCase();
-    const dateFilter = document.getElementById('mailDateFilter').value;
-    const supplierFilter = document.getElementById('mailSupplierFilter').value.toLowerCase().trim(); // новое
-
-    const rows = document.querySelectorAll('#mailTable tbody tr');
-    let visibleCount = 0;
-
-    rows.forEach(row => {
-    // Строку "ничего не найдено" не трогаем — ею управляем отдельно
-    if (row.hasAttribute('data-no-results')) return;
-
-    // Пропускаем строку с сообщением "нет данных"
-    if (row.cells.length === 1 && row.cells[0].colSpan > 1) {
-        row.style.display = (searchText || dateFilter || supplierFilter) ? 'none' : '';
-        return;
-    }
-
-        // Собираем текст всей строки для общего поиска
-        let rowText = '';
-        row.querySelectorAll('td').forEach(cell => {
-            rowText += cell.textContent.toLowerCase() + ' ';
-        });
-
-        // Получаем значения отдельных колонок
-        const dateCell = row.querySelector('td:nth-child(1)')?.textContent.trim(); // дата в формате DD.MM.YYYY
-        const supplierCell = row.querySelector('td:nth-child(2)')?.textContent.toLowerCase().trim() || ''; // контрагент
-
-        // Преобразуем дату из фильтра (YYYY-MM-DD) в формат DD.MM.YYYY для сравнения
-        let dateMatch = true;
-        if (dateFilter) {
-            const [year, month, day] = dateFilter.split('-');
-            const formattedDateFilter = `${day}.${month}.${year}`;
-            dateMatch = (dateCell === formattedDateFilter);
-        }
-
-        // Фильтр по контрагенту
-        const supplierMatch = !supplierFilter || supplierCell.includes(supplierFilter);
-
-        // Общий поиск
-        const searchMatch = !searchText || rowText.includes(searchText);
-
-        if (searchMatch && dateMatch && supplierMatch) {
-            row.style.display = '';
-            visibleCount++;
-        } else {
-            row.style.display = 'none';
-        }
-    });
-
-    // Показываем сообщение, если ничего не найдено
-    const tableBody = document.querySelector('#mailTable tbody');
-
-    // 1) Всегда удаляем старую строку
-    let noDataRow = tableBody.querySelector('tr[data-no-results]');
-    if (noDataRow) noDataRow.remove();
-
-    // 2) Создаём заново, если нужно
-    if (visibleCount === 0 && (searchText || dateFilter || supplierFilter)) {
-        noDataRow = document.createElement('tr');
-        noDataRow.setAttribute('data-no-results', 'true');
-        noDataRow.innerHTML = `
-            <td colspan="5" style="text-align: center; color: #8f98a0; padding: 20px;">
-                По вашему запросу ничего не найдено
-            </td>
-        `;
-        tableBody.appendChild(noDataRow);
-    }
+function filterMailTable() {
+    lz('mail').render();
 }
 
 function clearMailFilters() {
@@ -8586,37 +8720,9 @@ function clearMailFilters() {
         }
 
         // ========== ФУНКЦИИ ДЛЯ СТРАНИЦЫ РЕЕСТР ДОВЕРЕННОСТЕЙ ==========
-       function updateProxyTable() {
-    const tableBody = document.querySelector('#proxyTable tbody');
-    if (!tableBody) return;
-    
-    tableBody.innerHTML = '';
-    
-    if (proxyData.length === 0) {
-        const emptyRow = document.createElement('tr');
-        emptyRow.innerHTML = `
-            <td colspan="7" style="text-align: center; color: #8f98a0; padding: 20px;">
-                Нет данных о доверенностях. Добавьте первую доверенность.
-            </td>
-        `;
-        tableBody.appendChild(emptyRow);
-        return;
-    }
-    
-    // Сортировка по дате (убывание)
-    const sortedProxyData = [...proxyData].sort((a, b) => {
-        const dateA = parseDate(a.date);
-        const dateB = parseDate(b.date);
-        const timeA = dateA ? dateA.getTime() : 0;
-        const timeB = dateB ? dateB.getTime() : 0;
-        return timeB - timeA;
-    });
-    
-    // НОВОЕ: текущая дата без времени для сравнения
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    
-    sortedProxyData.forEach((item) => {
+
+function lzRowProxy(item, ctx) {
+        const today = ctx.today;
         const row = document.createElement('tr');
         row.dataset.recordId = item.recordId || '';
         if (item.status === 'Выполнено') {
@@ -8689,83 +8795,50 @@ if (docCell) {
     });
 }
         
-        tableBody.appendChild(row);
-    });
-    
-    filterProxyTable();
+        return row;
+}
+LZ_CONFIGS.proxy = () => ({
+    tbody: '#proxyTable tbody', colspan: 7,
+    data: () => proxyData,
+    ctx: () => { const today = new Date(); today.setHours(0, 0, 0, 0); return { today }; },
+    index: it => {
+        const d = parseDate(it.date);
+        return {
+            time: d ? d.getTime() : 0,
+            status: (it.status || 'В работе').trim(),
+            app: lzStr(it.docNumber).toLowerCase().trim(),
+            supplier: lzStr(it.supplier).toLowerCase().trim(),
+            date: lzStr(it.date).trim()
+        };
+    },
+    text: it => [it.date, it.status || 'В работе', it.docNumber, it.supplier, lzCell(it.contract), it.address, it.driver],
+    row: lzRowProxy,
+    filters: () => ({
+        q: lzInput('searchProxyInput').toLowerCase(),
+        status: lzInput('proxyStatusFilter'),
+        app: lzInput('proxyApplicationFilter').toLowerCase().trim(),
+        supplier: lzInput('proxySupplierFilter').toLowerCase().trim(),
+        date: lzDateFmt(lzInput('proxyDateFilter'))
+    }),
+    hasFilters: F => !!(F.q || F.status || F.app || F.supplier || F.date),
+    match: (it, ix, F, T) =>
+        (!F.status || ix.status === F.status) &&
+        (!F.app || ix.app.includes(F.app)) &&
+        (!F.supplier || ix.supplier.includes(F.supplier)) &&
+        (!F.date || ix.date === F.date) &&
+        (!F.q || T().includes(F.q)),
+    noResults: () => 'По вашему запросу ничего не найдено',
+    empty: 'Нет данных о доверенностях. Добавьте первую доверенность.'
+});
+function updateProxyTable() {
+    if (!document.querySelector('#proxyTable tbody')) return;
+    lz('proxy').prepare();
+    lz('proxy').render();
     updateProxyBadge();
 }
 
-       function filterProxyTable() {
-    const searchText = document.getElementById('searchProxyInput').value.toLowerCase();
-    const statusFilter = document.getElementById('proxyStatusFilter').value;
-    const applicationFilter = document.getElementById('proxyApplicationFilter').value.toLowerCase().trim();
-    const supplierFilter = document.getElementById('proxySupplierFilter').value.toLowerCase().trim();
-    const dateFilter = document.getElementById('proxyDateFilter').value; // формат YYYY-MM-DD
-
-    const rows = document.querySelectorAll('#proxyTable tbody tr');
-    let visibleCount = 0;
-
-    rows.forEach(row => {
-        if (row.hasAttribute('data-no-results')) return; // ← НОВОЕ
-
-        // Пропускаем строку с сообщением "нет данных"
-        if (row.cells.length === 1 && row.cells[0].colSpan > 1) {
-            row.style.display = (searchText || statusFilter || applicationFilter || supplierFilter || dateFilter) ? 'none' : '';
-            if (!searchText && !statusFilter && !applicationFilter && !supplierFilter && !dateFilter) visibleCount++;
-            return;
-        }
-
-        // Собираем текст всей строки для общего поиска
-        let rowText = '';
-        row.querySelectorAll('td').forEach(cell => {
-            rowText += cell.textContent.toLowerCase() + ' ';
-        });
-
-        // Получаем значения из конкретных ячеек
-        const dateCell = row.querySelector('td:nth-child(1)')?.textContent.trim(); // дата
-const statusCell = row.querySelector('td:nth-child(2)')?.textContent.trim() || ''; // статус
-const applicationCell = row.querySelector('td:nth-child(3)')?.textContent.toLowerCase().trim() || ''; // заявка
-const supplierCell = row.querySelector('td:nth-child(4)')?.textContent.toLowerCase().trim() || ''; // контрагент
-
-        // Фильтр по дате (преобразуем YYYY-MM-DD → DD.MM.YYYY)
-        let dateMatch = true;
-        if (dateFilter) {
-            const [year, month, day] = dateFilter.split('-');
-            const formattedDateFilter = `${day}.${month}.${year}`; // DD.MM.YYYY
-            dateMatch = (dateCell === formattedDateFilter);
-        }
-
-        // Остальные фильтры
-        const statusMatch = !statusFilter || statusCell === statusFilter;
-        const searchMatch = !searchText || rowText.includes(searchText);
-        const applicationMatch = !applicationFilter || applicationCell.includes(applicationFilter);
-        const supplierMatch = !supplierFilter || supplierCell.includes(supplierFilter);
-
-        if (statusMatch && searchMatch && applicationMatch && supplierMatch && dateMatch) {
-            row.style.display = '';
-            visibleCount++;
-        } else {
-            row.style.display = 'none';
-        }
-    });
-
-    // ─── Управление строкой "ничего не найдено" ───
-    const tableBody = document.querySelector('#proxyTable tbody');
-
-    let noDataRow = tableBody.querySelector('tr[data-no-results]');
-    if (noDataRow) noDataRow.remove();
-
-    if (visibleCount === 0 && (searchText || statusFilter || applicationFilter || supplierFilter || dateFilter)) {
-        noDataRow = document.createElement('tr');
-        noDataRow.setAttribute('data-no-results', 'true');
-        noDataRow.innerHTML = `
-            <td colspan="7" style="text-align: center; color: #8f98a0; padding: 20px;">
-                По вашему запросу ничего не найдено
-            </td>
-        `;
-        tableBody.appendChild(noDataRow);
-    }
+function filterProxyTable() {
+    lz('proxy').render();
 }
 
 function clearProxyFilters() {
@@ -10826,13 +10899,9 @@ function importJSON() {
         return;
     }
 
-    // Показываем блюр и спиннер
-    const blurOverlay = document.querySelector('.page-transition-blur');
-    const loadingSpinner = document.querySelector('.loading-spinner-blur');
-    if (blurOverlay && loadingSpinner) {
-        blurOverlay.classList.add('active');
-        loadingSpinner.classList.add('active');
-    }
+    // Показываем оверлей «Загрузка данных»
+    showDataLoader('Получение данных с GitHub…');
+    const blurOverlay = null, loadingSpinner = null;
 
     fetchBackupFromGitHub()
         .then(importedData => {
@@ -10916,6 +10985,7 @@ function importJSON() {
             updateShipmentDocsList();
 
             // Скрываем индикатор
+            hideDataLoader();
             if (blurOverlay && loadingSpinner) {
                 blurOverlay.classList.remove('active');
                 loadingSpinner.classList.remove('active');
@@ -10925,6 +10995,7 @@ function importJSON() {
         })
         .catch(error => {
             console.error('Ошибка импорта:', error);
+            hideDataLoader();
             if (blurOverlay && loadingSpinner) {
                 blurOverlay.classList.remove('active');
                 loadingSpinner.classList.remove('active');
@@ -11069,6 +11140,9 @@ async function exportToExcel(type) {
         alert('Таблица не найдена');
         return;
     }
+
+    // Таблицы отрисовываются по 100 строк — для экспорта подгружаем все подходящие строки
+    lzLoadAllForTable(type);
 
     // Проверяем наличие ExcelJS
     if (typeof ExcelJS === 'undefined') {
@@ -11752,6 +11826,7 @@ function hideLoginPage() {
 function startApplication() {
     document.getElementById('startButton').style.display = 'none';
     document.getElementById('loginLoading').classList.add('active');
+    showDataLoader('Подготовка данных…');
     
     setTimeout(() => {
         // 1. Загружаем данные (если ещё не загружены)
@@ -11794,6 +11869,7 @@ function startApplication() {
         // 6. Принудительно перерисовываем таблицы (на всякий случай)
         setTimeout(() => {
             updateAllTables();
+            hideDataLoader();
         }, 50);
         
         // 7. Уведомление
@@ -11812,7 +11888,7 @@ function startApplication() {
             setTimeout(() => loader.remove(), 400);
         }
 
-    }, 1000);
+    }, 300);
 }
 
 
