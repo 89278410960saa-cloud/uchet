@@ -2638,6 +2638,21 @@ button:hover{background:#222733!important}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.4.0/exceljs.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 <script src="https://unpkg.com/mqtt@5.3.5/dist/mqtt.min.js"></script>
+<style id="sticky-table-headers-fix">
+/* Закрепление заголовков столбцов при вертикальной прокрутке.
+   overflow:hidden на <table> превращал саму таблицу в область прокрутки,
+   из-за чего position:sticky у th не срабатывал. overflow:clip сохраняет
+   скругление/обрезку, но не создаёт контейнер прокрутки. */
+table { overflow: clip !important; }
+/* Таблица статистики внутри блока со своей прокруткой: шапка должна липнуть к нему */
+#statusStatsContent .stats-table { max-height: none !important; overflow: visible !important; }
+/* При border-collapse верхняя граница ячейки рисуется самой таблицей и уезжает со строками,
+   поэтому над закреплённой шапкой оставалась полоска, где проглядывал текст строк. */
+table thead th { border-top: 0 !important; }
+/* Подпиксельный зазор при дробном масштабе (125%, 150%): прячем верхний 1px области прокрутки,
+   где из-за округления координат мог проглядывать край строки над шапкой */
+.table-scroll-container { clip-path: inset(1px 0 0 0); }
+</style>
 </head>
 <body style="zoom: 100%; transform: scale(1); transform-origin: left top; width: 100%; height: 100%;">
     <!-- ===== ОВЕРЛЕЙ НАЧАЛЬНОЙ ЗАГРУЗКИ ===== -->
@@ -3656,7 +3671,7 @@ button:hover{background:#222733!important}
 </div>
 
             <div style="margin-bottom: 6px; color: #66c0f4; font-size: 11px; font-weight: bold;">Позиции:</div>
-            <div style="max-height: 320px; overflow-y: auto; border: 1px solid #3d4450; border-radius: 4px; padding: 4px;">
+            <div style="max-height: 320px; overflow-y: auto; border: 1px solid #3d4450; border-radius: 4px; padding: 0 4px 4px 4px;">
                 <table style="width: 100%; border-collapse: collapse;">
     <thead>
         <tr>
@@ -4349,7 +4364,7 @@ const status     = 'В работе';   // ← статус всегда «В р
         </div>
 
         <!-- Таблица статусов закупок (с прокруткой) -->
-        <div id="statusStatsContent" style="margin-bottom: 10px; max-height: 220px; overflow-y: auto; border-radius: 6px; background: rgba(0,0,0,0.15); padding: 4px 0;"></div>
+        <div id="statusStatsContent" style="margin-bottom: 10px; max-height: 220px; overflow-y: auto; border-radius: 6px; background: rgba(0,0,0,0.15); padding: 0 0 4px 0;"></div>
 
         <!-- Первая строка: Доверенности, Урегулирование, Почтовый реестр (3 колонки) -->
         <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 8px;">
