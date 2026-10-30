@@ -7942,8 +7942,8 @@ if (foundInAccounting && contractText) {
 }
         
         const linkHtml = item.link
-    ? `<span class="link-icon" data-link="${item.link.replace(/"/g, '&quot;')}" title="Открыть документ в новой вкладке" style="cursor:pointer;">🔗</span>`
-    : '';
+            ? `<span class="link-icon" data-link="${item.link.replace(/"/g, '&quot;')}" title="Скопировать ссылку" style="cursor:pointer;">🔗</span>`
+            : '';
         
         // НОВОЕ: вставляем ячейку даты с классом overdue-date, если просрочено
         const dateCellContent = item.date || '';
@@ -7960,16 +7960,16 @@ if (foundInAccounting && contractText) {
             <td>${linkHtml}</td>
         `;
         
-        // Обработчик: открыть ссылку в новой вкладке
-if (item.link) {
-    const icon = row.querySelector('.link-icon');
-    if (icon) {
-        icon.addEventListener('click', (e) => {
-            e.stopPropagation();
-            window.open(item.link, '_blank', 'noopener,noreferrer');
-        });
-    }
-}
+        // Обработчик для копирования ссылки
+        if (item.link) {
+            const icon = row.querySelector('.link-icon');
+            if (icon) {
+                icon.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    copyToClipboard(item.link);
+                });
+            }
+        }
         
         // Двойной клик для редактирования (только для админа)
         if (isAdmin) {
