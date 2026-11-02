@@ -5661,7 +5661,12 @@ docContainer.style.gap = '4px';
 
 // Текст документа
 const docSpan = document.createElement('span');
-docSpan.textContent = item.shipmentDoc || '';
+const shipmentDocText = (item.shipmentDoc || '').trim();
+if (shipmentDocText && shipmentDocText !== '-') {
+    docSpan.innerHTML = `<a href="#" class="shipment-doc-filter-link" data-document="${encodeURIComponent(item.shipmentDoc)}" data-supplier="${encodeURIComponent(item.supplier || '')}" title="Показать в отправлениях" style="color: #66c0f4; text-decoration: underline; cursor: pointer;">${escapeString(item.shipmentDoc)}</a>`;
+} else {
+    docSpan.textContent = item.shipmentDoc || '';
+}
 docSpan.style.flex = '1';
 docSpan.style.whiteSpace = 'normal';
 docSpan.style.wordWrap = 'break-word';
@@ -9282,6 +9287,53 @@ document.addEventListener('click', function (e) {
         console.error('Функция filterProxyByContract не определена!');
     }
 });
+// Клик по значению в столбце «Документ» на странице «Позиции» —
+// переход на страницу «Отправления» с фильтром по контрагенту и документу
+document.addEventListener('click', function (e) {
+    const link = e.target.closest('.shipment-doc-filter-link');
+    if (!link) return;
+
+    e.preventDefault();
+    e.stopPropagation();
+
+    const documentName = decodeURIComponent(link.dataset.document || '');
+    const supplier     = decodeURIComponent(link.dataset.supplier || '');
+
+    filterMailByDocument(documentName, supplier);
+});
+
+function filterMailByDocument(documentName, supplier) {
+    if (!documentName && !supplier) return;
+
+    showPage('mail-registry');
+
+    setTimeout(() => {
+        const searchInput    = document.getElementById('searchMailInput');
+        const supplierFilter = document.getElementById('mailSupplierFilter');
+        const dateFilter     = document.getElementById('mailDateFilter');
+
+        // Сброс всех фильтров
+        if (searchInput)    searchInput.value = '';
+        if (supplierFilter) supplierFilter.value = '';
+        if (dateFilter)     dateFilter.value = '';
+
+        [searchInput, supplierFilter, dateFilter].forEach(el => {
+            if (el) el.classList.remove('filter-active');
+        });
+
+        // Документ — в поле поиска, контрагент — в фильтр по контрагентам
+        if (documentName && searchInput) {
+            searchInput.value = documentName;
+            updateFilterHighlight(searchInput);
+        }
+        if (supplier && supplierFilter) {
+            supplierFilter.value = supplier;
+            updateFilterHighlight(supplierFilter);
+        }
+
+        filterMailTable();
+    }, 300);
+}
 // Переход на страницу «Позиции» с фильтром по контрагенту
 function filterAccountingBySupplier(supplierName) {
     if (!supplierName) return;
@@ -12527,10 +12579,10 @@ function refreshGithubQR() {
         
        <div class="login-footer">
     <p style="font-size: 12px; margin-top: 5px;">
-        Данный ресурс предназначен исключительно для демонстрации и тестирования функционала системы управления заказами. Любые совпадения с реальными данными, названиями организаций, именами, адресами или иными сведениями являются случайными и не имеющими фактического обоснования. 
+        Данный ресурс предназначен исключительно для демонстрации и тестирования функционала системы управления заказами. Вся представленная на нём информация является вымышленной. Любые совпадения с реальными данными, названиями организаций, именами, адресами или иными сведениями являются случайными и не имеют фактического обоснования.
     </p>
     <p style="font-size: 12px; margin-top: 5px;">
-    <strong>Вся представленная информация является вымышленной и не подлежит использованию в реальной коммерческой деятельности. Нажимая кнопку «Войти», вы подтверждаете своё согласие с данным условием.</strong>
+    <strong>Информация, размещённая на ресурсе, не подлежит использованию в реальной коммерческой деятельности. Нажимая кнопку «Войти», вы подтверждаете своё согласие с настоящими условиями.</strong>
     </p>
 </div>
 
