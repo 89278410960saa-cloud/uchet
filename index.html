@@ -2759,11 +2759,12 @@ table thead th { border-top: 0 !important; }
 
 
         <!-- Кнопка «Ещё» (последняя в ряду) -->
-        <div class="sidebar-cell menu-item more-menu-btn" id="moreMenuBtn" onclick="toggleMoreMenu(event)" title="Ещё">
-            <span class="menu-icon"><i class="fas fa-power-off"></i></span>
-            <span class="menu-text">Ещё</span>
-        </div>
-    </div>
+<div class="sidebar-cell menu-item more-menu-btn" id="moreMenuBtn" onclick="toggleMoreMenu(event)" title="Ещё">
+    <span class="menu-icon"><i class="fas fa-power-off"></i></span>
+    <span class="menu-text">Ещё</span>
+    <div class="sidebar-badge warning" id="githubGuestBadge" style="display: none;">!</div>
+</div>
+</div>
 
 </div><!-- /sidebar -->
 
@@ -2795,10 +2796,9 @@ table thead th { border-top: 0 !important; }
         <span class="menu-text">Удалить</span>
     </div>
     <div class="sidebar-cell menu-item" onclick="showGithubSettingsModal()" title="GitHub настройки">
-        <span class="menu-icon"><i class="fas fa-key"></i></span>
-        <span class="menu-text">Вход</span>
-        <div class="sidebar-badge warning" id="githubGuestBadge" style="display: none;">!</div>
-    </div>
+    <span class="menu-icon"><i class="fas fa-key"></i></span>
+    <span class="menu-text">Вход</span>
+</div>
 </div>
 
     
@@ -4258,8 +4258,14 @@ const status     = 'В работе';   // ← статус всегда «В р
         <!-- Одна строка: поле ввода + переключатель + надпись -->
         <div style="margin-bottom: 10px;">
     <input type="password" id="githubToken" 
-           style="width: 100%; padding: 6px 8px; box-sizing: border-box; height: 26px;" 
-           placeholder="Токен GitHub (classic)">
+       autocomplete="new-password"
+       autocorrect="off"
+       autocapitalize="off"
+       spellcheck="false"
+       data-lpignore="true"
+       data-1p-ignore="true"
+       style="width: 100%; padding: 6px 8px; box-sizing: border-box; height: 26px;" 
+       placeholder="Токен GitHub (classic)">
 </div>
 
 <div style="font-size: 10px; color: #8f98a0; margin-bottom: 13.4px; text-align: center;">
@@ -7631,7 +7637,8 @@ function loadGithubSettings() {
 loadGithubSettings();
 
 function showGithubSettingsModal() {
-    document.getElementById('githubToken').value = githubToken || '';
+    // Не подставляем сохранённый токен — QR-вход должен начинаться с чистого поля
+    document.getElementById('githubToken').value = '';
     document.getElementById('githubSettingsModal').style.display = 'flex';
 }
 
