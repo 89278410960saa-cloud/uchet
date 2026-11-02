@@ -5107,6 +5107,86 @@ function accPlanTime(ix) {
     return ix._planTime;
 }
 
+// ─── Проверка: найдёт ли переход по ссылке (Платежи / Самовывоз-Терминал / Отправления) хоть одну запись ───
+// Логика полностью повторяет фильтрацию соответствующих страниц
+// (filterPaymentsByContract, filterProxyByContract, filterMailByDocument).
+// Если записей не найдётся — значение в «Позиции» показывается обычным текстом, а не ссылкой.
+function accBuildLinkChecks(ctx) {
+    const low = v => (v == null ? '' : String(v)).toLowerCase();
+    const cell = v => low(v).replace(/\n/g, ' ');
+    const memo = { pay: new Map(), proxy: new Map(), mail: new Map() };
+    let payIdx = null, proxyIdx = null, mailIdx = null;
+
+    ctx.hasPaymentMatch = function (contract, supplier, application) {
+        if (!contract) return false;
+        const key = contract + '\u0001' + supplier + '\u0001' + application;
+        if (memo.pay.has(key)) return memo.pay.get(key);
+        if (!payIdx) {
+            payIdx = paymentsData.map(it => ({
+                app: low(it.docNumber).trim(),
+                supplier: low(it.supplier).trim(),
+                text: [it.date, it.status, it.docNumber, it.supplier,
+                       it.amount ? formatCurrency(it.amount) : '',
+                       cell(it.contract), cell(it.agreement), it.link ? '🔗' : '']
+                      .map(p => low(p) + ' ').join('')
+            }));
+        }
+        const q = contract.toLowerCase();
+        const sup = low(supplier).trim();
+        const app = low(application).trim();
+        const res = payIdx.some(x =>
+            (!app || x.app.includes(app)) &&
+            (!sup || x.supplier.includes(sup)) &&
+            x.text.includes(q));
+        memo.pay.set(key, res);
+        return res;
+    };
+
+    ctx.hasProxyMatch = function (contract, supplier, application) {
+        if (!contract && !supplier && !application) return false;
+        const key = contract + '\u0001' + supplier + '\u0001' + application;
+        if (memo.proxy.has(key)) return memo.proxy.get(key);
+        if (!proxyIdx) {
+            proxyIdx = proxyData.map(it => ({
+                app: low(it.docNumber).trim(),
+                supplier: low(it.supplier).trim(),
+                text: [it.date, it.status || 'В работе', it.docNumber, it.supplier,
+                       cell(it.contract), it.address, it.driver]
+                      .map(p => low(p) + ' ').join('')
+            }));
+        }
+        const q = low(contract);
+        const sup = low(supplier).trim();
+        const app = low(application).trim();
+        const res = proxyIdx.some(x =>
+            (!app || x.app.includes(app)) &&
+            (!sup || x.supplier.includes(sup)) &&
+            (!q || x.text.includes(q)));
+        memo.proxy.set(key, res);
+        return res;
+    };
+
+    ctx.hasMailMatch = function (documentName, supplier) {
+        if (!documentName && !supplier) return false;
+        const key = documentName + '\u0001' + supplier;
+        if (memo.mail.has(key)) return memo.mail.get(key);
+        if (!mailIdx) {
+            mailIdx = mailData.map(it => ({
+                supplier: low(it.supplier).trim(),
+                text: [it.date, it.supplier, it.document, it.sheets, it.address]
+                      .map(p => low(p) + ' ').join('')
+            }));
+        }
+        const q = low(documentName);
+        const sup = low(supplier).trim();
+        const res = mailIdx.some(x =>
+            (!sup || x.supplier.includes(sup)) &&
+            (!q || x.text.includes(q)));
+        memo.mail.set(key, res);
+        return res;
+    };
+}
+
 function accPrepare() {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -5133,6 +5213,7 @@ function accPrepare() {
     });
 
     accCtx = { today, normName: accNormName, blacklist, plansByDoc, proxiesByDoc };
+    accBuildLinkChecks(accCtx);
     accRowCache = new Map();
     accIndexCache = new Map();
     accDataRef = accountingData;
@@ -5534,7 +5615,7 @@ if (matchingProxy && matchingProxy.date) {
 
 // ----- Ссылка для договора (если нужна) -----
 let contractHtml = '';
-if (contractText && contractText.trim() !== '-' && contractText.trim() !== '') {
+if (contractText && contractText.trim() !== '-' && contractText.trim() !== '' && ctx.hasPaymentMatch(contractText, supplier, application)) {
     contractHtml = `<a href="#" class="contract-filter-link-payments" 
                        data-contract="${encodeURIComponent(contractText)}" 
                        data-supplier="${encodeURIComponent(supplier)}" 
@@ -5581,7 +5662,8 @@ const deliveryTermsValue = item.deliveryTerms || '';
 const hasAnyFilterValue = !!(item.contract || item.supplier || item.docNumber);
 const isClickableDeliveryTerms =
     (deliveryTermsValue === 'Самовывоз' || deliveryTermsValue === 'Терминал') &&
-    hasAnyFilterValue;
+    hasAnyFilterValue &&
+    ctx.hasProxyMatch(item.contract || '', item.supplier || '', item.docNumber || '');
 
 let deliveryTermsHtml;
 if (isClickableDeliveryTerms) {
@@ -5662,7 +5744,7 @@ docContainer.style.gap = '4px';
 // Текст документа
 const docSpan = document.createElement('span');
 const shipmentDocText = (item.shipmentDoc || '').trim();
-if (shipmentDocText && shipmentDocText !== '-') {
+if (shipmentDocText && shipmentDocText !== '-' && ctx.hasMailMatch(item.shipmentDoc, item.supplier || '')) {
     docSpan.innerHTML = `<a href="#" class="shipment-doc-filter-link" data-document="${encodeURIComponent(item.shipmentDoc)}" data-supplier="${encodeURIComponent(item.supplier || '')}" title="Показать в отправлениях" style="color: #66c0f4; text-decoration: underline; cursor: pointer;">${escapeString(item.shipmentDoc)}</a>`;
 } else {
     docSpan.textContent = item.shipmentDoc || '';
