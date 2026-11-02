@@ -6749,6 +6749,9 @@ function showStatusStatsModal() {
 }
 function closeStatusStatsModal() {
     document.getElementById('statusStatsModal').style.display = 'none';
+    // сбрасываем выбор, чтобы при следующем открытии снова встал текущий год
+    const sel = document.getElementById('statsYearFilter');
+    if (sel) sel.value = '';
 }
 
 function calculateStatusStats() {
@@ -6925,60 +6928,53 @@ window.addEventListener('click', function(event) {
 function initializeStatsYearFilter() {
     const yearFilter = document.getElementById('statsYearFilter');
     if (!yearFilter) return;
-    
+
+    // Запоминаем, что было выбрано (чтобы при повторном открытии не сбивать выбор пользователя,
+    // если он специально поставил другой год — но при первом открытии это будет пусто)
+    const previouslySelected = yearFilter.value;
+
     // Очищаем опции, кроме первой
     while (yearFilter.options.length > 1) {
         yearFilter.remove(1);
     }
-    
+
     // Собираем уникальные года из всех заявок
     const yearsFromAccounting = new Set();
     const yearsFromPayments = new Set();
-    const yearsFromProxy = new Set(); // Добавлено
-    const yearsFromMail = new Set(); // Добавлено
-    
+    const yearsFromProxy = new Set();
+    const yearsFromMail = new Set();
+
     accountingData.forEach(item => {
         const year = extractYearFromDocNumber(item.docNumber);
-        if (year) {
-            yearsFromAccounting.add(year);
-        }
+        if (year) yearsFromAccounting.add(year);
     });
-    
-    // Собираем года из платежей
+
     paymentsData.forEach(payment => {
         const year = extractYearFromPaymentDate(payment.date);
-        if (year) {
-            yearsFromPayments.add(year);
-        }
+        if (year) yearsFromPayments.add(year);
     });
-    
-    // Собираем года из доверенностей (ДОБАВЛЕНО)
+
     proxyData.forEach(proxy => {
         const year = extractYearFromDateString(proxy.date);
-        if (year) {
-            yearsFromProxy.add(year);
-        }
+        if (year) yearsFromProxy.add(year);
     });
-    
-    // Собираем года из почтового реестра (ДОБАВЛЕНО)
+
     mailData.forEach(mail => {
         const year = extractYearFromDateString(mail.date);
-        if (year) {
-            yearsFromMail.add(year);
-        }
+        if (year) yearsFromMail.add(year);
     });
-    
+
     // Объединяем все года
     const allYears = new Set([
-        ...yearsFromAccounting, 
-        ...yearsFromPayments, 
-        ...yearsFromProxy, // Добавлено
-        ...yearsFromMail   // Добавлено
+        ...yearsFromAccounting,
+        ...yearsFromPayments,
+        ...yearsFromProxy,
+        ...yearsFromMail
     ]);
-    
+
     // Преобразуем Set в массив и сортируем по убыванию
     const sortedYears = Array.from(allYears).sort((a, b) => b - a);
-    
+
     // Добавляем опции
     sortedYears.forEach(year => {
         const option = document.createElement('option');
@@ -6986,7 +6982,22 @@ function initializeStatsYearFilter() {
         option.textContent = year;
         yearFilter.appendChild(option);
     });
-}// Функция для извлечения года из строки даты в формате DD.MM.YYYY
+
+    // ★ ТЕКУЩИЙ ГОД ПО УМОЛЧАНИЮ ★
+    const currentYear = new Date().getFullYear().toString();
+
+    if (previouslySelected && sortedYears.includes(previouslySelected)) {
+        // Пользователь уже что-то выбирал в прошлый раз и это значение ещё актуально — сохраняем
+        yearFilter.value = previouslySelected;
+    } else if (sortedYears.includes(currentYear)) {
+        // Иначе ставим текущий год
+        yearFilter.value = currentYear;
+    } else {
+        // Если текущего года в данных нет — оставляем «Все года»
+        yearFilter.value = '';
+    }
+}
+// Функция для извлечения года из строки даты в формате DD.MM.YYYY
 function extractYearFromDateString(dateString) {
     if (!dateString) return null;
     
