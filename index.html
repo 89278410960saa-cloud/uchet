@@ -3299,7 +3299,29 @@ table thead th { border-top: 0 !important; }
     <input type="text" id="editPaymentContract" style="width: 100%;" list="contractsList">
 </div>
 <div style="margin-bottom: 10.05px;">
-    <label>Договор:</label>
+    <label style="display: flex !important; align-items: center; gap: 6px;">
+        Договор:
+        <button type="button" onclick="swapPaymentContractAgreement()"
+                title="Поменять местами значения «Счет» и «Договор»"
+                style="width: 22px !important; height: 22px !important;
+                       min-width: 22px !important; max-width: 22px !important;
+                       min-height: 22px !important; max-height: 22px !important;
+                       padding: 0 !important; margin: 0 !important;
+                       display: inline-flex !important; align-items: center !important;
+                       justify-content: center !important;
+                       background: rgba(102,192,244,0.15) !important;
+                       border: 1px solid rgba(102,192,244,0.4) !important;
+                       border-radius: 3px !important;
+                       color: #66c0f4 !important;
+                       cursor: pointer !important;
+                       font-size: 12px !important;
+                       line-height: 1 !important;
+                       transition: background 0.15s, border-color 0.15s !important;"
+                onmouseover="this.style.setProperty('background','rgba(102,192,244,0.3)','important'); this.style.setProperty('border-color','#66c0f4','important');"
+                onmouseout="this.style.setProperty('background','rgba(102,192,244,0.15)','important'); this.style.setProperty('border-color','rgba(102,192,244,0.4)','important');">
+            <i class="fas fa-arrows-up-down"></i>
+        </button>
+    </label>
     <input type="text" id="editPaymentAgreement" style="width: 100%;" list="contractsList" placeholder="Номер договора">
 </div>
             <div style="margin-bottom: 10.05px;">
@@ -8365,6 +8387,38 @@ function editPaymentRow(index) {
         function closePaymentModal() {
             document.getElementById('editPaymentModal').style.display = 'none';
         }
+// ============================================================
+// Обмен значений между полями «Счет» и «Договор» в модалке платежа
+// ============================================================
+function swapPaymentContractAgreement() {
+    const contractEl  = document.getElementById('editPaymentContract');
+    const agreementEl = document.getElementById('editPaymentAgreement');
+    if (!contractEl || !agreementEl) return;
+
+    // Меняем местами
+    const temp = contractEl.value;
+    contractEl.value  = agreementEl.value;
+    agreementEl.value = temp;
+
+    // Даём сработать всем слушателям (datalist, кастомные обработчики)
+    [contractEl, agreementEl].forEach(el => {
+        el.dispatchEvent(new Event('input',  { bubbles: true }));
+        el.dispatchEvent(new Event('change', { bubbles: true }));
+    });
+
+    // Короткая подсветка обоих полей — визуальная обратная связь
+    [contractEl, agreementEl].forEach(el => {
+        const origBorder = el.style.borderColor;
+        const origShadow = el.style.boxShadow;
+        el.style.borderColor = '#66c0f4';
+        el.style.boxShadow   = '0 0 0 2px rgba(102,192,244,0.3)';
+        setTimeout(() => {
+            el.style.borderColor = origBorder;
+            el.style.boxShadow   = origShadow;
+        }, 400);
+    });
+}
+
 // ========== ФУНКЦИИ ДЛЯ УПРАВЛЕНИЯ ПОДРАЗДЕЛЕНИЯМИ ==========
 
 let departmentsList = []; // Массив для хранения подразделений
