@@ -4153,9 +4153,9 @@ const status     = 'В работе';   // ← статус всегда «В р
                     <input list="suppliersList" id="editMailSupplier" class="datalist-input" style="width: 100%;">
                 </div>
                 <div style="margin-bottom: 10.05px;">
-                    <label>Документ:</label>
-                    <input type="text" id="editMailDocument" style="width: 100%;">
-                </div>
+    <label>Документ:</label>
+    <input type="text" id="editMailDocument" list="shipmentDocsList" class="datalist-input" style="width: 100%;">
+</div>
                 <div style="margin-bottom: 10.05px;">
                     <label>Кол-во:</label>
                     <input type="number" id="editMailSheets" style="width: 100%;">
@@ -8776,7 +8776,7 @@ function clearMailFilters() {
                 alert('Только администратор может добавлять записи');
                 return;
             }
-            
+            updateShipmentDocsList();
             document.getElementById('modalMailTitle').textContent = 'Добавить запись в почтовый реестр';
             document.getElementById('editMailIndex').value = '';
             document.getElementById('editMailForm').reset();
@@ -8790,6 +8790,7 @@ function clearMailFilters() {
 
         function editMailRow(index) {
     if (!isAdmin) return;
+    updateShipmentDocsList();
     
     const item = mailData[index];
     document.getElementById('modalMailTitle').textContent = 'Редактировать запись в почтовый реестр';
@@ -17705,6 +17706,320 @@ function applyDuplicateModeUI(isDuplicate) {
         document.addEventListener('DOMContentLoaded', () => setTimeout(patchSavePayment, 900));
     } else {
         setTimeout(patchSavePayment, 900);
+    }
+})();
+</script>
+<script>
+/* ========== БЫСТРЫЕ ДЕЙСТВИЯ ПО ВЫБРАННОЙ ЗАЯВКЕ (платёж / доверенность / рекламация / отправление) ========== */
+(function () {
+
+    var WRAP_ID = 'appQuickActions';
+
+    var ACTIONS = [
+        { id: 'appQuickPaymentBtn',    icon: 'fa-money-bill-wave', text: 'Платёж',        title: 'Создать платёж по выбранной заявке',        run: function (a) { openPayment(a); } },
+        { id: 'appQuickProxyBtn',      icon: 'fa-file-signature',  text: 'Доверенность',  title: 'Создать доверенность по выбранной заявке',  run: function (a) { openProxy(a); } },
+        { id: 'appQuickSettlementBtn', icon: 'fa-exclamation-circle', text: 'Рекламация', title: 'Создать рекламацию по выбранной заявке',    run: function (a) { openSettlement(a); } }
+    ];
+
+    /* ---------- Стили (такие же, как у кнопки Group edit) ---------- */
+    function injectStyles() {
+        if (document.getElementById('appQuickActionsStyles')) return;
+        var st = document.createElement('style');
+        st.id = 'appQuickActionsStyles';
+        st.textContent =
+            '#' + WRAP_ID + '{display:none;flex-direction:row;flex-wrap:nowrap;gap:4px;margin:0 0 6px 0;width:100%;box-sizing:border-box;}' +
+            '#' + WRAP_ID + ' button{' +
+                'background:rgba(100,70,150,0.30) !important;color:#c7d5e0 !important;' +
+                'border:1px solid transparent !important;border-radius:3px !important;' +
+                'height:22px !important;min-height:22px !important;max-height:22px !important;' +
+                'padding:0 4px !important;font-size:10px !important;font-weight:bold !important;' +
+                'cursor:pointer !important;display:inline-flex;align-items:center;justify-content:center;' +
+                'margin:0 !important;flex:1 1 0 !important;width:auto !important;min-width:0 !important;' +
+                'white-space:nowrap;overflow:hidden;text-overflow:ellipsis;box-sizing:border-box !important;' +
+                'transition:border-color .15s, background .15s !important;}' +
+            '#' + WRAP_ID + ' button:hover{border-color:#66c0f4 !important;background:rgba(100,70,150,0.50) !important;transform:none !important;}' +
+            '#' + WRAP_ID + ' button > i{margin-right:3px !important;}';
+        document.head.appendChild(st);
+    }
+
+    /* ---------- Вспомогательные ---------- */
+    function isAdminMode() {
+        return typeof isAdmin !== 'undefined' && !!isAdmin;
+    }
+
+    function norm(s) { return String(s == null ? '' : s).trim(); }
+    function isEmptyVal(s) { var v = norm(s); return v === '' || v === '-'; }
+
+    /** Текущая выбранная заявка (строка как в данных) или '' */
+    function getSelectedApplication() {
+        var active = (typeof window.isApplicationFilterActive === 'function')
+            ? window.isApplicationFilterActive()
+            : false;
+        if (!active) return '';
+        var input = document.getElementById('applicationFilter');
+        var val = norm(input && input.value);
+        if (!val) return '';
+        var low = val.toLowerCase();
+        if (typeof accountingData !== 'undefined' && Array.isArray(accountingData)) {
+            for (var i = 0; i < accountingData.length; i++) {
+                var dn = norm(accountingData[i].docNumber);
+                if (dn.toLowerCase() === low) return dn;
+            }
+        }
+        return val;
+    }
+
+    /** Контрагенты заявки и их договоры: [{supplier, contracts:[...]}] */
+    function getAppCounterparties(app) {
+        var low = norm(app).toLowerCase();
+        var map = new Map();
+        if (typeof accountingData === 'undefined' || !Array.isArray(accountingData)) return [];
+        accountingData.forEach(function (it) {
+            if (norm(it.docNumber).toLowerCase() !== low) return;
+            if (isEmptyVal(it.supplier)) return;
+            var sup = norm(it.supplier);
+            if (!map.has(sup)) map.set(sup, []);
+            var c = norm(it.contract);
+            if (!isEmptyVal(c) && map.get(sup).indexOf(c) === -1) map.get(sup).push(c);
+        });
+        var res = [];
+        map.forEach(function (contracts, supplier) { res.push({ supplier: supplier, contracts: contracts }); });
+        return res;
+    }
+
+    /* ---------- Привязка «контрагент → договор» к полям модального окна ---------- */
+    var restoreRegistry = {};   // modalId -> { inputs: [{el, list}], cleanup: fn }
+
+    function makeDatalist(id, values) {
+        var dl = document.getElementById(id);
+        if (!dl) {
+            dl = document.createElement('datalist');
+            dl.id = id;
+            document.body.appendChild(dl);
+        }
+        dl.innerHTML = '';
+        values.forEach(function (v) {
+            var o = document.createElement('option');
+            o.value = v;
+            dl.appendChild(o);
+        });
+        return dl;
+    }
+
+    /**
+     * cfg: { modalId, supplierId, contractId, app }
+     * Ограничивает список контрагентов контрагентами заявки и подставляет договор.
+     */
+    function bindCounterpartyPicker(cfg) {
+        var modal = document.getElementById(cfg.modalId);
+        var supEl = document.getElementById(cfg.supplierId);
+        var conEl = cfg.contractId ? document.getElementById(cfg.contractId) : null;
+        if (!modal || !supEl) return;
+
+        // убираем прошлую привязку, если была
+        if (restoreRegistry[cfg.modalId]) restoreRegistry[cfg.modalId].cleanup();
+
+        var cps = getAppCounterparties(cfg.app);
+        var supListId  = 'appQuickSuppliers_' + cfg.modalId;
+        var conListId  = 'appQuickContracts_'  + cfg.modalId;
+
+        var origSupList = supEl.getAttribute('list');
+        var origConList = conEl ? conEl.getAttribute('list') : null;
+
+        makeDatalist(supListId, cps.map(function (c) { return c.supplier; }));
+        supEl.setAttribute('list', supListId);
+
+        function findCp(name) {
+            var n = norm(name).toLowerCase();
+            for (var i = 0; i < cps.length; i++) {
+                if (cps[i].supplier.toLowerCase() === n) return cps[i];
+            }
+            return null;
+        }
+
+        function applyContract() {
+            if (!conEl) return;
+            var cp = findCp(supEl.value);
+            if (cp) {
+                makeDatalist(conListId, cp.contracts);
+                conEl.setAttribute('list', conListId);
+                conEl.value = cp.contracts.length ? cp.contracts[0] : (cfg.emptyContract != null ? cfg.emptyContract : '');
+            } else {
+                makeDatalist(conListId, []);
+                conEl.setAttribute('list', conListId);
+                conEl.value = (cfg.emptyContract != null ? cfg.emptyContract : '');
+            }
+        }
+
+        function onSupplierChange() { applyContract(); }
+        supEl.addEventListener('change', onSupplierChange);
+        supEl.addEventListener('input', onSupplierChange);
+
+        function cleanup() {
+            supEl.removeEventListener('change', onSupplierChange);
+            supEl.removeEventListener('input', onSupplierChange);
+            if (origSupList != null) supEl.setAttribute('list', origSupList); else supEl.removeAttribute('list');
+            if (conEl) {
+                if (origConList != null) conEl.setAttribute('list', origConList); else conEl.removeAttribute('list');
+            }
+            if (obs) obs.disconnect();
+            delete restoreRegistry[cfg.modalId];
+        }
+
+        // Когда окно закрывается (любым способом) — возвращаем стандартные списки
+        var obs = new MutationObserver(function () {
+            if (modal.style.display === 'none') cleanup();
+        });
+        obs.observe(modal, { attributes: true, attributeFilter: ['style'] });
+
+        restoreRegistry[cfg.modalId] = { cleanup: cleanup };
+
+        // Единственный контрагент — подставляем сразу
+        if (cps.length === 1) {
+            supEl.value = cps[0].supplier;
+            applyContract();
+            // чтобы сработали штатные обработчики (например, подстановка адреса)
+            setTimeout(function () {
+                supEl.dispatchEvent(new Event('change', { bubbles: true }));
+            }, 150);
+        } else if (conEl) {
+            makeDatalist(conListId, []);
+            conEl.setAttribute('list', conListId);
+        }
+    }
+
+    function setVal(id, v) {
+        var el = document.getElementById(id);
+        if (el) el.value = v;
+    }
+
+    /* ---------- Открытие модальных окон ---------- */
+    function openPayment(app) {
+        if (typeof showAddPaymentForm !== 'function') return;
+        showAddPaymentForm();
+        setVal('editPaymentApplication', app);
+        bindCounterpartyPicker({
+            modalId: 'editPaymentModal',
+            supplierId: 'editPaymentSupplier',
+            contractId: 'editPaymentAgreement',   // поле «Договор»
+            emptyContract: '-',
+            app: app
+        });
+    }
+
+    function openProxy(app) {
+        if (typeof showAddProxyForm !== 'function') return;
+        showAddProxyForm();
+        setVal('editProxyApplication', app);
+        bindCounterpartyPicker({
+            modalId: 'editProxyModal',
+            supplierId: 'editProxySupplier',
+            contractId: 'editProxyDocument',      // поле «Документ» (номер договора)
+            emptyContract: '',
+            app: app
+        });
+    }
+
+    function openSettlement(app) {
+        if (typeof showAddSettlementForm !== 'function') return;
+        showAddSettlementForm();
+        setVal('editSettlementApplication', app);
+        bindCounterpartyPicker({
+            modalId: 'editSettlementModal',
+            supplierId: 'editSettlementSupplier',
+            contractId: 'editSettlementContract',
+            emptyContract: '',
+            app: app
+        });
+    }
+
+    /* ---------- Создание блока кнопок рядом с Group edit ---------- */
+    function injectButtons() {
+        if (document.getElementById(WRAP_ID)) return true;
+
+        // ждём, пока появится кнопка группового редактирования
+        var anchor = document.getElementById('bulkEditBtn');
+        if (!anchor || !anchor.parentNode) return false;
+
+        var wrap = document.createElement('div');
+        wrap.id = WRAP_ID;
+        wrap.style.setProperty('display', 'none', 'important');
+
+        anchor.parentNode.insertBefore(wrap, anchor);
+        wrap.appendChild(anchor);   // Group edit — первая кнопка ряда
+
+        ACTIONS.forEach(function (a) {
+            var b = document.createElement('button');
+            b.id = a.id;
+            b.type = 'button';
+            b.title = a.title;
+            b.innerHTML = '<i class="fas ' + a.icon + '"></i>' + a.text;
+            b.onclick = function (e) {
+                e.preventDefault();
+                if (!isAdminMode()) return;
+                var app = getSelectedApplication();
+                if (!app) return;
+                a.run(app);
+            };
+            wrap.appendChild(b);
+        });
+        return true;
+    }
+
+    /* ---------- Видимость: только админ + выбрана заявка ---------- */
+    function updateVisibility() {
+        var wrap = document.getElementById(WRAP_ID);
+        if (!wrap) return;
+        var show = isAdminMode() && !!getSelectedApplication();
+        wrap.style.setProperty('display', show ? 'flex' : 'none', 'important');
+    }
+
+    var timer = null;
+    function schedule() {
+        if (timer) clearTimeout(timer);
+        timer = setTimeout(function () {
+            injectButtons();
+            updateVisibility();
+        }, 50);
+    }
+
+    function hookAfter(name) {
+        var fn = window[name];
+        if (typeof fn !== 'function' || fn._appQuickHooked) return;
+        window[name] = function () {
+            var r = fn.apply(this, arguments);
+            schedule();
+            return r;
+        };
+        window[name]._appQuickHooked = true;
+    }
+
+    function init() {
+        injectStyles();
+        injectButtons();
+
+        ['filterAccountingTable', 'updateAccountingTable', 'clearAccountingFilters',
+         'showPage', 'updateUserInterface', 'updateRowNumbers'].forEach(hookAfter);
+
+        document.addEventListener('input',  function (e) { if (e.target && e.target.id === 'applicationFilter') schedule(); });
+        document.addEventListener('change', function (e) { if (e.target && e.target.id === 'applicationFilter') schedule(); });
+        document.addEventListener('click',  function (e) {
+            if (e.target && e.target.closest && e.target.closest('#quickApplicationFilters')) setTimeout(schedule, 80);
+        });
+
+        setInterval(function () {
+            injectButtons();
+            updateVisibility();
+        }, 1500);
+
+        setTimeout(schedule, 300);
+    }
+
+    // Запускаем после IIFE группового редактирования (он стартует через ~800 мс)
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function () { setTimeout(init, 1100); });
+    } else {
+        setTimeout(init, 1100);
     }
 })();
 </script>
