@@ -10338,15 +10338,21 @@ const filteredCells = allCells.filter((_, index) => !excludeIndices.includes(ind
     const quickFiltersContainer = document.getElementById('quickApplicationFilters');
     if (!quickFiltersContainer) return;
 
-    // Получаем остальные фильтры
-    const statusFilter = document.getElementById('statusFilter').value;
+    // Получаем значения фильтров
+    const statusFilter     = document.getElementById('statusFilter').value;
     const departmentFilter = document.getElementById('departmentFilter').value.toLowerCase().trim();
-    const supplierFilter = document.getElementById('supplierFilter').value.toLowerCase().trim();
-    const yearFilter = document.getElementById('yearFilter').value;
-    const searchText = document.getElementById('searchAccountingInput').value.toLowerCase().trim();
+    const supplierFilter   = document.getElementById('supplierFilter').value.toLowerCase().trim();
+    const yearFilter       = document.getElementById('yearFilter').value;
+    const searchText       = document.getElementById('searchAccountingInput').value.toLowerCase().trim();
 
-    // Скрываем блок, если статус не выбран или статус "Выполнено"/"Приход"
-    if (!statusFilter || statusFilter === 'Выполнено') {
+    // ★ ТРИГГЕРЫ ПОКАЗА:
+    //  1) выбран статус (кроме «Выполнено») — старое поведение;
+    //  2) статус НЕ выбран, но заданы и год, и подразделение — новое поведение.
+    const hasStatusForQuick = !!statusFilter && statusFilter !== 'Выполнено';
+    const yearAndDeptOnly   = !statusFilter && !!yearFilter && !!departmentFilter;
+    const showQuickFilters  = hasStatusForQuick || yearAndDeptOnly;
+
+    if (!showQuickFilters) {
         quickFiltersContainer.style.display = 'none';
         quickFiltersContainer.innerHTML = '';
         return;
@@ -10354,82 +10360,94 @@ const filteredCells = allCells.filter((_, index) => !excludeIndices.includes(ind
 
     // Если нет данных
     if (!accountingData || accountingData.length === 0) {
-        quickFiltersContainer.innerHTML = '<span style="color: #8f98a0; font-style: italic;">Нет данных для фильтрации</span>';
+        quickFiltersContainer.innerHTML =
+            '<span style="color: #8f98a0; font-style: italic;">Нет данных для фильтрации</span>';
         quickFiltersContainer.style.display = 'flex';
         return;
     }
 
-    // Собираем заявки, соответствующие всем фильтрам (кроме фильтра по заявке)
+    // Собираем заявки, соответствующие всем активным фильтрам
+    // (кроме фильтра по заявке — его выбирает пользователь этими кнопками)
     const applicationsWithStatus = new Set();
     accountingData.forEach(item => {
-        if (item.status !== statusFilter) return;
-        if (departmentFilter && (!item.department || !item.department.toLowerCase().includes(departmentFilter))) return;
-        if (supplierFilter && (!item.supplier || !item.supplier.toLowerCase().includes(supplierFilter))) return;
+        // Проверку по статусу применяем, только если он реально выбран
+        if (hasStatusForQuick && item.status !== statusFilter) return;
+
+        if (departmentFilter &&
+            (!item.department || !item.department.toLowerCase().includes(departmentFilter))) return;
+
+        if (supplierFilter &&
+            (!item.supplier || !item.supplier.toLowerCase().includes(supplierFilter))) return;
+
         if (yearFilter) {
             const yearFromDoc = extractYearFromDocNumber(item.docNumber);
             if (yearFromDoc !== yearFilter) return;
         }
+
         if (searchText) {
             const rowText = (
-                (item.docNumber || '') + ' ' +
-                (item.status || '') + ' ' +
-                (item.department || '') + ' ' +
-                (item.supplier || '') + ' ' +
-                (item.name || '') + ' ' +
-                (item.purchaseName || '') + ' ' +
-                (item.contract || '') + ' ' +
-                (item.amount || '')
+                (item.docNumber   || '') + ' ' +
+                (item.status      || '') + ' ' +
+                (item.department  || '') + ' ' +
+                (item.supplier    || '') + ' ' +
+                (item.name        || '') + ' ' +
+                (item.purchaseName|| '') + ' ' +
+                (item.contract    || '') + ' ' +
+                (item.amount      || '')
             ).toLowerCase();
             if (!rowText.includes(searchText)) return;
         }
-        if (item.docNumber) {
-            applicationsWithStatus.add(item.docNumber);
-        }
+
+        if (item.docNumber) applicationsWithStatus.add(item.docNumber);
     });
 
     if (applicationsWithStatus.size === 0) {
-        quickFiltersContainer.innerHTML = '<span style="color: #8f98a0; font-style: italic;">Нет заявок с выбранными фильтрами</span>';
+        quickFiltersContainer.innerHTML =
+            '<span style="color: #8f98a0; font-style: italic;">Нет заявок с выбранными фильтрами</span>';
         quickFiltersContainer.style.display = 'flex';
         return;
     }
 
-    // Отображаем блок с кнопками заявок
+    // ─── Отрисовка блока ───
     quickFiltersContainer.innerHTML = '';
-   const label = document.createElement('div');
+
+    const label = document.createElement('div');
     label.className = 'quick-filters-label';
-    label.textContent = 'Заявки:';
+    label.textContent = `Заявки (${applicationsWithStatus.size}):`;
     quickFiltersContainer.appendChild(label);
 
-    // Контейнер для кнопок
     const filtersContainer = document.createElement('div');
     filtersContainer.className = 'quick-filters';
 
-    // Сортировка заявок
+    // Сортировка заявок по числовому префиксу
     const sortedApplications = Array.from(applicationsWithStatus).sort((a, b) => {
         const numA = parseInt(a.replace(/\D/g, '')) || 0;
         const numB = parseInt(b.replace(/\D/g, '')) || 0;
         return numA - numB;
     });
 
-    const currentApplicationFilter = document.getElementById('applicationFilter').value.trim();
+    const currentApplicationFilter =
+        document.getElementById('applicationFilter').value.trim();
+
+    // Класс цвета берём от статуса, только если он выбран.
+    // Иначе — нейтральный (без статус-класса).
+    const btnStatusClass = hasStatusForQuick
+        ? `status-${getStatusClass(statusFilter)}`
+        : '';
 
     // ─── Кнопка «Все» ───
     const allBtn = document.createElement('button');
     allBtn.type = 'button';
-    allBtn.className = `quick-filter-btn status-${getStatusClass(statusFilter)} all-btn`;
+    allBtn.className = `quick-filter-btn ${btnStatusClass} all-btn`.trim();
     allBtn.textContent = 'Все';
     allBtn.title = 'Показать все заявки';
-    if (currentApplicationFilter === '') {
-        allBtn.classList.add('active');
-    }
+    if (currentApplicationFilter === '') allBtn.classList.add('active');
     allBtn.onclick = () => {
-        // Снимаем активные классы со всех кнопок
-        filtersContainer.querySelectorAll('.quick-filter-btn').forEach(b => b.classList.remove('active'));
+        filtersContainer.querySelectorAll('.quick-filter-btn')
+            .forEach(b => b.classList.remove('active'));
         allBtn.classList.add('active');
-        // Очищаем фильтр по заявке
         document.getElementById('applicationFilter').value = '';
         updateFilterHighlight(document.getElementById('applicationFilter'));
-        // Перезапускаем фильтрацию
         filterAccountingTable();
         updateCommentBlockVisibility();
     };
@@ -10439,20 +10457,18 @@ const filteredCells = allCells.filter((_, index) => !excludeIndices.includes(ind
     sortedApplications.forEach(app => {
         const button = document.createElement('button');
         button.type = 'button';
-        button.className = `quick-filter-btn status-${getStatusClass(statusFilter)}`;
+        button.className = `quick-filter-btn ${btnStatusClass}`.trim();
         button.textContent = app;
-        button.title = `Показать заявку ${app} (статус: ${statusFilter})`;
+        button.title = hasStatusForQuick
+            ? `Показать заявку ${app} (статус: ${statusFilter})`
+            : `Показать заявку ${app}`;
 
-        if (app === currentApplicationFilter) {
-            button.classList.add('active');
-        }
+        if (app === currentApplicationFilter) button.classList.add('active');
 
         button.onclick = () => {
-            // Убираем активный класс со всех кнопок (включая «Все»)
-            filtersContainer.querySelectorAll('.quick-filter-btn').forEach(btn => btn.classList.remove('active'));
+            filtersContainer.querySelectorAll('.quick-filter-btn')
+                .forEach(btn => btn.classList.remove('active'));
             button.classList.add('active');
-
-            // Устанавливаем фильтр заявки и вызываем общую фильтрацию
             document.getElementById('applicationFilter').value = app;
             updateFilterHighlight(document.getElementById('applicationFilter'));
             filterAccountingTable();
