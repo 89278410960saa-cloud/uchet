@@ -2653,6 +2653,108 @@ table thead th { border-top: 0 !important; }
    где из-за округления координат мог проглядывать край строки над шапкой */
 .table-scroll-container { clip-path: inset(1px 0 0 0); }
 </style>
+<style id="compact-quick-filters">
+/* ============================================================
+   СТРАНИЦА «ПОЗИЦИИ»: единый вертикальный зазор + компактные быстрые фильтры
+   Один зазор --ui-gap между: кнопками страниц → полями фильтров →
+   кнопками управления → блоком быстрых фильтров → таблицей.
+   ============================================================ */
+#accounting { --ui-gap: 6px; }
+
+/* Верхний отступ под панелью страниц — одинаковый на ВСЕХ страницах.
+   --content-top (выставляется скриптом) = нижний край кнопок страниц + --ui-gap,
+   т.е. поля фильтров стоят ровно на 6px ниже кнопок страниц, как и все остальные зазоры.
+   6px внутри — padding контейнера страницы (.container { padding: 6px }). */
+body .main-content.main-content { padding-top: calc(var(--content-top, 56px) - 6px) !important; }  /* выше по специфичности старых правил 50px/44px */
+
+/* поля фильтров → кнопки управления */
+#accounting .controls {
+    gap: 0 !important;
+    row-gap: 0 !important;
+    margin-bottom: 0 !important;
+}
+#accounting .controls-dropdown { margin-top: var(--ui-gap) !important; }
+/* повышенная специфичность: старые правила .controls-dropdown.open задают margin-top: 4px */
+#accounting .controls-container:not(.zz-a):not(.zz-b) .controls-dropdown.open.open { margin-top: var(--ui-gap) !important; }
+
+/* кнопки управления (или поля фильтров) → быстрые фильтры */
+#quickApplicationFilters,
+#quickSupplierFilters,
+#quickFactDateFilters { margin: var(--ui-gap) 0 0 0 !important; }
+
+/* быстрые фильтры (или кнопки управления) → таблица */
+#accounting .controls-container { margin-bottom: var(--ui-gap) !important; }
+
+/* блок комментария: сверху общий зазор, снизу 0 — до таблицы остаётся зазор контейнера (--ui-gap).
+   Селектор специфичнее старого `#accounting .comment-control:not(.hidden) { margin: 6px 0 }`. */
+#accounting .controls-container .comment-control:not(.hidden) { margin: var(--ui-gap) 0 0 0 !important; }
+
+/* ---------- Блок быстрых фильтров ---------- */
+.quick-filters-container {
+    flex-direction: row !important;
+    align-items: flex-start !important;
+    gap: 8px !important;
+    padding: 5px 8px !important;
+    min-height: 0 !important;          /* перебивает inline min-height: 46.9px */
+    border-radius: 4px !important;
+    box-sizing: border-box;
+}
+.quick-filters-label {
+    flex: 0 0 auto;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    font-size: 11px !important;
+    line-height: 20px !important;
+    text-align: left !important;
+}
+.quick-filters {
+    gap: 4px !important;
+    margin: 0 !important;
+    padding: 0 2px 0 0 !important;
+    min-height: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+    align-content: flex-start;
+    justify-content: flex-start !important;
+    max-height: 68px;                  /* 3 ряда по 20px + 2 зазора по 4px */
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    scrollbar-color: #3d4450 transparent;
+}
+.quick-filters::-webkit-scrollbar { width: 4px; }
+.quick-filters::-webkit-scrollbar-thumb { background: #3d4450; border-radius: 2px; }
+
+.quick-filters-container .quick-filter-btn {
+    height: 20px !important;
+    min-height: 0 !important;
+    min-width: 0 !important;
+    padding: 0 9px !important;
+    font-size: 11px !important;
+    line-height: 18px !important;
+    border-radius: 10px !important;
+    white-space: nowrap;
+    flex: 0 0 auto;
+}
+.quick-filters-container .quick-filter-btn.active {
+    border-width: 1px !important;
+    box-shadow: 0 0 0 1px #e0da22 inset;
+}
+.quick-filters-container .quick-filter-btn:hover { transform: none; box-shadow: none; }
+.quick-filters-container .quick-filter-btn.active:hover { box-shadow: 0 0 0 1px #e0da22 inset; }
+.quick-filters-container > span { font-size: 11px; line-height: 20px; }
+
+@media (max-width: 768px) {
+    .quick-filters-container { padding: 4px 6px !important; gap: 6px !important; }
+    .quick-filters { max-height: 44px; }   /* 2 ряда */
+    .quick-filters-container .quick-filter-btn { padding: 0 8px !important; font-size: 10.5px !important; }
+    .quick-filters-label { font-size: 10px !important; }
+}
+@media (max-width: 514.56px) {
+    .quick-filters-container { flex-direction: row !important; align-items: flex-start !important; }
+}
+</style>
 </head>
 <body style="zoom: 100%; transform: scale(1); transform-origin: left top; width: 100%; height: 100%;">
     <!-- ===== ОВЕРЛЕЙ НАЧАЛЬНОЙ ЗАГРУЗКИ ===== -->
@@ -10480,6 +10582,12 @@ const filteredCells = allCells.filter((_, index) => !excludeIndices.includes(ind
 
     quickFiltersContainer.appendChild(filtersContainer);
     quickFiltersContainer.style.display = 'flex';
+
+    // Список ограничен по высоте — показываем выбранную заявку, если она ниже видимой области
+    const activeBtn = filtersContainer.querySelector('.quick-filter-btn.active:not(.all-btn)');
+    if (activeBtn) {
+        filtersContainer.scrollTop = Math.max(0, activeBtn.offsetTop - filtersContainer.offsetTop - 2);
+    }
 }
 // ========== БЫСТРЫЕ ФИЛЬТРЫ ПО ДАТАМ ФАКТА ==========
 function handleFactMonthChange() {
@@ -14550,6 +14658,7 @@ select.filter-active {
     }
 }
 </style>
+
 <!-- ============================================================
      МОБИЛЬНАЯ ВЁРСТКА ФОРМЫ «УЧЁТ ЗАКУПКИ»
      — 2 колонки полей на узких экранах
@@ -18147,6 +18256,30 @@ function applyDuplicateModeUI(isDuplicate) {
     } else {
         setTimeout(init, 1100);
     }
+})();
+</script>
+<script id="sidebar-height-sync">
+/* Верхний отступ контента = нижний край кнопок страниц + 6px (тот же зазор, что и между остальными блоками).
+   Чтобы поля фильтров не уходили под сайдбар, граница не выше нижнего края самого сайдбара. */
+(function () {
+    var GAP = 6;   // должен совпадать с --ui-gap
+    var sb = document.querySelector('.sidebar');
+    if (!sb) return;
+    function update() {
+        var sbBottom = sb.getBoundingClientRect().bottom;
+        var btnBottom = 0;
+        sb.querySelectorAll('.menu-item').forEach(function (el) {
+            var r = el.getBoundingClientRect();
+            if (r.height > 0) btnBottom = Math.max(btnBottom, r.bottom);
+        });
+        if (sbBottom <= 0) return;
+        var top = Math.ceil(Math.max(btnBottom + GAP, sbBottom));
+        document.documentElement.style.setProperty('--content-top', top + 'px');
+    }
+    update();
+    if (window.ResizeObserver) new ResizeObserver(update).observe(sb);
+    window.addEventListener('resize', update);
+    window.addEventListener('load', update);
 })();
 </script>
 </body>
