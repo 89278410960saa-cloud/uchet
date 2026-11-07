@@ -2689,6 +2689,37 @@ body .main-content.main-content { padding-top: calc(var(--content-top, 56px) - 6
    Селектор специфичнее старого `#accounting .comment-control:not(.hidden) { margin: 6px 0 }`. */
 #accounting .controls-container .comment-control:not(.hidden) { margin: var(--ui-gap) 0 0 0 !important; }
 
+/* Режим админа: панель быстрых действий (Group edit + Платёж / Доверенность / Рекламация).
+   Сверху — общий зазор от комментария, снизу 0 (до таблицы остаётся зазор контейнера).
+   Раньше: margin-bottom 6px у панели + 6px у самой кнопки Group edit → большой отступ снизу и 0 сверху. */
+#accounting .controls-container > #appQuickActions,
+#accounting .controls-container > #bulkEditBtn { margin: var(--ui-gap) 0 0 0 !important; }
+#accounting .controls-container #appQuickActions > #bulkEditBtn { margin: 0 !important; }
+
+/* ============================================================
+   ОСТАЛЬНЫЕ СТРАНИЦЫ (Контрагенты, Платежи, Расчёты, Почта, Доверенности):
+   те же зазоры, что на «Позициях»:
+   поля фильтров → кнопки управления → таблица = --ui-gap
+   ============================================================ */
+:is(#counterparties, #payments, #settlement, #mail-registry, #proxy-registry) { --ui-gap: 6px; }
+
+:is(#counterparties, #payments, #settlement, #mail-registry, #proxy-registry) .controls-container .controls {
+    gap: 0 !important;
+    row-gap: 0 !important;
+    margin-bottom: 0 !important;
+}
+:is(#counterparties, #payments, #settlement, #mail-registry, #proxy-registry) .controls-container:not(.zz-a):not(.zz-b) .controls-dropdown.open.open {
+    margin-top: var(--ui-gap) !important;
+}
+:is(#counterparties, #payments, #settlement, #mail-registry, #proxy-registry) .controls-container.controls-container {
+    padding-bottom: 0 !important;
+    margin-top: 0 !important;                 /* inline -13.4px: панель sticky и так стоит на месте, а таблицу он «подтягивал» вверх */
+    margin-bottom: var(--ui-gap) !important;
+}
+:is(#counterparties, #payments, #settlement, #mail-registry, #proxy-registry) .table-scroll-container.table-scroll-container {
+    margin-top: 0 !important;                 /* inline 6.7px / 13.4px: зазор до таблицы задаёт только контейнер панели */
+}
+
 /* ---------- Блок быстрых фильтров ---------- */
 .quick-filters-container {
     flex-direction: row !important;
