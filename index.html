@@ -18331,6 +18331,43 @@ function applyDuplicateModeUI(isDuplicate) {
     }
 })();
 </script>
+<style id="counterparties-align">
+/* «Контрагенты»: та же схема выравнивания по сайдбару, что и на остальных страницах
+   (Платежи, Рекламации, Отправления, Доверенности):
+   контейнер без боковых отступов, 8px — у панели фильтров и у области таблицы
+   (полоса прокрутки остаётся у края контейнера, отдельно от таблицы). */
+#counterparties .container {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+#counterparties .controls-container.controls-container {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+    box-sizing: border-box !important;
+}
+#counterparties .table-scroll-container {
+    padding-left: 8px;
+    padding-right: 8px;
+    box-sizing: border-box;
+}
+#counterparties .controls-filters-row {
+    gap: 4px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+#counterparties .controls-filters-row > .controls-dots-btn {
+    flex: 0 0 22px !important;
+    width: 22px !important;
+    min-width: 22px !important;
+    height: 22px !important;
+    margin-left: auto !important;
+    margin-right: 0 !important;
+    padding: 0 !important;
+    font-size: 12px !important;
+}
+</style>
 <script id="sidebar-height-sync">
 /* Верхний отступ контента = нижний край кнопок страниц + 6px (тот же зазор, что и между остальными блоками).
    Чтобы поля фильтров не уходили под сайдбар, граница не выше нижнего края самого сайдбара. */
