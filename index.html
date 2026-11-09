@@ -6513,14 +6513,62 @@ function autoCompleteApplicationDate(inputId) {
     document.getElementById('editAccountingModal').style.display = 'none';
     document.getElementById('editAccountingRecordId').value = ''; // Очищаем при закрытии
 }
+/* ============================================================
+   Полный сброс всех фильтров «Позиций» для режимов
+   «Просроченные» и «Поставки на неделю».
+   Флаги самих режимов НЕ трогаются.
+   ============================================================ */
+function resetAccountingFiltersForMode() {
+    // 1. Значения всех полей-фильтров
+    ['searchAccountingInput', 'statusFilter', 'departmentFilter',
+     'applicationFilter', 'supplierFilter', 'yearFilter', 'factMonthFilter'
+    ].forEach(function (id) {
+        const el = document.getElementById(id);
+        if (el) {
+            el.value = '';
+            el.classList.remove('filter-active');
+        }
+    });
+
+    // 2. Комментарий к заявке
+    const commentInput = document.getElementById('applicationComment');
+    if (commentInput) commentInput.value = '';
+
+    // 3. Переменные-состояния
+    selectedFactDate = '';
+    showFavoritesOnly = false;
+    try { localStorage.setItem(FAVORITE_STORAGE_KEY, 'false'); } catch (e) {}
+
+    // 4. Быстрые фильтры
+    const quickApp = document.getElementById('quickApplicationFilters');
+    if (quickApp) {
+        quickApp.style.display = 'none';
+        quickApp.innerHTML = '';
+    }
+    const quickFactDate = document.getElementById('quickFactDateFilters');
+    if (quickFactDate) {
+        quickFactDate.style.display = 'none';
+        const list = document.getElementById('quickFactDateFiltersList');
+        if (list) list.innerHTML = '';
+    }
+    document.querySelectorAll('.quick-filter-btn').forEach(function (b) {
+        b.classList.remove('active');
+    });
+
+    // 5. Блок комментария
+    const commentBlock = document.querySelector('#accounting .comment-control');
+    if (commentBlock) {
+        commentBlock.classList.add('hidden');
+        commentBlock.style.display = 'none';
+    }
+
+    // 6. Кнопка «Избранное»
+    if (typeof updateFavoriteButton === 'function') updateFavoriteButton();
+}
 // ========== ФУНКЦИЯ ДЛЯ ПОКАЗА ТОЛЬКО ПРОСРОЧЕННЫХ ПОСТАВОК ==========
 function showOverdueOnly() {
-    // Сбрасываем значения остальных фильтров
-    document.getElementById('searchAccountingInput').value = '';
-    document.getElementById('statusFilter').value = '';
-    document.getElementById('departmentFilter').value = '';
-    document.getElementById('applicationFilter').value = '';
-    clearQuickFilters();
+    // ★ Полный сброс всех фильтров до показа строк
+    resetAccountingFiltersForMode();
     accEnsureAllRows(); // режиму нужны все строки в DOM
 
     const thead = document.querySelector('#accountingTable thead');
@@ -6735,14 +6783,8 @@ function countWeeklyDeliveries() {
 }
 // ========== ФУНКЦИЯ ДЛЯ ПОКАЗА ТОЛЬКО ПОСТАВОК НА НЕДЕЛЮ ==========
 function showWeeklyDeliveriesOnly() {
-    // ---- 1. Сбрасываем остальные фильтры (поиск, статус, подразделение и т.д.) ----
-    document.getElementById('searchAccountingInput').value = '';
-    document.getElementById('statusFilter').value = '';
-    document.getElementById('departmentFilter').value = '';
-    document.getElementById('applicationFilter').value = '';
-
-    // ---- 2. Очищаем быстрые фильтры ----
-    clearQuickFilters();
+    // ★ Полный сброс всех фильтров до показа строк
+    resetAccountingFiltersForMode();
     accEnsureAllRows(); // режиму нужны все строки в DOM
 
     const rows = document.querySelectorAll('#accountingTable tbody tr');
