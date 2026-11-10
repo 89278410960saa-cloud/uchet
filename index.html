@@ -8514,14 +8514,14 @@ function editPaymentRow(index) {
     
     // Инициализируем автозаполнение для договора
 }
-        function savePaymentChanges(event) {
+function savePaymentChanges(event) {
     event.preventDefault();
-    
+
     const index = document.getElementById('editPaymentIndex').value;
-    const recordId = document.getElementById('editPaymentIndex').value ? 
-        paymentsData[index]?.recordId || generateUniqueId() : 
+    const recordId = document.getElementById('editPaymentIndex').value ?
+        paymentsData[index]?.recordId || generateUniqueId() :
         generateUniqueId();
-    
+
     const item = {
         recordId: recordId,
         status: document.getElementById('editPaymentStatus').value,
@@ -8533,20 +8533,66 @@ function editPaymentRow(index) {
         link: document.getElementById('editPaymentLink').value,
         docNumber: document.getElementById('editPaymentApplication').value
     };
-    
+
+    // ★★★ ПРОВЕРКА НА ДУБЛИКАТ ★★★
+    // Сравниваем 5 полей: Дата, Контрагент, Заявка, Счёт, Сумма.
+    // Пустая строка и «-» для счёта считаются одинаковыми (нет счёта).
+    const normLow = (v) => (v == null ? '' : String(v)).trim().replace(/\s+/g, ' ').toLowerCase();
+    const normContract = (v) => {
+        const s = normLow(v);
+        return (s === '-' || s === '') ? '' : s;
+    };
+    const parseAmt = (v) => {
+        if (v == null || v === '') return NaN;
+        const n = parseFloat(String(v).replace(/\s/g, '').replace(',', '.'));
+        return isNaN(n) ? NaN : n;
+    };
+
+    const duplicate = paymentsData.find((p, i) => {
+        // Пропускаем текущую редактируемую запись
+        if (index !== '' && i === parseInt(index, 10)) return false;
+        if (recordId && p.recordId === recordId) return false;
+
+        if (normLow(p.date)      !== normLow(item.date))      return false;
+        if (normLow(p.supplier)  !== normLow(item.supplier))  return false;
+        if (normLow(p.docNumber) !== normLow(item.docNumber)) return false;
+        if (normContract(p.contract) !== normContract(item.contract)) return false;
+
+        // Сумму сравниваем как число с точностью до копейки
+        const a1 = parseAmt(p.amount);
+        const a2 = parseAmt(item.amount);
+        if (isNaN(a1) && isNaN(a2)) return true;   // обе пустые
+        if (isNaN(a1) || isNaN(a2)) return false;
+        return Math.abs(a1 - a2) < 0.001;
+    });
+
+    if (duplicate) {
+        alert(
+            'Платёж с такими же полями уже существует:\n\n' +
+            'Дата:        ' + (duplicate.date || '—') + '\n' +
+            'Контрагент:  ' + (duplicate.supplier || '—') + '\n' +
+            'Заявка:      ' + (duplicate.docNumber || '—') + '\n' +
+            'Счёт:        ' + (duplicate.contract || '—') + '\n' +
+            'Сумма:       ' + (duplicate.amount || '—') + '\n\n' +
+            'Сохранение отменено.'
+        );
+        return;
+    }
+    // ★★★ КОНЕЦ ПРОВЕРКИ ★★★
+
     if (index === '') {
         paymentsData.push(item);
     } else {
         paymentsData[index] = item;
     }
-    
+
     // Сортируем платежи по убыванию даты после сохранения
     paymentsData.sort((a, b) => {
         const timeA = getTimeFromRecordId(a.recordId) || 0;
         const timeB = getTimeFromRecordId(b.recordId) || 0;
         return timeB - timeA;
     });
-    
+
     saveAllData();
     updatePaymentsBadge();
     updatePaymentsTable();
@@ -18166,6 +18212,49 @@ function applyDuplicateModeUI(isDuplicate) {
             '#' + WRAP_ID + ' button > i{margin-right:3px !important;}';
         document.head.appendChild(st);
     }
+    /* ---------- Обычная кнопка «Добавить платёж»: маркер не ставим ---------- */
+function patchShowAddPaymentForm() {
+    var orig = window.showAddPaymentForm;
+    if (typeof orig !== 'function' || orig._fromAppPatched) return;
+    window.showAddPaymentForm = function () {
+        var modal = document.getElementById('editPaymentModal');
+        if (modal) delete modal.dataset.fromApp;
+
+        // ★ Сбрасываем подсказку (модалка открыта не из заявки)
+        var supEl = document.getElementById('editPaymentSupplier');
+        if (supEl) supEl.placeholder = '';
+
+        return orig.apply(this, arguments);
+    };
+    window.showAddPaymentForm._fromAppPatched = true;
+}
+
+/* ---------- Сохранение: если Счёт пуст — подставляем «-» ---------- */
+function patchSavePaymentFromApp() {
+    var orig = window.savePaymentChanges;
+    if (typeof orig !== 'function' || orig._fromAppPatched) return;
+
+    window.savePaymentChanges = function (event) {
+        var modal = document.getElementById('editPaymentModal');
+        if (modal && modal.dataset.fromApp === '1') {
+            var c = document.getElementById('editPaymentContract');   // «Счёт»
+            if (c && !(c.value || '').trim()) c.value = '-';
+        }
+        return orig.apply(this, arguments);
+    };
+    window.savePaymentChanges._fromAppPatched = true;
+}
+/* ---------- Редактирование платежа: подсказку сбрасываем ---------- */
+function patchEditPaymentRow() {
+    var orig = window.editPaymentRow;
+    if (typeof orig !== 'function' || orig._fromAppPatched) return;
+    window.editPaymentRow = function () {
+        var supEl = document.getElementById('editPaymentSupplier');
+        if (supEl) supEl.placeholder = '';
+        return orig.apply(this, arguments);
+    };
+    window.editPaymentRow._fromAppPatched = true;
+}
 
     /* ---------- Вспомогательные ---------- */
     function isAdminMode() {
@@ -18320,17 +18409,27 @@ function applyDuplicateModeUI(isDuplicate) {
 
     /* ---------- Открытие модальных окон ---------- */
     function openPayment(app) {
-        if (typeof showAddPaymentForm !== 'function') return;
-        showAddPaymentForm();
-        setVal('editPaymentApplication', app);
-        bindCounterpartyPicker({
-            modalId: 'editPaymentModal',
-            supplierId: 'editPaymentSupplier',
-            contractId: 'editPaymentAgreement',   // поле «Договор»
-            emptyContract: '-',
-            app: app
-        });
-    }
+    if (typeof showAddPaymentForm !== 'function') return;
+    showAddPaymentForm();
+
+    // ★ Маркер: модалка открыта из заявки — включаем автоподстановку «-»
+    var modal = document.getElementById('editPaymentModal');
+    if (modal) modal.dataset.fromApp = '1';
+
+    setVal('editPaymentApplication', app);
+
+    // ★ Подсказка для поля «Контрагент» — только при создании из заявки
+    var supEl = document.getElementById('editPaymentSupplier');
+    if (supEl) supEl.placeholder = 'Выберите контрагента по заявке из списка';
+
+    bindCounterpartyPicker({
+        modalId: 'editPaymentModal',
+        supplierId: 'editPaymentSupplier',
+        contractId: 'editPaymentAgreement',
+        emptyContract: '-',
+        app: app
+    });
+}
 
     function openProxy(app) {
         if (typeof showAddProxyForm !== 'function') return;
@@ -18422,6 +18521,9 @@ function applyDuplicateModeUI(isDuplicate) {
     function init() {
         injectStyles();
         injectButtons();
+        patchShowAddPaymentForm();
+        patchSavePaymentFromApp();
+        patchEditPaymentRow();
 
         ['filterAccountingTable', 'updateAccountingTable', 'clearAccountingFilters',
          'showPage', 'updateUserInterface', 'updateRowNumbers'].forEach(hookAfter);
