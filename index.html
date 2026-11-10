@@ -2812,6 +2812,212 @@ body .main-content.main-content { padding-top: calc(var(--content-top, 56px) - 6
     .quick-filters-container { flex-direction: row !important; align-items: flex-start !important; }
 }
 </style>
+<style id="app-dialogs-style">
+/* ===== Стилизованные диалоги приложения (замена alert / confirm / prompt) ===== */
+#appDialogOverlay {
+    position: fixed; inset: 0;
+    z-index: 2147483647;
+    display: none; align-items: center; justify-content: center;
+    padding: 16px; box-sizing: border-box;
+    background: rgba(8, 12, 18, 0.55);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+}
+#appDialogOverlay.open { display: flex; animation: appDlgFade .16s ease-out; }
+@keyframes appDlgFade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes appDlgPop  { from { opacity: 0; transform: translateY(8px) scale(.97); } to { opacity: 1; transform: none; } }
+
+#appDialogOverlay .app-dlg {
+    background: linear-gradient(135deg, #1b2838 0%, #2a475e 100%);
+    border: 1px solid #3d4450;
+    border-radius: 8px;
+    box-shadow: 0 10px 40px rgba(0,0,0,.75);
+    color: #c7d5e0;
+    width: 100%; max-width: 440px; max-height: 90vh;
+    display: flex; flex-direction: column;
+    padding: 16px 20px 18px; box-sizing: border-box;
+    animation: appDlgPop .18s ease-out;
+    font-family: inherit;
+}
+#appDialogOverlay .app-dlg-head {
+    display: flex; align-items: center; gap: 8px;
+    color: #66c0f4; font-size: 14px; font-weight: bold;
+    margin: 0 0 10px; 
+}
+#appDialogOverlay .app-dlg.warn   .app-dlg-head { color: #e6b44c; }
+#appDialogOverlay .app-dlg.danger .app-dlg-head { color: #e5675c; }
+#appDialogOverlay .app-dlg-body {
+    font-size: 13px; line-height: 1.5;
+    white-space: pre-wrap; word-break: break-word;
+    overflow-y: auto; margin: 0 0 14px;
+    color: #c7d5e0;
+}
+#appDialogOverlay .app-dlg-input {
+    width: 100%; box-sizing: border-box;
+    background: #1e2d3d; color: #c7d5e0;
+    border: 1px solid #3d4450; border-radius: 3px;
+    padding: 7px 9px; font-size: 13px; margin: 0 0 14px; outline: none;
+}
+#appDialogOverlay .app-dlg-input:focus { border-color: #66c0f4; }
+#appDialogOverlay .app-dlg-actions { display: flex; justify-content: flex-end; gap: 10px; flex-wrap: wrap; }
+#appDialogOverlay .app-dlg-actions button {
+    padding: 7px 20px; border: none; border-radius: 3px; cursor: pointer;
+    font-weight: bold; font-size: 12px; color: #fff; transition: background .15s;
+}
+#appDialogOverlay .app-dlg-ok     { background: linear-gradient(135deg, #5c7e10 0%, #4c6b22 100%); }
+#appDialogOverlay .app-dlg-ok:hover { background: linear-gradient(135deg, #6b8f12 0%, #5c7e10 100%); }
+#appDialogOverlay .app-dlg.danger .app-dlg-ok { background: linear-gradient(135deg, #be463c 0%, #8c2c24 100%); }
+#appDialogOverlay .app-dlg.danger .app-dlg-ok:hover { background: linear-gradient(135deg, #d4564b 0%, #a3362d 100%); }
+#appDialogOverlay .app-dlg-cancel { background: linear-gradient(135deg, #6c757d 0%, #495057 100%); }
+#appDialogOverlay .app-dlg-cancel:hover { background: linear-gradient(135deg, #868e96 0%, #5a6268 100%); }
+#appDialogOverlay .app-dlg-actions button:focus-visible { outline: 2px solid #66c0f4; outline-offset: 2px; }
+</style>
+<script id="app-dialogs-script">
+/* ===== Стилизованные диалоги: alert / confirm / prompt ===== */
+(function () {
+    var queue = [], busy = false, overlay = null;
+
+    function ensureDom() {
+        if (overlay && document.body.contains(overlay)) return overlay;
+        overlay = document.createElement('div');
+        overlay.id = 'appDialogOverlay';
+        overlay.setAttribute('role', 'dialog');
+        overlay.setAttribute('aria-modal', 'true');
+        document.body.appendChild(overlay);
+        return overlay;
+    }
+
+    function pickKind(msg, kind) {
+        if (kind) return kind;
+        return /ВНИМАНИЕ|удалить|безвозвратно|заменит/i.test(msg) ? 'danger' : 'info';
+    }
+
+    var ICONS = { info: 'fa-info-circle', warn: 'fa-exclamation-triangle', danger: 'fa-exclamation-triangle' };
+
+    function run() {
+        if (busy || !queue.length) return;
+        busy = true;
+        var d = queue.shift();
+        var ov = ensureDom();
+        ov.innerHTML = '';
+
+        var box = document.createElement('div');
+        box.className = 'app-dlg ' + d.kind;
+
+        var head = document.createElement('div');
+        head.className = 'app-dlg-head';
+        head.innerHTML = '<i class="fas ' + (ICONS[d.kind] || ICONS.info) + '"></i><span></span>';
+        head.lastChild.textContent = d.title;
+
+        var body = document.createElement('div');
+        body.className = 'app-dlg-body';
+        body.textContent = d.message;
+
+        box.appendChild(head);
+        box.appendChild(body);
+
+        var input = null;
+        if (d.type === 'prompt') {
+            input = document.createElement('input');
+            input.type = 'text';
+            input.className = 'app-dlg-input';
+            input.value = d.defaultValue || '';
+            box.appendChild(input);
+        }
+
+        var actions = document.createElement('div');
+        actions.className = 'app-dlg-actions';
+        var okBtn = document.createElement('button');
+        okBtn.type = 'button'; okBtn.className = 'app-dlg-ok'; okBtn.textContent = d.okText;
+        var cancelBtn = null;
+        if (d.type !== 'alert') {
+            cancelBtn = document.createElement('button');
+            cancelBtn.type = 'button'; cancelBtn.className = 'app-dlg-cancel'; cancelBtn.textContent = d.cancelText;
+            actions.appendChild(cancelBtn);
+        }
+        actions.appendChild(okBtn);
+        box.appendChild(actions);
+        ov.appendChild(box);
+
+        var prevFocus = document.activeElement;
+        var done = false;
+        function close(result) {
+            if (done) return;
+            done = true;
+            document.removeEventListener('keydown', onKey, true);
+            ov.classList.remove('open');
+            ov.innerHTML = '';
+            busy = false;
+            try { if (prevFocus && prevFocus.focus) prevFocus.focus(); } catch (e) {}
+            d.resolve(result);
+            run();
+        }
+        function accept() { close(d.type === 'prompt' ? input.value : true); }
+        function dismiss() { close(d.type === 'prompt' ? null : (d.type === 'alert' ? undefined : false)); }
+
+        function onKey(e) {
+            if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); dismiss(); }
+            else if (e.key === 'Enter' && !(e.target && e.target === cancelBtn)) {
+                e.preventDefault(); e.stopPropagation(); accept();
+            } else if (e.key === 'Tab') {
+                var f = box.querySelectorAll('input,button');
+                if (!f.length) return;
+                var first = f[0], last = f[f.length - 1];
+                if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+                else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+            }
+        }
+        document.addEventListener('keydown', onKey, true);
+
+        okBtn.addEventListener('click', accept);
+        if (cancelBtn) cancelBtn.addEventListener('click', dismiss);
+        ov.onmousedown = function (e) { if (e.target === ov && d.type !== 'alert') dismiss(); };
+
+        ov.classList.add('open');
+        if (input) { input.focus(); input.select(); } else { (d.type === 'confirm' && d.danger ? cancelBtn : okBtn).focus(); }
+    }
+
+    function enqueue(d) {
+        return new Promise(function (resolve) {
+            d.resolve = resolve;
+            queue.push(d);
+            if (document.body) run();
+            else document.addEventListener('DOMContentLoaded', run, { once: true });
+        });
+    }
+
+    window.appAlert = function (message, opts) {
+        opts = opts || {};
+        var msg = String(message == null ? '' : message);
+        var kind = opts.kind || (/Только администратор|Не удалось|Ошибка|не найден|Нельзя|Неверный|Укажите|Заполните|Исправьте|Добавьте|Выберите|Сначала|Нет |не выбрано|минимум|разрешите|недоступен|Нечего|Не указан|Не выбрано|Поле /i.test(msg) ? 'warn' : 'info');
+        return enqueue({ type: 'alert', kind: kind, title: opts.title || 'Уведомление', message: msg, okText: opts.okText || 'ОК' });
+    };
+
+    window.appConfirm = function (message, opts) {
+        opts = opts || {};
+        var msg = String(message == null ? '' : message);
+        var kind = pickKind(msg, opts.kind);
+        return enqueue({
+            type: 'confirm', kind: kind, danger: kind === 'danger',
+            title: opts.title || (kind === 'danger' ? 'Подтвердите действие' : 'Подтверждение'),
+            message: msg, okText: opts.okText || 'Да', cancelText: opts.cancelText || 'Отмена'
+        });
+    };
+
+    window.appPrompt = function (message, defaultValue, opts) {
+        opts = opts || {};
+        return enqueue({
+            type: 'prompt', kind: 'info', title: opts.title || 'Ввод данных',
+            message: String(message == null ? '' : message), defaultValue: defaultValue,
+            okText: opts.okText || 'Сохранить', cancelText: opts.cancelText || 'Отмена'
+        });
+    };
+
+    /* Все оставшиеся вызовы alert() автоматически идут через стилизованное окно */
+    window.alert = function (message) { window.appAlert(message); };
+})();
+</script>
+
 </head>
 <body style="zoom: 100%; transform: scale(1); transform-origin: left top; width: 100%; height: 100%;">
     <!-- ===== ОВЕРЛЕЙ НАЧАЛЬНОЙ ЗАГРУЗКИ ===== -->
@@ -8604,7 +8810,7 @@ function savePaymentChanges(event) {
     refreshStatusStatsIfOpen();
 }
 
-        function deletePaymentRecord() {
+        async function deletePaymentRecord() {
     if (!isAdmin) {
         alert('Только администратор может удалять платежи');
         return;
@@ -8617,7 +8823,7 @@ function savePaymentChanges(event) {
         return;
     }
     
-    if (confirm('Вы уверены, что хотите удалить этот платеж?')) {
+    if (await appConfirm('Вы уверены, что хотите удалить этот платеж?')) {
         paymentsData.splice(index, 1);
         
         // Обновляем таблицу после удаления
@@ -8735,8 +8941,8 @@ function renderDepartmentsList() {
 // Добавить новое подразделение
 
 // Удалить подразделение
-function removeDepartment(index) {
-    if (!confirm('Вы уверены, что хотите удалить это подразделение?')) {
+async function removeDepartment(index) {
+    if (!await appConfirm('Вы уверены, что хотите удалить это подразделение?')) {
         return;
     }
     
@@ -8747,9 +8953,9 @@ function removeDepartment(index) {
 }
 
 // Редактировать подразделение
-function editDepartment(index) {
+async function editDepartment(index) {
     const oldName = departmentsList[index];
-    const newName = prompt('Введите новое название подразделения:', oldName);
+    const newName = await appPrompt('Введите новое название подразделения:', oldName);
     
     if (!newName || newName.trim() === '') return;
     
@@ -9070,7 +9276,120 @@ function clearMailFilters() {
 }
 
         function printMailTable() {
-            window.print();
+            // Берём все записи с учётом текущих фильтров (таблица на экране подгружается порциями)
+            let rows = [];
+            try {
+                const engine = lz('mail');
+                engine.sync();
+                engine.render();
+                rows = (engine.ordered && engine.ordered.length) ? engine.ordered.slice() : [];
+            } catch (e) { rows = []; }
+
+            if (!rows.length) {
+                alert('Нет данных для печати');
+                return;
+            }
+
+            const esc = s => String(s == null ? '' : s)
+                .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+            const val = id => ((document.getElementById(id) || {}).value || '').trim();
+
+            // Описание применённых фильтров
+            const filters = [];
+            if (val('searchMailInput'))    filters.push('поиск: «' + val('searchMailInput') + '»');
+            if (val('mailSupplierFilter')) filters.push('контрагент: «' + val('mailSupplierFilter') + '»');
+            if (val('mailDateFilter'))     filters.push('дата: ' + lzDateFmt(val('mailDateFilter')));
+
+            const now = new Date().toLocaleDateString('ru-RU') + ' ' +
+                        new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+
+            const body = rows.map((it, i) => `
+                <tr>
+                    <td class="c">${i + 1}</td>
+                    <td class="c">${esc(it.date)}</td>
+                    <td>${esc(it.supplier)}</td>
+                    <td>${esc(it.document)}</td>
+                    <td class="c">${esc(it.sheets)}</td>
+                    <td>${esc(it.address)}</td>
+                </tr>`).join('');
+
+            const html = `<!DOCTYPE html>
+<html lang="ru"><head><meta charset="utf-8">
+<title>Почтовый реестр</title>
+<style>
+    @page { size: A4 landscape; margin: 12mm; }
+    * { box-sizing: border-box; }
+    body { font-family: Arial, Helvetica, sans-serif; color: #000; background: #fff; margin: 0; font-size: 11px; }
+    .head { display: flex; justify-content: space-between; align-items: flex-end;
+            border-bottom: 2px solid #333; padding-bottom: 6px; margin-bottom: 4px; }
+    .title { font-size: 18px; font-weight: bold; }
+    .meta  { font-size: 10px; color: #555; text-align: right; line-height: 1.4; }
+    .filters { font-size: 10px; color: #444; margin: 4px 0 8px; }
+    table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+    thead { display: table-header-group; }
+    th, td { border: 1px solid #888; padding: 5px 7px; vertical-align: top;
+             word-wrap: break-word; overflow-wrap: anywhere; line-height: 1.3; }
+    th { background: #e6e6e6 !important; font-weight: bold; font-size: 11px;
+         text-align: center; vertical-align: middle; white-space: normal;
+         -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    td.c { text-align: center; }
+    tr { page-break-inside: avoid; }
+    tbody tr:nth-child(even) td { background: #f7f7f7 !important;
+         -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .footer { margin-top: 8px; font-size: 10px; color: #555; text-align: right; }
+</style></head><body>
+    <div class="head">
+        <div class="title">Почтовый реестр (Отправления)</div>
+        <div class="meta">Дата печати: ${esc(now)}<br>Записей: ${rows.length}</div>
+    </div>
+    ${filters.length ? '<div class="filters">Фильтры: ' + esc(filters.join('; ')) + '</div>' : ''}
+    <table>
+        <colgroup>
+            <col style="width: 4%;">
+            <col style="width: 9%;">
+            <col style="width: 22%;">
+            <col style="width: 30%;">
+            <col style="width: 7%;">
+            <col style="width: 28%;">
+        </colgroup>
+        <thead>
+            <tr>
+                <th>№</th>
+                <th>Дата</th>
+                <th>Контрагент</th>
+                <th>Документ</th>
+                <th>Кол-во листов</th>
+                <th>Адрес организации</th>
+            </tr>
+        </thead>
+        <tbody>${body}</tbody>
+    </table>
+    <div class="footer">Всего записей: ${rows.length}</div>
+</body></html>`;
+
+            // Печать через скрытый iframe — не блокируется всплывающими окнами
+            const old = document.getElementById('mailPrintFrame');
+            if (old) old.remove();
+            const frame = document.createElement('iframe');
+            frame.id = 'mailPrintFrame';
+            frame.style.cssText = 'position:fixed;right:0;bottom:0;width:0;height:0;border:0;visibility:hidden;';
+            document.body.appendChild(frame);
+
+            const doc = frame.contentWindow.document;
+            doc.open();
+            doc.write(html);
+            doc.close();
+
+            setTimeout(function () {
+                try {
+                    frame.contentWindow.focus();
+                    frame.contentWindow.print();
+                } catch (e) {
+                    alert('Не удалось открыть печать.');
+                }
+                setTimeout(function () { frame.remove(); }, 1500);
+            }, 250);
         }
 
         function showAddMailForm() {
@@ -11222,7 +11541,7 @@ window.closeAccountingModal = function() {
 console.log('[SaveAndAdd] Функция "Сохранить и добавить" успешно инициализирована');
 
         // ========== ФУНКЦИИ УДАЛЕНИЯ ЗАПИСЕЙ ==========
-        function deleteAccountingRecord() {
+        async function deleteAccountingRecord() {
     if (!isAdmin) {
         alert('Только администратор может удалять записи');
         return;
@@ -11235,7 +11554,7 @@ console.log('[SaveAndAdd] Функция "Сохранить и добавить
         return;
     }
     
-    if (confirm('Вы уверены, что хотите удалить эту запись?')) {
+    if (await appConfirm('Вы уверены, что хотите удалить эту запись?')) {
         // Ищем по recordId вместо индекса
         const index = accountingData.findIndex(item => item.recordId === recordId);
         if (index !== -1) {
@@ -11256,7 +11575,7 @@ console.log('[SaveAndAdd] Функция "Сохранить и добавить
     }
 }
 
-        function deleteCounterpartyRecord() {
+        async function deleteCounterpartyRecord() {
     const index = document.getElementById('editCounterpartyIndex').value;
     
     if (index === '') {
@@ -11264,7 +11583,7 @@ console.log('[SaveAndAdd] Функция "Сохранить и добавить
         return;
     }
     
-    if (confirm('Вы уверены, что хотите удалить этого контрагента?')) {
+    if (await appConfirm('Вы уверены, что хотите удалить этого контрагента?')) {
         counterpartiesData.splice(index, 1);
         
         // Обновляем таблицу после удаления
@@ -11276,7 +11595,7 @@ console.log('[SaveAndAdd] Функция "Сохранить и добавить
     }
 }
 
-        function deleteSettlementRecord() {
+        async function deleteSettlementRecord() {
             const index = document.getElementById('editSettlementIndex').value;
             
             if (index === '') {
@@ -11284,7 +11603,7 @@ console.log('[SaveAndAdd] Функция "Сохранить и добавить
                 return;
             }
             
-            if (confirm('Вы уверены, что хотите удалить эту запись?')) {
+            if (await appConfirm('Вы уверены, что хотите удалить эту запись?')) {
                 settlementData.splice(index, 1);
                 saveAllData();
                 updateSettlementTable();
@@ -11293,7 +11612,7 @@ console.log('[SaveAndAdd] Функция "Сохранить и добавить
             }
         }
 
-        function deleteMailRecord() {
+        async function deleteMailRecord() {
     if (!isAdmin) {
         alert('Только администратор может удалять записи');
         return;
@@ -11306,7 +11625,7 @@ console.log('[SaveAndAdd] Функция "Сохранить и добавить
         return;
     }
     
-    if (confirm('Вы уверены, что хотите удалить эту запись?')) {
+    if (await appConfirm('Вы уверены, что хотите удалить эту запись?')) {
         mailData.splice(index, 1);
         
         // Обновляем таблицу после удаления
@@ -11326,7 +11645,7 @@ function refreshStatusStatsIfOpen() {
         updateLocalStorageStats();
     }
 }       
-function deleteProxyRecord() {
+async function deleteProxyRecord() {
     const index = document.getElementById('editProxyIndex').value;
     
     if (index === '') {
@@ -11334,7 +11653,7 @@ function deleteProxyRecord() {
         return;
     }
     
-    if (confirm('Вы уверены, что хотите удалить эту доверенность?')) {
+    if (await appConfirm('Вы уверены, что хотите удалить эту доверенность?')) {
         proxyData.splice(index, 1);
         
         // Обновляем таблицу после удаления
@@ -11660,10 +11979,10 @@ async function fetchBackupFromGitHub() {
     return response.json();
 }
 
-function importJSON() {
+async function importJSON() {
     
 
-    if (!confirm('ВНИМАНИЕ: Импорт данных заменит все текущие записи. Продолжить?')) {
+    if (!await appConfirm('ВНИМАНИЕ: Импорт данных заменит все текущие записи. Продолжить?')) {
         return;
     }
 
@@ -12250,10 +12569,10 @@ document.addEventListener('click', function(event) {
 }
         // ========== ФУНКЦИИ ДЛЯ УПРАВЛЕНИЯ ДАННЫМИ ==========
 
-        function confirmClearAllData() {
+        async function confirmClearAllData() {
             
-            if (confirm('ВНИМАНИЕ! Вы собираетесь удалить ВСЕ данные из системы. Это действие невозможно отменить.\n\nВы уверены, что хотите продолжить?')) {
-                if (confirm('Это окончательное подтверждение. Все данные будут безвозвратно удалены.\n\nНажмите ОК для удаления всех данных.')) {
+            if (await appConfirm('ВНИМАНИЕ! Вы собираетесь удалить ВСЕ данные из системы. Это действие невозможно отменить.\n\nВы уверены, что хотите продолжить?')) {
+                if (await appConfirm('Это окончательное подтверждение. Все данные будут безвозвратно удалены.\n\nНажмите «Да» для удаления всех данных.')) {
                     clearAllData();
                 }
             }
@@ -18244,6 +18563,17 @@ function patchSavePaymentFromApp() {
     };
     window.savePaymentChanges._fromAppPatched = true;
 }
+/* ---------- Доверенность / рекламация: подсказка сбрасывается при обычном открытии ---------- */
+function patchResetSupplierHint(fnName, supplierId) {
+    var orig = window[fnName];
+    if (typeof orig !== 'function' || orig._hintPatched) return;
+    window[fnName] = function () {
+        var el = document.getElementById(supplierId);
+        if (el) el.placeholder = '';
+        return orig.apply(this, arguments);
+    };
+    window[fnName]._hintPatched = true;
+}
 /* ---------- Редактирование платежа: подсказку сбрасываем ---------- */
 function patchEditPaymentRow() {
     var orig = window.editPaymentRow;
@@ -18435,6 +18765,8 @@ function patchEditPaymentRow() {
         if (typeof showAddProxyForm !== 'function') return;
         showAddProxyForm();
         setVal('editProxyApplication', app);
+        var proxySupEl = document.getElementById('editProxySupplier');
+        if (proxySupEl) proxySupEl.placeholder = 'Выберите контрагента по заявке из списка';
         bindCounterpartyPicker({
             modalId: 'editProxyModal',
             supplierId: 'editProxySupplier',
@@ -18448,6 +18780,8 @@ function patchEditPaymentRow() {
         if (typeof showAddSettlementForm !== 'function') return;
         showAddSettlementForm();
         setVal('editSettlementApplication', app);
+        var settleSupEl = document.getElementById('editSettlementSupplier');
+        if (settleSupEl) settleSupEl.placeholder = 'Выберите контрагента по заявке из списка';
         bindCounterpartyPicker({
             modalId: 'editSettlementModal',
             supplierId: 'editSettlementSupplier',
@@ -18524,6 +18858,10 @@ function patchEditPaymentRow() {
         patchShowAddPaymentForm();
         patchSavePaymentFromApp();
         patchEditPaymentRow();
+        patchResetSupplierHint('showAddProxyForm',     'editProxySupplier');
+        patchResetSupplierHint('editProxyRow',         'editProxySupplier');
+        patchResetSupplierHint('showAddSettlementForm','editSettlementSupplier');
+        patchResetSupplierHint('editSettlementRow',    'editSettlementSupplier');
 
         ['filterAccountingTable', 'updateAccountingTable', 'clearAccountingFilters',
          'showPage', 'updateUserInterface', 'updateRowNumbers'].forEach(hookAfter);
