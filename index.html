@@ -2483,6 +2483,32 @@ button:hover,
 #printApplicationReportBtn:hover {
     background: linear-gradient(90deg, rgba(170, 70, 3, 0.418), transparent);
 }
+#copyWorkingPositionsBtn {
+    background: linear-gradient(135deg, #565e64 0%, #343a40 100%) !important;
+    color: #e9ecef !important;
+    border: none;
+    border-radius: 4px;
+    padding: 4px 12px;
+    font-size: 12px;
+    cursor: pointer;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+#copyWorkingPositionsBtn:hover {
+    background: linear-gradient(135deg, #6c757d 0%, #495057 100%) !important;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* В grid-режиме (заявка не выбрана) кнопка не показывается */
+#accounting .controls-container:not(.app-selected):not(.mode-active)
+    .controls-dropdown.open > #copyWorkingPositionsBtn {
+    display: none !important;
+}
 </style>
 
 
@@ -2993,6 +3019,7 @@ body .main-content.main-content { padding-top: calc(var(--content-top, 56px) - 6
             <button onclick="toggleWeeklyDeliveriesMode()" id="weeklyDeliveriesBtn" style="background: linear-gradient(135deg, rgb(255, 215, 0) 0%, rgb(255, 165, 0) 100%); color: rgb(27, 40, 56); border: 0.67px solid rgb(255, 215, 0); box-shadow: none;">Поставки на неделю (0)</button>
             <button onclick="toggleOverdueMode()" id="overdueBtn" style="background: linear-gradient(135deg, rgba(190, 70, 60, 0.6) 0%, rgba(140, 44, 36, 0.6) 100%); color: white; border: 0.67px solid rgb(190, 70, 60); box-shadow: none;">Просроченные (0)</button>
             <button id="printApplicationReportBtn" style="display: none;" onclick="printApplicationReport()"><i class="fas fa-file-alt"></i>Отчет</button>
+<button id="copyWorkingPositionsBtn" style="display: none;" onclick="copyWorkingPositions()" title="Скопировать позиции «В работе» (Наименование + Кол-во) в буфер обмена"><i class="fas fa-copy"></i>Копировать (В работе)</button>
             <button onclick="printDeliveriesAndOverdue()" style="background: linear-gradient(135deg, #6c757d 0%, #495057 100%); color: white;">Поставки 30 дней</button>
             <button id="favoriteToggleBtn" onclick="toggleFavoriteFilter()"
                     style="background: transparent; border: 1px solid #3d4450; border-radius: 1px; color: #ffd700; font-size: 10px; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; width: 22px; height: 18px; padding: 0; line-height: 1;">
@@ -9843,28 +9870,22 @@ function filterProxyByContract(contract, supplier, application) {
 // ===== ПОКАЗ / СКРЫТИЕ КНОПКИ ПЕЧАТИ ОТЧЕТА =====
 function updatePrintButtonVisibility() {
     const appFilter = document.getElementById('applicationFilter');
-    const btn = document.getElementById('printApplicationReportBtn');
+    const btn       = document.getElementById('printApplicationReportBtn');
+    const copyBtn   = document.getElementById('copyWorkingPositionsBtn');
     if (!appFilter || !btn) return;
 
-    // Та же логика, что и у кнопки Group edit:
-    // показываем кнопку только если в фильтре выбрана заявка
-    // (значение совпадает с одной из опций в datalist
-    //  ИЛИ активен быстрый фильтр по заявке, кроме «Все»)
+    // ── Проверка: выбрана ли конкретная заявка ──
     let isAppSelected = false;
 
     if (typeof window.isApplicationFilterActive === 'function') {
         isAppSelected = window.isApplicationFilterActive();
     } else {
-        // Fallback — пока bulk-edit IIFE ещё не выполнился
         const value = (appFilter.value || '').trim();
         if (value !== '') {
             const datalist = document.getElementById('applicationsListFilter');
             if (datalist) {
                 for (let i = 0; i < datalist.options.length; i++) {
-                    if (datalist.options[i].value === value) {
-                        isAppSelected = true;
-                        break;
-                    }
+                    if (datalist.options[i].value === value) { isAppSelected = true; break; }
                 }
             }
             if (!isAppSelected) {
@@ -9876,13 +9897,25 @@ function updatePrintButtonVisibility() {
         }
     }
 
-    // ★ ВАЖНО: используем setProperty с приоритетом 'important',
-    //   чтобы перебить CSS-правило
-    //   `.controls-dropdown button { display: inline-flex !important; }`
     if (isAppSelected) {
+        // «Отчет» — показывается всегда, когда выбрана заявка
         btn.style.setProperty('display', 'inline-flex', 'important');
+
+        // «Копировать (В работе)» — только если по этой заявке есть позиции «В работе»
+        if (copyBtn) {
+            const appNumber = appFilter.value.trim();
+            const hasWorking = Array.isArray(accountingData) && accountingData.some(
+                item => item.docNumber === appNumber && item.status === 'В работе'
+            );
+            copyBtn.style.setProperty(
+                'display',
+                hasWorking ? 'inline-flex' : 'none',
+                'important'
+            );
+        }
     } else {
         btn.style.setProperty('display', 'none', 'important');
+        if (copyBtn) copyBtn.style.setProperty('display', 'none', 'important');
     }
 }
 
@@ -9939,6 +9972,87 @@ function printApplicationReport() {
     win.document.write(html);
     win.document.close();
     win.focus();
+}
+/* ============================================================
+   Копирование позиций «В работе» в буфер обмена (TSV-формат).
+   Столбцы: Наименование позиции, Кол-во (с ед. изм.).
+   ============================================================ */
+function copyWorkingPositions() {
+    const appFilter = document.getElementById('applicationFilter');
+    const appNumber = appFilter ? appFilter.value.trim() : '';
+    if (!appNumber) {
+        alert('Сначала выберите заявку в фильтре.');
+        return;
+    }
+
+    // Только строки выбранной заявки со статусом «В работе»
+    const positions = accountingData.filter(item =>
+        item.docNumber === appNumber && item.status === 'В работе'
+    );
+
+    if (positions.length === 0) {
+        if (typeof showAutosaveNotification === 'function') {
+            showAutosaveNotification('Нет позиций со статусом «В работе» по заявке ' + appNumber);
+        } else {
+            alert('Нет позиций со статусом «В работе» по заявке ' + appNumber);
+        }
+        return;
+    }
+
+    // Собираем TSV (разделитель — табуляция, чтобы Excel/LibreOffice корректно разложил по колонкам)
+    const lines = [];
+    
+
+    positions.forEach(item => {
+        // Санитизация: табы/переносы внутри значения заменим на пробелы
+        const name = String(item.name || '').replace(/[\t\r\n]+/g, ' ').trim();
+
+        let qty = String(item.quantity || '').trim();
+        const unit = String(item.unit || '').trim();
+        if (unit) qty = (qty ? qty + ' ' : '') + unit;
+
+        lines.push(name + '\t' + qty);
+    });
+
+    const text  = lines.join('\n');
+    const count = positions.length;
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text)
+            .then(() => {
+                if (typeof showAutosaveNotification === 'function') {
+                    showAutosaveNotification('Скопировано позиций «В работе»: ' + count);
+                }
+            })
+            .catch(err => {
+                console.error('Ошибка копирования:', err);
+                fallbackCopyText(text, count);
+            });
+    } else {
+        fallbackCopyText(text, count);
+    }
+}
+
+function fallbackCopyText(text, count) {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.top = '0';
+    ta.style.left = '0';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    try {
+        document.execCommand('copy');
+        if (typeof showAutosaveNotification === 'function') {
+            showAutosaveNotification('Скопировано позиций «В работе»: ' + count);
+        }
+    } catch (err) {
+        console.error('Ошибка копирования (fallback):', err);
+        alert('Не удалось скопировать данные в буфер обмена.');
+    }
+    document.body.removeChild(ta);
 }
 
 // ===== ГЕНЕРАТОР HTML ОТЧЁТА (обновлённый) =====
@@ -16796,20 +16910,23 @@ if (ids.length < 2) {
         if (orig._modeWrapped) return;
 
         const wrapped = function () {
-            const isModeActive =
-                (typeof showOverdueMode !== 'undefined' && showOverdueMode) ||
-                (typeof showWeeklyDeliveriesMode !== 'undefined' && showWeeklyDeliveriesMode);
+    const isModeActive =
+        (typeof showOverdueMode !== 'undefined' && showOverdueMode) ||
+        (typeof showWeeklyDeliveriesMode !== 'undefined' && showWeeklyDeliveriesMode);
 
-            const btn = document.getElementById('printApplicationReportBtn');
+    const btn     = document.getElementById('printApplicationReportBtn');
+    const copyBtn = document.getElementById('copyWorkingPositionsBtn');
 
-            if (isModeActive) {
-                if (btn) btn.style.setProperty('display', 'none', 'important');
-                return;
-            }
+    if (isModeActive) {
+        if (btn)     btn.style.setProperty('display', 'none', 'important');
+        if (copyBtn) copyBtn.style.setProperty('display', 'none', 'important');
+        return;
+    }
 
-            if (btn) btn.style.removeProperty('display');
-            return orig.apply(this, arguments);
-        };
+    if (btn)     btn.style.removeProperty('display');
+    if (copyBtn) copyBtn.style.removeProperty('display');
+    return orig.apply(this, arguments);
+};
         wrapped._modeWrapped = true;
         wrapped._orig = orig;
         window.updatePrintButtonVisibility = wrapped;
