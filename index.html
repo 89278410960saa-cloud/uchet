@@ -16030,7 +16030,7 @@ const selectedCount = visibleRows.filter(r =>
 ).length;
 
 // ★ Показываем кнопку только если выбрана хотя бы одна позиция
-if (selectedCount === 0) {
+if (selectedCount < 2) {
     setDisplay('none');
     return;
 }
@@ -16257,10 +16257,10 @@ function updateBulkMoreBtnState() {
         }
 
         const ids = getSelectedRecordIds();
-        if (ids.length === 0) {
-            alert('Сначала нажмите на номера позиций (в столбце ID), чтобы выбрать строки.\n\nНомер выбранной строки станет фиолетовым.');
-            return;
-        }
+if (ids.length < 2) {
+    alert('Для группового редактирования выберите минимум 2 позиции.\n\nНажмите на номера позиций (в столбце ID), чтобы выбрать строки — номер выбранной строки станет фиолетовым.');
+    return;
+}
 
         const first = accountingData.find(d => d.recordId === ids[0]);
         if (!first) return;
@@ -16305,10 +16305,10 @@ updateBulkMoreBtnState();
         event.preventDefault();
 
         const ids = getSelectedRecordIds();
-        if (ids.length === 0) {
-            alert('Не выбрано ни одной строки');
-            return;
-        }
+if (ids.length < 2) {
+    alert('Для группового редактирования нужно выбрать минимум 2 позиции');
+    return;
+}
 
         const activeRows = document.querySelectorAll('#bulkEditForm tr.bulk-row-active');
         if (activeRows.length === 0) {
