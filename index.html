@@ -5838,6 +5838,7 @@ function accBuildRow(item, ctx) {
         if (item.status === 'Иное') row.classList.add('status-other');
         if (item.status === 'Приход') row.classList.add('status-receipt');
         if (item.status === 'Поставка') row.classList.add('status-supply');
+        if (item.status === 'В работе') row.classList.add('status-working');
         
         // Создаем ячейку для контрагента с обработчиком клика
 const supplierCell = document.createElement('td');
@@ -5919,7 +5920,7 @@ quantityCell.style.verticalAlign = 'middle';
 quantityCell.innerHTML =
     `<div>${escapeString(item.quantity || '')}</div>` +
     (item.unit
-        ? `<div style="color: #c7d5e0;">${escapeString(item.unit)}</div>`
+        ? `<div>${escapeString(item.unit)}</div>`
         : '');
 
 const purchaseNameCell = createCell(item.purchaseName || '', '200px', 'multiline-cell');
@@ -9350,7 +9351,8 @@ function clearMailFilters() {
     tbody tr:nth-child(even) td { background: #f7f7f7 !important;
          -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     .footer { margin-top: 8px; font-size: 10px; color: #555; text-align: right; }
-</style></head><body>
+</style>
+</head><body>
     <div class="head">
         <div class="title">Почтовый реестр (Отправления)</div>
         <div class="meta">Дата печати: ${esc(now)}<br>Записей: ${rows.length}</div>
@@ -14589,6 +14591,27 @@ select.filter-active {
     margin-left: 0 !important;
 }
 
+</style>
+<style id="dim-positions-columns">
+/* ============================================================
+   Менее насыщенные значения в столбцах «Наименование позиции»
+   и «Кол-во» на странице «Позиции» — для строк, у которых
+   статус НЕ «В работе».
+   Для строк со статусом «В работе» яркость остаётся исходной
+   (#c7d5e0), как было задано глобальным правилом th, td.
+   ============================================================ */
+
+/* 1. Приглушённый цвет для всех строк, кроме «В работе» */
+#accountingTable tbody tr:not(.status-working) > td:nth-child(5),
+#accountingTable tbody tr:not(.status-working) > td:nth-child(6) {
+    color: #aab6c2 !important;
+}
+
+/* 2. Для строк «В работе» — исходная яркость */
+#accountingTable tbody tr.status-working > td:nth-child(5),
+#accountingTable tbody tr.status-working > td:nth-child(6) {
+    color: #c7d5e0 !important;
+}
 </style>
 
 <style>
