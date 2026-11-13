@@ -19196,5 +19196,24 @@ function patchEditPaymentRow() {
     else start();
 })();
 </script>
+
+<script>
+/* Esc — сброс фильтров на активной странице (то же действие, что и кнопка «Сбросить фильтры») */
+document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Escape' || e.defaultPrevented) return;
+    if (e.ctrlKey || e.altKey || e.metaKey || e.shiftKey) return;
+
+    // Если открыто модальное окно — Esc не трогаем
+    const modalOpen = Array.from(document.querySelectorAll('.modal')).some(function (m) {
+        return window.getComputedStyle(m).display !== 'none';
+    });
+    if (modalOpen) return;
+
+    const btn = document.querySelector('.page.active .reset-filter-btn');
+    if (!btn) return;
+
+    btn.click();
+});
+</script>
 </body>
 </html>
