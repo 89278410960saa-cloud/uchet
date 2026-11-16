@@ -3419,7 +3419,7 @@ body .main-content.main-content { padding-top: calc(var(--content-top, 56px) - 6
         </div>
 
         <div class="controls-dropdown">
-            <button onclick="showAddSettlementForm()" id="addSettlementBtn">Добавить запись</button>
+            <button onclick="showAddSettlementForm()" id="addSettlementBtn">Добавить рекламацию</button>
             <button onclick="clearSettlementFilters()" class="reset-filter-btn">Сбросить фильтры</button>
             <button onclick="exportToExcel('settlement')">Экспорт в Excel</button>
         </div>
@@ -3472,7 +3472,7 @@ body .main-content.main-content { padding-top: calc(var(--content-top, 56px) - 6
         </div>
 
         <div class="controls-dropdown">
-            <button onclick="showAddMailForm()" id="addMailBtn">Добавить запись</button>
+            <button onclick="showAddMailForm()" id="addMailBtn">Добавить отправление</button>
             <button onclick="clearMailFilters()" class="reset-filter-btn">Сбросить фильтры</button>
             <button onclick="printMailTable()">Печать</button>
             <button onclick="exportToExcel('mail')">Экспорт в Excel</button>
@@ -3548,7 +3548,7 @@ body .main-content.main-content { padding-top: calc(var(--content-top, 56px) - 6
         <th style="width: 67px;">Статус</th>
         <th style="width: 100.5px;">Заявка</th>
         <th style="width: 120.6px;">Контрагент</th>
-        <th style="width: 100px;">Документ</th>
+        <th style="width: 100px;">Договор</th>
         <th style="width: 167.5px;">Адрес</th>
         <th style="width: 100.5px;">Водитель</th>
     </tr>
@@ -4581,7 +4581,7 @@ const status     = 'В работе';   // ← статус всегда «В р
                 </div>
                 
                 <div style="margin-bottom: 10.05px;">
-    <label>Документ:</label>
+    <label>Договор:</label>
     <input type="text" id="editProxyDocument" list="contractsList" style="width: 100%;">
 </div>
                 
@@ -18541,9 +18541,9 @@ function applyDuplicateModeUI(isDuplicate) {
     var WRAP_ID = 'appQuickActions';
 
     var ACTIONS = [
-        { id: 'appQuickPaymentBtn',    icon: 'fa-money-bill-wave', text: 'Платёж',        title: 'Создать платёж по выбранной заявке',        run: function (a) { openPayment(a); } },
-        { id: 'appQuickProxyBtn',      icon: 'fa-file-signature',  text: 'Доверенность',  title: 'Создать доверенность по выбранной заявке',  run: function (a) { openProxy(a); } },
-        { id: 'appQuickSettlementBtn', icon: 'fa-exclamation-circle', text: 'Рекламация', title: 'Создать рекламацию по выбранной заявке',    run: function (a) { openSettlement(a); } }
+        { id: 'appQuickPaymentBtn',    icon: 'fa-money-bill-wave', text: '+ Платёж',        title: 'Создать платёж по выбранной заявке',        run: function (a) { openPayment(a); } },
+        { id: 'appQuickProxyBtn',      icon: 'fa-file-signature',  text: '+ Доверенность',  title: 'Создать доверенность по выбранной заявке',  run: function (a) { openProxy(a); } },
+        { id: 'appQuickSettlementBtn', icon: 'fa-exclamation-circle', text: '+ Рекламация', title: 'Создать рекламацию по выбранной заявке',    run: function (a) { openSettlement(a); } }
     ];
 
     /* ---------- Стили (такие же, как у кнопки Group edit) ---------- */
