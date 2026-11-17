@@ -7082,7 +7082,7 @@ function toggleWeeklyDeliveriesMode() {
             // Включаем режим поставок на неделю
             weeklyDeliveriesBtn.style.background = 'linear-gradient(135deg, #ffd700 0%, #ffa500 100%)';
             weeklyDeliveriesBtn.style.boxShadow = '0 0 10px rgba(255, 215, 0, 0.5)';
-            weeklyDeliveriesBtn.textContent = `Скрыть поставки на неделю (${count})`;
+            weeklyDeliveriesBtn.textContent = `Скрыть на неделю (${count})`;
             showWeeklyDeliveriesOnly();
         } else {
             // Выключаем режим поставок на неделю
@@ -7108,7 +7108,7 @@ function updateWeeklyDeliveriesButton() {
     
     // Обновляем текст кнопки с количеством
     if (showWeeklyDeliveriesMode) {
-        weeklyDeliveriesBtn.textContent = `Скрыть поставки на неделю (${count})`;
+        weeklyDeliveriesBtn.textContent = `Скрыть на неделю (${count})`;
     } else {
         weeklyDeliveriesBtn.textContent = `Поставки на неделю (${count})`;
     }
