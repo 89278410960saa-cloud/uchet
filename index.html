@@ -4204,8 +4204,8 @@ const status     = 'В работе';   // ← статус всегда «В р
         }
 
         // 2) Кол-во — только число (запятая или точка как разделитель)
-        if (!/^\d+([.,]\d+)?$/.test(qty)) {
-            errors.push(`Позиция №${rowNum}: «Кол-во» должно быть числом (например 10 или 10,5)`);
+        if (qty !== '-' && !/^\d+([.,]\d+)?$/.test(qty)) {
+            errors.push(`Позиция №${rowNum}: «Кол-во» должно быть числом (например 10 или 10,5) или «-»`);
             return;
         }
 
@@ -6586,8 +6586,8 @@ if (editPurchaseName && editPurchaseName.tagName === 'TEXTAREA') {
     }
 
     // 2) Кол-во — только число
-    if (!/^\d+([.,]\d+)?$/.test(quantityValue)) {
-        alert('Поле «Кол-во» должно содержать только число (например 10 или 10,5)');
+    if (quantityValue !== '-' && !/^\d+([.,]\d+)?$/.test(quantityValue)) {
+        alert('Поле «Кол-во» должно содержать число (например 10 или 10,5) или «-»');
         document.getElementById('editQuantity').focus();
         return;
     }
