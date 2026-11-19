@@ -18821,13 +18821,21 @@ document.addEventListener('keydown', function (e) {
         padding: 0 8px !important;          /* отступы только по бокам, сверху и снизу нет */
         box-sizing: border-box !important;
     }
+    /* Новая заявка — ширина как у остальных модалок (60%, до 640px) */
+    #newRequestModal .modal-content {
+        width: 60% !important;
+        max-width: 640px !important;
+        min-width: 320px !important;
+    }
+    #editAccountingModal .modal-content {
+        width: 100% !important;             /* почти на всю ширину (минус боковой отступ .modal) */
+        max-width: 1100px !important;       /* потолок ширины окна — меняйте это значение */
+        min-width: 0 !important;
+    }
     #editAccountingModal .modal-content,
     #newRequestModal .modal-content {
         height: 100% !important;            /* растянуто на всю высоту страницы */
         max-height: 100% !important;
-        width: 100% !important;             /* почти на всю ширину (минус отступ .modal) */
-        max-width: 1100px !important;       /* потолок ширины окна — меняйте это значение */
-        min-width: 0 !important;
         margin: 0 !important;
         border-radius: 0 !important;
         box-sizing: border-box !important;
