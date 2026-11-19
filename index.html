@@ -15952,6 +15952,38 @@ function initFiltersHighlight() {
 #bulkEditBtn > i.fa {
     margin-right: 5px !important;
 }
+
+/* Кнопка «Выделить все» — слева от Group edit */
+#bulkSelectAllBtn {
+    background: rgba(100, 70, 150, 0.30) !important;
+    color: #c7d5e0 !important;
+    border: 1px solid transparent !important;
+    border-radius: 3px !important;
+    height: 22px !important;
+    min-height: 22px !important;
+    max-height: 22px !important;
+    padding: 0 10px !important;
+    font-size: 10px !important;
+    font-weight: bold !important;
+    cursor: pointer !important;
+    align-items: center;
+    justify-content: center;
+    margin: 0 !important;
+    flex: 1 1 0 !important;
+    width: auto !important;
+    min-width: 0 !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    box-sizing: border-box !important;
+    transition: border-color .15s, background .15s !important;
+}
+#bulkSelectAllBtn:hover {
+    border-color: #66c0f4 !important;
+    background: rgba(100, 70, 150, 0.50) !important;
+    transform: none !important;
+}
+#bulkSelectAllBtn > i { margin-right: 3px !important; }
         `;
         const style = document.createElement('style');
         style.id = 'bulkEditStyles';
@@ -16050,48 +16082,100 @@ function initFiltersHighlight() {
     }
 
     /* ---------- 6. Обновление UI (кнопка + счётчик) ---------- */
+    function getVisibleRows() {
+        const tbody = document.querySelector('#accountingTable tbody');
+        if (!tbody) return [];
+        return Array.from(tbody.querySelectorAll('tr')).filter(row =>
+            row.style.display !== 'none' &&
+            !row.hasAttribute('data-no-results') &&
+            row.cells.length > 1 &&
+            row.querySelector('td.id-cell.has-row-number')
+        );
+    }
+
+    /* Кнопка «Выделить все» — слева от Group edit */
+    function ensureSelectAllBtn() {
+        const groupBtn = document.getElementById('bulkEditBtn');
+        if (!groupBtn || !groupBtn.parentNode) return null;
+        let btn = document.getElementById('bulkSelectAllBtn');
+        if (!btn) {
+            btn = document.createElement('button');
+            btn.id = 'bulkSelectAllBtn';
+            btn.type = 'button';
+            btn.style.setProperty('display', 'none', 'important');
+            btn.onclick = function (e) {
+                e.preventDefault();
+                toggleSelectAllRows();
+            };
+        }
+        // Всегда стоит непосредственно перед Group edit (в т.ч. после переноса в панель быстрых действий)
+        if (btn.parentNode !== groupBtn.parentNode || btn.nextSibling !== groupBtn) {
+            groupBtn.parentNode.insertBefore(btn, groupBtn);
+        }
+        return btn;
+    }
+
+    function toggleSelectAllRows() {
+        const admin = typeof isAdmin !== 'undefined' && isAdmin;
+        if (!admin) return;
+        const rows = getVisibleRows();
+        if (!rows.length) return;
+        const allSelected = rows.every(r => r.classList.contains('bulk-row-selected'));
+        const target = !allSelected;
+        rows.forEach(r => {
+            r.classList.toggle('bulk-row-selected', target);
+            const numEl = r.querySelector('td.id-cell .row-number');
+            if (numEl) numEl.classList.toggle('bulk-selected', target);
+        });
+        updateBulkUI();
+    }
+
     function updateBulkUI() {
         const btn = document.getElementById('bulkEditBtn');
         if (!btn) return;
+        const selAllBtn = ensureSelectAllBtn();
 
         const admin     = typeof isAdmin !== 'undefined' && isAdmin;
         const appActive = isApplicationFilterActive();
 
         const setDisplay = (val) => btn.style.setProperty('display', val, 'important');
+        const setSelAllDisplay = (val) => {
+            if (selAllBtn) selAllBtn.style.setProperty('display', val, 'important');
+        };
 
-        if (!admin || !appActive) {
+        const visibleRows = (admin && appActive) ? getVisibleRows() : [];
+
+        if (!admin || !appActive || visibleRows.length === 0) {
+            setDisplay('none');
+            setSelAllDisplay('none');
+            return;
+        }
+
+        const selectedCount = visibleRows.filter(r =>
+            r.classList.contains('bulk-row-selected')
+        ).length;
+
+        // ★ «Выделить все» доступна всегда, пока активен режим группового редактирования
+        if (selAllBtn) {
+            const allSelected = selectedCount === visibleRows.length;
+            selAllBtn.innerHTML = allSelected
+                ? '<i class="fas fa-times-circle"></i>Снять выделение'
+                : '<i class="fas fa-check-double"></i>Выделить все';
+            selAllBtn.title = allSelected
+                ? 'Снять выделение со всех позиций'
+                : 'Выделить все отображаемые позиции (' + visibleRows.length + ')';
+            setSelAllDisplay('inline-flex');
+        }
+
+        // ★ Group edit — только если выбрано хотя бы две позиции
+        if (selectedCount < 2) {
             setDisplay('none');
             return;
         }
 
-        const tbody = document.querySelector('#accountingTable tbody');
-        const visibleRows = tbody
-            ? Array.from(tbody.querySelectorAll('tr')).filter(row =>
-                row.style.display !== 'none' &&
-                !row.hasAttribute('data-no-results') &&
-                row.cells.length > 1 &&
-                row.querySelector('td.id-cell.has-row-number')
-              )
-            : [];
-
-        if (visibleRows.length === 0) {
-            setDisplay('none');
-            return;
-        }
-
-const selectedCount = visibleRows.filter(r =>
-    r.classList.contains('bulk-row-selected')
-).length;
-
-// ★ Показываем кнопку только если выбрана хотя бы одна позиция
-if (selectedCount < 2) {
-    setDisplay('none');
-    return;
-}
-
-setDisplay('inline-flex');
-btn.innerHTML = `<i class="fas fa-layer-group" style="margin-right:5px;"></i>Group edit (${selectedCount})`;
-}
+        setDisplay('inline-flex');
+        btn.innerHTML = `<i class="fas fa-layer-group" style="margin-right:5px;"></i>Group edit (${selectedCount})`;
+    }
 
     /* ---------- 7. Планировщик ---------- */
     let syncTimer = null;
@@ -16457,6 +16541,8 @@ if (ids.length < 2) {
         }, 2000);
 
         setTimeout(scheduleSync, 800);
+        setTimeout(scheduleSync, 1600);
+        setTimeout(scheduleSync, 3000);
     }
 
     if (document.readyState === 'loading') {
@@ -18713,6 +18799,36 @@ document.addEventListener('keydown', function (e) {
    и стоит на том же расстоянии от панели кнопок, что и фильтры в обычном режиме ===== */
 #accounting .controls-container:has(.controls-filters-row[style*="display: none"]) #quickSupplierFilters {
     margin-top: 0 !important;
+}
+</style>
+<style id="centered-position-modals">
+/* ============================================================
+   Модалки страницы «Позиции» (добавление/редактирование записи,
+   новая заявка, выбор режима добавления) — по центру экрана,
+   а не прижатыми к правому краю
+   ============================================================ */
+@keyframes centerModalPop {
+    from { transform: scale(0.96); opacity: 0; }
+    to   { transform: scale(1);    opacity: 1; }
+}
+@media (min-width: 769px) {
+    #editAccountingModal,
+    #newRequestModal,
+    #addModeChoiceModal {
+        justify-content: center !important;
+        align-items: center !important;
+        padding: 20px !important;
+        box-sizing: border-box !important;
+    }
+    #editAccountingModal .modal-content,
+    #newRequestModal .modal-content,
+    #addModeChoiceModal .modal-content {
+        height: auto !important;
+        max-height: calc(100vh - 40px) !important;
+        margin: 0 !important;
+        border-radius: 6px !important;
+        animation: centerModalPop 0.2s ease-out !important;
+    }
 }
 </style>
 </body>
