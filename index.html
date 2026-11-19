@@ -18804,32 +18804,102 @@ document.addEventListener('keydown', function (e) {
 <style id="centered-position-modals">
 /* ============================================================
    Модалки страницы «Позиции» (добавление/редактирование записи,
-   новая заявка, выбор режима добавления) — по центру экрана,
-   а не прижатыми к правому краю
+   новая заявка): по центру, на всю высоту страницы, с минимальными
+   отступами по бокам. Не зависят от масштаба браузера.
+   Выбор режима («Что добавить?») здесь не трогаем: он справа, как окна
+   контрагента и платежа.
    ============================================================ */
 @keyframes centerModalPop {
-    from { transform: scale(0.96); opacity: 0; }
+    from { transform: scale(0.98); opacity: 0; }
     to   { transform: scale(1);    opacity: 1; }
 }
 @media (min-width: 769px) {
     #editAccountingModal,
-    #newRequestModal,
-    #addModeChoiceModal {
+    #newRequestModal {
         justify-content: center !important;
         align-items: center !important;
-        padding: 20px !important;
+        padding: 8px !important;            /* маленькие отступы по краям экрана */
         box-sizing: border-box !important;
     }
     #editAccountingModal .modal-content,
-    #newRequestModal .modal-content,
-    #addModeChoiceModal .modal-content {
-        height: auto !important;
-        max-height: calc(100vh - 40px) !important;
+    #newRequestModal .modal-content {
+        height: 100% !important;            /* растянуто на всю высоту страницы */
+        max-height: 100% !important;
+        width: 100% !important;             /* почти на всю ширину (минус отступ .modal) */
+        max-width: 1400px !important;       /* потолок, чтобы на очень широких экранах не расползалось */
+        min-width: 0 !important;
         margin: 0 !important;
         border-radius: 6px !important;
+        box-sizing: border-box !important;
         animation: centerModalPop 0.2s ease-out !important;
     }
 }
 </style>
+<script id="modal-hotkeys">
+/* Горячие клавиши в модальных окнах:
+   Esc   — закрыть верхнее открытое модальное окно;
+   Enter — сохранить (отправить форму) верхнего окна.
+   В многострочных полях Enter переносит строку, сохранение — Ctrl+Enter.
+   В полях с подсказками (datalist) Enter оставлен браузеру, чтобы выбор подсказки не сохранял форму. */
+(function () {
+    function visibleModals() {
+        return Array.prototype.filter.call(document.querySelectorAll('.modal'), function (m) {
+            var cs = window.getComputedStyle(m);
+            return cs.display !== 'none' && cs.visibility !== 'hidden';
+        });
+    }
+    function topModal() {
+        var list = visibleModals();
+        if (!list.length) return null;
+        var best = list[0], bestZ = parseInt(window.getComputedStyle(best).zIndex, 10) || 0;
+        list.forEach(function (m) {
+            var z = parseInt(window.getComputedStyle(m).zIndex, 10) || 0;
+            if (z >= bestZ) { best = m; bestZ = z; }   // при равенстве — тот, что ниже в DOM
+        });
+        return best;
+    }
+    function closeModal(m) {
+        var x = m.querySelector('.close');
+        if (x) { x.click(); return true; }
+        var btns = m.querySelectorAll('button');
+        for (var i = 0; i < btns.length; i++) {
+            if (/^\s*(Отмена|Закрыть)\s*$/i.test(btns[i].textContent)) { btns[i].click(); return true; }
+        }
+        return false;
+    }
+
+    document.addEventListener('keydown', function (e) {
+        if (e.defaultPrevented || e.isComposing) return;
+        if (e.key !== 'Escape' && e.key !== 'Enter') return;
+
+        var m = topModal();
+        if (!m) return;
+
+        if (e.key === 'Escape') {
+            if (e.ctrlKey || e.altKey || e.metaKey || e.shiftKey) return;
+            if (closeModal(m)) e.preventDefault();
+            return;
+        }
+
+        /* Enter */
+        if (e.altKey || e.metaKey || e.shiftKey) return;
+        var form = m.querySelector('form');
+        if (!form) return;
+
+        var t = e.target, tag = t && t.tagName;
+        if (tag === 'TEXTAREA') {
+            if (!e.ctrlKey) return;                  // обычный Enter — перенос строки
+        } else {
+            if (e.ctrlKey) return;
+            if (tag === 'BUTTON' || tag === 'A') return;                  // Enter на кнопке — её собственное действие
+            if (tag === 'INPUT' && (t.hasAttribute('list') || /^(button|submit|reset|file)$/i.test(t.type))) return;
+        }
+        if (!m.contains(t) && t !== document.body) return;
+
+        e.preventDefault();
+        if (form.requestSubmit) form.requestSubmit(); else form.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+    });
+})();
+</script>
 </body>
 </html>
