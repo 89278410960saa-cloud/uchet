@@ -2154,7 +2154,7 @@ tr.status-supply {
 
 /* ФИКСИРОВАННЫЕ ШИРИНЫ СТОЛБЦОВ ДЛЯ ТАБЛИЦЫ КОНТРАГЕНТОВ */
 #counterpartiesTable th:nth-child(1) { width: 100.5px !important; } /* Контрагент */
-#counterpartiesTable th:nth-child(2) { width: 33.5px !important; } /* ИНН */
+#counterpartiesTable th:nth-child(2) { width: 43.5px !important; } /* ИНН */
 #counterpartiesTable th:nth-child(3) { width: 80.4px !important; } /* Телефон */
 #counterpartiesTable th:nth-child(4) { width: 87.1px !important; } /* Контактное лицо */
 #counterpartiesTable th:nth-child(5) { width: 73.7px !important; } /* Email */
@@ -2163,7 +2163,7 @@ tr.status-supply {
 
 /* Применить те же ширины к ячейкам */
 #counterpartiesTable td:nth-child(1) { width: 100.5px !important; }
-#counterpartiesTable td:nth-child(2) { width: 33.5px !important; }
+#counterpartiesTable td:nth-child(2) { width: 43.5px !important; }
 #counterpartiesTable td:nth-child(3) { width: 80.4px !important; }
 #counterpartiesTable td:nth-child(4) { width: 87.1px !important; }
 #counterpartiesTable td:nth-child(5) { width: 73.7px !important; }
@@ -3319,7 +3319,7 @@ body .main-content.main-content { padding-top: calc(var(--content-top, 56px) - 6
                 <thead>
         <tr>
             <th style="width: 100.5px;">Контрагент</th>
-            <th style="width: 33.5px;">ИНН</th>
+            <th style="width: 43.5px;">ИНН</th>
             <th style="width: 80.4px;">Телефон</th>
             <th style="width: 87.1px;">Контактное лицо</th>
             <th style="width: 73.7px;">Email</th>
@@ -5860,7 +5860,7 @@ docNumberCell.innerHTML =
     `<a href="#" class="application-filter-link" ` +
     `data-application="${encodeURIComponent(docText)}" ` +
     `title="Показать только эту заявку" ` +
-    `style="text-decoration: underline; cursor: pointer; display: block; color: inherit;">${innerHtml}</a>`;
+    `style="text-decoration: none; cursor: pointer; display: block; color: inherit;">${innerHtml}</a>`;
         const statusCell = createCell(item.status || '', '90px');
 
         
@@ -8482,6 +8482,26 @@ if (foundInAccounting && contractText) {
             <td>${linkHtml}</td>
         `;
         
+        // Контрагент: клик открывает окно с информацией о контрагенте (как на странице «Позиции»)
+        const paySupplierCell = row.querySelector('td:nth-child(4)');
+        if (paySupplierCell && supplier.trim()) {
+            paySupplierCell.textContent = supplier;
+            paySupplierCell.style.cursor = 'pointer';
+            const blCp = ctx.blacklist && ctx.blacklist.has(accNormName(supplier));
+            if (blCp) {
+                paySupplierCell.style.color = '#be463c';
+                paySupplierCell.title = '⚠️ Контрагент в чёрном списке. Кликните для подробностей';
+            } else {
+                paySupplierCell.style.color = '#66c0f4';
+                paySupplierCell.title = 'Кликните для просмотра информации о контрагенте';
+            }
+            paySupplierCell.addEventListener('click', function (e) {
+                e.stopPropagation();
+                e.preventDefault();
+                showCounterpartyInfo(supplier);
+            });
+        }
+
         // Обработчик для копирования ссылки
         if (item.link) {
             const icon = row.querySelector('.link-icon');
@@ -8526,7 +8546,11 @@ LZ_CONFIGS.pay = () => ({
         today.setHours(0, 0, 0, 0);
         const accContracts = new Set();
         accountingData.forEach(a => { if (a.contract) accContracts.add(a.contract.trim()); });
-        return { today, accContracts };
+        const blacklist = new Set();
+        counterpartiesData.forEach(cp => {
+            if (cp.blacklisted && cp.supplier) blacklist.add(accNormName(cp.supplier));
+        });
+        return { today, accContracts, blacklist };
     },
     index: it => {
         const d = parseDate(it.date);
@@ -14962,6 +14986,7 @@ select.filter-active {
 @media (min-width: 769px) {
     #editCounterpartyModal .modal-content,
     #editPaymentModal .modal-content,
+    #deferredPaymentNotice .modal-content,
     #editProxyModal .modal-content,
     #editSettlementModal .modal-content,
     #editMailModal .modal-content {
@@ -17847,7 +17872,7 @@ function applyDuplicateModeUI(isDuplicate) {
                 <div class="offer-list">${rows || '<div style="color:#8f98a0;">—</div>'}</div>
                 <div class="offer-actions">
                     <button type="button" class="offer-btn-yes" id="offerBtnYes">Да, установить</button>
-                    <button type="button" class="offer-btn-no"  id="offerBtnNo">Нет, оставить как есть</button>
+                    <button type="button" class="offer-btn-no"  id="offerBtnNo">Отмена</button>
                 </div>
             </div>
         `;
@@ -17859,8 +17884,7 @@ function applyDuplicateModeUI(isDuplicate) {
             onConfirm();
         });
         panel.querySelector('#offerBtnNo').addEventListener('click', function () {
-            panel.remove();
-            onCancel();
+            panel.remove();   // Отмена: закрываем вопрос и возвращаемся к форме платежа, ничего не сохраняя
         });
 
         /* --- На время показа панели блокируем закрытие модалки кликом по фону --- */
@@ -18503,40 +18527,35 @@ function patchEditPaymentRow() {
         if (dateEl) setTimeout(function () { dateEl.focus(); }, 50);
     }
 
-    /* ---------- Уведомление ---------- */
+    /* ---------- Уведомление (модальное окно, как «Добавить платёж») ---------- */
+    function closeBox() {
+        var box = document.getElementById(BOX_ID);
+        if (!box) return;
+        box.style.display = 'none';
+        var list = box.querySelector('#' + BOX_ID + 'List');
+        if (list) list.innerHTML = '';
+    }
+
     function getBox() {
         var box = document.getElementById(BOX_ID);
         if (box) return box;
         box = document.createElement('div');
         box.id = BOX_ID;
-        box.style.cssText = 'position:fixed;right:16px;bottom:16px;z-index:100000;width:340px;max-width:calc(100vw - 32px);' +
-            'background:#1b2838;color:#c7d5e0;border:1px solid #66c0f4;border-radius:6px;' +
-            'box-shadow:0 6px 24px rgba(0,0,0,.55);font-size:12px;display:none;';
+        box.className = 'modal';
+        box.style.display = 'none';
         box.innerHTML =
-            '<div style="display:flex;align-items:center;padding:8px 10px;border-bottom:1px solid rgba(102,192,244,.3);">' +
-              '<b style="flex:1;color:#66c0f4;">Создайте платёж по заявке</b>' +
-              '<span id="' + BOX_ID + 'Close" style="cursor:pointer;font-size:18px;line-height:1;padding:0 2px;">×</span>' +
-            '</div>' +
-            '<div id="' + BOX_ID + 'List" style="max-height:50vh;overflow:auto;"></div>';
-        document.body.appendChild(box);
-        box.querySelector('#' + BOX_ID + 'Close').onclick = function () {
-            box.style.display = 'none';
-            box.querySelector('#' + BOX_ID + 'List').innerHTML = '';
-        };
+            '<div class="modal-content">' +
+              '<span class="close" id="' + BOX_ID + 'Close">×</span>' +
+              '<h2 style="text-align: center;">Создайте платёж по заявке</h2>' +
+              '<div id="' + BOX_ID + 'List" style="display:flex;flex-direction:column;gap:10.05px;margin-top:10.05px;"></div>' +
+            '</div>';
+        // ставим ПЕРЕД окном платежа: когда оно откроется по кнопке, то окажется поверх уведомления
+        var payModal = document.getElementById('editPaymentModal');
+        if (payModal && payModal.parentNode) payModal.parentNode.insertBefore(box, payModal);
+        else document.body.appendChild(box);
+        box.querySelector('#' + BOX_ID + 'Close').onclick = closeBox;
         return box;
     }
-
-    /* Правый край уведомления = правая граница табличной части страницы «Позиции» */
-    function alignBox() {
-        var box = document.getElementById(BOX_ID);
-        if (!box) return;
-        var tbl = document.getElementById('accountingTable');
-        var cont = tbl && tbl.closest ? tbl.closest('.table-scroll-container') : null;
-        var r = cont ? cont.getBoundingClientRect() : null;
-        var right = (r && r.width > 0) ? Math.max(0, Math.round(document.documentElement.clientWidth - r.right)) : 16;
-        box.style.right = right + 'px';
-    }
-    window.addEventListener('resize', alignBox);
 
     function addGroupToBox(g) {
         var box  = getBox();
@@ -18547,14 +18566,14 @@ function patchEditPaymentRow() {
         if (!dup) {
             var row = document.createElement('div');
             row.setAttribute('data-key', key);
-            row.style.cssText = 'padding:8px 10px;border-bottom:1px solid rgba(255,255,255,.07);';
+            row.style.cssText = 'padding:8px 10px;border:1px solid #3d4450;border-radius:3px;background:rgba(0,0,0,.18);' +
+                                'display:flex;flex-direction:column;gap:4px;';
             row.innerHTML =
-                '<div>Заявка: <b>' + esc(g.docNumber) + '</b></div>' +
-                '<div>Контрагент: <b>' + esc(g.supplier || '-') + '</b></div>' +
-                '<div>Оплата: <b>' + esc(g.paymentTerms) + '</b></div>' +
-                '<button type="button" style="margin-top:6px;width:100%;height:24px;cursor:pointer;font-size:11px;font-weight:bold;' +
-                  'background:rgba(100,70,150,.45);color:#c7d5e0;border:1px solid #66c0f4;border-radius:3px;">' +
-                  '<i class="fas fa-money-bill-wave" style="margin-right:4px;"></i>Создать платёж</button>';
+                '<div><label>Заявка:</label> <b>' + esc(g.docNumber) + '</b></div>' +
+                '<div><label>Контрагент:</label> <b>' + esc(g.supplier || '-') + '</b></div>' +
+                '<div><label>Оплата:</label> <b>' + esc(g.paymentTerms) + '</b></div>' +
+                '<button type="button" style="margin-top:6.7px;width:100%;cursor:pointer;font-weight:bold;">' +
+                  '<i class="fas fa-money-bill-wave" style="margin-right:6px;"></i>Создать платёж</button>';
             row.querySelector('button').onclick = function () {
                 openPaymentFor(g);
                 row.remove();
@@ -18562,8 +18581,7 @@ function patchEditPaymentRow() {
             };
             list.appendChild(row);
         }
-        box.style.display = 'block';
-        alignBox();
+        box.style.display = 'flex';
     }
 
     /* ---------- Отслеживание смены статуса ---------- */
