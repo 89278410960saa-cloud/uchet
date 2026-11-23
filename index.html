@@ -5835,6 +5835,7 @@ if (blacklistedCp) {
             showCounterpartyInfo(item.supplier || '');
         });
         
+        
         // Создаем все ячейки строки
         const departmentCell = createCell(item.department || '', '150px');
 const docNumberCell = document.createElement('td');
@@ -8482,24 +8483,25 @@ if (foundInAccounting && contractText) {
             <td>${linkHtml}</td>
         `;
         
-        // Контрагент: клик открывает окно с информацией о контрагенте (как на странице «Позиции»)
+        // Контрагент: ссылка только на само значение (как в столбце «Счет»), клик открывает информацию о контрагенте
         const paySupplierCell = row.querySelector('td:nth-child(4)');
         if (paySupplierCell && supplier.trim()) {
-            paySupplierCell.textContent = supplier;
-            paySupplierCell.style.cursor = 'pointer';
             const blCp = ctx.blacklist && ctx.blacklist.has(accNormName(supplier));
-            if (blCp) {
-                paySupplierCell.style.color = '#be463c';
-                paySupplierCell.title = '⚠️ Контрагент в чёрном списке. Кликните для подробностей';
-            } else {
-                paySupplierCell.style.color = '#66c0f4';
-                paySupplierCell.title = 'Кликните для просмотра информации о контрагенте';
-            }
-            paySupplierCell.addEventListener('click', function (e) {
+            const supLink = document.createElement('a');
+            supLink.href = '#';
+            supLink.className = 'supplier-info-link';
+            supLink.textContent = supplier;
+            supLink.style.cssText = 'text-decoration: underline; cursor: pointer; color: ' + (blCp ? '#be463c' : '#66c0f4') + ';';
+            supLink.title = blCp
+                ? '⚠️ Контрагент в чёрном списке. Кликните для подробностей'
+                : 'Кликните для просмотра информации о контрагенте';
+            supLink.addEventListener('click', function (e) {
                 e.stopPropagation();
                 e.preventDefault();
                 showCounterpartyInfo(supplier);
             });
+            paySupplierCell.textContent = '';
+            paySupplierCell.appendChild(supLink);
         }
 
         // Обработчик для копирования ссылки
