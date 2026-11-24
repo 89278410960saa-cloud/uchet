@@ -498,24 +498,48 @@ body:not(.app-ready) .main-content {
     width: 100% !important;
 }
 
-/* Новые ширины столбцов (9 столбцов) */
-#settlementTable th:nth-child(1), #settlementTable td:nth-child(1) { width: 60px !important; }  /* Дата (уменьшено) */
-#settlementTable th:nth-child(2), #settlementTable td:nth-child(2) { width: 60px !important; }  /* Статус (уменьшено) */
+/* Ширины столбцов (7 столбцов) */
+#settlementTable th:nth-child(1), #settlementTable td:nth-child(1) { width: 60px !important; }  /* Дата */
+#settlementTable th:nth-child(2), #settlementTable td:nth-child(2) { width: 60px !important; }  /* Статус */
 #settlementTable th:nth-child(3), #settlementTable td:nth-child(3) { width: 100px !important; } /* Контрагент */
-#settlementTable th:nth-child(4), #settlementTable td:nth-child(4) { width: 95px !important; }  /* Договор (увеличено) */
-#settlementTable th:nth-child(5), #settlementTable td:nth-child(5) { width: 95px !important; }  /* Заявка (уменьшено, = Договор) */
-#settlementTable th:nth-child(6), #settlementTable td:nth-child(6) { width: 140px !important; } /* Замечание */
-#settlementTable th:nth-child(7), #settlementTable td:nth-child(7) { width: 70px !important; }  /* № Исходящее */
-#settlementTable th:nth-child(8), #settlementTable td:nth-child(8) { width: 70px !important; }  /* № Входящее */
-#settlementTable th:nth-child(9), #settlementTable td:nth-child(9) { width: 140px !important; } /* Примечание */
+#settlementTable th:nth-child(4), #settlementTable td:nth-child(4) { width: 95px !important; }  /* Договор */
+#settlementTable th:nth-child(5), #settlementTable td:nth-child(5) { width: 95px !important; }  /* Заявка */
+#settlementTable th:nth-child(6), #settlementTable td:nth-child(6) { width: 210px !important; } /* Примечание / Замечание */
+#settlementTable th:nth-child(7), #settlementTable td:nth-child(7) { width: 100px !important; } /* № Вход. / Исх. */
 
-/* Перенос длинных номеров договоров в Рекламациях */
-#settlementTable td:nth-child(4) {
+/* Два значения в одной ячейке: второе — под первым */
+#settlementTable td .stk {
     white-space: normal !important;
     word-break: break-word !important;
     overflow-wrap: break-word !important;
 }
-#settlementTable td:nth-child(4) a {
+#settlementTable td .stk-empty { color: #5c6772; }
+
+/* Две половины строго равной высоты: разделитель всегда по центру строки */
+#settlementTable td .stk-wrap {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+}
+#settlementTable td .stk-top { align-self: end;   padding-bottom: 3px; }
+#settlementTable td .stk-bot { align-self: start; padding-top: 3px; }
+
+/* Пунктир рисуется на самой ячейке по её вертикальному центру —
+   в обоих столбцах на одной высоте, как бы ни переносился текст в соседних */
+#settlement #settlementTable tbody td:nth-child(6),
+#settlement #settlementTable tbody td:nth-child(7) {
+    background-image: repeating-linear-gradient(90deg, #3d4450 0 4px, transparent 4px 7px) !important;
+    background-repeat: no-repeat !important;
+    background-size: calc(100% - 10px) 1px !important;
+    background-position: 5px 50% !important;
+}
+
+/* Перенос длинных номеров договоров в Рекламациях */
+#settlementTable td:nth-child(5) {
+    white-space: normal !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+}
+#settlementTable td:nth-child(5) a {
     white-space: normal !important;
     word-break: break-word !important;
     overflow-wrap: break-word !important;
@@ -1393,35 +1417,32 @@ body:not(.app-ready) .main-content {
     width: 100% !important;
 }
 
-/* Ширина столбцов (подберите под свои данные) */
+/* Ширина столбцов (7 столбцов) */
 #paymentsTable th:nth-child(1), #paymentsTable td:nth-child(1) { width: 90px !important; }  /* Дата */
 #paymentsTable th:nth-child(2), #paymentsTable td:nth-child(2) { width: 80px !important; }  /* Статус */
 #paymentsTable th:nth-child(3), #paymentsTable td:nth-child(3) { width: 100px !important; } /* Заявка */
 #paymentsTable th:nth-child(4), #paymentsTable td:nth-child(4) { width: 120px !important; } /* Контрагент */
 #paymentsTable th:nth-child(5), #paymentsTable td:nth-child(5) { width: 110px !important; } /* Сумма */
-#paymentsTable th:nth-child(6), #paymentsTable td:nth-child(6) { width: 100px !important; } /* Счет */
-#paymentsTable th:nth-child(7), #paymentsTable td:nth-child(7) { width: 100px !important; } /* Договор */  /* Ссылка (иконка) */
+#paymentsTable th:nth-child(6), #paymentsTable td:nth-child(6) { width: 120px !important; } /* Счет (+ иконка ссылки справа) */
+#paymentsTable th:nth-child(7), #paymentsTable td:nth-child(7) { width: 100px !important; } /* Договор */
 
-/* Задаём фиксированную ширину для столбца "Ссылка" */
-#paymentsTable th:nth-child(8),
-#paymentsTable td:nth-child(8) {
-    max-width: 30px !important;
-    width: 30px !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
-    white-space: nowrap !important;
+/* Ячейка «Счет»: значение слева, иконка ссылки (скрепка) — по правому краю */
+#paymentsTable .pay-acc-cell {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 4px;
+    width: 100%;
 }
-#paymentsTable td:nth-child(8) {
-    padding: 4px 2px !important;
-    text-align: center !important;
+#paymentsTable .pay-acc-text {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow-wrap: break-word;
+    word-break: break-word;
 }
-
-/* Саму ссылку внутри ячейки тоже обрезаем */
-#paymentsTable td:nth-child(8) a {
-    display: block !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
-    white-space: nowrap !important;
+#paymentsTable .pay-acc-cell .link-icon {
+    flex: 0 0 auto;
+    margin-left: auto;
 }
         /* Стили таблицы */
         table {
@@ -3379,11 +3400,10 @@ body .main-content.main-content { padding-top: calc(var(--content-top, 56px) - 6
 </th>
         <th style="width: 60px;">Счет</th>
         <th style="width: 60px;">Договор</th>
-        <th style="width: 10px;">Ссылка</th>
     </tr>
 </thead>
                 <tbody id="paymentsTableBody"><tr>
-            <td colspan="8" style="text-align: center; color: rgb(143, 152, 160); padding: 20px; width: 174px;">
+            <td colspan="7" style="text-align: center; color: rgb(143, 152, 160); padding: 20px; width: 174px;">
                 Нет данных о платежах. Добавьте первую запись.
             </td>
         </tr></tbody>
@@ -3422,17 +3442,15 @@ body .main-content.main-content { padding-top: calc(var(--content-top, 56px) - 6
     <tr>
         <th style="width: 60px;">Дата</th>
         <th style="width: 60px;">Статус</th>
+        <th style="width: 95px;">Заявка</th>
         <th style="width: 100px;">Контрагент</th>
         <th style="width: 95px;">Договор</th>
-        <th style="width: 95px;">Заявка</th>
-        <th style="width: 140px;">Замечание</th>
-        <th style="width: 70px;">№ Исходящее</th>
-        <th style="width: 70px;">№ Входящее</th>
-        <th style="width: 140px;">Примечание</th>
+        <th style="width: 210px;">Примечание / Замечание</th>
+        <th style="width: 100px;">№ Вход. / Исх.</th>
     </tr>
 </thead>
                 <tbody id="settlementTableBody"><tr>
-                    <td colspan="9" style="text-align: center; color: rgb(143, 152, 160); padding: 20px; width: 134px;">
+                    <td colspan="7" style="text-align: center; color: rgb(143, 152, 160); padding: 20px; width: 134px;">
                         Нет данных об урегулировании. Добавьте первую запись.
                     </td>
                 </tr></tbody>
@@ -3989,6 +4007,20 @@ body .main-content.main-content { padding-top: calc(var(--content-top, 56px) - 6
     font-family: Arial, sans-serif !important;
 }
 
+/* ★ «Наименование позиции»: текст по центру по вертикали (как в ID),
+   поле можно растягивать вниз — вместе с ним растёт строка */
+#newRequestModal #newRequestPositions textarea.pos-name {
+    display: block !important;
+    height: 34px !important;
+    min-height: 34px !important;
+    max-height: none !important;
+    padding: 9px 4px !important;      /* центр одной строки; при росте пересчитывается скриптом */
+    line-height: 1.2 !important;
+    resize: vertical !important;      /* тянуть за правый нижний угол */
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+}
+
 </style>
 
 <!-- Модалка выбора: что добавить -->
@@ -4130,6 +4162,86 @@ function addNewRequestPositionRow(id, name, qty, unit) {
     const first = tr.querySelector('.pos-id');
     if (first) first.focus();
 }
+
+// ★ «Наименование позиции»: центрирование текста по вертикали и растягивание вниз
+(function () {
+    var tbody = document.getElementById('newRequestPositions');
+    if (!tbody) return;
+
+    var MIN_H = 34, BORDER = 2, MIN_PAD = 3, mirror = null;
+
+    function getMirror() {
+        if (!mirror) {
+            mirror = document.createElement('div');
+            mirror.style.cssText = 'position:absolute;left:-9999px;top:0;visibility:hidden;pointer-events:none;' +
+                'box-sizing:content-box;padding:0;border:0;white-space:pre-wrap;overflow-wrap:break-word;word-wrap:break-word;';
+            document.body.appendChild(mirror);
+        }
+        return mirror;
+    }
+
+    function contentHeight(ta) {
+        var cs = getComputedStyle(ta);
+        var w = ta.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+        if (!(w > 0)) return null;
+        var m = getMirror();
+        m.style.width = w + 'px';
+        m.style.fontFamily = cs.fontFamily;
+        m.style.fontSize = cs.fontSize;
+        m.style.fontWeight = cs.fontWeight;
+        m.style.letterSpacing = cs.letterSpacing;
+        m.style.lineHeight = cs.lineHeight;
+        var t = ta.value || ' ';
+        if (/\n$/.test(t)) t += ' ';
+        m.textContent = t;
+        return m.getBoundingClientRect().height;
+    }
+
+    function fit(ta) {
+        var content = contentHeight(ta);
+        if (content == null) return;                       // окно скрыто
+        var need = Math.ceil(content + 2 * MIN_PAD + BORDER);
+        var h = Math.max(MIN_H, need, Math.round(ta._userH || 0));
+        var pad = Math.max(MIN_PAD, (h - BORDER - content) / 2);
+        ta.style.setProperty('height', h + 'px', 'important');
+        ta.style.setProperty('padding-top', pad + 'px', 'important');
+        ta.style.setProperty('padding-bottom', pad + 'px', 'important');
+        ta._fitH = ta.offsetHeight;
+        ta._fitW = ta.offsetWidth;
+    }
+
+    var ro = (typeof ResizeObserver !== 'undefined') ? new ResizeObserver(function (entries) {
+        entries.forEach(function (e) {
+            var ta = e.target, h = ta.offsetHeight, w = ta.offsetWidth;
+            if (ta._fitH === h && ta._fitW === w) return;  // это наша же правка
+            if (ta._fitH != null && ta._fitH !== h && ta._fitW === w) ta._userH = h;  // тянет пользователь
+            fit(ta);
+        });
+    }) : null;
+
+    function attach(ta) {
+        if (ta._fitAttached) return;
+        ta._fitAttached = true;
+        if (ro) ro.observe(ta);
+        requestAnimationFrame(function () { fit(ta); });
+    }
+
+    tbody.addEventListener('input', function (e) {
+        if (e.target.matches && e.target.matches('textarea.pos-name')) fit(e.target);
+    });
+
+    new MutationObserver(function (muts) {
+        muts.forEach(function (m) {
+            m.addedNodes.forEach(function (n) {
+                if (n.nodeType !== 1) return;
+                if (n.matches && n.matches('textarea.pos-name')) attach(n);
+                if (n.querySelectorAll) n.querySelectorAll('textarea.pos-name').forEach(attach);
+            });
+        });
+    }).observe(tbody, { childList: true, subtree: true });
+
+    tbody.querySelectorAll('textarea.pos-name').forEach(attach);
+})();
 
 function saveNewRequest(event) {
     if (event) event.preventDefault();
@@ -8478,9 +8590,8 @@ if (foundInAccounting && contractText) {
             <td>${item.docNumber || ''}</td>
             <td>${item.supplier || ''}</td>
             <td>${item.amount ? formatCurrency(item.amount) : ''}</td>
-            <td>${contractHtml}</td>
+            <td><div class="pay-acc-cell"><span class="pay-acc-text">${contractHtml}</span>${linkHtml}</div></td>
             <td>${agreementHtml}</td>
-            <td>${linkHtml}</td>
         `;
         
         // Контрагент: ссылка только на само значение (как в столбце «Счет»), клик открывает информацию о контрагенте
@@ -8541,7 +8652,7 @@ if (foundInAccounting && contractText) {
         return row;
 }
 LZ_CONFIGS.pay = () => ({
-    tbody: '#paymentsTable tbody', colspan: 8,
+    tbody: '#paymentsTable tbody', colspan: 7,
     data: () => paymentsData,
     ctx: () => {
         const today = new Date();
@@ -8572,7 +8683,7 @@ LZ_CONFIGS.pay = () => ({
         };
     },
     text: it => [it.date, it.status, it.docNumber, it.supplier,
-        it.amount ? formatCurrency(it.amount) : '', lzCell(it.contract), lzCell(it.agreement), it.link ? '🔗' : ''],
+        it.amount ? formatCurrency(it.amount) : '', lzCell(it.contract), lzCell(it.agreement)],
     row: lzRowPay,
     filters: () => ({
         q: lzInput('searchPaymentsInput').toLowerCase(),
@@ -9003,6 +9114,18 @@ function formatCurrency(value) {
 
         // ========== ФУНКЦИИ ДЛЯ СТРАНИЦЫ УРЕГУЛИРОВАНИЯ ==========
 
+// Две строки в одной ячейке: верхнее значение, под ним — нижнее
+function lzStack(top, bottom) {
+    const t = String(top == null ? '' : top).trim();
+    const b = String(bottom == null ? '' : bottom).trim();
+    if (!t && !b) return '';
+    const topHtml = t
+        ? `<div class="stk stk-top">${escapeString(t)}</div>`
+        : `<div class="stk stk-top stk-empty">—</div>`;
+    const botHtml = `<div class="stk stk-bot">${escapeString(b)}</div>`;
+    return `<div class="stk-wrap">${topHtml}${botHtml}</div>`;
+}
+
 function lzRowSet(item, ctx) {
         const row = document.createElement('tr');
         row.dataset.recordId = item.recordId || '';
@@ -9036,13 +9159,11 @@ const displayDate = item.date ? item.date : '';
         row.innerHTML = `
     <td>${displayDate}</td>
     <td>${escapeString(item.status || '')}</td>
+    <td>${escapeString(item.docNumber || '')}</td>
     <td>${escapeString(item.supplier || '')}</td>
     <td>${contractHtml}</td>
-    <td>${escapeString(item.docNumber || '')}</td>
-    <td>${escapeString(item.remark || '')}</td>
-    <td>${escapeString(item.outgoing || '')}</td>
-    <td>${escapeString(item.incoming || '')}</td>
-    <td>${escapeString(item.note || '')}</td>
+    <td>${lzStack(item.note, item.remark)}</td>
+    <td>${lzStack(item.incoming, item.outgoing)}</td>
 `;
 
         if (isAdmin) {
@@ -9058,14 +9179,14 @@ const displayDate = item.date ? item.date : '';
         return row;
 }
 LZ_CONFIGS.set = () => ({
-    tbody: '#settlementTable tbody', colspan: 9, noColspan: 8, emptyAttr: 'data-no-data',
+    tbody: '#settlementTable tbody', colspan: 7, noColspan: 7, emptyAttr: 'data-no-data',
     data: () => settlementData,
     index: it => {
         const d = parseDate(it.date);
         return { time: d ? d.getTime() : 0, status: lzStr(it.status).trim(), supplier: lzStr(it.supplier).toLowerCase().trim() };
     },
-    text: it => [it.date, lzCell(it.status), lzCell(it.supplier), lzCell(it.contract), lzCell(it.docNumber),
-        lzCell(it.remark), lzCell(it.outgoing), lzCell(it.incoming), lzCell(it.note)],
+    text: it => [it.date, lzCell(it.status), lzCell(it.docNumber), lzCell(it.supplier), lzCell(it.contract),
+        lzCell(it.note), lzCell(it.remark), lzCell(it.incoming), lzCell(it.outgoing)],
     row: lzRowSet,
     filters: () => ({
         q: lzInput('searchSettlementInput').toLowerCase(),
@@ -12279,7 +12400,21 @@ async function exportToExcel(type) {
         const cells = row.querySelectorAll('td');
         const rowData = [];
         visibleColumnIndices.forEach(idx => {
-            rowData.push(cells[idx] ? cells[idx].textContent.trim() : '');
+            let txt = '';
+            const c = cells[idx];
+            if (c) {
+                const stk = c.querySelectorAll('.stk');
+                if (stk.length) {
+                    txt = Array.from(stk).map(e => e.classList.contains('stk-empty') ? '' : e.textContent.trim()).join('\n').replace(/\n+$/, '');
+                } else if (c.querySelector('.link-icon')) {
+                    const clone = c.cloneNode(true);
+                    clone.querySelectorAll('.link-icon').forEach(i => i.remove());
+                    txt = clone.textContent.trim();
+                } else {
+                    txt = c.textContent.trim();
+                }
+            }
+            rowData.push(txt);
         });
         dataRows.push(rowData);
     });
@@ -12325,7 +12460,12 @@ async function exportToExcel(type) {
 
     // --- 2. Добавляем строки данных (без заливки) ---
     dataRows.forEach(rowData => {
-        worksheet.addRow(rowData);
+        const r = worksheet.addRow(rowData);
+        r.eachCell(cell => {
+            if (typeof cell.value === 'string' && cell.value.indexOf('\n') !== -1) {
+                cell.alignment = { wrapText: true, vertical: 'top' };
+            }
+        });
     });
 
     // --- 3. Сохраняем файл ---
@@ -18929,5 +19069,76 @@ document.addEventListener('keydown', function (e) {
     });
 })();
 </script>
+
+<style id="unified-registry-columns">
+/* ============================================================
+   Единая сетка столбцов: Платежи, Самовывоз, Рекламации.
+   Одинаковые позиции и ширины столбцов — при переключении
+   между страницами таблицы выглядят одинаково.
+     1 Дата · 2 Статус · 3 Заявка · 4 Контрагент ·
+     5 Сумма / Договор · 6 Счёт / Адрес / Примечание-Замечание ·
+     7 Договор / Водитель / Вход.-Исх.
+   ============================================================ */
+#payments #paymentsTable,
+#proxy-registry #proxyTable,
+#settlement #settlementTable {
+    table-layout: fixed !important;
+    width: 100% !important;
+    min-width: 0 !important;
+}
+#payments #paymentsTable th:nth-child(1), #payments #paymentsTable td:nth-child(1),
+#proxy-registry #proxyTable th:nth-child(1), #proxy-registry #proxyTable td:nth-child(1),
+#settlement #settlementTable th:nth-child(1), #settlement #settlementTable td:nth-child(1) { width: 90px !important; }
+#payments #paymentsTable th:nth-child(2), #payments #paymentsTable td:nth-child(2),
+#proxy-registry #proxyTable th:nth-child(2), #proxy-registry #proxyTable td:nth-child(2),
+#settlement #settlementTable th:nth-child(2), #settlement #settlementTable td:nth-child(2) { width: 80px !important; }
+#payments #paymentsTable th:nth-child(3), #payments #paymentsTable td:nth-child(3),
+#proxy-registry #proxyTable th:nth-child(3), #proxy-registry #proxyTable td:nth-child(3),
+#settlement #settlementTable th:nth-child(3), #settlement #settlementTable td:nth-child(3) { width: 120px !important; }
+#payments #paymentsTable th:nth-child(4), #payments #paymentsTable td:nth-child(4),
+#proxy-registry #proxyTable th:nth-child(4), #proxy-registry #proxyTable td:nth-child(4),
+#settlement #settlementTable th:nth-child(4), #settlement #settlementTable td:nth-child(4) { width: 150px !important; }
+#payments #paymentsTable th:nth-child(5), #payments #paymentsTable td:nth-child(5),
+#proxy-registry #proxyTable th:nth-child(5), #proxy-registry #proxyTable td:nth-child(5),
+#settlement #settlementTable th:nth-child(5), #settlement #settlementTable td:nth-child(5) { width: 120px !important; }
+#payments #paymentsTable th:nth-child(6), #payments #paymentsTable td:nth-child(6),
+#proxy-registry #proxyTable th:nth-child(6), #proxy-registry #proxyTable td:nth-child(6),
+#settlement #settlementTable th:nth-child(6), #settlement #settlementTable td:nth-child(6) { width: 200px !important; }
+#payments #paymentsTable th:nth-child(7), #payments #paymentsTable td:nth-child(7),
+#proxy-registry #proxyTable th:nth-child(7), #proxy-registry #proxyTable td:nth-child(7),
+#settlement #settlementTable th:nth-child(7), #settlement #settlementTable td:nth-child(7) { width: 130px !important; }
+
+/* Одинаковый перенос текста, отступы и выравнивание во всех трёх таблицах */
+#payments #paymentsTable td,
+#proxy-registry #proxyTable td,
+#settlement #settlementTable td {
+    padding: 5.36px !important;
+    vertical-align: middle !important;
+    line-height: 1.3 !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: normal !important;
+    overflow-wrap: break-word !important;
+    word-wrap: break-word !important;
+}
+#payments #paymentsTable td:nth-child(1), #payments #paymentsTable td:nth-child(2),
+#proxy-registry #proxyTable td:nth-child(1), #proxy-registry #proxyTable td:nth-child(2),
+#settlement #settlementTable td:nth-child(1), #settlement #settlementTable td:nth-child(2) {
+    white-space: nowrap !important;
+}
+#payments #paymentsTable th,
+#proxy-registry #proxyTable th,
+#settlement #settlementTable th {
+    padding: 5px 8px !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    vertical-align: middle !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+</style>
 </body>
 </html>
