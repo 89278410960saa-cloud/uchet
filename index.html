@@ -3185,6 +3185,13 @@ body .main-content.main-content { padding-top: calc(var(--content-top, 56px) - 6
         <button onclick="clearProxyFilters()" class="reset-filter-btn">Сбросить фильтры</button>
         <button onclick="exportToExcel('proxy')">Экспорт в Excel</button>
     </div>
+    <!-- Кнопка «Настройки» — раскрывает/скрывает блок, начинающийся с «Сохранить» -->
+    <div class="sidebar-cell menu-item more-settings-toggle" id="moreSettingsToggle" onclick="toggleMoreSettings(event)" title="Настройки" role="button" aria-expanded="false">
+        <span class="menu-icon"><i class="fas fa-cog"></i></span>
+        <span class="menu-text">Настройки</span>
+        <span class="more-settings-arrow"><i class="fas fa-chevron-down"></i></span>
+    </div>
+    <div class="more-settings-body" id="moreSettingsBody">
     <div class="sidebar-cell menu-item github-export-btn admin-only"
          onclick="forceExportToGitHub()"
          title="Принудительный экспорт данных">
@@ -3212,6 +3219,7 @@ body .main-content.main-content { padding-top: calc(var(--content-top, 56px) - 6
     <span class="menu-icon"><i class="fas fa-key"></i></span>
     <span class="menu-text">Вход</span>
 </div>
+    </div><!-- /more-settings-body -->
 </div>
 
     
@@ -15441,11 +15449,28 @@ document.addEventListener('DOMContentLoaded', function () {
     [800, 1600, 2800].forEach(function (t) { setTimeout(updateMoreMenuIndicator, t); });
 });
 
+/* Раскрыть/свернуть блок «Настройки» внутри меню «Ещё» */
+function toggleMoreSettings(event, forceState) {
+    if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+    }
+    const body = document.getElementById('moreSettingsBody');
+    const toggle = document.getElementById('moreSettingsToggle');
+    if (!body || !toggle) return;
+    const open = (typeof forceState === 'boolean') ? forceState : !body.classList.contains('open');
+    body.classList.toggle('open', open);
+    toggle.classList.toggle('open', open);
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+}
+window.toggleMoreSettings = toggleMoreSettings;
+
 function closeMoreMenu() {
     const dropdown = document.getElementById('moreMenuDropdown');
     const btn = document.getElementById('moreMenuBtn');
     if (dropdown) dropdown.classList.remove('show');
     if (btn) btn.classList.remove('open');
+    toggleMoreSettings(null, false);   // при следующем открытии «Настройки» снова свёрнуты
 }
 
 document.addEventListener('click', function (e) {
@@ -15463,6 +15488,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const dropdown = document.getElementById('moreMenuDropdown');
     if (!dropdown) return;
     dropdown.addEventListener('click', function (e) {
+        if (e.target.closest('.more-settings-toggle')) return;   // «Настройки» только раскрывают список
         if (e.target.closest('.sidebar-cell.menu-item') ||
             e.target.closest('.more-page-actions > button')) {
             setTimeout(closeMoreMenu, 50);
@@ -18805,6 +18831,31 @@ document.addEventListener('keydown', function (e) {
     btn.click();
 });
 </script>
+<style id="more-settings-collapsible">
+/* ===== «Настройки» — раскрывающийся блок внутри меню «Ещё» ===== */
+#moreMenuDropdown .more-settings-body {
+    display: none;
+    flex-direction: column;
+    border-top: 1px solid #3d4450;
+    margin-top: 2px;
+}
+#moreMenuDropdown .more-settings-body.open { display: flex; }
+#moreMenuDropdown .more-settings-toggle { user-select: none; }
+#moreMenuDropdown .more-settings-toggle .more-settings-arrow {
+    margin-left: auto;
+    flex-shrink: 0;
+    font-size: 10px;
+    line-height: 1;
+    color: inherit;
+}
+#moreMenuDropdown .more-settings-toggle .more-settings-arrow i {
+    display: inline-block;
+    transition: transform .2s ease;
+}
+#moreMenuDropdown .more-settings-toggle.open .more-settings-arrow i { transform: rotate(180deg); }
+/* пункты внутри раскрытого блока — с небольшим отступом, чтобы было видно вложенность */
+#moreMenuDropdown .more-settings-body > .sidebar-cell.menu-item { padding-left: 20px !important; }
+</style>
 <style id="more-menu-unified">
 /* ============================================================
    МЕНЮ «ЕЩЁ»: единый стиль, строки на всю ширину списка,
@@ -18822,7 +18873,7 @@ document.addEventListener('keydown', function (e) {
 
 /* Общий вид любой строки меню */
 #moreMenuDropdown#moreMenuDropdown .more-page-actions > button,
-#moreMenuDropdown#moreMenuDropdown > .sidebar-cell.menu-item {
+#moreMenuDropdown#moreMenuDropdown .sidebar-cell.menu-item {
     display: flex !important;
     flex-direction: row !important;
     align-items: center !important;
@@ -18852,17 +18903,17 @@ document.addEventListener('keydown', function (e) {
     transition: background-color .15s, color .15s !important;
 }
 #moreMenuDropdown#moreMenuDropdown .more-page-actions > button i,
-#moreMenuDropdown#moreMenuDropdown > .sidebar-cell.menu-item .menu-icon,
-#moreMenuDropdown#moreMenuDropdown > .sidebar-cell.menu-item .menu-text {
+#moreMenuDropdown#moreMenuDropdown .sidebar-cell.menu-item .menu-icon,
+#moreMenuDropdown#moreMenuDropdown .sidebar-cell.menu-item .menu-text {
     color: inherit !important;
 }
 #moreMenuDropdown#moreMenuDropdown .more-page-actions > button i { margin-right: 0 !important; }
-#moreMenuDropdown#moreMenuDropdown > .sidebar-cell.menu-item.danger .menu-icon { color: inherit !important; }
+#moreMenuDropdown#moreMenuDropdown .sidebar-cell.menu-item.danger .menu-icon { color: inherit !important; }
 
 /* Наведение / фокус по умолчанию — нейтральная подсветка */
 #moreMenuDropdown#moreMenuDropdown .more-page-actions > button:hover,
 #moreMenuDropdown#moreMenuDropdown .more-page-actions > button:focus-visible,
-#moreMenuDropdown#moreMenuDropdown > .sidebar-cell.menu-item:hover {
+#moreMenuDropdown#moreMenuDropdown .sidebar-cell.menu-item:hover {
     background: #2f3542 !important;
     color: #ffffff !important;
     border: 0 !important;
@@ -18878,7 +18929,7 @@ document.addEventListener('keydown', function (e) {
 }
 /* «Просроченные» и «Удалить» — красная подсветка */
 #moreMenuDropdown#moreMenuDropdown #overdueBtn:hover,
-#moreMenuDropdown#moreMenuDropdown > .sidebar-cell.menu-item.danger:hover {
+#moreMenuDropdown#moreMenuDropdown .sidebar-cell.menu-item.danger:hover {
     background: rgba(190, 70, 60, 0.28) !important;
     color: #ff7b70 !important;
 }
@@ -18889,12 +18940,12 @@ document.addEventListener('keydown', function (e) {
 
 /* ===== Границы и цвета наведения ===== */
 #moreMenuDropdown#moreMenuDropdown .more-page-actions > button,
-#moreMenuDropdown#moreMenuDropdown > .sidebar-cell.menu-item {
+#moreMenuDropdown#moreMenuDropdown .sidebar-cell.menu-item {
     border: 1px solid transparent !important;   /* место под границу, чтобы текст не прыгал */
 }
 #moreMenuDropdown#moreMenuDropdown .more-page-actions > button:hover,
 #moreMenuDropdown#moreMenuDropdown .more-page-actions > button:focus-visible,
-#moreMenuDropdown#moreMenuDropdown > .sidebar-cell.menu-item:hover {
+#moreMenuDropdown#moreMenuDropdown .sidebar-cell.menu-item:hover {
     border: 1px solid #66c0f4 !important;       /* как у кнопок сайдбара */
 }
 /* «Добавить …» — зеленоватый фон */
