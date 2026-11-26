@@ -1172,6 +1172,21 @@ body:not(.app-ready) .main-content {
     to { opacity: 1; transform: translateY(0); }
 }
 /* Скрыть аватары во всех сообщениях чата */
+        /* Ошибка дубликата контрагента в модальном окне */
+#counterpartyDuplicateError {
+    display: none;
+    margin: 0 0 10px 0;
+    padding: 8px 10px;
+    border-radius: 4px;
+    border: 1px solid rgb(190, 70, 60);
+    background: rgba(190, 70, 60, 0.15);
+    color: #ff8a80;
+    font-size: 13px;
+    line-height: 1.4;
+}
+#counterpartyDuplicateError.visible { display: block; }
+#editCounterpartyForm input.input-error { border-color: rgb(190, 70, 60) !important; }
+
         /* Стили для модального окна информации о контрагенте */
 #counterpartyInfoModal .modal-content {
     max-height: 80vh;
@@ -3609,6 +3624,8 @@ body .main-content.main-content { padding-top: calc(var(--content-top, 56px) - 6
                     </label>
                     <textarea id="editBlacklistComment" style="width: 100%; height: 53.6px; padding: 5.36px; margin-top: 3.35px;" placeholder="Укажите причину внесения в черный список..."></textarea>
                 </div>
+
+                <div id="counterpartyDuplicateError" role="alert"></div>
 
                 <button type="submit">Сохранить</button>
                 <button type="button" onclick="deleteCounterpartyRecord()" class="delete-btn" style="background: linear-gradient(135deg, rgb(190, 70, 60) 0%, rgb(140, 44, 36) 100%); display: inline-block; margin-left: 0.0px;">Удалить запись</button>
@@ -8145,6 +8162,66 @@ function filterCounterpartiesTable() {
     filterCounterpartiesTable();
 }
 
+        // ===== Проверка дубликатов контрагентов =====
+        function normalizeCpName(v) {
+            return String(v || '').toLowerCase().replace(/ё/g, 'е').replace(/\s+/g, ' ').trim();
+        }
+        function normalizeCpInn(v) {
+            return String(v || '').replace(/\D/g, '');
+        }
+        // Возвращает { msgs, byName, byInn }; msgs пуст, если дубликатов нет
+        function findCounterpartyDuplicate(supplier, inn, excludeIndex) {
+            const name = normalizeCpName(supplier);
+            const innDigits = normalizeCpInn(inn);
+            let byName = null, byInn = null;
+            counterpartiesData.forEach((c, i) => {
+                if (excludeIndex !== undefined && excludeIndex !== '' && i === Number(excludeIndex)) return;
+                if (!byName && name && normalizeCpName(c.supplier) === name) byName = c;
+                if (!byInn && innDigits && normalizeCpInn(c.inn) === innDigits) byInn = c;
+            });
+            const msgs = [];
+            if (byName) msgs.push('Контрагент с названием «' + (byName.supplier || '').trim() + '» уже существует.');
+            if (byInn) msgs.push('Контрагент с ИНН ' + innDigits + ' уже существует' +
+                (byInn !== byName ? ' («' + (byInn.supplier || '').trim() + '»)' : '') + '.');
+            return { msgs, byName: !!byName, byInn: !!byInn };
+        }
+        function showCounterpartyDuplicateError(res) {
+            const box = document.getElementById('counterpartyDuplicateError');
+            if (!box) return;
+            box.textContent = '';
+            res.msgs.forEach(m => {
+                const d = document.createElement('div');
+                d.textContent = m;
+                box.appendChild(d);
+            });
+            box.classList.add('visible');
+            document.getElementById('editSupplier').classList.toggle('input-error', res.byName);
+            document.getElementById('editInn').classList.toggle('input-error', res.byInn);
+        }
+        function clearCounterpartyDuplicateError() {
+            const box = document.getElementById('counterpartyDuplicateError');
+            if (box) { box.classList.remove('visible'); box.textContent = ''; }
+            ['editSupplier', 'editInn'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.classList.remove('input-error');
+            });
+        }
+        // Проверка «на лету» только при создании нового контрагента
+        function liveCheckCounterpartyDuplicate() {
+            if (document.getElementById('editCounterpartyIndex').value !== '') return;
+            const res = findCounterpartyDuplicate(
+                document.getElementById('editSupplier').value,
+                document.getElementById('editInn').value
+            );
+            if (res.msgs.length) showCounterpartyDuplicateError(res);
+            else clearCounterpartyDuplicateError();
+        }
+        document.addEventListener('input', function (e) {
+            if (e.target && (e.target.id === 'editSupplier' || e.target.id === 'editInn')) {
+                liveCheckCounterpartyDuplicate();
+            }
+        });
+
         function showAddCounterpartyForm() {
     if (!isAdmin) {
         alert('Только администратор может добавлять контрагентов');
@@ -8154,6 +8231,7 @@ function filterCounterpartiesTable() {
     document.getElementById('modalCounterpartyTitle').textContent = 'Добавить контрагента';
     document.getElementById('editCounterpartyIndex').value = '';
     document.getElementById('editCounterpartyForm').reset();
+    clearCounterpartyDuplicateError();
     const deleteBtn = document.querySelector('#editCounterpartyModal .delete-btn');
     if (deleteBtn) deleteBtn.style.display = 'none';
     
@@ -8174,6 +8252,7 @@ function filterCounterpartiesTable() {
     
     const item = counterpartiesData[index];
     document.getElementById('modalCounterpartyTitle').textContent = 'Редактировать контрагента';
+    clearCounterpartyDuplicateError();
     document.getElementById('editCounterpartyIndex').value = index;
     document.getElementById('editSupplier').value = item.supplier || '';
     document.getElementById('editInn').value = item.inn || '';
@@ -8203,6 +8282,19 @@ function filterCounterpartiesTable() {
     event.preventDefault();
     
     const index = document.getElementById('editCounterpartyIndex').value;
+
+    // Проверка на дубликат (название или ИНН) только при создании нового контрагента
+    if (index === '') {
+        const dup = findCounterpartyDuplicate(
+            document.getElementById('editSupplier').value,
+            document.getElementById('editInn').value
+        );
+        if (dup.msgs.length) {
+            showCounterpartyDuplicateError(dup);
+            return;
+        }
+    }
+
     const recordId = document.getElementById('editCounterpartyIndex').value ? 
         counterpartiesData[index]?.recordId || generateUniqueId() : 
         generateUniqueId();
@@ -8247,6 +8339,7 @@ function filterCounterpartiesTable() {
             if (blacklistCheckbox) blacklistCheckbox.style.display = 'block';
             if (blacklistLabel) blacklistLabel.style.display = 'block';
             
+            clearCounterpartyDuplicateError();
             document.getElementById('editCounterpartyModal').style.display = 'none';
         }
 // Функция для гостя
