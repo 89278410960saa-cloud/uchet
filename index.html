@@ -4847,8 +4847,10 @@ const status     = 'В работе';   // ← статус всегда «В р
             <select id="statsYearFilter" class="year-filter" onchange="calculateStatusStats()" style="flex: 1; padding: 5px 10px; background: #1e2d3d; color: #c7d5e0; border: 1px solid #3d4a5a; border-radius: 6px; font-size: 12px; height: 28px;">
                 <option value="">Все года</option>
             </select>
+            <input list="suppliersListFilter" id="statsSupplierFilter" class="supplier-filter" placeholder="Фильтр по контрагентам..." autocomplete="off" oninput="calculateStatusStats()" style="flex: 2; min-width: 0; padding: 5px 10px; background: #1e2d3d; color: #c7d5e0; border: 1px solid #3d4a5a; border-radius: 6px; font-size: 12px; height: 28px; box-sizing: border-box;">
             <span style="font-size: 10px; color: #6a7a8a; white-space: nowrap;" id="statsDate"></span>
         </div>
+
 
         <!-- Две общие цифры (всего позиций / заявок) -->
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px;">
@@ -4916,7 +4918,7 @@ const status     = 'В работе';   // ← статус всегда «В р
         </div>
 
         <!-- ===== БЛОК КОНТРАГЕНТЫ (отдельная строка, сверху) ===== -->
-        <div style="background: rgba(20,30,42,0.6); border-radius: 8px; padding: 8px 6px; border: 1px solid rgba(33,150,243,0.15); margin-bottom: 8px; width: 100%;">
+        <div id="statsCounterpartiesBlock" style="background: rgba(20,30,42,0.6); border-radius: 8px; padding: 8px 6px; border: 1px solid rgba(33,150,243,0.15); margin-bottom: 8px; width: 100%;">
             <div style="display: flex; align-items: center; gap: 4px; margin-bottom: 6px; color: #64b5f6; font-size: 11px; font-weight: 600;">
                 <span>👥</span> Контрагенты
             </div>
@@ -4952,7 +4954,7 @@ const status     = 'В работе';   // ← статус всегда «В р
         </div>
 
         <!-- localStorage -->
-        <div style="background: rgba(20,30,42,0.4); border-radius: 6px; padding: 6px 10px; border: 1px solid rgba(100,150,200,0.08); margin-top: 2px;">
+        <div id="statsStorageBlock" style="background: rgba(20,30,42,0.4); border-radius: 6px; padding: 6px 10px; border: 1px solid rgba(100,150,200,0.08); margin-top: 2px;">
             <div style="display: flex; justify-content: space-between; font-size: 9px; color: #8f98a0;">
                 <span>💾 База данных: <span id="localStorageUsed" style="color:#c7d5e0;">0</span> МБ</span>
                 <span id="localStoragePercent">0%</span>
@@ -5854,6 +5856,27 @@ function accEnsureAllRows() {
     accRender();
 }
 
+// Строка «Итого по заявке» — показывается только когда выбрана конкретная заявка
+function accMakeTotalRow(items) {
+    let sum = 0, withAmount = 0;
+    items.forEach(it => {
+        const n = parseFloat(String(it.amount == null ? '' : it.amount).replace(/\s/g, '').replace(',', '.'));
+        if (!isNaN(n)) { sum += n; withAmount++; }
+    });
+    const sumText = withAmount
+        ? (Math.round(sum * 100) / 100).toLocaleString('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+        : '—';
+
+    const tr = document.createElement('tr');
+    tr.className = 'acc-total-row';
+    tr.setAttribute('data-acc-total', 'true');
+    tr.innerHTML =
+        `<td colspan="8" class="acc-total-label">Итого по заявке</td>` +
+        `<td class="acc-total-sum">${sumText}</td>` +
+        `<td colspan="5"></td>`;
+    return tr;
+}
+
 function accRender() {
     const tbody = document.querySelector('#accountingTable tbody');
     if (!tbody) return;
@@ -5898,6 +5921,11 @@ function accRender() {
         const tr = accGetRow(shown[i]);
         tr.style.display = '';
         frag.appendChild(tr);
+    }
+
+    // Выбрана конкретная заявка — после всех её строк добавляем общую сумму
+    if (F.application && shown.length > 0) {
+        frag.appendChild(accMakeTotalRow(ordered));
     }
 
     if (accForceAll) {
@@ -7358,6 +7386,8 @@ function hideSupplierQuickFilters() {
 function showStatusStatsModal() {
     // Инициализируем фильтр по годам
     initializeStatsYearFilter();
+    // Крестик очистки у поля контрагента (как у остальных фильтров)
+    if (typeof window.setupFilterClearButtons === 'function') window.setupFilterClearButtons();
     
     // Рассчитываем статистику
     calculateStatusStats();
@@ -7382,15 +7412,30 @@ function closeStatusStatsModal() {
     // сбрасываем выбор, чтобы при следующем открытии снова встал текущий год
     const sel = document.getElementById('statsYearFilter');
     if (sel) sel.value = '';
+    // и контрагента — при следующем открытии снова «Все контрагенты»
+    const selSup = document.getElementById('statsSupplierFilter');
+    if (selSup) { selSup.value = ''; selSup.dispatchEvent(new Event('input')); }
 }
 
 function calculateStatusStats() {
     const yearFilter = document.getElementById('statsYearFilter').value;
+    const supplierSel = document.getElementById('statsSupplierFilter');
+    // Как и в остальных фильтрах по контрагентам — совпадение по части названия
+    const supplierKey = supplierSel ? normalizeCpName(supplierSel.value) : '';
+    // Оставляет только записи выбранного контрагента (если он выбран)
+    const bySupplier = (arr) => supplierKey
+        ? arr.filter(i => normalizeCpName(i.supplier).includes(supplierKey))
+        : arr;
+    // Выбран контрагент — блок «Контрагенты» и блок с информацией о памяти не нужны
+    ['statsCounterpartiesBlock', 'statsStorageBlock'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.style.display = supplierKey ? 'none' : '';
+    });
     
     // Фильтруем данные по году для закупок
-    let filteredAccountingData = accountingData;
+    let filteredAccountingData = bySupplier(accountingData);
     if (yearFilter) {
-        filteredAccountingData = accountingData.filter(item => {
+        filteredAccountingData = filteredAccountingData.filter(item => {
             const yearFromDoc = extractYearFromDocNumber(item.docNumber);
             return yearFromDoc === yearFilter;
         });
@@ -7422,9 +7467,9 @@ function calculateStatusStats() {
         .sort((a, b) => b[1] - a[1]);
     
     // Рассчитываем статистику по платежам
-    let filteredPaymentsData = paymentsData;
+    let filteredPaymentsData = bySupplier(paymentsData);
     if (yearFilter) {
-        filteredPaymentsData = paymentsData.filter(payment => {
+        filteredPaymentsData = filteredPaymentsData.filter(payment => {
             const paymentYear = extractYearFromPaymentDate(payment.date);
             return paymentYear === yearFilter;
         });
@@ -7448,9 +7493,9 @@ function calculateStatusStats() {
         }
     });
     // Статистика по доверенностям
-let filteredProxyData = proxyData;
+let filteredProxyData = bySupplier(proxyData);
 if (yearFilter) {
-    filteredProxyData = proxyData.filter(proxy => {
+    filteredProxyData = filteredProxyData.filter(proxy => {
         const proxyYear = extractYearFromDateString(proxy.date);
         return proxyYear === yearFilter;
     });
@@ -7463,16 +7508,16 @@ document.getElementById('proxyInWorkCount').textContent = proxyInWorkCount;
 document.getElementById('proxyCompletedCount').textContent = proxyCompletedCount;
 
 // Статистика по урегулированию (без фильтра по году, так как нет явной даты)
-const settlementInWorkCount = settlementData.filter(item => item.status === 'В работе').length;
-const settlementCompletedCount = settlementData.filter(item => item.status === 'Выполнено').length;
+const settlementInWorkCount = bySupplier(settlementData).filter(item => item.status === 'В работе').length;
+const settlementCompletedCount = bySupplier(settlementData).filter(item => item.status === 'Выполнено').length;
 
 document.getElementById('settlementInWorkCount').textContent = settlementInWorkCount;
 document.getElementById('settlementCompletedCount').textContent = settlementCompletedCount;
 
 // Статистика по почтовому реестру
-let filteredMailData = mailData;
+let filteredMailData = bySupplier(mailData);
 if (yearFilter) {
-    filteredMailData = mailData.filter(mail => {
+    filteredMailData = filteredMailData.filter(mail => {
         const mailYear = extractYearFromDateString(mail.date);
         return mailYear === yearFilter;
     });
@@ -7534,7 +7579,7 @@ sortedStats.forEach(([status, count]) => {
         html += `
             <tr>
                 <td colspan="2" style="text-align: center; color: #8f98a0; padding: 20px;">
-                    ${yearFilter ? `Нет данных за ${yearFilter} год` : 'Нет данных'}
+                    ${supplierKey ? 'Нет данных по выбранному контрагенту' + (yearFilter ? ` за ${yearFilter} год` : '') : (yearFilter ? `Нет данных за ${yearFilter} год` : 'Нет данных')}
                 </td>
             </tr>
         `;
@@ -15619,7 +15664,7 @@ function updateFilterHighlight(element) {
 function initFiltersHighlight() {
     // Селекторы всех полей фильтрации на всех страницах
     const filterSelectors = [
-        '#searchAccountingInput', '#yearFilter', '#statusFilter', '#supplierFilter',
+        '#searchAccountingInput', '#yearFilter', '#statusFilter', '#supplierFilter', '#statsSupplierFilter',
         '#departmentFilter', '#applicationFilter', '#factMonthFilter',
         '#searchCounterpartiesInput', '#blacklistFilterBtn', // кнопка – не поле, пропустим
         '#searchPaymentsInput', '#paymentsApplicationFilter', '#paymentsSupplierFilter',
@@ -15761,7 +15806,7 @@ function initFiltersHighlight() {
     // ── 2. Селекторы ──
     const filterSelectors = [
         '#searchAccountingInput', '#yearFilter', '#statusFilter',
-        '#supplierFilter', '#departmentFilter', '#applicationFilter', '#factMonthFilter',
+        '#supplierFilter', '#statsSupplierFilter', '#departmentFilter', '#applicationFilter', '#factMonthFilter',
         '#searchCounterpartiesInput',
         '#searchPaymentsInput', '#paymentsApplicationFilter',
         '#paymentsSupplierFilter', '#paymentsStatusFilter', '#paymentDateFilter',
@@ -18672,6 +18717,30 @@ function patchEditPaymentRow() {
     width: 100% !important;
     box-sizing: border-box !important;
 }
+</style>
+<style id="stats-supplier-filter-style">
+/* Аналитика: поле контрагента — тот же фон и рамка, что у фильтра по годам (в любом состоянии) */
+#statsSupplierFilter,
+#statsSupplierFilter.filter-active {
+    background: #1e2d3d !important;
+    background-image: none !important;
+}
+#statsSupplierFilter:not(:focus) { border-color: #3d4a5a !important; }
+</style>
+<style id="acc-total-row-style">
+/* «Позиции»: строка «Итого по заявке» — шрифт, цвет и фон как у строки с названиями столбцов */
+#accountingTable tbody tr.acc-total-row,
+#accountingTable tbody tr.acc-total-row:hover { background: none !important; }
+#accountingTable tbody tr.acc-total-row > td {
+    background: linear-gradient(135deg, #2a475e 0%, #1f3549 100%) !important;
+    color: #ffffff !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    vertical-align: middle !important;
+    cursor: default;
+}
+#accountingTable tbody tr.acc-total-row > td.acc-total-label { text-align: right !important; }
+#accountingTable tbody tr.acc-total-row > td.acc-total-sum { text-align: center !important; white-space: nowrap !important; }
 </style>
 <script id="sidebar-height-sync">
 /* Верхний отступ контента = нижний край кнопок страниц + 6px (тот же зазор, что и между остальными блоками).
