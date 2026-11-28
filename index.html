@@ -3168,7 +3168,6 @@ body .main-content.main-content { padding-top: calc(var(--content-top, 56px) - 6
         <button onclick="exportToExcel('main')">Экспорт в Excel</button>
         <button onclick="toggleWeeklyDeliveriesMode()" id="weeklyDeliveriesBtn">Поставки на неделю (0)</button>
         <button onclick="toggleOverdueMode()" id="overdueBtn">Просроченные (0)</button>
-        <button id="printApplicationReportBtn" style="display: none;" onclick="printApplicationReport()"><i class="fas fa-file-alt"></i>Отчет</button>
         <button id="copyWorkingPositionsBtn" style="display: none;" onclick="copyWorkingPositions()" title="Скопировать позиции «В работе» (Наименование + Кол-во) в буфер обмена"><i class="fas fa-copy"></i>Копировать</button>
         <button onclick="printDeliveriesAndOverdue()" style="background: linear-gradient(135deg, #6c757d 0%, #495057 100%); color: white;">Поставки 30 дней</button>
         <button id="favoriteToggleBtn" class="more-fav-btn" onclick="toggleFavoriteFilter()" title="Показать только избранные"><i id="favoriteToggleIcon" class="far fa-star"></i>Избранное</button>
@@ -5873,7 +5872,8 @@ function accMakeTotalRow(items) {
     tr.innerHTML =
         `<td colspan="8" class="acc-total-label">Итого по заявке</td>` +
         `<td class="acc-total-sum">${sumText}</td>` +
-        `<td colspan="5"></td>`;
+        `<td class="acc-total-report"><a href="#" class="acc-report-link" onclick="openApplicationReportModal(event)">Отчёт</a></td>` +
+        `<td colspan="4"></td>`;
     return tr;
 }
 
@@ -10518,7 +10518,7 @@ function updatePrintButtonVisibility() {
     const appFilter = document.getElementById('applicationFilter');
     const btn       = document.getElementById('printApplicationReportBtn');
     const copyBtn   = document.getElementById('copyWorkingPositionsBtn');
-    if (!appFilter || !btn) return;
+    if (!appFilter) return;
 
     // ── Проверка: выбрана ли конкретная заявка ──
     let isAppSelected = false;
@@ -10545,7 +10545,7 @@ function updatePrintButtonVisibility() {
 
     if (isAppSelected) {
         // «Отчет» — показывается всегда, когда выбрана заявка
-        btn.style.setProperty('display', 'inline-flex', 'important');
+        if (btn) btn.style.setProperty('display', 'inline-flex', 'important');
 
         // «Копировать (В работе)» — только если по этой заявке есть позиции «В работе»
         if (copyBtn) {
@@ -10560,7 +10560,7 @@ function updatePrintButtonVisibility() {
             );
         }
     } else {
-        btn.style.setProperty('display', 'none', 'important');
+        if (btn) btn.style.setProperty('display', 'none', 'important');
         if (copyBtn) copyBtn.style.setProperty('display', 'none', 'important');
     }
 }
@@ -10610,14 +10610,83 @@ function printApplicationReport() {
         counterparties, payments, proxies, settlements // ← передаём рекламации
     );
 
-    const win = window.open('', '_blank');
-    if (!win) {
-        alert('Пожалуйста, разрешите всплывающие окна для просмотра отчёта.');
-        return;
+    showApplicationReportModal(appNumber, html);
+}
+
+// Клик по ссылке «Отчёт» в строке «Итого по заявке»
+function openApplicationReportModal(e) {
+    if (e) { e.preventDefault(); e.stopPropagation(); }
+    printApplicationReport();
+}
+
+// Модальное окно отчёта — по размеру табличной формы («Позиции»)
+function showApplicationReportModal(appNumber, html) {
+    closeApplicationReportModal();
+
+    const overlay = document.createElement('div');
+    overlay.id = 'appReportModal';
+    overlay.innerHTML =
+        '<div class="app-report-box">' +
+            '<div class="app-report-head">' +
+                '<span class="app-report-title">Отчёт по заявке № ' +
+                    String(appNumber).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;') +
+                '</span>' +
+                '<button type="button" class="app-report-close" title="Закрыть (Esc)">&times;</button>' +
+            '</div>' +
+            '<iframe class="app-report-frame" title="Отчёт"></iframe>' +
+        '</div>';
+    document.documentElement.appendChild(overlay);
+
+    // Тот же масштаб, что и у страницы (body { zoom }), чтобы размеры совпадали с «Позициями»
+    let z = parseFloat(getComputedStyle(document.body).zoom);
+    if (/%/.test(getComputedStyle(document.body).zoom)) z = z / 100;
+    if (!z || z <= 0) z = 1;
+    html = html.replace('</head>', '<style>html{zoom:' + z + '}</style></head>');
+
+    overlay.querySelector('.app-report-frame').srcdoc = html;
+
+    const box = overlay.querySelector('.app-report-box');
+    function fit() {
+        const ref = document.querySelector('#accountingTable')?.closest('.table-scroll-container');
+        const vw = window.innerWidth, vh = window.innerHeight;
+        let r = ref ? ref.getBoundingClientRect() : null;
+        let left, top, width, height;
+        if (r && r.width > 100) {
+            left = Math.max(r.left, 0);
+            width = Math.min(r.width, vw - left);
+            top = 0;
+            height = vh;   // на всю высоту страницы
+        } else {
+            width = vw * 0.9; height = vh;
+            left = (vw - width) / 2; top = 0;
+        }
+        box.style.left = left + 'px';
+        box.style.top = top + 'px';
+        box.style.width = width + 'px';
+        box.style.height = height + 'px';
     }
-    win.document.write(html);
-    win.document.close();
-    win.focus();
+    fit();
+    overlay._fit = fit;
+    window.addEventListener('resize', fit);
+
+    overlay.addEventListener('mousedown', function (ev) {
+        if (ev.target === overlay) closeApplicationReportModal();
+    });
+    overlay.querySelector('.app-report-close').addEventListener('click', closeApplicationReportModal);
+    document.addEventListener('keydown', appReportEsc);
+}
+
+function appReportEsc(e) {
+    if (e.key === 'Escape') closeApplicationReportModal();
+}
+
+function closeApplicationReportModal() {
+    const m = document.getElementById('appReportModal');
+    if (m) {
+        if (m._fit) window.removeEventListener('resize', m._fit);
+        m.remove();
+    }
+    document.removeEventListener('keydown', appReportEsc);
 }
 /* ============================================================
    Копирование позиций «В работе» в буфер обмена (TSV-формат).
@@ -10910,10 +10979,11 @@ function buildReportHTML(appNumber, positions, comment, counterparties, payments
         }
         table {
             width: 100%; border-collapse: collapse; margin-bottom: 6px;
-            font-size: 12px; table-layout: fixed;
+            font-size: 9px; table-layout: fixed;
         }
+        th { font-size: 11px; }
         th, td {
-            border: 1px solid #aaa; padding: 2px 4px;
+            border: 1px solid #aaa; padding: 3px 4px;
             text-align: left; vertical-align: top;
             word-wrap: break-word; overflow-wrap: break-word;
         }
@@ -10974,20 +11044,20 @@ function buildReportHTML(appNumber, positions, comment, counterparties, payments
     <!-- ===== Позиции (как на странице «Позиции» без столбца «Служба») ===== -->
     <div class="section">
         <div class="section-title">Позиции закупки</div>
-        <table>
+        <table class="pos-table">
     <colgroup>
-    <col style="width: 5%;">   <!-- Статус -->
-    <col style="width: 8%;">   <!-- ID (шире) -->
-    <col style="width: 18%;">  <!-- Наименование позиции -->
-    <col style="width: 4%;">   <!-- Кол-во -->
-    <col style="width: 18%;">  <!-- Наименование закупки -->
-    <col style="width: 4%;">   <!-- Кол-во (закуп) -->
-    <col style="width: 6%;">   <!-- Сумма -->
-    <col style="width: 9%;">   <!-- Контрагент -->
-    <col style="width: 8%;">   <!-- Договор/Оплата -->
-    <col style="width: 6%;">   <!-- Срок/Поставка (уже) -->
-    <col style="width: 5%;">   <!-- План/Факт (уже) -->
-    <col style="width: 9%;">   <!-- Документ -->
+    <col style="width: 5.24%;">   <!-- Статус -->
+    <col style="width: 4.82%;">   <!-- ID -->
+    <col style="width: 22.18%;">    <!-- Наименование позиции -->
+    <col style="width: 3.21%;">   <!-- Кол-во -->
+    <col style="width: 22.18%;">    <!-- Наименование закупки -->
+    <col style="width: 3.21%;">   <!-- Кол-во (закуп) -->
+    <col style="width: 5.62%;">   <!-- Сумма -->
+    <col style="width: 7.55%;">     <!-- Контрагент -->
+    <col style="width: 7.13%;">   <!-- Договор/Оплата -->
+    <col style="width: 6.11%;">     <!-- Срок/Поставка -->
+    <col style="width: 5.51%;">     <!-- План/Факт -->
+    <col style="width: 7.23%;">   <!-- Документ -->
 </colgroup>
     <thead>
         <tr>
@@ -18741,6 +18811,32 @@ function patchEditPaymentRow() {
 }
 #accountingTable tbody tr.acc-total-row > td.acc-total-label { text-align: right !important; }
 #accountingTable tbody tr.acc-total-row > td.acc-total-sum { text-align: center !important; white-space: nowrap !important; }
+/* Ссылка «Отчёт» — обычный текст-ссылка, без кнопочного вида */
+#accountingTable tbody tr.acc-total-row > td.acc-total-report { text-align: center !important; white-space: nowrap !important; }
+#accountingTable tbody tr.acc-total-row a.acc-report-link {
+    color: #ff8c1a; text-decoration: underline; font: inherit; cursor: pointer;
+    background: none; border: none; padding: 0;
+}
+#accountingTable tbody tr.acc-total-row a.acc-report-link:hover { color: #ffb066; }
+</style>
+<style id="app-report-modal-style">
+#appReportModal { position: fixed; inset: 0; z-index: 100000; background: rgba(0,0,0,0.55); }
+#appReportModal .app-report-box {
+    position: fixed; display: flex; flex-direction: column;
+    background: #1b2838; border: 1px solid #3d4a5a; border-radius: 4px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.6); overflow: hidden;
+}
+#appReportModal .app-report-head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 5px 10px; background: linear-gradient(135deg, #2a475e 0%, #1f3549 100%);
+    color: #fff; font-size: 12px; font-weight: 700; flex: 0 0 auto;
+}
+#appReportModal .app-report-close {
+    background: none; border: none; color: #c7d5e0; font-size: 20px; line-height: 1;
+    cursor: pointer; padding: 0 4px;
+}
+#appReportModal .app-report-close:hover { color: #fff; }
+#appReportModal .app-report-frame { flex: 1 1 auto; width: 100%; border: 0; background: #fff; }
 </style>
 <script id="sidebar-height-sync">
 /* Верхний отступ контента = нижний край кнопок страниц + 6px (тот же зазор, что и между остальными блоками).
