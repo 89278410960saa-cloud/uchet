@@ -10627,15 +10627,6 @@ function showApplicationReportModal(appNumber, html) {
     overlay.id = 'appReportModal';
     overlay.innerHTML =
         '<div class="app-report-box">' +
-            '<div class="app-report-head">' +
-                '<span class="app-report-title">Отчёт по заявке № ' +
-                    String(appNumber).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;') +
-                '</span>' +
-                '<span class="app-report-actions">' +
-                    '<button type="button" class="app-report-download" title="Скачать отчёт">⬇ Скачать</button>' +
-                    '<button type="button" class="app-report-close" title="Закрыть (Esc)">&times;</button>' +
-                '</span>' +
-            '</div>' +
             '<iframe class="app-report-frame" title="Отчёт"></iframe>' +
         '</div>';
     document.documentElement.appendChild(overlay);
@@ -10647,6 +10638,13 @@ function showApplicationReportModal(appNumber, html) {
     const darkTheme =
         '<style id="modal-zoom">html{zoom:' + z + '}</style>' +
         '<style id="modal-scroll">' +
+        '.modal-only-wrap{display:flex;align-items:center;gap:12px}' +
+        '.modal-only{display:flex;align-items:center;gap:8px}' +
+        '.rep-btn{background:#2a3a5e;color:#e5e7eb;border:none;border-radius:2.68px;cursor:pointer;font-weight:bold;font-size:11px;height:20.1px;min-width:20.1px;padding:0 8px;transition:all .3s;font-family:inherit}' +
+        '.rep-btn:hover{background:#222733;transform:translateY(-0.67px);box-shadow:0 2.68px 5.36px rgba(0,0,0,0.2)}' +
+        '.rep-btn.rep-close{background:none;font-size:20px;line-height:1;padding:0 4px;color:#c7d5e0}' +
+        '.rep-btn.rep-close:hover{background:none;color:#fff;box-shadow:none;transform:none}' +
+        '@media print{.modal-only{display:none !important}}' +
         '::-webkit-scrollbar{width:6.7px;height:6.7px}' +
         '::-webkit-scrollbar-track{background:#1b2838;border-radius:3.35px}' +
         '::-webkit-scrollbar-thumb{background:#3d4450;border-radius:3.35px}' +
@@ -10654,6 +10652,7 @@ function showApplicationReportModal(appNumber, html) {
         '</style>' +
         '<style id="modal-theme">@media screen {' +
         'html,body{background:#15181e !important;color:#e5e7eb !important}' +
+        '.report-header{position:sticky;top:0;z-index:10;background:#15181e !important;padding-top:8px !important}' +
         '.report-toolbar{background:#15181e !important;border-bottom:1px solid #53565f !important}' +
         '.report-header{border-bottom-color:#53565f !important}' +
         '.report-title{color:#e5e7eb !important}.report-title .report-dept{color:#c7d5e0 !important}' +
@@ -10672,6 +10671,12 @@ function showApplicationReportModal(appNumber, html) {
         '.footer{border-top-color:#53565f !important;color:#9ca3af !important}' +
         '}</style>';
     html = html.replace('</head>', darkTheme + '</head>');
+    html = html.replace(/(<div class="report-date">[^<]*<\/div>)/,
+        '<div class="modal-only-wrap">$1' +
+        '<span class="modal-only">' +
+            '<button type="button" class="rep-btn" onclick="downloadReport()" title="Скачать отчёт">⬇ Скачать</button>' +
+            '<button type="button" class="rep-btn rep-close" onclick="parent.closeApplicationReportModal()" title="Закрыть (Esc)">&times;</button>' +
+        '</span></div>');
 
     overlay.querySelector('.app-report-frame').srcdoc = html;
 
@@ -10702,10 +10707,10 @@ function showApplicationReportModal(appNumber, html) {
     overlay.addEventListener('mousedown', function (ev) {
         if (ev.target === overlay) closeApplicationReportModal();
     });
-    overlay.querySelector('.app-report-close').addEventListener('click', closeApplicationReportModal);
-    overlay.querySelector('.app-report-download').addEventListener('click', function () {
-        const fr = overlay.querySelector('.app-report-frame');
-        try { fr.contentWindow.downloadReport(); } catch (err) { console.error('Ошибка скачивания отчёта:', err); }
+    // Esc работает и когда фокус внутри отчёта
+    const frame = overlay.querySelector('.app-report-frame');
+    frame.addEventListener('load', function () {
+        try { frame.contentDocument.addEventListener('keydown', appReportEsc); } catch (err) {}
     });
     document.addEventListener('keydown', appReportEsc);
 }
@@ -11200,7 +11205,8 @@ function buildReportHTML(appNumber, positions, comment, counterparties, payments
         var clone = document.documentElement.cloneNode(true);
         var tb = clone.querySelector('.report-toolbar');
         if (tb) tb.remove();
-        clone.querySelectorAll('#modal-theme, #modal-zoom, #modal-scroll').forEach(function (n) { n.remove(); });
+        clone.querySelectorAll('#modal-theme, #modal-zoom, #modal-scroll, .modal-only').forEach(function (n) { n.remove(); });
+        clone.querySelectorAll('.modal-only-wrap').forEach(function (w) { while (w.firstChild) w.parentNode.insertBefore(w.firstChild, w); w.remove(); });
         clone.querySelectorAll('script').forEach(function (n) { n.remove(); });
         var html = '<!DOCTYPE html>' + String.fromCharCode(10) + clone.outerHTML;
         var blob = new Blob([html], { type: 'text/html;charset=utf-8' });
@@ -18859,7 +18865,7 @@ function patchEditPaymentRow() {
     box-shadow: 0 8px 30px rgba(0,0,0,0.6); overflow: hidden;
 }
 #appReportModal .app-report-head {
-    display: flex; align-items: center; justify-content: space-between;
+    display: flex; align-items: center; justify-content: flex-end;
     padding: 5px 10px; background: #15181e; border-bottom: 1px solid #53565f;
     color: #e5e7eb; font-size: 12px; font-weight: 700; flex: 0 0 auto;
 }
